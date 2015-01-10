@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Cabalry" />
+            <option value="$PROJECT_DIR$/cabalry" />
           </set>
         </option>
       </GradleProjectSettings>

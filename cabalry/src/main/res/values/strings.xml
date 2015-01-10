@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cabalry</string>
+    <string name="title_activity_map">Map</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_login">Login</string>
+    <string name="login_register">Register</string>
+
+    <string name="mMap">Map</string>
+    <string name="mHome">Home</string>
+    <string name="mSettings">Settings</string>
+    <string name="mProfile">Profile</string>
+    <string name="mLogout">Logout</string>
+    <string name="mFocus">Focus</string>
+    <string name="mNearby">Nearby</string>
+
+</resources>

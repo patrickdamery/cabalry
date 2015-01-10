@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Cabalry/Cabalry.iml" filepath="$PROJECT_DIR$/Cabalry/Cabalry.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cabalry.iml" filepath="$PROJECT_DIR$/cabalry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cabalry.iml" filepath="$PROJECT_DIR$/Cabalry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cabalry/cabalry.iml" filepath="$PROJECT_DIR$/cabalry/cabalry.iml" />
     </modules>
   </component>
 </project>
