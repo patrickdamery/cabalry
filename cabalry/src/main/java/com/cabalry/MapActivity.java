@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.cabalry.custom.CMap;
+import com.cabalry.custom.CMarker;
 import com.cabalry.db.DB;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -21,27 +23,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MapActivity extends ActionBarActivity implements OnMapReadyCallback {
+public class MapActivity extends ActionBarActivity {
     public static void launch(Activity currentActivity) {
         Intent indent = new Intent(currentActivity, MapActivity.class);
         currentActivity.startActivity(indent);
     }
 
-    public static final float ALARM_HUE = BitmapDescriptorFactory.HUE_RED;
-    public static final float NEARBY_HUE = BitmapDescriptorFactory.HUE_GREEN;
-    public static final float USER_HUE = BitmapDescriptorFactory.HUE_BLUE;
+    private CMap map;
 
-    private GoogleMap mMap = null;
+    private LatLng userLocation;
 
-    private Marker userMarker = null;
-
-    private ArrayList<Marker> nearbyMarkers = new ArrayList<Marker>();
-    private int nearbyCount = 5;
-    private double radius = 100;
-
-    private LatLng followTarget = null;
-
-    private LatLng userPosition;
+    private boolean nearbyUpdateFinished = true;
+    private boolean nearbyEnabled = false;
+    private ArrayList<CMarker> nearbyMarkers = new ArrayList<CMarker>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,53 +48,7 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
 
     private void initializeMap() {
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-
-        mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-        mMap = map;
-
-        UiSettings settings = map.getUiSettings();
-
-        /*
-        settings.setZoomControlsEnabled(false);
-        settings.setZoomGesturesEnabled(false);
-        settings.setScrollGesturesEnabled(false);
-        settings.setTiltGesturesEnabled(false);
-        settings.setRotateGesturesEnabled(false);
-        settings.setMapToolbarEnabled(false);
-        settings.setIndoorLevelPickerEnabled(false);
-        settings.setCompassEnabled(false);
-        */
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.menu_map, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.mHome:
-                HomeActivity.launch(this);
-                break;
-            case R.id.mFocus:
-                focusOnTarget(userMarker);
-                break;
-            case R.id.mNearby:
-                //displayNearby();
-                break;
-            case R.id.mSettings:
-                break;
-        }
-        return true;
+        map = new CMap(this);
     }
 
     private void initializeTracer() {
@@ -127,133 +75,130 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.menu_map, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mHome:
+                HomeActivity.launch(this);
+                break;
+            case R.id.mFocus:
+                //focusOnTarget(userMarker);
+                break;
+            case R.id.mNearby:
+                nearbyEnabled = !nearbyEnabled;
+                updateMap();
+                break;
+            case R.id.mSettings:
+                break;
+        }
+        return true;
+    }
+
     // Updates current login user's latitude and longitude.
     private void updateLocation(Location location) {
 
-        userPosition = new LatLng(location.getLatitude(), location.getLongitude());
-        System.out.println(userPosition);
+        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-        updateNearCabalry();
-
-        if(userMarker == null) {
-            userMarker = addMarker("User", userPosition, USER_HUE);
-            //focusOnTarget(userMarker);
-        } else {
-            userMarker.setPosition(userPosition);
-            //updateCamera(200);
+        if(nearbyEnabled) {
+            updateNearbyMarkers();
         }
+
+        updateMap();
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                DB.updateLocation(userPosition.latitude, userPosition.longitude, getID(), getKey());
+                DB.updateLocation(userLocation.latitude, userLocation.longitude, getID(), getKey());
                 return null;
             }
         }.execute();
     }
 
-    private Marker addMarker(String title, LatLng pos, float hue) {
+    private void updateMap() {
 
-        return mMap.addMarker(new MarkerOptions()
-                .title(title)
-                .icon(BitmapDescriptorFactory.defaultMarker(hue))
-                .position(pos)
-                .draggable(false));
-    }
+        map.getMarkers().clear();
 
-    public void startAlarm() {
-        DB.alarm(getID(), getKey());
-    }
-
-    public void stopAlarm() {
-
-    }
-
-    public void focusOnTarget(Marker target) {
-        followTarget = target.getPosition();
-        updateCamera(2000);
-    }
-
-    private void displayNearby(ArrayList<LatLng> nearbyLocations) {
-
-        for(Marker m : nearbyMarkers) {
-            m.remove();
+        if(userLocation != null) {
+            map.getMarkers().add(new CMarker("User", 0, CMarker.USER_HUE,
+                    userLocation));
         }
 
-        nearbyMarkers.clear();
+        if(nearbyEnabled) {
 
-        for(LatLng l : nearbyLocations) {
-            nearbyMarkers.add(addMarker("Cabalry", l, NEARBY_HUE));
+            for(CMarker marker : nearbyMarkers) {
+                map.getMarkers().add(marker);
+            }
         }
+
+        map.updateMap();
     }
 
-    private void updateNearCabalry() {
+    private void updateNearbyMarkers() {
 
-        final ArrayList<LatLng> nearbyLocations = new ArrayList<LatLng>();
+        if(nearbyUpdateFinished) {
+            nearbyUpdateFinished = false;
+            nearbyMarkers.clear();
 
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
 
-                JSONObject result = null;
-
-                try {
-                    result = DB.nearby(getID(), getKey());
+                    JSONObject result = null;
 
                     try {
-                        boolean success = result.getBoolean(DB.SUCCESS);
+                        result = DB.nearby(getID(), getKey());
 
-                        if (success) {
+                        try {
+                            boolean success = result.getBoolean(DB.SUCCESS);
 
-                            JSONArray list = result.getJSONArray("location");
+                            if (success) {
 
-                            for(int i = 0; i < list.length(); i++) {
-                                JSONObject c = list.getJSONObject(i);
+                                JSONArray list = result.getJSONArray("location");
 
-                                int id = c.getInt("id");
-                                double lat = c.getDouble("lat");
-                                double lng = c.getDouble("lon");
+                                for (int i = 0; i < list.length(); i++) {
+                                    JSONObject c = list.getJSONObject(i);
 
-                                nearbyLocations.add(new LatLng(lat, lng));
+                                    nearbyMarkers.add(new CMarker("Cabalry", c.getInt("id"), CMarker.NEARBY_HUE,
+                                            new LatLng(c.getDouble("lat"), c.getDouble("lon"))));
+                                }
+                            } else {
+
+                                // TODO: Handle fail.
                             }
-                        } else {
 
-                            // TODO: Handle fail.
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Void voids) {
-                displayNearby(nearbyLocations);
-            }
-        }.execute();
+                @Override
+                protected void onPostExecute(Void voids) {
+                    nearbyUpdateFinished = true;
+                }
+            }.execute();
+        }
     }
 
-    private void updateCamera(int millis) {
-        CameraPosition cameraPosition = CameraPosition.builder()
-                .target(followTarget)
-                .zoom(calculateZoomLevel())
-                .bearing(90)
-                .build();
+    private void startAlarm() {
 
-        // Animate the change in camera view over some time.
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
-                millis, null);
     }
 
-    private float calculateZoomLevel() {
-        return 10;
+    private void stopAlarm() {
+
     }
 
-    public int getID() { return Preferences.get(DB.ID, 0);}
-    public String getKey() { return Preferences.get(DB.KEY, ""); }
+    private int getID() { return Preferences.get(DB.ID, 0);}
+    private String getKey() { return Preferences.get(DB.KEY, ""); }
 }

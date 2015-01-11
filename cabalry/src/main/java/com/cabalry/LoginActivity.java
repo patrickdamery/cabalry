@@ -100,13 +100,11 @@ public class LoginActivity extends ActionBarActivity {
                 return null;
             }
 
-            /*
             @Override
             protected void onPostExecute(Void voids) {
-                Toast.makeText(getApplicationContext(), "",
-                        Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "",
+                //        Toast.LENGTH_LONG).show();
             }
-            */
         }.execute();
     }
 
