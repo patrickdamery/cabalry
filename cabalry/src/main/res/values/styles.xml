@@ -37,6 +37,10 @@
     -->
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+    </style>
+    <style name="ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:background">#610f0f</item>
     </style>
 
 </resources>

@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MapActivity extends ActionBarActivity {
+public class MapActivity extends Activity {
     public static void launch(Activity currentActivity) {
         Intent indent = new Intent(currentActivity, MapActivity.class);
         currentActivity.startActivity(indent);

@@ -14,7 +14,7 @@ import com.cabalry.db.DB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends Activity {
 
     private EditText tUsername, tPassword;
     private Button bRegister, bLogin;

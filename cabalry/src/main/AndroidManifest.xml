@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cabalry" >
 
+    <uses-sdk android:minSdkVersion="14" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,40 +18,64 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.Cabalry" >
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyADgCmZkgAhzsLRMq8niiTydYWTTGQxvC4" />
 
         <activity
-                android:name="com.cabalry.CabalryActivity"
-                android:label="@string/app_name" >
+            android:name="com.cabalry.CabalryActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.cabalry.MapActivity"
-            android:label="@string/title_activity_map" >
+            android:label="@string/title_activity_map"
+            android:parentActivityName="com.cabalry.HomeActivity" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.cabalry.HomeActivity" />
         </activity>
-
         <activity
             android:name="com.cabalry.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-
         <activity
-                android:name="com.cabalry.HomeActivity"
-                android:label="@string/title_activity_home" >
+            android:name="com.cabalry.HomeActivity"
+            android:label="@string/title_activity_home" >
         </activity>
-
+        <activity
+            android:name="com.cabalry.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName="com.cabalry.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cabalry.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.cabalry.RecordingsActivity"
+            android:label="@string/title_activity_recordings"
+            android:parentActivityName="com.cabalry.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cabalry.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.cabalry.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="com.cabalry.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cabalry.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

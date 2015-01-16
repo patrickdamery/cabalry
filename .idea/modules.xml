@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Cabalry.iml" filepath="$PROJECT_DIR$/Cabalry.iml" />
       <module fileurl="file://$PROJECT_DIR$/cabalry/cabalry.iml" filepath="$PROJECT_DIR$/cabalry/cabalry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cabalry/cabalry-cabalry.iml" filepath="$PROJECT_DIR$/cabalry/cabalry-cabalry.iml" />
     </modules>
   </component>
 </project>
