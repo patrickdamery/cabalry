@@ -25,7 +25,7 @@ public class HomeActivity extends Activity {
     private TypedArray mMenuIcons;
 
 
-    //Why are you doing it like this?
+    //Why are you doing it like this? Mig is gay
    public static void launch(Activity currentActivity) {
         Intent indent = new Intent(currentActivity, HomeActivity.class);
         currentActivity.startActivity(indent);

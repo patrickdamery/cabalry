@@ -1,0 +1,25 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+    <ImageView
+            android:id="@+id/drawer_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_launcher" />
+
+    <TextView
+            android:id="@+id/drawer_item_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="15dp" />
+
+</LinearLayout>
