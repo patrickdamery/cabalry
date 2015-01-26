@@ -12,24 +12,6 @@ import java.util.List;
  */
 public class DB {
 
-    public static final String ID = "id";
-    public static final String KEY = "key";
-    public static final String LOGIN = "login";
-    public static final String SUCCESS = "success";
-
-    public static final String IP = "cabalry.com";
-    public static final String LOGIN_URL = "http://"+IP+"/cabalry/login.php";
-    public static final String ALARM_URL = "http://"+IP+"/cabalry/alarm.php";
-    public static final String ALARMINFO_URL = "http://"+IP+"/cabalry/alarmInfo.php";
-    public static final String LOCATION_URL = "http://"+IP+"/cabalry/location.php";
-    public static final String GETLOCATION_URL = "http://"+IP+"/cabalry/getLocation.php";
-    public static final String GCM_URL = "http://"+IP+"/cabalry/gcm.php";
-    public static final String NEARBY_URL = "http://"+IP+"/cabalry/nearby.php";
-    public static final String USERINFO_URL = "http://"+IP+"/cabalry/userInfo.php";
-    public static final String CARINFO_URL = "http://"+IP+"/cabalry/carInfo.php";
-    public static final String REGISTER_URL = "http://"+IP+"/register.php";
-    public static final String STOPALARM_URL = "http://"+IP+"/cabalry/stopAlarm.php";
-
     /***
      * Function that logs user in to Cabalry
      * @param username of user
@@ -47,7 +29,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(LOGIN_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.LOGIN_URL, "POST", params);
 
         return json;
     }
@@ -71,7 +53,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(LOCATION_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.LOCATION_URL, "POST", params);
 
         return json;
     }
@@ -95,7 +77,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(GETLOCATION_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.GETLOCATION_URL, "POST", params);
 
         return json;
     }
@@ -117,7 +99,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(GCM_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.GCM_URL, "POST", params);
 
         return json;
     }
@@ -138,7 +120,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(NEARBY_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.NEARBY_URL, "POST", params);
 
         return json;
     }
@@ -163,7 +145,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(USERINFO_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.USERINFO_URL, "POST", params);
 
         return json;
     }
@@ -188,7 +170,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(CARINFO_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.CARINFO_URL, "POST", params);
 
         return json;
     }
@@ -209,7 +191,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(ALARM_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.ALARM_URL, "POST", params);
 
         return json;
     }
@@ -235,7 +217,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(ALARMINFO_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.ALARMINFO_URL, "POST", params);
 
         return json;
     }
@@ -257,7 +239,7 @@ public class DB {
 
         // getting JSON Object
         JSONObject json;
-        json = new JSONParser().makeHttpRequest(STOPALARM_URL, "POST", params);
+        json = new JSONParser().makeHttpRequest(GlobalKeys.STOPALARM_URL, "POST", params);
 
         return json;
     }

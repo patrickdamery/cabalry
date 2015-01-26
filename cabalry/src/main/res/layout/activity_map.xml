@@ -1,11 +1,11 @@
+<!--
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
           android:id="@+id/map"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:name="com.google.android.gms.maps.MapFragment"/>
+-->
 
-
-<!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
@@ -14,18 +14,17 @@
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/map"
-              tools:context=".MapActivity"
-              android:name="com.google.android.gms.maps.SupportMapFragment"/>
+          android:id="@+id/map"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:name="com.google.android.gms.maps.MapFragment"/>
+
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alarm"
-            android:id="@+id/bAlarm"
-            android:layout_alignParentBottom="true" android:layout_alignParentStart="true"/>
+            android:text="Nearby"
+            android:id="@+id/bNearby"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
--->
