@@ -36,4 +36,7 @@ public class GlobalKeys {
     public static final String STOPALARM_URL = "http://"+IP+"/cabalry/stopAlarm.php";
     public static final String FORGOT_URL = "http://"+IP+"/forgot.php";
     public static final String BILLING_URL = "http://"+IP+"/billing.php";
+    public static final String PROFILE_URL = "http://"+IP+"/profile.php";
+    public static final String SETTINGS_URL = "http://"+IP+"/settings.php";
+    public static final String HELP_URL = "http://"+IP+"/";
 }

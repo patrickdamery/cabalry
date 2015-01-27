@@ -12,6 +12,7 @@ import com.cabalry.db.GlobalKeys;
 
 
 public class BillingActivity extends Activity {
+
     WebView webBilling;
     WebSettings billingSettings;
 

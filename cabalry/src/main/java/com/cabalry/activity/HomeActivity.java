@@ -3,6 +3,7 @@ package com.cabalry.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -26,13 +27,6 @@ public class HomeActivity extends Activity {
 
     private String[] mMenuTitles;
     private TypedArray mMenuIcons;
-
-
-    //Why are you doing it like this? Mig is gay
-   public static void launch(Activity currentActivity) {
-        Intent indent = new Intent(currentActivity, HomeActivity.class);
-        currentActivity.startActivity(indent);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +145,7 @@ public class HomeActivity extends Activity {
                 break;
             case 5:
                 //Start Help Activity
+                startActivity(new Intent("android.intent.action.VIEW", Uri.parse(GlobalKeys.HELP_URL)));
                 break;
             case 6:
                 Preferences.setBoolean(GlobalKeys.LOGIN, false);

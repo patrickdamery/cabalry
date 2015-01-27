@@ -114,7 +114,7 @@ public class MapActivity extends Activity {
 
                                     updatedLocation.add(new CabalryLocation(
                                             c.getInt("id"),
-                                            "Nearby",
+                                            c.getString("key"),
                                             new LatLng(c.getDouble("lat"), c.getDouble("lon")),
                                             CabalryLocationType.USER_NEARBY));
                                 }
@@ -124,16 +124,6 @@ public class MapActivity extends Activity {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
-
-                    for (int i = 0; i < 10; i++) {
-                        updatedLocation.add(new CabalryLocation(
-                                i + 20,
-                                "",
-                                new LatLng(
-                                        (StrictMath.random() * .5) + currentLocation.latitude,
-                                        (StrictMath.random() * .5) + currentLocation.longitude),
-                                CabalryLocationType.USER_NEARBY));
                     }
                 }
 
