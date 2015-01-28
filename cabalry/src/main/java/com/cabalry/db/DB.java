@@ -230,7 +230,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if alarm was succesfully stopped
      */
-    public JSONObject stopAlarm(final int alarmId, final int id, final String key) {
+    public static JSONObject stopAlarm(final int alarmId, final int id, final String key) {
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("alarmId", Integer.toString(alarmId)));

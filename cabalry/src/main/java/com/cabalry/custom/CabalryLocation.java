@@ -8,17 +8,15 @@ import com.google.android.gms.maps.model.LatLng;
 public class CabalryLocation {
 
     public int id;
-    public String key;
     public LatLng location;
     public int type;
 
-    public CabalryLocation(int id, String key, LatLng location, int type) {
-        set(id, key, location, type);
+    public CabalryLocation(int id, LatLng location, int type) {
+        set(id, location, type);
     }
 
-    public void set(int id, String key, LatLng location, int type) {
+    public void set(int id, LatLng location, int type) {
         this.id = id;
-        this.key = key;
         this.location = location;
         this.type = type;
     }

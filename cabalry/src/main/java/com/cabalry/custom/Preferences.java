@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import com.cabalry.db.GlobalKeys;
 
 import java.util.Set;
 
@@ -25,15 +26,28 @@ public class Preferences {
     }
 
     // Getters.
-    public static String getString(String key) { return preferences.getString(key, null); }
+    public static Context getContext() { return context; }
+    public static SharedPreferences getPreferences() { return preferences; }
+
+    public static String getString(String key) { return preferences.getString(key, ""); }
     public static int getInt(String key) { return preferences.getInt(key, 0); }
     public static boolean getBoolean(String key) { return preferences.getBoolean(key, false); }
     public static float getFloat(String key) { return preferences.getFloat(key, 0f); }
     public static long getLong(String key) { return preferences.getLong(key, 0); }
     public static Set<String> getStringSet(String key) { return preferences.getStringSet(key, null); }
 
-    public static Context getContext() { return context; }
-    public static SharedPreferences getPreferences() { return preferences; }
+    public static String getString(String key, String d) { return preferences.getString(key, d); }
+    public static int getInt(String key, int d) { return preferences.getInt(key, d); }
+    public static boolean getBoolean(String key, boolean d) { return preferences.getBoolean(key, d); }
+    public static float getFloat(String key, float d) { return preferences.getFloat(key, d); }
+    public static long getLong(String key, long d) { return preferences.getLong(key, d); }
+    public static Set<String> getStringSet(String key, Set<String> d) { return preferences.getStringSet(key, d); }
+
+    public static int getID() { return Preferences.getInt(GlobalKeys.ID); }
+    public static String getKey() { return Preferences.getString(GlobalKeys.KEY); }
+
+    public static void setID(int id) { Preferences.setInt(GlobalKeys.ID, id); }
+    public static void setKey(String key) { Preferences.setString(GlobalKeys.KEY, key); }
 
     // Setters.
     public static void setString(String key, String v) {

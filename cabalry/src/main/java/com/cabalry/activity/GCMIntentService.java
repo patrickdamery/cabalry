@@ -2,10 +2,15 @@ package com.cabalry.activity;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import com.cabalry.custom.Logger;
+import com.cabalry.custom.Preferences;
+import com.cabalry.db.GlobalKeys;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 /**
@@ -49,20 +54,11 @@ public class GCMIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                // This loop represents the service doing some work.
-                /*for (int i=0; i<5; i++) {
-                    Log.i(TAG, "Working... " + (i+1)
-                            + "/5 @ " + SystemClock.elapsedRealtime());
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                    }
-                }
-                Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
+                Preferences.setInt(GlobalKeys.ALARM_ID, extras.getInt(GlobalKeys.ALARM_ID));
 
                 // Post notification of received message.
                 sendNotification("Received: " + extras.toString());
-                Log.i(TAG, "Received: " + extras.toString());*/
+                Logger.log("Received: " + extras.toString());
             }
         }
 
@@ -77,8 +73,8 @@ public class GCMIntentService extends IntentService {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        /*PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, DemoActivity.class), 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MapActivity.class), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -89,6 +85,6 @@ public class GCMIntentService extends IntentService {
                         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());*/
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }

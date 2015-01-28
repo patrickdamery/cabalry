@@ -5,6 +5,14 @@ package com.cabalry.db;
  */
 public class GlobalKeys {
 
+    public static final String ALARM_ID = "alarmId";
+    public static final String LOCATION = "location";
+
+    public static final String SENDER_ID = "200578369108";
+    public static final String PROPERTY_REG_ID = "registration_id";
+    public static final String PROPERTY_APP_VERSION = "appVersion";
+    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
     public static final String ZOOM_CONTROLS = "cmzc";
     public static final String ZOOM_GESTURES = "cmzg";
     public static final String SCROLL_GESTURES = "cmsg";
@@ -20,7 +28,7 @@ public class GlobalKeys {
     public static final String SUCCESS = "success";
 
     public static final String LAT = "lat";
-    public static final String LNG = "lng";
+    public static final String LNG = "lon";
 
     public static final String IP = "cabalry.com";
     public static final String LOGIN_URL = "http://"+IP+"/cabalry/login.php";

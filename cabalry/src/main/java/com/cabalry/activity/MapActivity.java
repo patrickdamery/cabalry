@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import com.cabalry.R;
 import com.cabalry.custom.*;
 import com.cabalry.db.DB;
@@ -24,11 +25,14 @@ import java.util.ArrayList;
 public class MapActivity extends Activity {
 
     private Button bNearby;
+    private Button bAlarm;
 
     private TracerProgram tracerProgram;
     private CabalryMap cabalryMap;
 
     private Location userLocation;
+
+    private boolean isAlarmEnabled = false;
 
     private boolean isNearbyEnabled = false;
     private boolean hasFinishedUpdate = true;
@@ -43,7 +47,30 @@ public class MapActivity extends Activity {
             @Override
             public void onClick(View view) {
                 isNearbyEnabled = !isNearbyEnabled;
+
+                if(isNearbyEnabled) {
+                    bNearby.setText("Hide");
+                } else {
+                    bNearby.setText("NearBy");
+                }
+
                 updateLocations();
+            }
+        });
+
+        bAlarm = (Button) findViewById(R.id.bAlarm);
+        bAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isAlarmEnabled = !isAlarmEnabled;
+
+                if(isAlarmEnabled) {
+                    startAlarm();
+                    bAlarm.setText("Stop");
+                } else {
+                    stopAlarm();
+                    bAlarm.setText("Alarm");
+                }
             }
         });
 
@@ -65,6 +92,49 @@ public class MapActivity extends Activity {
 
         cabalryMap = new CabalryMap((MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map));
+    }
+
+    private void startAlarm() {
+
+        new AsyncTask<Void, Void, Void>() {
+
+            protected Void doInBackground(Void ... voids) {
+
+                    JSONObject result = DB.alarm(getID(), getKey());
+
+                try {
+                    if(result.getBoolean(GlobalKeys.SUCCESS) == true) {
+                        System.err.println(result.getInt(GlobalKeys.ALARM_ID)+"");
+                        Preferences.setInt(GlobalKeys.ALARM_ID, result.getInt(GlobalKeys.ALARM_ID));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        }.execute();
+    }
+
+    private void stopAlarm() {
+
+        new AsyncTask<Void, Void, Void>() {
+
+            protected Void doInBackground(Void ... voids) {
+
+                JSONObject result = DB.stopAlarm(Preferences.getInt(GlobalKeys.ALARM_ID), Preferences.getID(), Preferences.getKey());
+
+                try {
+                    if(result.getBoolean(GlobalKeys.SUCCESS) == true) {
+                        Preferences.setInt(GlobalKeys.ALARM_ID, 0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        }.execute();
     }
 
     @Override
@@ -97,7 +167,7 @@ public class MapActivity extends Activity {
                 DB.updateLocation(currentLocation.latitude, currentLocation.longitude, getID(), getKey());
 
                 // Add user location.
-                updatedLocation.add(new CabalryLocation(getID(), getKey(), currentLocation, CabalryLocationType.USER));
+                updatedLocation.add(new CabalryLocation(getID(), currentLocation, CabalryLocationType.USER));
 
                 // Add nearby locations.
                 if(isNearbyEnabled) {
@@ -108,14 +178,17 @@ public class MapActivity extends Activity {
                         try {
                             boolean success = result.getBoolean(GlobalKeys.SUCCESS);
                             if (success) {
-                                JSONArray list = result.getJSONArray("location");
+                                JSONArray list = result.getJSONArray(GlobalKeys.LOCATION);
                                 for (int i = 0; i < list.length(); i++) {
                                     JSONObject c = list.getJSONObject(i);
 
+                                    System.err.println(
+                                            new LatLng(c.getDouble(GlobalKeys.LAT),
+                                                    c.getDouble(GlobalKeys.LNG)).toString());
+
                                     updatedLocation.add(new CabalryLocation(
-                                            c.getInt("id"),
-                                            c.getString("key"),
-                                            new LatLng(c.getDouble("lat"), c.getDouble("lon")),
+                                            c.getInt(GlobalKeys.ID),
+                                            new LatLng(c.getDouble(GlobalKeys.LAT), c.getDouble(GlobalKeys.LNG)),
                                             CabalryLocationType.USER_NEARBY));
                                 }
                             }
