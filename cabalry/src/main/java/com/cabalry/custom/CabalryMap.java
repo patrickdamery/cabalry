@@ -1,6 +1,5 @@
 package com.cabalry.custom;
 
-import android.widget.Toast;
 import com.cabalry.db.GlobalKeys;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -51,16 +50,30 @@ public class CabalryMap implements OnMapReadyCallback {
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if(markerListener != null) {
-                    if(lastMarkerClicked == marker) {
-                        return markerListener.onDoubleClick(marker, "", 0);
-                    } else {
-                        return markerListener.onClick(marker);
-                    }
-                }
+                /*if(markerListener != null) {
 
-                lastMarkerClicked = marker;
-                return false;
+                    int id = -1;
+                    Iterator it = markers.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry pairs = (Map.Entry)it.next();
+
+                        if(pairs.getValue() == marker) id = (Integer)pairs.getKey();
+                        it.remove(); // avoids a ConcurrentModificationException
+                    }
+
+                    if(id > 0) {
+                        if(lastMarkerClicked == marker) {
+                            lastMarkerClicked = marker;
+                            return markerListener.onDoubleClick(marker, getLocation(id));
+                        } else {
+                            lastMarkerClicked = marker;
+                            return markerListener.onClick(marker, getLocation(id));
+                        }
+                    }
+
+                    return true;
+                }*/
+                return true;
             }
         });
 
@@ -77,8 +90,6 @@ public class CabalryMap implements OnMapReadyCallback {
             boolean contains = false;
             for(CabalryLocation location : updatedLocations) {
                 if(location.id == id) {
-
-                    Logger.log("UPDATE : "+(location.type != getLocation(id).type));
 
                     if(location.type != getLocation(id).type) {
                         getMarker(id).setIcon(BitmapDescriptorFactory.defaultMarker(

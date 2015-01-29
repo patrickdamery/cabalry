@@ -123,12 +123,12 @@ public class MapActivity extends Activity {
 
         cabalryMap.setMarkerListener(new MarkerListener() {
             @Override
-            public boolean onClick(Marker marker) {
+            public boolean onClick(Marker marker, CabalryLocation location) {
                 return true;
             }
 
             @Override
-            public boolean onDoubleClick(Marker marker, String key, int id) {
+            public boolean onDoubleClick(Marker marker, CabalryLocation location) {
                 return true;
             }
         });
@@ -146,7 +146,7 @@ public class MapActivity extends Activity {
                     if(result.getBoolean(GlobalKeys.SUCCESS)) {
                         Preferences.setInt(GlobalKeys.ALARM_ID, result.getInt(GlobalKeys.ALARM_ID));
 
-                        audioStream.startStream();
+                        //audioStream.startStream();
                     } else {
                         Logger.log("Could not start alarm!");
                     }
@@ -176,7 +176,7 @@ public class MapActivity extends Activity {
                     if(result.getBoolean(GlobalKeys.SUCCESS) == true) {
                         Preferences.setInt(GlobalKeys.ALARM_ID, 0);
 
-                        audioStream.stopStream();
+                        //audioStream.stopStream();
                     } else {
                         Logger.log("Could not stop alarm!");
                     }
