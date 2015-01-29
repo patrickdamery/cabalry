@@ -73,7 +73,7 @@ public class DB {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
-        params.add(new BasicNameValuePair("latitude", Integer.toString(userId)));
+        params.add(new BasicNameValuePair("userId", Integer.toString(userId)));
 
         // getting JSON Object
         JSONObject json;

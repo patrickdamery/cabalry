@@ -13,6 +13,7 @@ import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,8 +30,10 @@ public class MapActivity extends Activity {
 
     private TracerProgram tracerProgram;
     private CabalryMap cabalryMap;
+    private AudioStream audioStream;
 
-    private Location userLocation;
+    private LatLng currentLocation;
+    private LatLng previousLocation;
 
     private boolean isAlarmEnabled = false;
 
@@ -41,6 +44,29 @@ public class MapActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        currentLocation = getStoredLocation();
+        previousLocation = currentLocation;
+
+        audioStream = new AudioStream();
+
+        initUI();
+        initMap();
+    }
+
+    @Override
+    public void onDestroy() {
+        tracerProgram.stopLocationUpdates();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        tracerProgram.stopLocationUpdates();
+        super.onPause();
+    }
+
+    private void initUI() {
 
         bNearby = (Button) findViewById(R.id.bNearby);
         bNearby.setOnClickListener(new View.OnClickListener() {
@@ -73,11 +99,13 @@ public class MapActivity extends Activity {
                 }
             }
         });
+    }
 
+    private void initMap() {
         TracerListener tracerListener = new TracerListener() {
             @Override
             public void onUpdateLocation(Location location) {
-                userLocation = location;
+                currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 updateLocations();
             }
 
@@ -92,6 +120,18 @@ public class MapActivity extends Activity {
 
         cabalryMap = new CabalryMap((MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map));
+
+        cabalryMap.setMarkerListener(new MarkerListener() {
+            @Override
+            public boolean onClick(Marker marker) {
+                return true;
+            }
+
+            @Override
+            public boolean onDoubleClick(Marker marker, String key, int id) {
+                return true;
+            }
+        });
     }
 
     private void startAlarm() {
@@ -100,18 +140,25 @@ public class MapActivity extends Activity {
 
             protected Void doInBackground(Void ... voids) {
 
-                    JSONObject result = DB.alarm(getID(), getKey());
+                JSONObject result = DB.alarm(Preferences.getID(), Preferences.getKey());
 
                 try {
-                    if(result.getBoolean(GlobalKeys.SUCCESS) == true) {
-                        System.err.println(result.getInt(GlobalKeys.ALARM_ID)+"");
+                    if(result.getBoolean(GlobalKeys.SUCCESS)) {
                         Preferences.setInt(GlobalKeys.ALARM_ID, result.getInt(GlobalKeys.ALARM_ID));
+
+                        audioStream.startStream();
+                    } else {
+                        Logger.log("Could not start alarm!");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 return null;
+            }
+
+            protected void onPostExecute(Void result) {
+                updateLocations();
             }
         }.execute();
     }
@@ -122,11 +169,16 @@ public class MapActivity extends Activity {
 
             protected Void doInBackground(Void ... voids) {
 
+                Logger.log("ALARM_ID = "+Preferences.getInt(GlobalKeys.ALARM_ID));
                 JSONObject result = DB.stopAlarm(Preferences.getInt(GlobalKeys.ALARM_ID), Preferences.getID(), Preferences.getKey());
 
                 try {
                     if(result.getBoolean(GlobalKeys.SUCCESS) == true) {
                         Preferences.setInt(GlobalKeys.ALARM_ID, 0);
+
+                        audioStream.stopStream();
+                    } else {
+                        Logger.log("Could not stop alarm!");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -134,19 +186,11 @@ public class MapActivity extends Activity {
 
                 return null;
             }
+
+            protected void onPostExecute(Void result) {
+                updateLocations();
+            }
         }.execute();
-    }
-
-    @Override
-    public void onDestroy() {
-        tracerProgram.stopLocationUpdates();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause() {
-        tracerProgram.stopLocationUpdates();
-        super.onPause();
     }
 
     private void updateLocations() {
@@ -154,49 +198,101 @@ public class MapActivity extends Activity {
         if(!hasFinishedUpdate) return;
         hasFinishedUpdate = false;
 
-        final LatLng currentLocation = getPreferredLocation();
-        final ArrayList<CabalryLocation> updatedLocation = new ArrayList<CabalryLocation>();
+        final ArrayList<CabalryLocation> locations = new ArrayList<CabalryLocation>();
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             public Void doInBackground(Void ... voids) {
 
+                currentLocation = getPreferredLocation();
+
                 // Stores current user location.
-                Preferences.setFloat(GlobalKeys.LAT, (float)currentLocation.latitude);
-                Preferences.setFloat(GlobalKeys.LNG, (float)currentLocation.longitude);
-                DB.updateLocation(currentLocation.latitude, currentLocation.longitude, getID(), getKey());
+                Preferences.setFloat(GlobalKeys.LAT, (float) currentLocation.latitude);
+                Preferences.setFloat(GlobalKeys.LNG, (float) currentLocation.longitude);
 
-                // Add user location.
-                updatedLocation.add(new CabalryLocation(getID(), currentLocation, CabalryLocationType.USER));
+                JSONObject updateResult = DB.updateLocation(currentLocation.latitude, currentLocation.longitude,
+                        Preferences.getID(), Preferences.getKey());
 
-                // Add nearby locations.
-                if(isNearbyEnabled) {
+                try {
+                    if(!updateResult.getBoolean(GlobalKeys.SUCCESS)) {
+                        Logger.log("Could not update location on server!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                    JSONObject result = null;
+                if(isAlarmEnabled) {
+
+                    JSONObject alarmInfo = DB.getAlarmInfo(Preferences.getAlarmId(),
+                            Preferences.getID(), Preferences.getKey());
+
                     try {
-                        result = DB.nearby(getID(), getKey());
+                        if(alarmInfo.getBoolean(GlobalKeys.SUCCESS)) {
+
+                            Preferences.setString(GlobalKeys.IP, alarmInfo.getString(GlobalKeys.IP));
+                            Preferences.setString(GlobalKeys.START, alarmInfo.getString(GlobalKeys.START));
+
+                            JSONArray sentList = alarmInfo.getJSONArray(GlobalKeys.SENT);
+
+                            JSONObject alertedLocation = DB.getLocation(alarmInfo.getInt(GlobalKeys.ID),
+                                    Preferences.getID(), Preferences.getKey());
+
+                            try {
+                                if(!alertedLocation.getBoolean(GlobalKeys.SUCCESS)) {
+                                    Logger.log("Alerted location not retrieved from server!");
+                                }
+
+                                // Add alerted user location.
+                                locations.add(new CabalryLocation(alarmInfo.getInt(GlobalKeys.ID),
+                                        new LatLng(alertedLocation.getDouble(GlobalKeys.LAT),
+                                                alertedLocation.getDouble(GlobalKeys.LNG)),
+                                        CabalryLocationType.USER_ALERT));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Add contacted user locations.
+                            for (int i = 0; i < sentList.length(); i++) {
+                                JSONObject location = sentList.getJSONObject(i);
+
+                                int id = location.getInt(GlobalKeys.ID);
+                                LatLng loc = new LatLng(location.getDouble(GlobalKeys.LAT),
+                                        location.getDouble(GlobalKeys.LNG));
+
+                                Logger.log(loc.toString());
+
+                                locations.add(new CabalryLocation(id, loc, CabalryLocationType.USER_ALERTED));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    // Add user location.
+                    locations.add(new CabalryLocation(Preferences.getID(), currentLocation, CabalryLocationType.USER));
+
+                    // Add nearby locations.
+                    if (isNearbyEnabled) {
+
+                        JSONObject nearbyResult = DB.nearby(Preferences.getID(), Preferences.getKey());
+
                         try {
-                            boolean success = result.getBoolean(GlobalKeys.SUCCESS);
-                            if (success) {
-                                JSONArray list = result.getJSONArray(GlobalKeys.LOCATION);
+                            if (nearbyResult.getBoolean(GlobalKeys.SUCCESS)) {
+                                JSONArray list = nearbyResult.getJSONArray(GlobalKeys.LOCATION);
                                 for (int i = 0; i < list.length(); i++) {
-                                    JSONObject c = list.getJSONObject(i);
+                                    JSONObject location = list.getJSONObject(i);
 
-                                    System.err.println(
-                                            new LatLng(c.getDouble(GlobalKeys.LAT),
-                                                    c.getDouble(GlobalKeys.LNG)).toString());
+                                    int id = location.getInt(GlobalKeys.ID);
+                                    LatLng loc = new LatLng(location.getDouble(GlobalKeys.LAT),
+                                            location.getDouble(GlobalKeys.LNG));
 
-                                    updatedLocation.add(new CabalryLocation(
-                                            c.getInt(GlobalKeys.ID),
-                                            new LatLng(c.getDouble(GlobalKeys.LAT), c.getDouble(GlobalKeys.LNG)),
-                                            CabalryLocationType.USER_NEARBY));
+                                    locations.add(new CabalryLocation(id, loc, CabalryLocationType.USER_NEARBY));
                                 }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
 
@@ -204,55 +300,50 @@ public class MapActivity extends Activity {
             }
 
             public void onPostExecute(Void voids) {
-                cabalryMap.updateMap(updatedLocation);
-                //cabalryMap.updateCamera(currentLocation, getZoom(),
-                //        getBearing(currentLocation, storedLocation), getTransitionTime());
 
+                updateMap(locations);
                 hasFinishedUpdate = true;
             }
         }.execute();
     }
 
-    private LatLng getPreferredLocation() {
+    private void updateMap(ArrayList<CabalryLocation> locations) {
 
-        LatLng currentLocation = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
-        LatLng storedLocation = getStoredLocation();
+        float z = 15;
+        float b = Util.getBearing(currentLocation, previousLocation);
+        int t = 1000;
 
-        if(useStoredLocation(currentLocation, storedLocation, CabalryMap.LOCATION_THRESHOLD)) {
-            return storedLocation;
+        if(isAlarmEnabled) {
+            cabalryMap.updateCamera(locations, t);
         } else {
-            return currentLocation;
-        }
-    }
-
-    private boolean useStoredLocation(LatLng currentLocation, LatLng storedLocation, double threshold) {
-
-        if(currentLocation.latitude > storedLocation.latitude+threshold ||
-                currentLocation.latitude < storedLocation.latitude-threshold) {
-
-            if(currentLocation.longitude > storedLocation.longitude+threshold ||
-                    currentLocation.longitude < storedLocation.longitude-threshold) {
-
-                return true;
+            if (isNearbyEnabled) {
+                cabalryMap.updateCamera(locations, t);
+            } else {
+                cabalryMap.updateCamera(currentLocation, z, b, t);
             }
         }
 
-        return false;
+        cabalryMap.updateMap(locations);
+
+        previousLocation = currentLocation;
+    }
+
+    private LatLng getPreferredLocation() {
+
+        LatLng storedLocation = getStoredLocation();
+
+        if(Util.useCurrentLocation(currentLocation, storedLocation, CabalryMap.LOCATION_THRESHOLD)) {
+            if(Util.useCurrentLocation(currentLocation, previousLocation, CabalryMap.LOCATION_THRESHOLD)) {
+                return currentLocation;
+            } else {
+                return previousLocation;
+            }
+        } else {
+            return getStoredLocation();
+        }
     }
 
     private LatLng getStoredLocation() {
         return new LatLng(Preferences.getFloat(GlobalKeys.LAT), Preferences.getFloat(GlobalKeys.LNG));
     }
-
-    private float getBearing(LatLng current, LatLng previous) {
-        float dLan = (float)(previous.latitude - current.latitude);
-        float dLng = (float)(previous.  longitude - current.longitude);
-
-        return (float)(Math.toDegrees(Math.atan2(dLng, dLan)) - 90);
-    }
-
-    private float getZoom() { return 16; }
-    private int getTransitionTime() { return 1000; }
-    private int getID() { return Preferences.getInt(GlobalKeys.ID); }
-    private String getKey() { return Preferences.getString(GlobalKeys.KEY); }
 }

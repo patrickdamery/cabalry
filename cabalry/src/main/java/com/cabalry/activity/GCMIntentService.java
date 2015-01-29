@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import com.cabalry.R;
 import com.cabalry.custom.Logger;
 import com.cabalry.custom.Preferences;
 import com.cabalry.db.GlobalKeys;
@@ -78,8 +78,8 @@ public class GCMIntentService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        //.setSmallIcon(R.drawable.ic_stat_gcm)
-                        .setContentTitle("GCM Notification")
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle("Cabalry Alarm")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
                         .setContentText(msg);

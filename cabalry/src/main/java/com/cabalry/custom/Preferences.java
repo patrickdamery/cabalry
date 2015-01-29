@@ -45,6 +45,7 @@ public class Preferences {
 
     public static int getID() { return Preferences.getInt(GlobalKeys.ID); }
     public static String getKey() { return Preferences.getString(GlobalKeys.KEY); }
+    public static int getAlarmId() { return Preferences.getInt(GlobalKeys.ALARM_ID); }
 
     public static void setID(int id) { Preferences.setInt(GlobalKeys.ID, id); }
     public static void setKey(String key) { Preferences.setString(GlobalKeys.KEY, key); }

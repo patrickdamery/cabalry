@@ -200,9 +200,6 @@ public class HomeActivity extends Activity {
 
             if(regid.isEmpty()) {
                 registerInBackground();
-            } else {
-                Toast.makeText(getApplicationContext(), "regid = "+regid,
-                        Toast.LENGTH_LONG).show();
             }
             return true;
         }
@@ -327,17 +324,7 @@ public class HomeActivity extends Activity {
      * using the 'from' address in the message.
      */
     private void sendRegistrationIdToBackend() {
-
-        Logger.log(regid);
-        Logger.log(Preferences.getID()+"");
-        Logger.log(Preferences.getKey());
-
         JSONObject result = DB.updateGCM(regid, Preferences.getID(), Preferences.getKey());
-
-        if(result == null) {
-            Logger.log("BOB IS GAY");
-        }
-
         try {
             if(result.getBoolean(GlobalKeys.SUCCESS) != true) {
                 Logger.log("Could not register GCM key on data base!");

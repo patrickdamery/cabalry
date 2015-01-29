@@ -11,6 +11,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
 import android.util.Log;
+import com.cabalry.db.GlobalKeys;
 
 /**
  * Created by conor on 10/01/15.
@@ -19,7 +20,7 @@ public class AudioStream {
 
     public byte[] buffer;
     public static DatagramSocket socket;
-    private int port=50005;
+    private int port = 50005;
     AudioRecord recorder;
 
     private int sampleRate = 8000;
@@ -28,7 +29,7 @@ public class AudioStream {
     int minBufSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat);
     private boolean status = true;
 
-    public void startStreaming() {
+    public void startStream() {
 
         status = true;
 
@@ -46,7 +47,7 @@ public class AudioStream {
                     Log.d("VS","Buffer created of size " + minBufSize);
                     DatagramPacket packet;
 
-                    final InetAddress destination = InetAddress.getByName("178.62.114.126");
+                    final InetAddress destination = InetAddress.getByName(Preferences.getString(GlobalKeys.IP));
                     Log.d("VS", "Address retrieved");
 
 

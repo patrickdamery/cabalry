@@ -1,10 +1,9 @@
 package com.cabalry.custom;
 
+import android.widget.Toast;
 import com.cabalry.db.GlobalKeys;
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,13 +16,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CabalryMap implements OnMapReadyCallback {
 
-    public static final double LOCATION_THRESHOLD = 100;
+    public static final double LOCATION_THRESHOLD = 10;
 
     private MapFragment mapFragment;
     private GoogleMap googleMap;
     private UiSettings settings;
 
     private Map<Integer,Marker> markers;
+    private Map<Integer,CabalryLocation> locations;
 
     private MarkerListener markerListener;
     private Marker lastMarkerClicked;
@@ -31,11 +31,12 @@ public class CabalryMap implements OnMapReadyCallback {
     public CabalryMap(MapFragment mapFragment) {
 
         if(mapFragment == null) {
-            System.err.println("MapFragment can't be null!");
+            Logger.log("MapFragment can't be null!");
             throw new NullPointerException();
         }
 
         markers = new ConcurrentHashMap<Integer, Marker>();
+        locations = new HashMap<Integer, CabalryLocation>();
 
         this.mapFragment = mapFragment;
         mapFragment.getMapAsync(this);
@@ -65,19 +66,27 @@ public class CabalryMap implements OnMapReadyCallback {
 
         // Load cabalry map settings.
         //loadSettings();
-        resetSettings(true);
+        resetSettings(false);
     }
 
     public void updateMap(final ArrayList<CabalryLocation> updatedLocations) {
 
         for(Iterator<Integer> keys = markers.keySet().iterator(); keys.hasNext();) {
-            Integer id = keys.next();
+            int id = keys.next();
 
             boolean contains = false;
-            for(CabalryLocation marker : updatedLocations) {
-                if(marker.id == id) {
-                    moveMarker(marker.location, marker.id);
-                    updatedLocations.remove(marker);
+            for(CabalryLocation location : updatedLocations) {
+                if(location.id == id) {
+
+                    Logger.log("UPDATE : "+(location.type != getLocation(id).type));
+
+                    if(location.type != getLocation(id).type) {
+                        getMarker(id).setIcon(BitmapDescriptorFactory.defaultMarker(
+                                CabalryLocationType.getHUE(location.type)));
+                    }
+
+                    moveMarker(location);
+                    updatedLocations.remove(location);
                     contains = true;
                     break;
                 }
@@ -94,6 +103,7 @@ public class CabalryMap implements OnMapReadyCallback {
     }
 
     public void updateCamera(LatLng target, float zoom, float bearing, int transTime) {
+
         CameraPosition cameraPosition = CameraPosition.builder()
                 .target(target)
                 .zoom(zoom)
@@ -105,30 +115,50 @@ public class CabalryMap implements OnMapReadyCallback {
                 transTime, null);
     }
 
+    public void updateCamera(final ArrayList<CabalryLocation> locations, int transTime) {
+
+        if(locations.isEmpty()) return;
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (CabalryLocation location : locations) {
+            builder.include(location.location);
+        }
+        LatLngBounds bounds = builder.build();
+
+        int padding = 20; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+        // Animate the change in camera view over some time.
+        googleMap.animateCamera(cu, transTime, null);
+    }
+
     public Marker getMarker(int id) {
         return markers.get(id);
     }
 
-    private Marker addMarker(CabalryLocation cabalryLocation) {
+    public CabalryLocation getLocation(int id) {
+        return locations.get(id);
+    }
+
+    private Marker addMarker(CabalryLocation location) {
         Marker marker = googleMap.addMarker(
                 CabalryLocationType.getMarkerOptions(
-                        cabalryLocation.id, cabalryLocation.type, cabalryLocation.location));
-        return markers.put(cabalryLocation.id, marker);
+                        location.id, location.type, location.location));
+        locations.put(location.id, location);
+        return markers.put(location.id, marker);
     }
 
     private void removeMarker(int id) {
+        locations.remove(id);
         markers.remove(id).remove();
     }
 
-    private void moveMarker(LatLng newPosition, int id) {
-        getMarker(id).setPosition(newPosition);
+    private void moveMarker(CabalryLocation location) {
+        getMarker(location.id).setPosition(location.location);
+        locations.put(location.id, location);
     }
 
-    private void fixCameraScale(LatLng target, LatLng[] positions) { }
-
-    private void setMarkerListener(MarkerListener markerListener) {
-        this.markerListener = markerListener;
-    }
+    public void setMarkerListener(MarkerListener markerListener) { this.markerListener = markerListener; }
 
     public void resetSettings(boolean b) {
 
