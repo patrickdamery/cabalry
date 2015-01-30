@@ -5,34 +5,23 @@ package com.cabalry.db;
  */
 public class GlobalKeys {
 
+    public static final String SUCCESS = "success";
+    public static final String ID = "id";
+    public static final String KEY = "key";
+    public static final String LAT = "lat";
+    public static final String LNG = "lon";
+    public static final String LOGIN = "login";
+    public static final String IP = "ip";
     public static final String ALARM_ID = "alarmId";
     public static final String LOCATION = "location";
-
-    public static final String SENDER_ID = "200578369108";
-    public static final String PROPERTY_REG_ID = "regId";
-    public static final String PROPERTY_APP_VERSION = "0.7.3";
-    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
-    public static final String ZOOM_CONTROLS = "cmzc";
-    public static final String ZOOM_GESTURES = "cmzg";
-    public static final String SCROLL_GESTURES = "cmsg";
-    public static final String TILT_GESTURES = "cmtg";
-    public static final String ROTATE_GESTURES = "cmrg";
-    public static final String MAP_TOOLBAR = "cmmt";
-    public static final String INDOOR_LEVEL_PICKER = "cmilp";
-    public static final String COMPASS = "cmc";
-
     public static final String SENT = "sent";
     public static final String START = "start";
     public static final String STATE = "state";
-    public static final String IP = "ip";
-    public static final String ID = "id";
-    public static final String KEY = "key";
-    public static final String LOGIN = "login";
-    public static final String SUCCESS = "success";
 
-    public static final String LAT = "lat";
-    public static final String LNG = "lon";
+    public static final String SENDER_ID = "200578369108";
+    public static final String PROPERTY_REG_ID = "regId";
+    public static final String PROPERTY_APP_VERSION = "0.7.5";
+    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     public static final String CABALRY_IP = "cabalry.com";
     public static final String LOGIN_URL = "http://"+CABALRY_IP+"/cabalry/login.php";

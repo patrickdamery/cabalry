@@ -44,10 +44,10 @@ public class GCMIntentService extends IntentService {
              */
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                Logger.log("Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " +
+                Logger.log("Deleted messages on server: " +
                         extras.toString());
 
                 // If it's a regular GCM message, do some work.
@@ -57,8 +57,7 @@ public class GCMIntentService extends IntentService {
                 Preferences.setInt(GlobalKeys.ALARM_ID, extras.getInt(GlobalKeys.ALARM_ID));
 
                 // Post notification of received message.
-                sendNotification("Received: " + extras.toString());
-                Logger.log("Received: " + extras.toString());
+                sendNotification(extras.getInt(GlobalKeys.ALARM_ID));
             }
         }
 
@@ -69,20 +68,20 @@ public class GCMIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg) {
+    private void sendNotification(int alarmID) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MapActivity.class), 0);
+                new Intent(this, AlarmNotificationActivity.class), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("Cabalry Alarm")
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(msg))
-                        .setContentText(msg);
+                                .bigText("An alarm has been triggered! AlarmID : "+alarmID))
+                        .setContentText("An alarm has been triggered! AlarmID : "+alarmID);
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

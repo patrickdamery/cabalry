@@ -1,6 +1,5 @@
 package com.cabalry.custom;
 
-import com.cabalry.db.GlobalKeys;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -14,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by conor on 11/01/15.
  */
 public class CabalryMap implements OnMapReadyCallback {
-
-    public static final double LOCATION_THRESHOLD = 10;
 
     private MapFragment mapFragment;
     private GoogleMap googleMap;
@@ -50,39 +47,30 @@ public class CabalryMap implements OnMapReadyCallback {
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(Marker marker) {
-                /*if(markerListener != null) {
-
-                    int id = -1;
-                    Iterator it = markers.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pairs = (Map.Entry)it.next();
-
-                        if(pairs.getValue() == marker) id = (Integer)pairs.getKey();
-                        it.remove(); // avoids a ConcurrentModificationException
-                    }
-
-                    if(id > 0) {
-                        if(lastMarkerClicked == marker) {
-                            lastMarkerClicked = marker;
-                            return markerListener.onDoubleClick(marker, getLocation(id));
-                        } else {
-                            lastMarkerClicked = marker;
-                            return markerListener.onClick(marker, getLocation(id));
-                        }
-                    }
-
+                if(markerListener != null) {
                     return true;
-                }*/
-                return true;
+                }
+                return false;
             }
         });
 
-        // Load cabalry map settings.
-        //loadSettings();
-        resetSettings(false);
+        // Load map settings.
+        loadSettings();
     }
 
-    public void updateMap(final ArrayList<CabalryLocation> updatedLocations) {
+    private void loadSettings() {
+
+        settings.setZoomControlsEnabled(false);
+        settings.setZoomGesturesEnabled(false);
+        settings.setScrollGesturesEnabled(false);
+        settings.setTiltGesturesEnabled(false);
+        settings.setRotateGesturesEnabled(false);
+        settings.setMapToolbarEnabled(false);
+        settings.setIndoorLevelPickerEnabled(false);
+        settings.setCompassEnabled(false);
+    }
+
+    public void updateMap(ArrayList<CabalryLocation> updatedLocations) {
 
         for(Iterator<Integer> keys = markers.keySet().iterator(); keys.hasNext();) {
             int id = keys.next();
@@ -93,7 +81,7 @@ public class CabalryMap implements OnMapReadyCallback {
 
                     if(location.type != getLocation(id).type) {
                         getMarker(id).setIcon(BitmapDescriptorFactory.defaultMarker(
-                                CabalryLocationType.getHUE(location.type)));
+                                CabalryLocation.getHUE(location.type)));
                     }
 
                     moveMarker(location);
@@ -126,7 +114,7 @@ public class CabalryMap implements OnMapReadyCallback {
                 transTime, null);
     }
 
-    public void updateCamera(final ArrayList<CabalryLocation> locations, int transTime) {
+    public void updateCamera(ArrayList<CabalryLocation> locations, int transTime) {
 
         if(locations.isEmpty()) return;
 
@@ -153,7 +141,7 @@ public class CabalryMap implements OnMapReadyCallback {
 
     private Marker addMarker(CabalryLocation location) {
         Marker marker = googleMap.addMarker(
-                CabalryLocationType.getMarkerOptions(
+                CabalryLocation.getMarkerOptions(
                         location.id, location.type, location.location));
         locations.put(location.id, location);
         return markers.put(location.id, marker);
@@ -170,44 +158,6 @@ public class CabalryMap implements OnMapReadyCallback {
     }
 
     public void setMarkerListener(MarkerListener markerListener) { this.markerListener = markerListener; }
-
-    public void resetSettings(boolean b) {
-
-        // Default cabalry map settings.
-        settings.setZoomControlsEnabled(b);
-        settings.setZoomGesturesEnabled(b);
-        settings.setScrollGesturesEnabled(b);
-        settings.setTiltGesturesEnabled(b);
-        settings.setRotateGesturesEnabled(b);
-        settings.setMapToolbarEnabled(b);
-        settings.setIndoorLevelPickerEnabled(b);
-        settings.setCompassEnabled(b);
-    }
-
-    public void loadSettings() {
-
-        settings.setZoomControlsEnabled(Preferences.getBoolean(GlobalKeys.ZOOM_CONTROLS));
-        settings.setZoomGesturesEnabled(Preferences.getBoolean(GlobalKeys.ZOOM_GESTURES));
-        settings.setScrollGesturesEnabled(Preferences.getBoolean(GlobalKeys.SCROLL_GESTURES));
-        settings.setTiltGesturesEnabled(Preferences.getBoolean(GlobalKeys.TILT_GESTURES));
-        settings.setRotateGesturesEnabled(Preferences.getBoolean(GlobalKeys.ROTATE_GESTURES));
-        settings.setMapToolbarEnabled(Preferences.getBoolean(GlobalKeys.MAP_TOOLBAR));
-        settings.setIndoorLevelPickerEnabled(Preferences.getBoolean(GlobalKeys.INDOOR_LEVEL_PICKER));
-        settings.setCompassEnabled(Preferences.getBoolean(GlobalKeys.COMPASS));
-    }
-
-    public void saveSettings() {
-
-        Preferences.setBoolean(GlobalKeys.ZOOM_CONTROLS, settings.isZoomControlsEnabled());
-        Preferences.setBoolean(GlobalKeys.ZOOM_GESTURES, settings.isZoomGesturesEnabled());
-        Preferences.setBoolean(GlobalKeys.SCROLL_GESTURES, settings.isScrollGesturesEnabled());
-        Preferences.setBoolean(GlobalKeys.TILT_GESTURES, settings.isTiltGesturesEnabled());
-        Preferences.setBoolean(GlobalKeys.ROTATE_GESTURES, settings.isRotateGesturesEnabled());
-        Preferences.setBoolean(GlobalKeys.MAP_TOOLBAR, settings.isMapToolbarEnabled());
-        Preferences.setBoolean(GlobalKeys.INDOOR_LEVEL_PICKER, settings.isIndoorLevelPickerEnabled());
-        Preferences.setBoolean(GlobalKeys.COMPASS, settings.isCompassEnabled());
-    }
-
     public UiSettings getSettings() { return settings; }
     public GoogleMap getGoogleMap() { return googleMap; }
     public MapFragment getMapFragment() { return mapFragment; }

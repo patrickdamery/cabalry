@@ -48,9 +48,12 @@ public class HomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Start tracer service.
+        /*Intent tracer = new Intent(getApplicationContext(), TracerIntentService.class);
+        startService(tracer);*/
 
         // Register GCM.
         if(!registerGCM()) {
