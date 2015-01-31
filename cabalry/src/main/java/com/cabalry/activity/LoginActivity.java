@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.cabalry.R;
-import com.cabalry.custom.Preferences;
+import com.cabalry.utils.Preferences;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
 import org.json.JSONException;

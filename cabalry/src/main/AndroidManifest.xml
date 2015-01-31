@@ -131,7 +131,7 @@
         </activity>
 
         <activity
-                android:name="com.cabalry.activity.BillingActivity"
+                android:name=".activity.BillingActivity"
                 android:label="@string/title_activity_billing"
                 android:screenOrientation="portrait"
                 android:parentActivityName="com.cabalry.activity.HomeActivity" >
@@ -141,10 +141,10 @@
         </activity>
 
         <activity
-                android:name="com.cabalry.activity.RegisterActivity"
+                android:name=".activity.RegisterActivity"
                 android:label="@string/title_activity_register"
                 android:screenOrientation="portrait"
-                android:parentActivityName="com.cabalry.activity.LoginActivity" >
+                android:parentActivityName=".activity.LoginActivity" >
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.cabalry.activity.LoginActivity" />
@@ -154,14 +154,14 @@
                 android:name="com.cabalry.activity.ForgotActivity"
                 android:label="@string/title_activity_forgot"
                 android:screenOrientation="portrait"
-                android:parentActivityName="com.cabalry.activity.LoginActivity" >
+                android:parentActivityName=".activity.LoginActivity" >
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.cabalry.activity.LoginActivity" />
+                    android:value=".activity.LoginActivity" />
         </activity>
 
         <receiver
-                android:name="com.cabalry.activity.GCMBroadcastReceiver"
+                android:name=".service.GCMBroadcastReceiver"
                 android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -170,11 +170,11 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.cabalry.activity.GCMIntentService"
+        <service android:name=".service.GCMIntentService"
                 android:exported="false" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
-        <service android:name=".activity.TracerIntentService"
+        <service android:name=".service.TracerLocationService"
                  android:exported="false" />
 
 

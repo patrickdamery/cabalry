@@ -3,7 +3,7 @@ package com.cabalry.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import com.cabalry.custom.Preferences;
+import com.cabalry.utils.Preferences;
 import com.cabalry.db.GlobalKeys;
 
 /**

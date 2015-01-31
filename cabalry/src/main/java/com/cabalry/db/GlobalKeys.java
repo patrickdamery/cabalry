@@ -17,6 +17,7 @@ public class GlobalKeys {
     public static final String SENT = "sent";
     public static final String START = "start";
     public static final String STATE = "state";
+    public static final String PORT = "port";
 
     public static final String SENDER_ID = "200578369108";
     public static final String PROPERTY_REG_ID = "regId";

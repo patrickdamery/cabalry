@@ -1,16 +1,17 @@
 package com.cabalry.activity;
 
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import com.cabalry.R;
-import com.cabalry.custom.*;
+import com.cabalry.custom.CabalryLocation;
+import com.cabalry.custom.CabalryLocationListener;
+import com.cabalry.custom.CabalryMapActivity;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
+import com.cabalry.service.TracerLocationService;
+import com.cabalry.utils.MathUtil;
+import com.cabalry.utils.Preferences;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -19,23 +20,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by conor on 11/01/15.
  */
-public class MapActivity extends Activity {
+public class MapActivity extends CabalryMapActivity {
 
     private Button bNearby;
     private Button bAlarm;
 
-    private CabalryMap cabalryMap;
-
     private boolean isNearbyEnabled = false;
-    private boolean hasFinishedUpdate = true;
 
-    private Timer updateTimer;
+    private LatLng currentLocation;
+    private LatLng previousLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +51,7 @@ public class MapActivity extends Activity {
                     bNearby.setText("NearBy");
                 }
 
-                updateLocations();
+                update();
             }
         });
 
@@ -66,10 +63,8 @@ public class MapActivity extends Activity {
             }
         });
 
-        cabalryMap = new CabalryMap((MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map));
-
-        cabalryMap.setMarkerListener(new MarkerListener() {
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        CabalryLocationListener listener = new CabalryLocationListener() {
             @Override
             public boolean onClick(Marker marker, CabalryLocation location) {
                 return true;
@@ -79,96 +74,74 @@ public class MapActivity extends Activity {
             public boolean onDoubleClick(Marker marker, CabalryLocation location) {
                 return true;
             }
-        });
+        };
 
-        updateLocations();
+        currentLocation = TracerLocationService.getStoredLocation();
+        previousLocation = currentLocation;
+
+        initMap(mapFragment, listener);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateTimer = new Timer();
-        updateTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        updateLocations();
-                    }
-                });
-            }
-        }, 0, 1000);
+        startTimer(0, 5000);
     }
 
     @Override
     public void onPause() {
-        updateTimer.cancel();
+        stopTimer();
         super.onPause();
     }
 
-    private void updateLocations() {
+    @Override
+    protected ArrayList<CabalryLocation> updateCabalryLocations() {
 
-        if(!hasFinishedUpdate) return;
-        hasFinishedUpdate = false;
+        currentLocation = TracerLocationService.getCurrentLocation();
+        previousLocation = TracerLocationService.getPreviousLocation();
 
-        final ArrayList<CabalryLocation> locations = new ArrayList<CabalryLocation>();
+        ArrayList<CabalryLocation> locations = new ArrayList<CabalryLocation>();
 
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            public Void doInBackground(Void ... voids) {
+        // Add user location.
+        locations.add(new CabalryLocation(Preferences.getID(), currentLocation, CabalryLocation.USER));
 
-                LatLng currentLocation = TracerIntentService.getCurrentLocation();
+        // Add nearby locations.
+        if (isNearbyEnabled) {
 
-                // Add user location.
-                locations.add(new CabalryLocation(Preferences.getID(), currentLocation, CabalryLocation.USER));
+            JSONObject nearbyResult = DB.nearby(Preferences.getID(), Preferences.getKey());
 
-                // Add nearby locations.
-                if (isNearbyEnabled) {
+            try {
+                if (nearbyResult.getBoolean(GlobalKeys.SUCCESS)) {
+                    JSONArray list = nearbyResult.getJSONArray(GlobalKeys.LOCATION);
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject location = list.getJSONObject(i);
 
-                    JSONObject nearbyResult = DB.nearby(Preferences.getID(), Preferences.getKey());
+                        int id = location.getInt(GlobalKeys.ID);
+                        LatLng loc = new LatLng(location.getDouble(GlobalKeys.LAT),
+                                location.getDouble(GlobalKeys.LNG));
 
-                    try {
-                        if (nearbyResult.getBoolean(GlobalKeys.SUCCESS)) {
-                            JSONArray list = nearbyResult.getJSONArray(GlobalKeys.LOCATION);
-                            for (int i = 0; i < list.length(); i++) {
-                                JSONObject location = list.getJSONObject(i);
-
-                                int id = location.getInt(GlobalKeys.ID);
-                                LatLng loc = new LatLng(location.getDouble(GlobalKeys.LAT),
-                                        location.getDouble(GlobalKeys.LNG));
-
-                                locations.add(new CabalryLocation(id, loc, CabalryLocation.USER_NEARBY));
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        locations.add(new CabalryLocation(id, loc, CabalryLocation.USER_NEARBY));
                     }
                 }
-
-                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-            public void onPostExecute(Void voids) {
-
-                updateMap(locations);
-                hasFinishedUpdate = true;
-            }
-        }.execute();
-    }
-
-    private void updateMap(ArrayList<CabalryLocation> locations) {
-
-        float z = 15;
-        float b = Util.getBearing(TracerIntentService.getCurrentLocation(),
-                TracerIntentService.getPreviousLocation());
-        int t = 1000;
-
-        if (isNearbyEnabled) {
-            cabalryMap.updateCamera(locations, t);
-        } else {
-            cabalryMap.updateCamera(TracerIntentService.getCurrentLocation(), z, b, t);
         }
 
-        cabalryMap.updateMap(locations);
+        return locations;
+    }
+
+    @Override
+    protected void updateMapLocations(ArrayList<CabalryLocation> locations) {
+
+        int transTime = 1000;
+
+        if(isNearbyEnabled) {
+            updateMap(locations, transTime);
+        } else {
+            float zoom = 15;
+            float bearing = MathUtil.getBearing(currentLocation, previousLocation);
+            updateMap(locations, currentLocation, zoom, bearing, transTime);
+        }
     }
 }

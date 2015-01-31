@@ -14,10 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
 import com.cabalry.*;
-import com.cabalry.custom.Logger;
-import com.cabalry.custom.Preferences;
+import com.cabalry.utils.Logger;
+import com.cabalry.utils.Preferences;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
+import com.cabalry.service.TracerLocationService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -52,8 +53,8 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
 
         // Start tracer service.
-        /*Intent tracer = new Intent(getApplicationContext(), TracerIntentService.class);
-        startService(tracer);*/
+        Intent tracer = new Intent(getApplicationContext(), TracerLocationService.class);
+        startService(tracer);
 
         // Register GCM.
         if(!registerGCM()) {

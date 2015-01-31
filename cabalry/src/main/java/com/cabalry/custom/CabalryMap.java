@@ -1,5 +1,6 @@
 package com.cabalry.custom;
 
+import com.cabalry.utils.Logger;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -21,7 +22,7 @@ public class CabalryMap implements OnMapReadyCallback {
     private Map<Integer,Marker> markers;
     private Map<Integer,CabalryLocation> locations;
 
-    private MarkerListener markerListener;
+    private CabalryLocationListener markerListener;
     private Marker lastMarkerClicked;
 
     public CabalryMap(MapFragment mapFragment) {
@@ -157,7 +158,7 @@ public class CabalryMap implements OnMapReadyCallback {
         locations.put(location.id, location);
     }
 
-    public void setMarkerListener(MarkerListener markerListener) { this.markerListener = markerListener; }
+    public void setMarkerListener(CabalryLocationListener markerListener) { this.markerListener = markerListener; }
     public UiSettings getSettings() { return settings; }
     public GoogleMap getGoogleMap() { return googleMap; }
     public MapFragment getMapFragment() { return mapFragment; }
