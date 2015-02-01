@@ -49,9 +49,17 @@ public class CabalryMap implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if(markerListener != null) {
+                    markerListener.onClick(marker, null);
                     return true;
                 }
                 return false;
+            }
+        });
+
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+
             }
         });
 
@@ -125,7 +133,7 @@ public class CabalryMap implements OnMapReadyCallback {
         }
         LatLngBounds bounds = builder.build();
 
-        int padding = 20; // offset from edges of the map in pixels
+        int padding = 64; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
         // Animate the change in camera view over some time.

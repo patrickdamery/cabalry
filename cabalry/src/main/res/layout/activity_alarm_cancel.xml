@@ -8,14 +8,22 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/editText" android:layout_centerVertical="true" android:layout_centerHorizontal="true"
-            android:hint="Password"/>
-    <TextView
+            android:id="@+id/tPassword"
+            android:hint="Password"
+            android:layout_marginBottom="40dp" android:layout_above="@+id/bCancel"
+            android:layout_centerHorizontal="true"/>
+    <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Password"
-            android:id="@+id/tPassword"
-            android:layout_above="@+id/editText" android:layout_centerHorizontal="true"
-            android:layout_marginBottom="31dp"/>
+            android:text="Cancel"
+            android:id="@+id/bCancel"
+            android:layout_centerVertical="true" android:layout_alignLeft="@+id/tPassword"
+            android:layout_alignStart="@+id/tPassword"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/bSubmit"
+            android:layout_alignTop="@+id/bCancel" android:layout_alignRight="@+id/tPassword"
+            android:layout_alignEnd="@+id/tPassword"/>
 </RelativeLayout>

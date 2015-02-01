@@ -35,6 +35,28 @@ public class DB {
     }
 
     /***
+     * Function checks password for user
+     * @param id of user
+     * @param key of user
+     * @param password of user
+     * @return JSON object that contains:
+     *          success : returns true if password is correct
+     */
+    public static JSONObject checkPass(final int id, final String key, final String password) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+        params.add(new BasicNameValuePair("password", password));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.CHECKPASS_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
      * Function that updates user's location
      * @param latitude of user
      * @param longitude of user
@@ -133,8 +155,8 @@ public class DB {
      * @return JSON Object that contains:
      *          success : returns true if information is found
      *          name : name of user
-     *          number : phone number of user
-     *          profile : profile picture url of user
+     *			make : make of car
+     *			color : color of car
      */
     public static JSONObject userInfo(final int userId, final int id, final String key) {
         // Building Parameters
@@ -146,31 +168,6 @@ public class DB {
         // getting JSON Object
         JSONObject json;
         json = new JSONParser().makeHttpRequest(GlobalKeys.USERINFO_URL, "POST", params);
-
-        return json;
-    }
-
-    /***
-     * Function that returns car information for specified user id
-     * @param userId of user we are getting information from
-     * @param id of user
-     * @param key of user
-     * @return JSON object that contains:
-     *          success : returns true if information is found
-     *          make : make of car
-     *          color : color of car
-     *          plate : plate of car
-     */
-    public static JSONObject carInfo(final int userId, final int id, final String key) {
-        // Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("userId", Integer.toString(userId)));
-        params.add(new BasicNameValuePair("id", Integer.toString(id)));
-        params.add(new BasicNameValuePair("key", key));
-
-        // getting JSON Object
-        JSONObject json;
-        json = new JSONParser().makeHttpRequest(GlobalKeys.CARINFO_URL, "POST", params);
 
         return json;
     }
@@ -197,6 +194,51 @@ public class DB {
     }
 
     /***
+     * Function that returns locations of users that where contacted by alarm
+     * @param alarmId of alarm we want information from
+     * @param id of user
+     * @param key of user
+     * @return JSON object that contains:
+     *          success : returns true if information is found
+     *			sent : JSON array of locations of user's that were alerted
+     */
+    public static JSONObject getAlarmList(final int alarmId, final int id, final String key) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("alarmId", Integer.toString(alarmId)));
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.ALARMLIST_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
+     * Function that removes user from alarm
+     * @param alarmId of alarm we want to be removed from
+     * @param id of user
+     * @param key of user
+     * @return JSON object that contains:
+     *          success : returns true if removed successfully
+     */
+    public static JSONObject ignoreAlarm(final int alarmId, final int id, final String key) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("alarmId", Integer.toString(alarmId)));
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.ALARMIGNORE_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
      * Function that returns alarm info
      * @param alarmId of alarm we want information from
      * @param id of user
@@ -205,8 +247,9 @@ public class DB {
      *          success : returns true if information is found
      *          start : time alarm was raised
      *          ip : of server streaming audio
-     *          port : of server streaming audio
+     *          state : of alarm
      *          id : of user who raised alarm
+     *			sent : JSON array of locations of user's that were alerted
      */
     public static JSONObject getAlarmInfo(final int alarmId, final int id, final String key) {
         // Building Parameters

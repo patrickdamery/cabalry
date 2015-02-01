@@ -19,6 +19,7 @@ import com.cabalry.utils.Preferences;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.service.TracerLocationService;
+import com.cabalry.utils.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -31,7 +32,10 @@ import java.io.IOException;
  * Created by Robert Damery.
  * Contributed by Conor Damery.
  *
- * Handles app.
+ * Activity which acts as application home interface.
+ * Contains menu of application screens and two types of alarm activation.
+ *
+ * Registers GCM id and stores it on the data base.
  */
 public class HomeActivity extends Activity {
 
@@ -43,14 +47,35 @@ public class HomeActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
     private String[] mMenuTitles;
     private TypedArray mMenuIcons;
 
+    /**
+     * Initializes activity components.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Saves current settings.
+        SettingsActivity.saveSettings();
+
+        // Initialize preferences.
+        Preferences.initialize(getApplicationContext());
+
+        // Check if user still has connection.
+        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+
+            // User has no available internet connection.
+            Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
+                    Toast.LENGTH_LONG).show();
+
+            // return to login.
+            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(login);
+            return;
+        }
 
         // Start tracer service.
         Intent tracer = new Intent(getApplicationContext(), TracerLocationService.class);
@@ -87,43 +112,41 @@ public class HomeActivity extends Activity {
         });
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        //enable home button and change title
+        // Enable home button and change title.
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle(R.string.app_name);
-        //change action bar icon
+
+        // Change action bar icon.
         getActionBar().setIcon(R.drawable.ic_drawer);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-        ){
+                this,                           // Host activity.
+                mDrawerLayout,                  // DrawerLayout object.
+                R.string.drawer_open,       // "open drawer" description for accessibility.
+                R.string.drawer_close) {    // "close drawer" description for accessibility
+
             public void onDrawerClosed(View view) {
-                //TODO: Change ActionBar Up Indicator Image
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                // TODO: Change ActionBar Up Indicator Image.
+                invalidateOptionsMenu(); // Creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                //TODO: Change ActionBar Up Indicator Image
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                // TODO: Change ActionBar Up Indicator Image.
+                invalidateOptionsMenu(); // Creates call to onPrepareOptionsMenu()
             }
         };
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //We won't use a menu so there's no need to inflate it
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
+    /**
+     * Calls drawer toggle item select callback.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -132,76 +155,112 @@ public class HomeActivity extends Activity {
         return false;
     }
 
+    /**
+     * Checks if play services are still valid.
+     */
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Check if user still has connection.
+        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+
+            // User has no available internet connection.
+            Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
+                    Toast.LENGTH_LONG).show();
+
+            // return to login.
+            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(login);
+            return;
+        }
+
         checkPlayServices();
     }
 
     /**
-     * Action Listener For Drawer Menu Items
+     * Action listener for drawer menu items.
      */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
+            // Send callback to backend.
             selectItem(position);
         }
     }
 
     /**
-     * Starts Intent of Selected Menu Item
+     * Starts intent of selected menu item.
      */
     private void selectItem(int position) {
+
+        // Call respective item.
         switch(position) {
+
             case 0:
-                //Start Profile Activity
+                // Launch profile activity.
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profile);
                 break;
+
             case 1:
-                //Start Map Activity
+                // Launch map activity.
                 Intent map = new Intent(getApplicationContext(), MapActivity.class);
                 startActivity(map);
                 break;
+
             case 2:
-                //Start Recordings Activity
+                // Launch recordings activity.
                 Intent rec = new Intent(getApplicationContext(), RecordingsActivity.class);
                 startActivity(rec);
                 break;
+
             case 3:
-                //Start Billing Activity
+                // Launch billing activity.
                 Intent billing = new Intent(getApplicationContext(), BillingActivity.class);
                 startActivity(billing);
                 break;
+
             case 4:
-                //Start Settings Activity
+                // Launch settings activity.
                 Intent set = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(set);
                 break;
+
             case 5:
-                //Start Help Activity
+                // Launch help url.
                 startActivity(new Intent("android.intent.action.VIEW", Uri.parse(GlobalKeys.HELP_URL)));
                 break;
+
             case 6:
+                // Logout and launch login.
                 Preferences.setBoolean(GlobalKeys.LOGIN, false);
                 Preferences.setString(GlobalKeys.KEY, "");
                 Preferences.setInt(GlobalKeys.ID, 0);
+
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 break;
         }
     }
 
+    /**
+     * Registers GCM id.
+     */
     private boolean registerGCM() {
 
+        // Application context.
         Context context = getApplicationContext();
 
         // Check device for Play Services APK. If check succeeds, proceed with
         // GCM registration.
         if (checkPlayServices()) {
+
+            // Initialize GCM fields.
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
 
+            // Handle registration id.
             if(regid.isEmpty()) {
                 registerInBackground();
             }
@@ -322,10 +381,7 @@ public class HomeActivity extends Activity {
     }
 
     /**
-     * Sends the registration ID to your server over HTTP, so it can use GCM/HTTP
-     * or CCS to send messages to your app. Not needed for this demo since the
-     * device sends upstream messages to a server that echoes back the message
-     * using the 'from' address in the message.
+     * Registers GCM on data base.
      */
     private void sendRegistrationIdToBackend() {
         JSONObject result = DB.updateGCM(regid, Preferences.getID(), Preferences.getKey());

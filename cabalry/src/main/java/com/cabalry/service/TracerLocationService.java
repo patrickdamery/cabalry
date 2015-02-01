@@ -8,7 +8,7 @@ import com.cabalry.custom.*;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.utils.Logger;
-import com.cabalry.utils.MathUtil;
+import com.cabalry.utils.Util;
 import com.cabalry.utils.Preferences;
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
@@ -31,6 +31,9 @@ public class TracerLocationService extends Service {
         if(running) return;
         running = true;
 
+        // Initialize preferences.
+        Preferences.initialize(getApplicationContext());
+
         TracerLocationListener tracerListener = new TracerLocationListener() {
             @Override
             public void onUpdateLocation(Location location) {
@@ -38,7 +41,7 @@ public class TracerLocationService extends Service {
                 currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 storedLocation = Preferences.getStoredLocation();
 
-                currentLocation = MathUtil.getPreferredLocation(currentLocation, storedLocation, previousLocation);
+                currentLocation = Util.getPreferredLocation(currentLocation, storedLocation, previousLocation);
 
                 // Store location.
                 Preferences.setStoredLocation(currentLocation);

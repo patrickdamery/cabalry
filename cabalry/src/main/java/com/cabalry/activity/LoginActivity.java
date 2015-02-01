@@ -16,12 +16,21 @@ import com.cabalry.db.GlobalKeys;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Created by conor on 11/01/15.
+ *
+ * Activity that handles user login.
+ */
 public class LoginActivity extends Activity {
 
+    // UI components.
     private EditText tUsername, tPassword;
     private Button bLogin;
     private TextView register, forgot;
 
+    /**
+     * Initializes activity components.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +67,9 @@ public class LoginActivity extends Activity {
         });
     }
 
+    /**
+     * Resets preferences data.
+     */
     private void logout() {
 
         // Reset user login data.
@@ -67,6 +79,9 @@ public class LoginActivity extends Activity {
         Preferences.setString(GlobalKeys.PROPERTY_REG_ID, "");
     }
 
+    /**
+     * Tries to log user in according to username and password.
+     */
     private void login() {
 
         // Get text field values.
@@ -128,19 +143,25 @@ public class LoginActivity extends Activity {
         }
     }
 
-    // Launch home.
+    /**
+     * Launch home activity.
+     */
     private void launchHome() {
         Intent home = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(home);
     }
 
-    // Launch register.
+    /**
+     * Launch register activity.
+     */
     private void launchRegister() {
         Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(register);
     }
 
-    // Launch forgot.
+    /**
+     * Launch forgot activity.
+     */
     private void launchForgot() {
         Intent forgot = new Intent(getApplicationContext(), ForgotActivity.class);
         startActivity(forgot);
