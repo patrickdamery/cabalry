@@ -11,10 +11,8 @@ public class CabalryLocation {
 
     public static final int USER = 0;
     public static final int USER_NEARBY = 1;
-    public static final int USER_WARNING_LOW = 2;
-    public static final int USER_WARNING_HIGH = 3;
-    public static final int USER_ALERT = 4;
-    public static final int USER_ALERTED = 5;
+    public static final int USER_ALERT = 2;
+    public static final int USER_ALERTED = 3;
 
     public int id;
     public LatLng location;
@@ -49,17 +47,11 @@ public class CabalryLocation {
             case USER_NEARBY:
                 return BitmapDescriptorFactory.HUE_GREEN;
 
-            case USER_WARNING_LOW:
-                return BitmapDescriptorFactory.HUE_YELLOW;
-
-            case USER_WARNING_HIGH:
-                return BitmapDescriptorFactory.HUE_ORANGE;
-
             case USER_ALERT:
                 return BitmapDescriptorFactory.HUE_RED;
 
             case USER_ALERTED:
-                return BitmapDescriptorFactory.HUE_VIOLET;
+                return BitmapDescriptorFactory.HUE_ORANGE;
         }
 
         return 0;
@@ -73,14 +65,8 @@ public class CabalryLocation {
             case USER_NEARBY:
                 return "NearBy";
 
-            case USER_WARNING_LOW:
-                return "Warning";
-
-            case USER_WARNING_HIGH:
-                return "Warning!";
-
             case USER_ALERT:
-                return "Alert!!";
+                return "Alert!";
 
             case USER_ALERTED:
                 return "Alerted";

@@ -8,5 +8,5 @@ import com.google.android.gms.maps.model.Marker;
 public interface CabalryLocationListener {
 
     public boolean onClick(Marker marker, CabalryLocation location);
-    public boolean onDoubleClick(Marker marker, CabalryLocation location);
+    public boolean onInfoClick(Marker marker, CabalryLocation location);
 }

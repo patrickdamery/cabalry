@@ -1,5 +1,6 @@
 package com.cabalry.custom;
 
+import android.graphics.Color;
 import com.cabalry.utils.Logger;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -23,7 +24,8 @@ public class CabalryMap implements OnMapReadyCallback {
     private Map<Integer,CabalryLocation> locations;
 
     private CabalryLocationListener markerListener;
-    private Marker lastMarkerClicked;
+
+    private Polyline currentRoute;
 
     public CabalryMap(MapFragment mapFragment) {
 
@@ -59,7 +61,9 @@ public class CabalryMap implements OnMapReadyCallback {
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-
+                if(markerListener != null) {
+                    markerListener.onInfoClick(marker, null);
+                }
             }
         });
 
@@ -148,7 +152,7 @@ public class CabalryMap implements OnMapReadyCallback {
         return locations.get(id);
     }
 
-    private Marker addMarker(CabalryLocation location) {
+    public Marker addMarker(CabalryLocation location) {
         Marker marker = googleMap.addMarker(
                 CabalryLocation.getMarkerOptions(
                         location.id, location.type, location.location));
@@ -156,14 +160,30 @@ public class CabalryMap implements OnMapReadyCallback {
         return markers.put(location.id, marker);
     }
 
-    private void removeMarker(int id) {
+    public void removeMarker(int id) {
         locations.remove(id);
         markers.remove(id).remove();
     }
 
-    private void moveMarker(CabalryLocation location) {
+    public void moveMarker(CabalryLocation location) {
         getMarker(location.id).setPosition(location.location);
         locations.put(location.id, location);
+    }
+
+    public void setRoute(LatLng a, LatLng b) {
+        removeRoute();
+        currentRoute = googleMap.addPolyline(new PolylineOptions()
+                .add(a, b)
+                .geodesic(true)
+                .color(Color.RED)
+        );
+    }
+
+    public void removeRoute() {
+        if(currentRoute != null) {
+            currentRoute.remove();
+            currentRoute = null;
+        }
     }
 
     public void setMarkerListener(CabalryLocationListener markerListener) { this.markerListener = markerListener; }

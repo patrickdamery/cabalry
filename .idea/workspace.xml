@@ -18,32 +18,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd74ae1e-7b33-4c1d-8fa1-df92120fb31b" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_user_info.xml" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/direction_arrow.png" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/utils/MathUtil.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/utils/Util.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/taskArtifacts.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmCancelActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmCancelActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmNotificationActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmNotificationActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/BillingActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/BillingActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/CabalryActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/CabalryActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocation.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocationListener.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocationListener.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/DB.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/DB.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ForgotActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ForgotActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/GlobalKeys.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/GlobalKeys.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/HomeActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/HomeActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/LoginActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/MapActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/MapActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ProfileActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ProfileActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RecordingsActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RecordingsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RegisterActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RegisterActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/TracerLocationService.java" afterPath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/TracerLocationService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_alarm_cancel.xml" afterPath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_alarm_cancel.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Cabalry.iws" />
@@ -71,8 +66,8 @@
       <file leaf-file-name="MapActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/MapActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1332" max-vertical-offset="4464">
-              <caret line="102" column="40" selection-start-line="102" selection-start-column="40" selection-end-line="102" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1458" max-vertical-offset="4626">
+              <caret line="104" column="40" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -80,28 +75,63 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CabalryMap.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.20975609" vertical-offset="670" max-vertical-offset="2988">
-              <caret line="50" column="22" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1467" max-vertical-offset="3438">
+              <caret line="99" column="56" selection-start-line="99" selection-start-column="56" selection-end-line="99" selection-end-column="56" />
               <folding>
-                <element signature="e#1277#1603#0" expanded="true" />
-                <element signature="e#1602#1603#0" expanded="true" />
+                <element signature="e#1517#1535#0" expanded="true" />
+                <element signature="e#1731#1770#0" expanded="true" />
+                <element signature="e#2024#2042#0" expanded="true" />
+                <element signature="e#2363#2391#0" expanded="true" />
+                <element signature="e#2783#2813#0" expanded="true" />
+                <element signature="e#3005#3048#0" expanded="true" />
+                <element signature="e#3235#3272#0" expanded="true" />
+                <element signature="e#3666#3696#0" expanded="true" />
+                <element signature="e#4039#4068#0" expanded="true" />
+                <element signature="e#4198#4232#0" expanded="true" />
+                <element signature="e#4626#4658#0" expanded="true" />
+                <element signature="e#5039#5074#0" expanded="true" />
+                <element signature="e#5453#5486#0" expanded="true" />
+                <element signature="e#5872#5904#0" expanded="true" />
+                <element signature="e#6329#6362#0" expanded="true" />
+                <element signature="e#6787#6818#0" expanded="true" />
+                <element signature="e#7757#7796#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AlarmCancelActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmCancelActivity.java">
+      <file leaf-file-name="UserInfoActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/UserInfoActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1102" max-vertical-offset="2214">
-              <caret line="67" column="30" selection-start-line="67" selection-start-column="30" selection-end-line="67" selection-end-column="30" />
-              <folding>
-                <element signature="e#1789#2539#0" expanded="true" />
-                <element signature="e#2538#2539#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.30731708" vertical-offset="108" max-vertical-offset="1224">
+              <caret line="22" column="33" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_user_info.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cabalry/src/main/res/layout/activity_user_info.xml">
+          <provider editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
+              <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.6" vertical-offset="33" max-vertical-offset="1206">
+              <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -109,44 +139,10 @@
       <file leaf-file-name="AlarmActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1318" max-vertical-offset="4968">
-              <caret line="91" column="40" selection-start-line="91" selection-start-column="40" selection-end-line="91" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1318" max-vertical-offset="5382">
+              <caret line="91" column="16" selection-start-line="91" selection-start-column="16" selection-end-line="93" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1862#2424#0" expanded="true" />
-                <element signature="e#2423#2424#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SettingsActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1250" max-vertical-offset="1872">
-              <caret line="78" column="39" selection-start-line="78" selection-start-column="39" selection-end-line="78" selection-end-column="39" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/DB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3640" max-vertical-offset="5292">
-              <caret line="215" column="20" selection-start-line="215" selection-start-column="20" selection-end-line="215" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1503#1518#0" expanded="true" />
-                <element signature="e#2389#2404#0" expanded="true" />
-                <element signature="e#3401#3416#0" expanded="true" />
-                <element signature="e#4244#4259#0" expanded="true" />
-                <element signature="e#5089#5104#0" expanded="true" />
-                <element signature="e#5972#5987#0" expanded="true" />
-                <element signature="e#6792#6807#0" expanded="true" />
-                <element signature="e#7663#7678#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -873,9 +869,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/MarkerType.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMarker.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMarkerType.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/GCMBroadcastReceiver.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_profile.xml" />
@@ -885,13 +878,11 @@
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/MarkerListener.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_alarm_notification.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocationType.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocation.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/Util.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_register.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_forgot.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_map.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_alarm.xml" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/GCMIntentService.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/TracerProgramService.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/Preferences.java" />
@@ -905,25 +896,30 @@
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/AlarmManager.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/GCMIntentService.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/LoginActivity.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/utils/Util.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RegisterActivity.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/BillingActivity.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ForgotActivity.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ProfileActivity.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RecordingsActivity.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/DB.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/TracerLocationService.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmNotificationActivity.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_alarm_cancel.xml" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/GlobalKeys.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/CabalryActivity.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/HomeActivity.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmCancelActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmNotificationActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/BillingActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ForgotActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ProfileActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RecordingsActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RegisterActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocation.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocationListener.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmActivity.java" />
         <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/MapActivity.java" />
-        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_user_info.xml" />
+        <option value="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/UserInfoActivity.java" />
       </list>
     </option>
   </component>
@@ -931,7 +927,7 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="24" />
+    <option name="y" value="347" />
     <option name="width" value="1366" />
     <option name="height" value="744" />
   </component>
@@ -959,6 +955,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1289,7 +1286,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1314,6 +1310,9 @@
     <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.cabalry.activity" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/cabalry/src/main/res/layout" />
       <recent name="$PROJECT_DIR$/cabalry/src/main/res/drawable" />
@@ -1386,6 +1385,19 @@
       </ExternalSystemSettings>
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -1412,19 +1424,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1558,7 +1557,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="24" width="1366" height="744" extended-state="6" />
+    <frame x="0" y="347" width="1366" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1575,7 +1574,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3111455" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2987616" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2987616" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1621,23 +1620,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2538">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5278592" vertical-offset="0" max-vertical-offset="810">
-          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/local.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1978022" vertical-offset="0" max-vertical-offset="455">
@@ -1737,14 +1719,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocationListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
-          <caret line="9" column="66" selection-start-line="9" selection-start-column="66" selection-end-line="9" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/res/layout/activity_alarm_notification.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="407">
@@ -1765,16 +1739,6 @@
       </provider>
       <provider selected="true" editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.91799545" vertical-offset="281" max-vertical-offset="1710">
-          <caret line="40" column="29" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/res/layout/activity_register.xml">
@@ -1821,19 +1785,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22463769" vertical-offset="33" max-vertical-offset="1188">
-          <caret line="7" column="45" selection-start-line="7" selection-start-column="45" selection-end-line="7" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/TracerLocationProgram.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.91133004" vertical-offset="188" max-vertical-offset="3096">
           <caret line="35" column="9" selection-start-line="35" selection-start-column="9" selection-end-line="35" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1880,10 +1835,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2535211" vertical-offset="0" max-vertical-offset="1692">
           <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
-          <folding>
-            <element signature="e#982#2557#0" expanded="true" />
-            <element signature="e#2556#2557#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1919,14 +1870,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34042552" vertical-offset="0" max-vertical-offset="3402">
-          <caret line="8" column="78" selection-start-line="8" selection-start-column="78" selection-end-line="8" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/utils/Util.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4390244" vertical-offset="270" max-vertical-offset="1332">
@@ -1934,54 +1877,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RegisterActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9148936" vertical-offset="387" max-vertical-offset="1026">
-          <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ForgotActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9148936" vertical-offset="837" max-vertical-offset="1368">
-          <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ProfileActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.91219515" vertical-offset="868" max-vertical-offset="1386">
-          <caret line="69" column="5" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/BillingActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.297561" vertical-offset="886" max-vertical-offset="1386">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RecordingsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1026">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1994,14 +1889,6 @@
       </provider>
       <provider selected="true" editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmNotificationActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25531915" vertical-offset="288" max-vertical-offset="936">
-          <caret line="29" column="56" selection-start-line="29" selection-start-column="56" selection-end-line="29" selection-end-column="56" />
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/TracerLocationService.java">
@@ -2027,19 +1914,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5248227" vertical-offset="282" max-vertical-offset="1440">
           <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/HomeActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27073172" vertical-offset="987" max-vertical-offset="7506">
-          <caret line="61" column="40" selection-start-line="61" selection-start-column="40" selection-end-line="61" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2051,18 +1925,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/LoginActivity.java">
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/DB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5106383" vertical-offset="918" max-vertical-offset="2610">
-          <caret line="92" column="12" selection-start-line="92" selection-start-column="12" selection-end-line="93" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1250" max-vertical-offset="1872">
-          <caret line="78" column="39" selection-start-line="78" selection-start-column="39" selection-end-line="78" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.5609756" vertical-offset="3640" max-vertical-offset="5292">
+          <caret line="215" column="20" selection-start-line="215" selection-start-column="20" selection-end-line="215" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2071,63 +1937,185 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmCancelActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1102" max-vertical-offset="2214">
-          <caret line="67" column="30" selection-start-line="67" selection-start-column="30" selection-end-line="67" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="922" max-vertical-offset="2214">
+          <caret line="89" column="33" selection-start-line="89" selection-start-column="33" selection-end-line="89" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmNotificationActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="531" max-vertical-offset="1008">
+          <caret line="60" column="33" selection-start-line="60" selection-start-column="33" selection-end-line="60" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/BillingActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="814" max-vertical-offset="1332">
+          <caret line="76" column="5" selection-start-line="76" selection-start-column="5" selection-end-line="76" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ForgotActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="801" max-vertical-offset="1332">
+          <caret line="75" column="5" selection-start-line="75" selection-start-column="5" selection-end-line="75" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.91219515" vertical-offset="1480" max-vertical-offset="1998">
+          <caret line="107" column="5" selection-start-line="107" selection-start-column="5" selection-end-line="107" selection-end-column="5" />
           <folding>
-            <element signature="e#1789#2539#0" expanded="true" />
-            <element signature="e#2538#2539#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/DB.java">
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RegisterActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3640" max-vertical-offset="5292">
-          <caret line="215" column="20" selection-start-line="215" selection-start-column="20" selection-end-line="215" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.9148936" vertical-offset="477" max-vertical-offset="990">
+          <caret line="57" column="5" selection-start-line="57" selection-start-column="5" selection-end-line="57" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RecordingsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9148936" vertical-offset="621" max-vertical-offset="1152">
+          <caret line="64" column="5" selection-start-line="64" selection-start-column="5" selection-end-line="64" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ProfileActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4292683" vertical-offset="814" max-vertical-offset="1332">
+          <caret line="65" column="33" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9148936" vertical-offset="1971" max-vertical-offset="2610">
+          <caret line="160" column="0" selection-start-line="160" selection-start-column="0" selection-end-line="160" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/HomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="16.541464" vertical-offset="346" max-vertical-offset="7506">
+          <caret line="398" column="27" selection-start-line="398" selection-start-column="27" selection-end-line="398" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1503#1518#0" expanded="true" />
-            <element signature="e#2389#2404#0" expanded="true" />
-            <element signature="e#3401#3416#0" expanded="true" />
-            <element signature="e#4244#4259#0" expanded="true" />
-            <element signature="e#5089#5104#0" expanded="true" />
-            <element signature="e#5972#5987#0" expanded="true" />
-            <element signature="e#6792#6807#0" expanded="true" />
-            <element signature="e#7663#7678#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1422">
+          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4390244" vertical-offset="648" max-vertical-offset="3276">
+          <caret line="58" column="11" selection-start-line="58" selection-start-column="11" selection-end-line="58" selection-end-column="11" />
+          <folding>
+            <element signature="e#1683#1956#0" expanded="true" />
+            <element signature="e#1955#1956#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocationListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42553192" vertical-offset="0" max-vertical-offset="423">
+          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1318" max-vertical-offset="4968">
-          <caret line="91" column="40" selection-start-line="91" selection-start-column="40" selection-end-line="91" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1318" max-vertical-offset="5382">
+          <caret line="91" column="16" selection-start-line="91" selection-start-column="16" selection-end-line="93" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1862#2424#0" expanded="true" />
-            <element signature="e#2423#2424#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/MapActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1332" max-vertical-offset="4464">
-          <caret line="102" column="40" selection-start-line="102" selection-start-column="40" selection-end-line="102" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1458" max-vertical-offset="4626">
+          <caret line="104" column="40" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java">
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20975609" vertical-offset="670" max-vertical-offset="2988">
-          <caret line="50" column="22" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
+        <state vertical-scroll-proportion="-6.6" vertical-offset="33" max-vertical-offset="1206">
+          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1467" max-vertical-offset="3438">
+          <caret line="99" column="56" selection-start-line="99" selection-start-column="56" selection-end-line="99" selection-end-column="56" />
           <folding>
-            <element signature="e#1277#1603#0" expanded="true" />
-            <element signature="e#1602#1603#0" expanded="true" />
+            <element signature="e#1517#1535#0" expanded="true" />
+            <element signature="e#1731#1770#0" expanded="true" />
+            <element signature="e#2024#2042#0" expanded="true" />
+            <element signature="e#2363#2391#0" expanded="true" />
+            <element signature="e#2783#2813#0" expanded="true" />
+            <element signature="e#3005#3048#0" expanded="true" />
+            <element signature="e#3235#3272#0" expanded="true" />
+            <element signature="e#3666#3696#0" expanded="true" />
+            <element signature="e#4039#4068#0" expanded="true" />
+            <element signature="e#4198#4232#0" expanded="true" />
+            <element signature="e#4626#4658#0" expanded="true" />
+            <element signature="e#5039#5074#0" expanded="true" />
+            <element signature="e#5453#5486#0" expanded="true" />
+            <element signature="e#5872#5904#0" expanded="true" />
+            <element signature="e#6329#6362#0" expanded="true" />
+            <element signature="e#6787#6818#0" expanded="true" />
+            <element signature="e#7757#7796#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/res/layout/activity_user_info.xml">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
+          <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/UserInfoActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30731708" vertical-offset="108" max-vertical-offset="1224">
+          <caret line="22" column="33" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>

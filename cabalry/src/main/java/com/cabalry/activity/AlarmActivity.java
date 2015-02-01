@@ -88,8 +88,10 @@ public class AlarmActivity extends CabalryMapActivity {
             }
 
             @Override
-            public boolean onDoubleClick(Marker marker, CabalryLocation location) {
-                marker.showInfoWindow();
+            public boolean onInfoClick(Marker marker, CabalryLocation location) {
+                // launch user info.
+                Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
+                startActivity(userInfo);
                 return true;
             }
         };
@@ -182,6 +184,11 @@ public class AlarmActivity extends CabalryMapActivity {
         super.onPause();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     /**
      * Fetches alerted locations and sorts them into an array list.
      */
@@ -202,8 +209,8 @@ public class AlarmActivity extends CabalryMapActivity {
                 if(userAlert.getBoolean(GlobalKeys.SUCCESS)) {
 
                     // fetch location.
-                    LatLng loc = new LatLng(userAlert.getDouble(GlobalKeys.LAT), userAlert.getDouble(GlobalKeys.LNG));
-                    locations.add(new CabalryLocation(id, loc, CabalryLocation.USER_ALERT));
+                    LatLng alertLocation = new LatLng(userAlert.getDouble(GlobalKeys.LAT), userAlert.getDouble(GlobalKeys.LNG));
+                    locations.add(new CabalryLocation(id, alertLocation, CabalryLocation.USER_ALERT));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -261,6 +268,25 @@ public class AlarmActivity extends CabalryMapActivity {
 
         if(locations == null) {
             finishAlarm();
+        }
+
+        if(!selfActivated) {
+
+            LatLng userLocation = null;
+            LatLng alertLocation = null;
+
+            for(CabalryLocation location : locations) {
+                if(userLocation != null && alertLocation != null) break;
+                if(location.id == Preferences.getID()) {
+                    userLocation = location.location;
+                } else if(location.id == id) {
+                    alertLocation = location.location;
+                }
+            }
+
+            if(userLocation != null && alertLocation != null) {
+                getMap().setRoute(userLocation, alertLocation);
+            }
         }
 
         // Updates map to fit every location.

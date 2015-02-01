@@ -56,4 +56,8 @@ public class AlarmNotificationActivity extends Activity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

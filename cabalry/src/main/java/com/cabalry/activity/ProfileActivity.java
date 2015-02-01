@@ -68,4 +68,11 @@ public class ProfileActivity extends Activity {
             return;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // return to home.
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
+    }
 }

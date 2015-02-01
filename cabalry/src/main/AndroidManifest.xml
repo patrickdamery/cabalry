@@ -60,31 +60,23 @@
         <activity
                 android:name=".activity.AlarmActivity"
                 android:label="@string/title_activity_alarm"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".activity.HomeActivity" >
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activity.HomeActivity" />
+                android:screenOrientation="portrait" >
         </activity>
 
         <activity
                 android:name=".activity.AlarmNotificationActivity"
                 android:label="@string/title_activity_alarm_notification"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".activity.HomeActivity" >
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activity.HomeActivity" />
+                android:screenOrientation="portrait"  >
         </activity>
 
         <activity
                 android:name=".activity.AlarmCancelActivity"
                 android:label="@string/title_activity_alarm_cancel"
                 android:screenOrientation="portrait"
-                android:parentActivityName=".activity.HomeActivity" >
+                android:parentActivityName=".activity.AlarmActivity" >
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activity.HomeActivity" />
+                    android:value=".activity.AlarmActivity" />
         </activity>
 
         <activity
@@ -99,6 +91,16 @@
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_home" >
+        </activity>
+
+        <activity
+                android:name=".activity.UserInfoActivity"
+                android:label="@string/title_activity_user_info"
+                android:screenOrientation="portrait"
+                android:parentActivityName=".activity.HomeActivity" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.HomeActivity" />
         </activity>
 
         <activity

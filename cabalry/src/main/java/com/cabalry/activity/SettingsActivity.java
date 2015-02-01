@@ -99,4 +99,11 @@ public class SettingsActivity extends Activity {
             }
         }.execute();
     }
+
+    @Override
+    public void onBackPressed() {
+        // return to home.
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
+    }
 }

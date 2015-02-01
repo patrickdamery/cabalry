@@ -86,6 +86,10 @@ public class AlarmCancelActivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private boolean checkRealPassword() {
 
         JSONObject result = DB.checkPass(Preferences.getID(), Preferences.getKey(), tPassword.getText().toString());

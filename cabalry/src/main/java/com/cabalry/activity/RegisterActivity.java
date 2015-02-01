@@ -49,4 +49,11 @@ public class RegisterActivity extends Activity {
         registerSettings.setJavaScriptEnabled(true);
         webRegister.loadUrl(GlobalKeys.REGISTER_URL);
     }
+
+    @Override
+    public void onBackPressed() {
+        // return to home.
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
+    }
 }

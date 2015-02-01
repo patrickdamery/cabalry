@@ -99,8 +99,10 @@ public class MapActivity extends CabalryMapActivity {
             }
 
             @Override
-            public boolean onDoubleClick(Marker marker, CabalryLocation location) {
-                marker.showInfoWindow();
+            public boolean onInfoClick(Marker marker, CabalryLocation location) {
+                // launch user info.
+                Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
+                startActivity(userInfo);
                 return true;
             }
         };
@@ -181,6 +183,13 @@ public class MapActivity extends CabalryMapActivity {
     public void onPause() {
         stopTimer();
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // return to home.
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
     }
 
     /**
