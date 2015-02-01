@@ -96,11 +96,7 @@
         <activity
                 android:name=".activity.UserInfoActivity"
                 android:label="@string/title_activity_user_info"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".activity.HomeActivity" >
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activity.HomeActivity" />
+                android:screenOrientation="portrait"  >
         </activity>
 
         <activity

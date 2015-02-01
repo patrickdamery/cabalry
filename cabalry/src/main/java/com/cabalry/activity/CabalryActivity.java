@@ -23,6 +23,8 @@ public class CabalryActivity extends Activity {
 
         // Initializes the SharePreference instance.
         Preferences.initialize(getApplicationContext());
+        Preferences.setAlarmId(0);
+        Preferences.setCachedAlarmId(0);
 
         // Saves current settings.
         SettingsActivity.saveSettings();

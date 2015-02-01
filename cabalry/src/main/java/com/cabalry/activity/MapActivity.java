@@ -34,6 +34,7 @@ public class MapActivity extends CabalryMapActivity {
 
     private Button bNearby;
     private Button bAlarm;
+    private Button bLastAlarm;
 
     private boolean isNearbyEnabled = false;
 
@@ -88,6 +89,21 @@ public class MapActivity extends CabalryMapActivity {
             }
         });
 
+        bLastAlarm = (Button) findViewById(R.id.bLastAlarm);
+        if(Preferences.getCachedAlarmId() == 0) bLastAlarm.setVisibility(View.GONE);
+        bLastAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int lastAlarmID = Preferences.getCachedAlarmId();
+                if(lastAlarmID > 0) {
+                    Preferences.setAlarmId(lastAlarmID);
+                    // launch alarm map.
+                    Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
+                    startActivity(alarm);
+                }
+            }
+        });
+
         // Get map fragment for cabalry map.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         // Listener for marker behavior.
@@ -127,10 +143,12 @@ public class MapActivity extends CabalryMapActivity {
                     if(result.getBoolean(GlobalKeys.SUCCESS)) {
 
                         int alarmID = result.getInt(GlobalKeys.ALARM_ID);
+                        Preferences.setCachedAlarmId(Preferences.getAlarmId());
                         Preferences.setAlarmId(alarmID);
                         return true;
 
                     } else {
+                        Preferences.setCachedAlarmId(0);
                         Preferences.setAlarmId(0);
                         Logger.log("Could not start alarm!");
                     }
@@ -147,6 +165,10 @@ public class MapActivity extends CabalryMapActivity {
                     // Start alarm activity.
                     Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
                     startActivity(alarm);
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Unable to start alarm please check your billing.",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();

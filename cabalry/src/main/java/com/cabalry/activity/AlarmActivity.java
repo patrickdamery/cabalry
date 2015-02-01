@@ -1,5 +1,7 @@
 package com.cabalry.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import com.cabalry.custom.CabalryMapActivity;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.service.TracerLocationService;
+import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -64,9 +67,24 @@ public class AlarmActivity extends CabalryMapActivity {
                     Intent cancel = new Intent(getApplicationContext(), AlarmCancelActivity.class);
                     startActivity(cancel);
                 } else {
-                    // return to home.
-                    Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(home);
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    ignoreAlarm();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AlarmActivity.this);
+                    builder.setMessage("Are you sure you want to ignore alarm?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
                 }
             }
         });
@@ -110,12 +128,6 @@ public class AlarmActivity extends CabalryMapActivity {
                 try {
                     if(result.getBoolean(GlobalKeys.SUCCESS)) {
 
-                        String state = result.getString(GlobalKeys.STATE);
-
-                        if(state.equals("FINISHED")) {
-                            return true;
-                        }
-
                         // Get alarm info.
                         id = result.getInt(GlobalKeys.ID);
                         start = result.getString(GlobalKeys.START);
@@ -125,6 +137,12 @@ public class AlarmActivity extends CabalryMapActivity {
                         // future checks.
                         if(id == Preferences.getID()) {
                             selfActivated = true;
+                        }
+
+                        String state = result.getString(GlobalKeys.STATE);
+
+                        if(state.equals(GlobalKeys.STATE_FINISHED) || state.equals(GlobalKeys.STATE_LOST)) {
+                            return true;
                         }
                     }
                 } catch (JSONException e) {
@@ -153,10 +171,36 @@ public class AlarmActivity extends CabalryMapActivity {
         }.execute();
     }
 
+    private void ignoreAlarm() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                JSONObject result = DB.ignoreAlarm(alarmID, Preferences.getID(), Preferences.getKey());
+
+                try {
+                    if(!result.getBoolean(GlobalKeys.SUCCESS)) {
+                        Logger.log("Could not ignore alarm on server!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        }.execute();
+
+        Preferences.setCachedAlarmId(Preferences.getAlarmId());
+        Preferences.setAlarmId(0);
+        // return to home.
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
+    }
+
     private void finishAlarm() {
         Toast.makeText(getApplicationContext(), "The alarm has been stopped",
                 Toast.LENGTH_LONG).show();
 
+        Preferences.setCachedAlarmId(0);
         Preferences.setAlarmId(0);
 
         // return to home.
@@ -185,9 +229,7 @@ public class AlarmActivity extends CabalryMapActivity {
     }
 
     @Override
-    public void onBackPressed() {
-
-    }
+    public void onBackPressed() { }
 
     /**
      * Fetches alerted locations and sorts them into an array list.
@@ -225,7 +267,7 @@ public class AlarmActivity extends CabalryMapActivity {
 
                 String state = alarmInfo.getString(GlobalKeys.STATE);
 
-                if(state.equals("FINISHED")) {
+                if(state.equals(GlobalKeys.STATE_FINISHED) || state.equals(GlobalKeys.STATE_LOST)) {
                     return null;
                 }
 

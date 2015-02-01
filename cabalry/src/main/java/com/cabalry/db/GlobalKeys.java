@@ -13,11 +13,17 @@ public class GlobalKeys {
     public static final String LOGIN = "login";
     public static final String IP = "ip";
     public static final String ALARM_ID = "alarmId";
+    public static final String CACHED_ALARM_ID = "cachedAlarmId";
     public static final String LOCATION = "location";
     public static final String SENT = "sent";
     public static final String START = "start";
-    public static final String STATE = "state";
     public static final String PORT = "port";
+
+    public static final String STATE = "state";
+    public static final String STATE_ACTIVE = "active";
+    public static final String STATE_INACTIVE = "inactive";
+    public static final String STATE_FINISHED = "finished";
+    public static final String STATE_LOST = "lost";
 
     public static final String FAKE_PASS = "fakePass";
     public static final String TIMER = "timer";

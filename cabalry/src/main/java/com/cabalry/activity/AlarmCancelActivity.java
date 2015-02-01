@@ -65,7 +65,7 @@ public class AlarmCancelActivity extends Activity {
                         if(checkRealPassword()) {
 
                             // Really stop alarm.
-                            //realAlarmStop();
+                            realAlarmStop();
 
                         } else if(checkFakePassword()) {
 
@@ -115,9 +115,9 @@ public class AlarmCancelActivity extends Activity {
 
     private void realAlarmStop() {
 
-        Preferences.setAlarmId(0);
-
         JSONObject result = DB.stopAlarm(Preferences.getAlarmId(), Preferences.getID(), Preferences.getKey());
+        Preferences.setCachedAlarmId(0);
+        Preferences.setAlarmId(0);
 
         try {
             if(result.getBoolean(GlobalKeys.SUCCESS)) {

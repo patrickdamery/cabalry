@@ -7,8 +7,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 import com.cabalry.R;
-import com.cabalry.db.GlobalKeys;
-import com.cabalry.utils.Preferences;
 import com.cabalry.utils.Util;
 
 /**
@@ -48,7 +46,7 @@ public class UserInfoActivity extends Activity {
         UserInfoSettings = webUserInfo.getSettings();
         UserInfoSettings.setJavaScriptEnabled(true);
         webUserInfo.loadUrl(GlobalKeys.BILLING_URL + "?id=" + Preferences.getInt(GlobalKeys.ID) + "&auth_key=" + Preferences.getString(GlobalKeys.KEY));
-    */
+        */
     }
 
     @Override
