@@ -1,9 +1,15 @@
 package com.cabalry.custom;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
+import com.cabalry.db.DB;
+import com.cabalry.db.GlobalKeys;
 import com.cabalry.utils.Logger;
+import com.cabalry.utils.Preferences;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +28,7 @@ public class CabalryMap implements OnMapReadyCallback {
 
     private Map<Integer,Marker> markers;
     private Map<Integer,CabalryLocation> locations;
+    private Map<Marker,CabalryLocation> markerLocations;
 
     private CabalryLocationListener markerListener;
 
@@ -36,6 +43,7 @@ public class CabalryMap implements OnMapReadyCallback {
 
         markers = new ConcurrentHashMap<Integer, Marker>();
         locations = new HashMap<Integer, CabalryLocation>();
+        markerLocations = new HashMap<Marker, CabalryLocation>();
 
         this.mapFragment = mapFragment;
         mapFragment.getMapAsync(this);
@@ -51,7 +59,7 @@ public class CabalryMap implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if(markerListener != null) {
-                    markerListener.onClick(marker, null);
+                    markerListener.onClick(marker, markerLocations.get(marker));
                     return true;
                 }
                 return false;
@@ -62,7 +70,7 @@ public class CabalryMap implements OnMapReadyCallback {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 if(markerListener != null) {
-                    markerListener.onInfoClick(marker, null);
+                    markerListener.onInfoClick(marker, markerLocations.get(marker));
                 }
             }
         });
@@ -152,17 +160,52 @@ public class CabalryMap implements OnMapReadyCallback {
         return locations.get(id);
     }
 
-    public Marker addMarker(CabalryLocation location) {
-        Marker marker = googleMap.addMarker(
+    public Marker addMarker(final CabalryLocation location) {
+
+        final Marker marker = googleMap.addMarker(
                 CabalryLocation.getMarkerOptions(
                         location.id, location.type, location.location));
+
+        new AsyncTask<Void, Void, String[]>(){
+
+            @Override
+            protected String[] doInBackground(Void... voids) {
+
+                String[] names = new String[2];
+                JSONObject result = DB.userInfo(location.id, Preferences.getID(), Preferences.getKey());
+
+                try {
+                    if(result.getBoolean(GlobalKeys.SUCCESS)) {
+                        names[0] = result.getString("name");
+                        names[1] = result.getString("color")+" "+result.getString("make");
+                        return names;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            protected void onPostExecute(String[] names) {
+                if(names != null) {
+                    marker.setTitle(names[0]);
+                    marker.setSnippet(names[1]);
+                }
+            }
+
+        }.execute();
+
         locations.put(location.id, location);
+        markerLocations.put(marker, location);
         return markers.put(location.id, marker);
     }
 
     public void removeMarker(int id) {
+        Marker marker = markers.remove(id);
         locations.remove(id);
-        markers.remove(id).remove();
+        markerLocations.remove(marker);
+        marker.remove();
     }
 
     public void moveMarker(CabalryLocation location) {

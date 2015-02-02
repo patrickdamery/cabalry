@@ -10,6 +10,8 @@ import android.widget.EditText;
 import com.cabalry.R;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
+import com.cabalry.service.AudioPlaybackService;
+import com.cabalry.service.AudioStreamService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import org.json.JSONException;
@@ -62,7 +64,9 @@ public class AlarmCancelActivity extends Activity {
                     @Override
                     protected Void doInBackground(Void... voids) {
 
-                        if(checkRealPassword()) {
+                        realAlarmStop();
+
+                        /*if(checkRealPassword()) {
 
                             // Really stop alarm.
                             realAlarmStop();
@@ -70,14 +74,14 @@ public class AlarmCancelActivity extends Activity {
                         } else if(checkFakePassword()) {
 
                             // Fake stop alarm.
-                            //fakeAlarmStop();
+                            fakeAlarmStop();
 
                         } else {
-                            /*failedCount++;
+                            failedCount++;
                             if(failedCount > 2) {
                                 fakeAlarmStop();
-                            }*/
-                        }
+                            }
+                        }*/
 
                         return null;
                     }
@@ -118,6 +122,9 @@ public class AlarmCancelActivity extends Activity {
         JSONObject result = DB.stopAlarm(Preferences.getAlarmId(), Preferences.getID(), Preferences.getKey());
         Preferences.setCachedAlarmId(0);
         Preferences.setAlarmId(0);
+
+        AudioPlaybackService.stopAudioPlayback();
+        AudioStreamService.stopAudioStream();
 
         try {
             if(result.getBoolean(GlobalKeys.SUCCESS)) {

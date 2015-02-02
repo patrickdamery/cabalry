@@ -7,6 +7,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 import com.cabalry.R;
+import com.cabalry.db.GlobalKeys;
+import com.cabalry.utils.Preferences;
 import com.cabalry.utils.Util;
 
 /**
@@ -18,7 +20,7 @@ public class UserInfoActivity extends Activity {
 
     // Web view components.
     WebView webUserInfo;
-    WebSettings UserInfoSettings;
+    WebSettings userInfoSettings;
 
     /**
      * Initializes activity components.
@@ -26,7 +28,7 @@ public class UserInfoActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_billing);
+        setContentView(R.layout.activity_user_info);
 
         // Check if user still has connection.
         if(!Util.hasActiveInternetConnection(getApplicationContext())) {
@@ -41,12 +43,14 @@ public class UserInfoActivity extends Activity {
             return;
         }
 
+        final int id = getIntent().getExtras().getInt("id");
+
         // Setup web view.
-        /*webUserInfo = (WebView) findViewById(R.id.web_user_info);
-        UserInfoSettings = webUserInfo.getSettings();
-        UserInfoSettings.setJavaScriptEnabled(true);
-        webUserInfo.loadUrl(GlobalKeys.BILLING_URL + "?id=" + Preferences.getInt(GlobalKeys.ID) + "&auth_key=" + Preferences.getString(GlobalKeys.KEY));
-        */
+        webUserInfo = (WebView) findViewById(R.id.web_user_info);
+        userInfoSettings = webUserInfo.getSettings();
+        userInfoSettings.setJavaScriptEnabled(true);
+        webUserInfo.loadUrl(GlobalKeys.VIEWUSER_URL + "?id=" + Preferences.getID() + "&auth_key=" + Preferences.getKey() + "&userId=" + id);
+
     }
 
     @Override

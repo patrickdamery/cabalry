@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Toast;
 import com.cabalry.R;
+import com.cabalry.db.GlobalKeys;
 import com.cabalry.service.TracerLocationService;
+import com.cabalry.utils.Preferences;
 import com.cabalry.utils.Util;
 
 /**
@@ -16,6 +20,10 @@ import com.cabalry.utils.Util;
  * Activity which displays a list of user's alarm recordings.
  */
 public class RecordingsActivity extends Activity {
+
+    // Web view components.
+    WebView webRecordings;
+    WebSettings recordingsSettings;
 
     /**
      * Initializes activity components.
@@ -37,6 +45,13 @@ public class RecordingsActivity extends Activity {
             startActivity(login);
             return;
         }
+
+        // Setup web view.
+        webRecordings = (WebView) findViewById(R.id.web_recordings);
+        recordingsSettings = webRecordings.getSettings();
+        recordingsSettings.setJavaScriptEnabled(true);
+        webRecordings.loadUrl(GlobalKeys.RECORDINGS_URL + "?id=" + Preferences.getID() + "&auth_key=" + Preferences.getKey());
+
     }
 
     @Override

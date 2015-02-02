@@ -27,16 +27,20 @@ public class Preferences {
     }
 
     // Custom.
-    public static int getID() { return Preferences.getInt(GlobalKeys.ID); }
     public static String getKey() { return Preferences.getString(GlobalKeys.KEY); }
+    public static String getIP() { return Preferences.getString(GlobalKeys.IP); }
+    public static int getID() { return Preferences.getInt(GlobalKeys.ID); }
+    public static int getPort() { return Preferences.getInt(GlobalKeys.PORT); }
     public static int getAlarmId() { return Preferences.getInt(GlobalKeys.ALARM_ID); }
     public static int getCachedAlarmId() { return Preferences.getInt(GlobalKeys.CACHED_ALARM_ID); }
     public static LatLng getStoredLocation() {
         return new LatLng(Preferences.getFloat(GlobalKeys.LAT), Preferences.getFloat(GlobalKeys.LNG));
     }
 
-    public static void setID(int id) { Preferences.setInt(GlobalKeys.ID, id); }
     public static void setKey(String key) { Preferences.setString(GlobalKeys.KEY, key); }
+    public static void setIP(String ip) { Preferences.setString(GlobalKeys.IP, ip); }
+    public static void setID(int id) { Preferences.setInt(GlobalKeys.ID, id); }
+    public static void setPort(int port) { Preferences.setInt(GlobalKeys.PORT, port); }
     public static void setAlarmId(int alarmId) { Preferences.setInt(GlobalKeys.ALARM_ID, alarmId); }
     public static void setCachedAlarmId(int alarmId) { Preferences.setInt(GlobalKeys.CACHED_ALARM_ID, alarmId); }
     public static void setStoredLocation(LatLng location) {

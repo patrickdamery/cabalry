@@ -23,6 +23,15 @@ public class CabalryActivity extends Activity {
 
         // Initializes the SharePreference instance.
         Preferences.initialize(getApplicationContext());
+
+        if(Preferences.getAlarmId() != 0) {
+
+            // Launch alarm.
+            Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
+            startActivity(alarm);
+            return;
+        }
+
         Preferences.setAlarmId(0);
         Preferences.setCachedAlarmId(0);
 

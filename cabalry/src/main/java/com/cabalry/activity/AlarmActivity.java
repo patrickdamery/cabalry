@@ -14,6 +14,8 @@ import com.cabalry.custom.CabalryLocationListener;
 import com.cabalry.custom.CabalryMapActivity;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
+import com.cabalry.service.AudioPlaybackService;
+import com.cabalry.service.AudioStreamService;
 import com.cabalry.service.TracerLocationService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
@@ -109,6 +111,7 @@ public class AlarmActivity extends CabalryMapActivity {
             public boolean onInfoClick(Marker marker, CabalryLocation location) {
                 // launch user info.
                 Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
+                userInfo.putExtra("id", location.id);
                 startActivity(userInfo);
                 return true;
             }
@@ -131,7 +134,9 @@ public class AlarmActivity extends CabalryMapActivity {
                         // Get alarm info.
                         id = result.getInt(GlobalKeys.ID);
                         start = result.getString(GlobalKeys.START);
-                        ip = result.getString(GlobalKeys.ID);
+                        ip = result.getString(GlobalKeys.IP);
+
+                        Preferences.setIP(ip);
 
                         // Check if this user has activated the alarm for
                         // future checks.
@@ -157,12 +162,21 @@ public class AlarmActivity extends CabalryMapActivity {
 
                 if(finished) {
                     finishAlarm();
+                    return;
                 }
 
                 if(selfActivated) {
                     bStop.setText("Stop");
+
+                    // Start audio stream service.
+                    Intent streamer = new Intent(getApplicationContext(), AudioStreamService.class);
+                    startService(streamer);
                 } else {
                     bStop.setText("Ignore");
+
+                    // Start audio playback service.
+                    Intent playback = new Intent(getApplicationContext(), AudioPlaybackService.class);
+                    startService(playback);
                 }
 
                 // Initializes cabalry map with fragment and listener.
@@ -191,6 +205,10 @@ public class AlarmActivity extends CabalryMapActivity {
 
         Preferences.setCachedAlarmId(Preferences.getAlarmId());
         Preferences.setAlarmId(0);
+
+        AudioPlaybackService.stopAudioPlayback();
+        AudioStreamService.stopAudioStream();
+
         // return to home.
         Intent home = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(home);
@@ -202,6 +220,9 @@ public class AlarmActivity extends CabalryMapActivity {
 
         Preferences.setCachedAlarmId(0);
         Preferences.setAlarmId(0);
+
+        AudioPlaybackService.stopAudioPlayback();
+        AudioStreamService.stopAudioStream();
 
         // return to home.
         Intent home = new Intent(getApplicationContext(), HomeActivity.class);
@@ -310,6 +331,7 @@ public class AlarmActivity extends CabalryMapActivity {
 
         if(locations == null) {
             finishAlarm();
+            return;
         }
 
         if(!selfActivated) {

@@ -239,6 +239,28 @@ public class DB {
     }
 
     /***
+     * Function that adds user to alarm
+     * @param alarmId of alarm we want to be removed from
+     * @param id of user
+     * @param key of user
+     * @return JSON object that contains:
+     *          success : returns true if removed successfully
+     */
+    public static JSONObject addToAlarm(final int alarmId, final int id, final String key) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("alarmId", Integer.toString(alarmId)));
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.ADDTOALARM_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
      * Function that returns alarm info
      * @param alarmId of alarm we want information from
      * @param id of user
@@ -261,6 +283,32 @@ public class DB {
         // getting JSON Object
         JSONObject json;
         json = new JSONParser().makeHttpRequest(GlobalKeys.ALARMINFO_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
+     * Function that allows you to update listener information
+     * @param alarmId of alarm in question
+     * @param id of user
+     * @param key of user
+     * @param ip of user
+     * @param port opened by user
+     * @return JSON object that contains:
+     *          success : returns true if update is successful
+     */
+    public static JSONObject updateListenerInfo(final int alarmId, final int id, final String key, final String ip, final int port) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("alarmId", Integer.toString(alarmId)));
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+        params.add(new BasicNameValuePair("ip", ip));
+        params.add(new BasicNameValuePair("port", Integer.toString(port)));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.UPDATELISTENER_URL, "POST", params);
 
         return json;
     }

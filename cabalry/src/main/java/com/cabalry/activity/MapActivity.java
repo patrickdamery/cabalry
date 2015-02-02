@@ -118,6 +118,7 @@ public class MapActivity extends CabalryMapActivity {
             public boolean onInfoClick(Marker marker, CabalryLocation location) {
                 // launch user info.
                 Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
+                userInfo.putExtra("id", location.id);
                 startActivity(userInfo);
                 return true;
             }

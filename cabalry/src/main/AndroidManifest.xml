@@ -176,6 +176,12 @@
         <service android:name=".service.TracerLocationService"
                  android:exported="false" />
 
+        <service android:name=".service.AudioStreamService"
+                 android:exported="false" />
+
+        <service android:name=".service.AudioPlaybackService"
+                 android:exported="false" />
+
 
     </application>
 
