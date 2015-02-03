@@ -20,7 +20,7 @@ public class AudioPlaybackService extends Service {
     @Override
     public void onCreate() {
         if(running) return;
-        running = true;
+            running = true;
 
         // Initialize preferences.
         Preferences.initialize(getApplicationContext());
@@ -33,7 +33,7 @@ public class AudioPlaybackService extends Service {
 
                 JSONObject result = DB.updateListenerInfo(
                         Preferences.getAlarmId(), Preferences.getID(),
-                        Preferences.getKey(), Preferences.getIP(), 50000);
+                        Preferences.getKey(), 50000);
 
                 audioPlaybackProgram.startPlayback(2048, 50000);
                 return null;
@@ -55,11 +55,13 @@ public class AudioPlaybackService extends Service {
 
     @Override
     public void onDestroy() {
-        running = false;
         stopAudioPlayback();
+        running = false;
     }
 
     public static void stopAudioPlayback() {
-        audioPlaybackProgram.stopPlayback();
+        if(audioPlaybackProgram != null) {
+            audioPlaybackProgram.stopPlayback();
+        }
     }
 }

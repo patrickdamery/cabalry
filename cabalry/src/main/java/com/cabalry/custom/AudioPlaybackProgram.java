@@ -4,6 +4,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
+import com.cabalry.utils.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -38,10 +39,13 @@ public class AudioPlaybackProgram {
             //ByteArrayInputStream bias = new ByteArrayInputStream(packet.getData());
 
             do {
+                Logger.log("kljlkkljkljlkjlkjkljljkljkljlkjklj");
                 //Receive data
                 socket.receive(packet);
                 byte[] soundbytes = packet.getData();
                 //readBytes = is.read(buffer);
+
+                Logger.log("aisdjaisjdajsdasdasdasdasdasdasdasdasd");
 
                 //if(AudioRecord.ERROR_INVALID_OPERATION != readBytes){
                     audioPlayer.write(soundbytes, 0, soundbytes.length);

@@ -48,11 +48,12 @@ public class AudioStreamService extends Service {
 
     @Override
     public void onDestroy() {
-        running = false;
         stopAudioStream();
+        running = false;
     }
 
     public static void stopAudioStream() {
-        audioStreamProgram.stopStream();
+        if(audioStreamProgram != null)
+            audioStreamProgram.stopStream();
     }
 }

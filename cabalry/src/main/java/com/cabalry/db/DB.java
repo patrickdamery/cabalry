@@ -297,13 +297,12 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if update is successful
      */
-    public static JSONObject updateListenerInfo(final int alarmId, final int id, final String key, final String ip, final int port) {
+    public static JSONObject updateListenerInfo(final int alarmId, final int id, final String key, final int port) {
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("alarmId", Integer.toString(alarmId)));
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
-        params.add(new BasicNameValuePair("ip", ip));
         params.add(new BasicNameValuePair("port", Integer.toString(port)));
 
         // getting JSON Object
