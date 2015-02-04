@@ -49,9 +49,6 @@ public class MapActivity extends CabalryMapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        // Initializes the SharePreference instance.
-        Preferences.initialize(getApplicationContext());
-
         // Check if user still has connection.
         if(!Util.hasActiveInternetConnection(getApplicationContext())) {
 
@@ -64,6 +61,13 @@ public class MapActivity extends CabalryMapActivity {
             startActivity(login);
             return;
         }
+
+        // Initializes the SharePreference instance.
+        Preferences.initialize(getApplicationContext());
+
+        // Start tracer service.
+        Intent tracer = new Intent(getApplicationContext(), TracerLocationService.class);
+        startService(tracer);
 
         bNearby = (Button) findViewById(R.id.bNearby);
         bNearby.setOnClickListener(new View.OnClickListener() {

@@ -169,6 +169,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.cabalry.service.SilentAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.media.VOLUME_CHANGED_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <service android:name=".service.GCMIntentService"
                 android:exported="false" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
@@ -182,6 +188,11 @@
         <service android:name=".service.AudioPlaybackService"
                  android:exported="false" />
 
+        <service android:name=".service.AlarmTimerService"
+                 android:exported="false" />
+
+        <service android:name=".service.AlarmService"
+                 android:exported="false" />
 
     </application>
 

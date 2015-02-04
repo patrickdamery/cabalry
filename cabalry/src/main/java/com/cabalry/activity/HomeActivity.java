@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
 import com.cabalry.*;
+import com.cabalry.service.AlarmTimerService;
 import com.cabalry.service.AudioStreamService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
@@ -59,9 +60,6 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Saves current settings.
-        SettingsActivity.saveSettings();
-
         // Initialize preferences.
         Preferences.initialize(getApplicationContext());
 
@@ -78,9 +76,16 @@ public class HomeActivity extends Activity {
             return;
         }
 
+        // Saves current settings.
+        SettingsActivity.saveSettings();
+
         // Start tracer service.
         Intent tracer = new Intent(getApplicationContext(), TracerLocationService.class);
         startService(tracer);
+
+        // Start tracer service.
+        Intent timer = new Intent(getApplicationContext(), AlarmTimerService.class);
+        startService(timer);
 
         // Register GCM.
         if(!registerGCM()) {
