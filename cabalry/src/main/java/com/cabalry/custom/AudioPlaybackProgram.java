@@ -20,10 +20,11 @@ import java.net.Socket;
 public class AudioPlaybackProgram {
 
     private boolean isPlaying = false;
+    private final int SAMPLE_RATE = 16000;
 
     public void startPlayback(int bufferSize, int port) {
 
-        AudioTrack audioPlayer = new AudioTrack(AudioManager.STREAM_MUSIC, 16000, AudioFormat.CHANNEL_OUT_MONO,
+        AudioTrack audioPlayer = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
 
         if(audioPlayer.getPlayState() != AudioTrack.PLAYSTATE_PLAYING)

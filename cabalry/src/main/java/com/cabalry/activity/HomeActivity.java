@@ -64,17 +64,27 @@ public class HomeActivity extends Activity {
         Preferences.initialize(getApplicationContext());
 
         // Check if user still has connection.
-        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+        new AsyncTask<Void, Void, Boolean>() {
 
-            // User has no available internet connection.
-            Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
-                    Toast.LENGTH_LONG).show();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
 
-            // return to login.
-            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(login);
-            return;
-        }
+                return !Util.hasActiveInternetConnection(getApplicationContext());
+            }
+
+            protected void onPostExecute(Boolean result) {
+
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                }
+            }
+        }.execute();
 
         // Saves current settings.
         SettingsActivity.saveSettings();
@@ -82,10 +92,6 @@ public class HomeActivity extends Activity {
         // Start tracer service.
         Intent tracer = new Intent(getApplicationContext(), TracerLocationService.class);
         startService(tracer);
-
-        // Start tracer service.
-        Intent timer = new Intent(getApplicationContext(), AlarmTimerService.class);
-        startService(timer);
 
         // Register GCM.
         if(!registerGCM()) {
@@ -161,6 +167,15 @@ public class HomeActivity extends Activity {
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        // Minimize app.
+        Intent main = new Intent(Intent.ACTION_MAIN);
+        main.addCategory(Intent.CATEGORY_HOME);
+        main.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(main);
+    }
+
     /**
      * Checks if play services are still valid.
      */
@@ -169,17 +184,27 @@ public class HomeActivity extends Activity {
         super.onResume();
 
         // Check if user still has connection.
-        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+        new AsyncTask<Void, Void, Boolean>() {
 
-            // User has no available internet connection.
-            Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
-                    Toast.LENGTH_LONG).show();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
 
-            // return to login.
-            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(login);
-            return;
-        }
+                return !Util.hasActiveInternetConnection(getApplicationContext());
+            }
+
+            protected void onPostExecute(Boolean result) {
+
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                }
+            }
+        }.execute();
 
         checkPlayServices();
     }

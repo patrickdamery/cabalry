@@ -2,6 +2,7 @@ package com.cabalry.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.cabalry.utils.Preferences;
@@ -39,17 +40,28 @@ public class CabalryActivity extends Activity {
         SettingsActivity.saveSettings();
 
         // Check if user still has connection.
-        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+        new AsyncTask<Void, Void, Boolean>() {
 
-            // User has no available internet connection.
-            Toast.makeText(getApplicationContext(), "Please connect to the internet and login.",
-                    Toast.LENGTH_LONG).show();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
 
-            // return to login.
-            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(login);
-            return;
-        }
+                return !Util.hasActiveInternetConnection(getApplicationContext());
+            }
+
+            protected void onPostExecute(Boolean result) {
+
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), "Please connect to the internet and login.",
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                    return;
+                }
+            }
+        }.execute();
 
         // Check if user is logged in.
         boolean login = Preferences.getBoolean(GlobalKeys.LOGIN);
@@ -71,16 +83,27 @@ public class CabalryActivity extends Activity {
         super.onResume();
 
         // Check if user still has connection.
-        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+        new AsyncTask<Void, Void, Boolean>() {
 
-            // User has no available internet connection.
-            Toast.makeText(getApplicationContext(), "Please connect to the internet and login.",
-                    Toast.LENGTH_LONG).show();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
 
-            // return to login.
-            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(login);
-            return;
-        }
+                return !Util.hasActiveInternetConnection(getApplicationContext());
+            }
+
+            protected void onPostExecute(Boolean result) {
+
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), "Please connect to the internet and login.",
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                    return;
+                }
+            }
+        }.execute();
     }
 }

@@ -1,8 +1,11 @@
 package com.cabalry.service;
 
-import android.content.BroadcastReceiver;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.WakefulBroadcastReceiver;
+import com.cabalry.db.GlobalKeys;
+import com.cabalry.utils.Preferences;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,17 +13,20 @@ import java.util.TimerTask;
 /**
  * Created by conor on 04/02/15.
  */
-public class SilentAlarmReceiver extends BroadcastReceiver {
+public class SilentAlarmReceiver extends WakefulBroadcastReceiver {
 
     public static boolean isReceived; // this is made true and false after each timer clock
     public static Timer timer = null;
     public static int i;
-    final int MAX_ITERATION = 15;
+
+    private final int TIME = 3000;
+    private final int MAX_ITERATION = 15;
 
     @Override
-    public void onReceive(final Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
         isReceived = true; // Make this true whenever isReceived called
-        if(timer == null) {
+        Preferences.initialize(context);
+        if(timer == null /*&& Preferences.getBoolean(GlobalKeys.SILENT)*/) {
 
             timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -50,12 +56,18 @@ public class SilentAlarmReceiver extends BroadcastReceiver {
 
                         timer = null;
                         i = 0;
-                        context.startService(new Intent(context, AlarmService.class));
+                        startSilentAlarm(context);
                     }
 
                     isReceived = false; // Make this false every time a timer iterates.
                 }
-            }, 0, 200);
+            }, 0, TIME/MAX_ITERATION);
         }
+    }
+
+    private void startSilentAlarm(Context context) {
+
+        // Start the service, keeping the device awake while it is launching.
+        startWakefulService(context, new Intent(context, SilentAlarmService.class));
     }
 }

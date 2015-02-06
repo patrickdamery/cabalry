@@ -67,6 +67,16 @@ public class LoginActivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        // Minimize app.
+        Intent main = new Intent(Intent.ACTION_MAIN);
+        main.addCategory(Intent.CATEGORY_HOME);
+        main.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(main);
+    }
+
+
     /**
      * Resets preferences data.
      */
