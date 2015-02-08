@@ -36,6 +36,9 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initializes the SharePreference instance.
+        Preferences.initialize(getApplicationContext());
+
         // Reset data.
         logout();
 

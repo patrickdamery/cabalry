@@ -17,7 +17,7 @@ import com.cabalry.utils.Preferences;
 public class AudioStreamProgram {
 
     public byte[] buffer;
-    public static DatagramSocket socket;
+    private DatagramSocket socket;
     private int port = 50005;
     AudioRecord recorder;
     private int sampleRate = 16000;
@@ -45,7 +45,7 @@ public class AudioStreamProgram {
                     recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,sampleRate,channelConfig,audioFormat,minBufSize*10);
                     Logger.log("Recorder initialized");
                     recorder.startRecording();
-                    while(status == true) {
+                    while(status) {
 
                         // Reading data from MIC into buffer.
                         minBufSize = recorder.read(buffer, 0, buffer.length);
@@ -55,6 +55,8 @@ public class AudioStreamProgram {
                         socket.send(packet);
                         Logger.log("MinBufferSize: " + minBufSize);
                     }
+                    Logger.log("Ending");
+                    socket.close();
                 } catch(UnknownHostException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

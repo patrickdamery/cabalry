@@ -13,12 +13,9 @@ import com.cabalry.utils.Preferences;
 public class AudioStreamService extends Service {
 
     private static AudioStreamProgram audioStreamProgram;
-    private boolean running = false;
 
     @Override
     public void onCreate() {
-        if(running) return;
-        running = true;
 
         // Initialize preferences.
         Preferences.initialize(getApplicationContext());
@@ -49,11 +46,12 @@ public class AudioStreamService extends Service {
     @Override
     public void onDestroy() {
         stopAudioStream();
-        running = false;
     }
 
     public static void stopAudioStream() {
-        if(audioStreamProgram != null)
+        if(audioStreamProgram != null) {
             audioStreamProgram.stopStream();
+            audioStreamProgram = null;
+        }
     }
 }

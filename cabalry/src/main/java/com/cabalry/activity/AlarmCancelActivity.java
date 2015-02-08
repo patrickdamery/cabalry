@@ -126,8 +126,11 @@ public class AlarmCancelActivity extends Activity {
         AudioPlaybackService.stopAudioPlayback();
         AudioStreamService.stopAudioStream();
 
+        stopService(new Intent(AlarmCancelActivity.this, AudioStreamService.class));
+        stopService(new Intent(AlarmCancelActivity.this, AudioPlaybackService.class));
+
         try {
-            if(result.getBoolean(GlobalKeys.SUCCESS)) {
+            if(!result.getBoolean(GlobalKeys.SUCCESS)) {
                 Logger.log("Unable to stop alarm on server!");
             }
         } catch (JSONException e) {

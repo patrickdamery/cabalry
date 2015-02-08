@@ -168,6 +168,7 @@ public class AlarmActivity extends CabalryMapActivity {
                 if(selfActivated) {
                     bStop.setText("Stop");
 
+                    Logger.log("Starting");
                     // Start audio stream service.
                     Intent streamer = new Intent(getApplicationContext(), AudioStreamService.class);
                     startService(streamer);

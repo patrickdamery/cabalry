@@ -62,6 +62,7 @@ public class AudioPlaybackService extends Service {
     public static void stopAudioPlayback() {
         if(audioPlaybackProgram != null) {
             audioPlaybackProgram.stopPlayback();
+            audioPlaybackProgram = null;
         }
     }
 }

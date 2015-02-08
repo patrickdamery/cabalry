@@ -2,17 +2,12 @@ package com.cabalry.custom;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
-import android.media.AudioRecord;
 import android.media.AudioTrack;
 import com.cabalry.utils.Logger;
+import com.cabalry.utils.Preferences;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.DataInputStream;
+import java.net.*;
 
 /**
  * Created by conor on 01/02/15.
@@ -21,9 +16,16 @@ public class AudioPlaybackProgram {
 
     private boolean isPlaying = false;
     private final int SAMPLE_RATE = 16000;
+    private final int listenPort = 50010;
+    private InetAddress ip;
+    private Socket client;
+    private DataInputStream dis;
 
     public void startPlayback(int bufferSize, int port) {
 
+        isPlaying = true;
+
+        Logger.log("Starting Service");
         AudioTrack audioPlayer = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
 
@@ -31,29 +33,28 @@ public class AudioPlaybackProgram {
             audioPlayer.play();
 
         try {
-            //Define the datagram socket we will receive audio from
-            DatagramSocket socket = new DatagramSocket(port);
-            //Define bufffer size
+            // Define buffer
             byte[] buffer = new byte[bufferSize];
-            //Now prepare the datagram packet so we can start receiving data
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-            //ByteArrayInputStream bias = new ByteArrayInputStream(packet.getData());
+
+            // Define ip address to connect to
+            ip = InetAddress.getByName(Preferences.getIP());
+
+            // Setup socket to connect to server
+            Logger.log("Connect to server");
+            client = new Socket(ip, listenPort);
+            client.setSoTimeout(15000);
+
+            // Define data input stream
+            Logger.log("Get DataInput Stream from server");
+            dis = new DataInputStream(client.getInputStream());
 
             do {
-                Logger.log("kljlkkljkljlkjlkjkljljkljkljlkjklj");
-                //Receive data
-                socket.receive(packet);
-                byte[] soundbytes = packet.getData();
-                //readBytes = is.read(buffer);
+                dis.readFully(buffer);
+                audioPlayer.write(buffer, 0, buffer.length);
+            } while(isPlaying);
 
-                Logger.log("aisdjaisjdajsdasdasdasdasdasdasdasdasd");
-
-                //if(AudioRecord.ERROR_INVALID_OPERATION != readBytes){
-                    audioPlayer.write(soundbytes, 0, soundbytes.length);
-                //}
-            }
-            while(isPlaying);
-            socket.close();
+            dis.close();
+            client.close();
 
         } catch (Exception e) {
             e.printStackTrace();
