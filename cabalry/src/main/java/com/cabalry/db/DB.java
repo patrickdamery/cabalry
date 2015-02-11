@@ -292,7 +292,6 @@ public class DB {
      * @param alarmId of alarm in question
      * @param id of user
      * @param key of user
-     * @param ip of user
      * @param port opened by user
      * @return JSON object that contains:
      *          success : returns true if update is successful
