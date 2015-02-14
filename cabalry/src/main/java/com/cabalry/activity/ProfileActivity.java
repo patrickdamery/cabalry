@@ -1,10 +1,12 @@
 package com.cabalry.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 import com.cabalry.R;
 import com.cabalry.service.TracerLocationService;
@@ -22,6 +24,7 @@ public class ProfileActivity extends Activity {
     // Web view components.
     WebView webProfile;
     WebSettings profileSettings;
+    ProgressDialog pd;
 
     /**
      * Initializes activity components.
@@ -43,11 +46,25 @@ public class ProfileActivity extends Activity {
             startActivity(login);
             return;
         }
+        // Progress Dialog to show while web view is loading.
+        pd = new ProgressDialog(this);
+        pd.setMessage(getResources().getString(R.string.webview_loading));
+        pd.show();
 
         // Setup web view.
         webProfile = (WebView) findViewById(R.id.web_profile);
         profileSettings = webProfile.getSettings();
         profileSettings.setJavaScriptEnabled(true);
+
+        // Set up client to get input from web view.
+        webProfile.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView view, String url) {
+                // Once the page has finished loading dismiss progress dialog.
+                pd.dismiss();
+            }
+        });
+
+        // Load Url.
         webProfile.loadUrl(GlobalKeys.PROFILE_URL + "?id=" + Preferences.getInt(GlobalKeys.ID) + "&auth_key=" + Preferences.getString(GlobalKeys.KEY));
     }
 

@@ -16,6 +16,8 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_forgot">Forgot</string>
     <string name="title_activity_user_info">User Info</string>
+    <string name="webview_loading">Loading...</string>
+
 
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>

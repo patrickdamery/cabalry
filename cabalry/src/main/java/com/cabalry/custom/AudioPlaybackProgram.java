@@ -38,27 +38,39 @@ public class AudioPlaybackProgram {
 
             // Define ip address to connect to
             ip = InetAddress.getByName(Preferences.getIP());
-
-            // Setup socket to connect to server
-            Logger.log("Connect to server");
-            client = new Socket(ip, listenPort);
-            client.setSoTimeout(15000);
-
-            // Define data input stream
-            Logger.log("Get DataInput Stream from server");
-            dis = new DataInputStream(client.getInputStream());
-
             do {
-                dis.readFully(buffer);
-                audioPlayer.write(buffer, 0, buffer.length);
-            } while(isPlaying);
+                try {
+                    Logger.log("Attempting to connect to server");
 
-            dis.close();
-            client.close();
+                    // Setup socket to connect to server.
+                    client = new Socket(ip, listenPort);
+                    client.setSoTimeout(15000);
+
+                    // Define data input stream.
+                    Logger.log("Get DataInput Stream from server");
+                    dis = new DataInputStream(client.getInputStream());
+
+                    do {
+                        // Get data from input stream.
+                        Logger.log("Getting Data");
+                        dis.readFully(buffer);
+
+                        // Write audio to speakers.
+                        audioPlayer.write(buffer, 0, buffer.length);
+                    } while (isPlaying);
+
+                    // Close all connections.
+                    dis.close();
+                    client.close();
+                } catch (ConnectException ce) {
+                    Logger.log("Failed connection trying again.");
+                }
+            } while (isPlaying);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void stopPlayback() {

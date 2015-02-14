@@ -1,9 +1,7 @@
 package com.cabalry.custom;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
+
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -52,7 +50,13 @@ public class AudioStreamProgram {
 
                         // Putting buffer in the packet.
                         packet = new DatagramPacket (buffer,buffer.length,destination,port);
-                        socket.send(packet);
+                        try {
+                            //Try sending audio packet
+                            socket.send(packet);
+                        } catch (SocketException se) {
+                            //don't do anything just keep trying
+                            Logger.log("Lost Connection");
+                        }
                         Logger.log("MinBufferSize: " + minBufSize);
                     }
                     Logger.log("Ending");

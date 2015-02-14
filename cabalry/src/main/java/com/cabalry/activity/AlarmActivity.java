@@ -174,7 +174,7 @@ public class AlarmActivity extends CabalryMapActivity {
                     startService(streamer);
                 } else {
                     bStop.setText("Ignore");
-
+                    Logger.log("Starting the mudafuka!");
                     // Start audio playback service.
                     Intent playback = new Intent(getApplicationContext(), AudioPlaybackService.class);
                     startService(playback);

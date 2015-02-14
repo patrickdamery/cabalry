@@ -1,12 +1,15 @@
 package com.cabalry.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 import com.cabalry.R;
 import com.cabalry.db.GlobalKeys;
@@ -24,6 +27,7 @@ public class RecordingsActivity extends Activity {
     // Web view components.
     WebView webRecordings;
     WebSettings recordingsSettings;
+    ProgressDialog pd;
 
     /**
      * Initializes activity components.
@@ -46,12 +50,32 @@ public class RecordingsActivity extends Activity {
             return;
         }
 
+        // Progress Dialog to show while web view is loading.
+        pd = new ProgressDialog(this);
+        pd.setMessage(getResources().getString(R.string.webview_loading));
+        pd.show();
+
         // Setup web view.
         webRecordings = (WebView) findViewById(R.id.web_recordings);
         recordingsSettings = webRecordings.getSettings();
         recordingsSettings.setJavaScriptEnabled(true);
-        webRecordings.loadUrl(GlobalKeys.RECORDINGS_URL + "?id=" + Preferences.getID() + "&auth_key=" + Preferences.getKey());
 
+        // Set up client to get input from web view.
+        webRecordings.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView view, String url) {
+                // Once the page has finished loading dismiss progress dialog.
+                pd.dismiss();
+            }
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // If a link is clicked on open in default browser.
+                    view.getContext().startActivity(
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
+            }
+        });
+
+        // Load Url.
+        webRecordings.loadUrl(GlobalKeys.RECORDINGS_URL + "?id=" + Preferences.getID() + "&auth_key=" + Preferences.getKey());
     }
 
     @Override
