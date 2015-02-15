@@ -16,7 +16,7 @@ public class Util {
 
     public static final double LOCATION_THRESHOLD = 10;
 
-    /*public static boolean hasActiveInternetConnection(Context context) {
+    public static boolean hasActiveInternetConnection(Context context) {
         if (isNetworkAvailable(context)) {
             try {
                 HttpURLConnection urlc = (HttpURLConnection)
@@ -42,53 +42,28 @@ public class Util {
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }*/
+    }
 
-    public static boolean hasActiveInternetConnection(Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
+    public static double getDistance(LatLng a, LatLng b) {
 
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        int R = 6371000; // metres
+        double lat1 = Math.toRadians(a.latitude);
+        double lat2 = Math.toRadians(b.latitude);
+        double dLng = Math.toRadians(b.longitude-a.longitude);
+
+        return Math.acos(Math.sin(lat1)*Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2) * Math.cos(dLng)) * R;
     }
 
     public static float getBearing(LatLng a, LatLng b) {
-        return (float)(Math.toDegrees(Math.atan2(b.latitude-a.latitude, b.longitude-a.longitude)) - 90);
-    }
+        double lat1 = Math.toRadians(a.latitude);
+        double lat2 = Math.toRadians(b.latitude);
+        double lng1 = Math.toRadians(a.longitude);
+        double lng2 = Math.toRadians(b.longitude);
 
-    public static boolean useCurrentLocation(LatLng current, LatLng previous, double threshold) {
+        double y = Math.sin(lng2-lng1) * Math.cos(lat2);
+        double x = Math.cos(lat1)*Math.sin(lat2) -
+                Math.sin(lat1)*Math.cos(lat2)*Math.cos(lng2-lng1);
 
-        if(current.latitude > previous.latitude+threshold ||
-                current.latitude < previous.latitude-threshold) {
-
-            if(current.longitude > previous.longitude+threshold ||
-                    current.longitude < previous.longitude-threshold) {
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static LatLng getPreferredLocation(LatLng a, LatLng b, LatLng c) {
-
-        if(Util.useCurrentLocation(a, b, Util.LOCATION_THRESHOLD)) {
-            if(Util.useCurrentLocation(a, c, Util.LOCATION_THRESHOLD)) {
-                return a;
-            } else {
-                return c;
-            }
-        } else {
-            return b;
-        }
+        return (float)Math.toDegrees(Math.atan2(y, x));
     }
 }

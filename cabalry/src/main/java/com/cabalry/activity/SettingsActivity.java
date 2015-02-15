@@ -36,17 +36,28 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.activity_settings);
 
         // Check if user still has connection.
-        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+        new AsyncTask<Void, Void, Boolean>() {
 
-            // User has no available internet connection.
-            Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
-                    Toast.LENGTH_LONG).show();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
 
-            // return to login.
-            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(login);
-            return;
-        }
+                return !Util.hasActiveInternetConnection(getApplicationContext());
+            }
+
+            protected void onPostExecute(Boolean result) {
+
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login.",
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                    return;
+                }
+            }
+        }.execute();
 
         // Progress Dialog to show while web view is loading.
         pd = new ProgressDialog(this);
@@ -75,17 +86,28 @@ public class SettingsActivity extends Activity {
         super.onResume();
 
         // Check if user still has connection.
-        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+        new AsyncTask<Void, Void, Boolean>() {
 
-            // User has no available internet connection.
-            Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
-                    Toast.LENGTH_LONG).show();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
 
-            // return to login.
-            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(login);
-            return;
-        }
+                return !Util.hasActiveInternetConnection(getApplicationContext());
+            }
+
+            protected void onPostExecute(Boolean result) {
+
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login.",
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                    return;
+                }
+            }
+        }.execute();
     }
 
     @Override

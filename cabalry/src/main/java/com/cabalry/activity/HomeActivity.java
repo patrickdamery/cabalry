@@ -86,6 +86,47 @@ public class HomeActivity extends Activity {
             }
         }.execute();
 
+        /*new AsyncTask<Void, Void, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+
+                JSONObject result = DB.alarm(Preferences.getID(), Preferences.getKey());
+
+                try {
+                    if(result.getBoolean(GlobalKeys.SUCCESS)) {
+
+                        int alarmID = result.getInt(GlobalKeys.ALARM_ID);
+                        Preferences.setCachedAlarmId(Preferences.getAlarmId());
+                        Preferences.setAlarmId(alarmID);
+                        return true;
+
+                    } else {
+                        Preferences.setCachedAlarmId(0);
+                        Preferences.setAlarmId(0);
+                        Logger.log("Could not start alarm!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result) {
+                    // Start alarm activity.
+                    Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
+                    startActivity(alarm);
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Unable to start alarm please check your billing.",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();*/
+
         // Saves current settings.
         SettingsActivity.saveSettings();
 

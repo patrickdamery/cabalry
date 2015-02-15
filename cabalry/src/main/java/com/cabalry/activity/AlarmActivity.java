@@ -210,6 +210,9 @@ public class AlarmActivity extends CabalryMapActivity {
         AudioPlaybackService.stopAudioPlayback();
         AudioStreamService.stopAudioStream();
 
+        stopService(new Intent(AlarmActivity.this, AudioStreamService.class));
+        stopService(new Intent(AlarmActivity.this, AudioPlaybackService.class));
+
         // return to home.
         Intent home = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(home);
@@ -224,6 +227,9 @@ public class AlarmActivity extends CabalryMapActivity {
 
         AudioPlaybackService.stopAudioPlayback();
         AudioStreamService.stopAudioStream();
+
+        stopService(new Intent(AlarmActivity.this, AudioStreamService.class));
+        stopService(new Intent(AlarmActivity.this, AudioPlaybackService.class));
 
         // return to home.
         Intent home = new Intent(getApplicationContext(), HomeActivity.class);
@@ -251,7 +257,13 @@ public class AlarmActivity extends CabalryMapActivity {
     }
 
     @Override
-    public void onBackPressed() { }
+    public void onBackPressed() {
+        // Minimize app.
+        Intent main = new Intent(Intent.ACTION_MAIN);
+        main.addCategory(Intent.CATEGORY_HOME);
+        main.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(main);
+    }
 
     /**
      * Fetches alerted locations and sorts them into an array list.

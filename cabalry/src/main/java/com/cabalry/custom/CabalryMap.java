@@ -101,8 +101,7 @@ public class CabalryMap implements OnMapReadyCallback {
                 if(location.id == id) {
 
                     if(location.type != getLocation(id).type) {
-                        getMarker(id).setIcon(BitmapDescriptorFactory.defaultMarker(
-                                CabalryLocation.getHUE(location.type)));
+                        getMarker(id).setIcon(CabalryLocation.getIcon(location.type));
                     }
 
                     moveMarker(location);

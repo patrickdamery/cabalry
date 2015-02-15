@@ -1,5 +1,7 @@
 package com.cabalry.custom;
 
+import com.cabalry.R;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,27 +36,27 @@ public class CabalryLocation {
                 .snippet("ID:"+id)
                 .draggable(false)
                 .title(getTitle(type))
-                .icon(BitmapDescriptorFactory.defaultMarker(getHUE(type)));
+                .icon(getIcon(type));
 
         return markerOptions;
     }
 
-    public static float getHUE(int type) {
+    public static BitmapDescriptor getIcon(int type) {
         switch(type) {
             case USER:
-                return BitmapDescriptorFactory.HUE_AZURE;
+                return BitmapDescriptorFactory.fromResource(R.drawable.m_user);
 
             case USER_NEARBY:
-                return BitmapDescriptorFactory.HUE_GREEN;
+                return BitmapDescriptorFactory.fromResource(R.drawable.m_near);
 
             case USER_ALERT:
-                return BitmapDescriptorFactory.HUE_RED;
+                return BitmapDescriptorFactory.fromResource(R.drawable.m_alert);
 
             case USER_ALERTED:
-                return BitmapDescriptorFactory.HUE_ORANGE;
+                return BitmapDescriptorFactory.fromResource(R.drawable.m_alerted);
         }
 
-        return 0;
+        return BitmapDescriptorFactory.fromResource(R.drawable.m_user);
     }
 
     public static String getTitle(int type) {

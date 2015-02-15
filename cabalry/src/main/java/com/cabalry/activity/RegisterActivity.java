@@ -2,6 +2,7 @@ package com.cabalry.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -31,17 +32,28 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.activity_register);
 
         // Check if user still has connection.
-        if(!Util.hasActiveInternetConnection(getApplicationContext())) {
+        new AsyncTask<Void, Void, Boolean>() {
 
-            // User has no available internet connection.
-            Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
-                    Toast.LENGTH_LONG).show();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
 
-            // return to login.
-            Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(login);
-            return;
-        }
+                return !Util.hasActiveInternetConnection(getApplicationContext());
+            }
+
+            protected void onPostExecute(Boolean result) {
+
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login.",
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(login);
+                    return;
+                }
+            }
+        }.execute();
 
         // Setup web view.
         webRegister = (WebView) findViewById(R.id.web_register);

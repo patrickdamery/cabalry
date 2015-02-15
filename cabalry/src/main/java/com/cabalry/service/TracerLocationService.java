@@ -39,12 +39,11 @@ public class TracerLocationService extends Service {
             public void onUpdateLocation(Location location) {
                 previousLocation = currentLocation;
                 currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                storedLocation = Preferences.getStoredLocation();
-
-                currentLocation = Util.getPreferredLocation(currentLocation, storedLocation, previousLocation);
 
                 // Store location.
                 Preferences.setStoredLocation(currentLocation);
+
+                if(Util.getDistance(currentLocation, previousLocation) < Util.LOCATION_THRESHOLD) return;
 
                 new AsyncTask<Void, Void, Void>() {
                     @Override
