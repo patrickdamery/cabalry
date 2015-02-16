@@ -65,7 +65,7 @@ public class RegisterActivity extends Activity {
     @Override
     public void onBackPressed() {
         // return to home.
-        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(home);
+        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(login);
     }
 }

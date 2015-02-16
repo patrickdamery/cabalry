@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import com.cabalry.R;
-import com.cabalry.activity.AlarmNotificationActivity;
+import com.cabalry.activity.AlarmActivity;
 import com.cabalry.utils.Logger;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.utils.Preferences;
@@ -77,11 +77,12 @@ public class GCMIntentService extends IntentService {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AlarmNotificationActivity.class), 0);
+                new Intent(this, AlarmActivity.class), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        //.setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.m_alert)
                         .setContentTitle("Cabalry Alarm")
                         .setAutoCancel(true)
                         .setStyle(new NotificationCompat.BigTextStyle()

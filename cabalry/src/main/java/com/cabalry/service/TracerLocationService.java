@@ -22,7 +22,6 @@ public class TracerLocationService extends Service {
     private TracerLocationProgram tracerProgram;
     private static LatLng currentLocation = new LatLng(0, 0);
     private static LatLng previousLocation = new LatLng(0, 0);
-    private static LatLng storedLocation = new LatLng(0, 0);
 
     private boolean running = false;
 

@@ -86,26 +86,17 @@ public class HomeActivity extends Activity {
             }
         }.execute();
 
-        /*new AsyncTask<Void, Void, Boolean>() {
+        new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... voids) {
 
-                JSONObject result = DB.alarm(Preferences.getID(), Preferences.getKey());
+                JSONObject result = DB.checkBilling(Preferences.getID(), Preferences.getKey());
 
                 try {
-                    if(result.getBoolean(GlobalKeys.SUCCESS)) {
-
-                        int alarmID = result.getInt(GlobalKeys.ALARM_ID);
-                        Preferences.setCachedAlarmId(Preferences.getAlarmId());
-                        Preferences.setAlarmId(alarmID);
+                    if(result.getBoolean(GlobalKeys.SUCCESS))
                         return true;
 
-                    } else {
-                        Preferences.setCachedAlarmId(0);
-                        Preferences.setAlarmId(0);
-                        Logger.log("Could not start alarm!");
-                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -115,17 +106,12 @@ public class HomeActivity extends Activity {
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(result) {
-                    // Start alarm activity.
-                    Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
-                    startActivity(alarm);
-                } else {
-
-                    Toast.makeText(getApplicationContext(), "Unable to start alarm please check your billing.",
+                if(!result) {
+                    Toast.makeText(getApplicationContext(), "There is a problem with your billing.",
                             Toast.LENGTH_LONG).show();
                 }
             }
-        }.execute();*/
+        }.execute();
 
         // Saves current settings.
         SettingsActivity.saveSettings();

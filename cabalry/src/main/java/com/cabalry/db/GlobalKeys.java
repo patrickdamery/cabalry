@@ -38,6 +38,7 @@ public class GlobalKeys {
 
     public static final String CABALRY_IP = "cabalry.com";
     public static final String LOGIN_URL = "https://"+CABALRY_IP+"/cabalry/login.php";
+    public static final String CHECKBILLING_URL = "https://"+CABALRY_IP+"/cabalry/checkBilling.php";
     public static final String CHECKPASS_URL = "https://"+CABALRY_IP+"/cabalry/checkPassword.php";
     public static final String ALARM_URL = "https://"+CABALRY_IP+"/cabalry/startAlarm.php";
     public static final String ALARMLIST_URL = "https://"+CABALRY_IP+"/cabalry/alarmList.php";
@@ -51,6 +52,7 @@ public class GlobalKeys {
     public static final String GCM_URL = "https://"+CABALRY_IP+"/cabalry/updateGCM.php";
     public static final String NEARBY_URL = "https://"+CABALRY_IP+"/cabalry/nearby.php";
     public static final String USERINFO_URL = "https://"+CABALRY_IP+"/cabalry/userInfo.php";
+    public static final String LOGOUT_URL = "https://"+CABALRY_IP+"/cabalry/logout.php";
     public static final String REGISTER_URL = "https://"+CABALRY_IP+"/register.php";
     public static final String FORGOT_URL = "https://"+CABALRY_IP+"/forgot.php";
     public static final String BILLING_URL = "https://"+CABALRY_IP+"/billing.php";

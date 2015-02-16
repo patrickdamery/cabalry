@@ -168,13 +168,12 @@ public class AlarmActivity extends CabalryMapActivity {
                 if(selfActivated) {
                     bStop.setText("Stop");
 
-                    Logger.log("Starting");
                     // Start audio stream service.
                     Intent streamer = new Intent(getApplicationContext(), AudioStreamService.class);
                     startService(streamer);
                 } else {
                     bStop.setText("Ignore");
-                    Logger.log("Starting the mudafuka!");
+
                     // Start audio playback service.
                     Intent playback = new Intent(getApplicationContext(), AudioPlaybackService.class);
                     startService(playback);
@@ -294,7 +293,7 @@ public class AlarmActivity extends CabalryMapActivity {
         }
 
         // Query DB for alerted locations.
-        JSONObject alarmInfo = DB.getAlarmInfo(alarmID, Preferences.getID(), Preferences.getKey());
+        JSONObject alarmInfo = DB.getAlarmList(alarmID, Preferences.getID(), Preferences.getKey());
 
         try {
             if(alarmInfo.getBoolean(GlobalKeys.SUCCESS)) {
@@ -359,10 +358,6 @@ public class AlarmActivity extends CabalryMapActivity {
                 } else if(location.id == id) {
                     alertLocation = location.location;
                 }
-            }
-
-            if(userLocation != null && alertLocation != null) {
-                getMap().setRoute(userLocation, alertLocation);
             }
         }
 

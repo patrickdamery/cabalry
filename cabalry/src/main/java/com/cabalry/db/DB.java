@@ -35,6 +35,46 @@ public class DB {
     }
 
     /***
+     * Function that logs user out of Cabalry
+     * @param id of user
+     * @param key of user
+     * @return JSON object that contains:
+     *          success : returns true if successfully logged out
+     */
+    public static JSONObject logout(final int id, final String key) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.LOGOUT_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
+     * Function that returns billing state of user
+     * @param id of user
+     * @param key of user
+     * @return JSON object that contains:
+     *          success : returns true if billing is ok, false otherwise
+     */
+    public static JSONObject checkBilling(final int id, final String key) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.CHECKBILLING_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
      * Function checks password for user
      * @param id of user
      * @param key of user
@@ -200,6 +240,7 @@ public class DB {
      * @param key of user
      * @return JSON object that contains:
      *          success : returns true if information is found
+     *          state : state of alarm
      *			sent : JSON array of locations of user's that were alerted
      */
     public static JSONObject getAlarmList(final int alarmId, final int id, final String key) {
@@ -244,7 +285,7 @@ public class DB {
      * @param id of user
      * @param key of user
      * @return JSON object that contains:
-     *          success : returns true if removed successfully
+     *          success : returns true if removed? successfully
      */
     public static JSONObject addToAlarm(final int alarmId, final int id, final String key) {
         // Building Parameters

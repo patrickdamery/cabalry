@@ -212,15 +212,6 @@ public class CabalryMap implements OnMapReadyCallback {
         locations.put(location.id, location);
     }
 
-    public void setRoute(LatLng a, LatLng b) {
-        removeRoute();
-        currentRoute = googleMap.addPolyline(new PolylineOptions()
-                .add(a, b)
-                .geodesic(true)
-                .color(Color.RED)
-        );
-    }
-
     public void removeRoute() {
         if(currentRoute != null) {
             currentRoute.remove();

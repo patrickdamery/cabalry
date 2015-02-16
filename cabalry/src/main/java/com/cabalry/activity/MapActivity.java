@@ -109,13 +109,38 @@ public class MapActivity extends CabalryMapActivity {
         bLastAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int lastAlarmID = Preferences.getCachedAlarmId();
-                if(lastAlarmID > 0) {
-                    Preferences.setAlarmId(lastAlarmID);
-                    // launch alarm map.
-                    Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
-                    startActivity(alarm);
-                }
+
+                final int lastAlarmID = Preferences.getCachedAlarmId();
+                if(lastAlarmID == 0) return;
+
+                new AsyncTask<Void, Void, Boolean>() {
+
+                    @Override
+                    protected Boolean doInBackground(Void... voids) {
+
+                        JSONObject result = DB.addToAlarm(lastAlarmID, Preferences.getID(), Preferences.getKey());
+
+                        try {
+                            if(result.getBoolean(GlobalKeys.SUCCESS))
+                                return true;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        return false;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if(result) {
+                            Preferences.setAlarmId(lastAlarmID);
+                            // launch alarm map.
+                            Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
+                            startActivity(alarm);
+                        }
+                    }
+                }.execute();
             }
         });
 

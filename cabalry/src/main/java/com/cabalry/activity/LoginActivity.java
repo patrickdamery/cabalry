@@ -10,9 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.cabalry.R;
+import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
+import com.cabalry.utils.Util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,7 +67,25 @@ public class LoginActivity extends Activity {
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                // Check if user still has connection.
+                new AsyncTask<Void, Void, Boolean>() {
+
+                    @Override
+                    protected Boolean doInBackground(Void... voids) {
+
+                        return !Util.hasActiveInternetConnection(getApplicationContext());
+                    }
+
+                    protected void onPostExecute(Boolean result) {
+                        if(!result) {
+                            // User has no available internet connection.
+                            Toast.makeText(getApplicationContext(), "Please connect to the internet and try again.",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            login();
+                        }
+                    }
+                }.execute();
             }
         });
     }
@@ -90,6 +110,25 @@ public class LoginActivity extends Activity {
         Preferences.setString(GlobalKeys.KEY, "");
         Preferences.setBoolean(GlobalKeys.LOGIN, false);
         Preferences.setString(GlobalKeys.PROPERTY_REG_ID, "");
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                JSONObject result = DB.logout(Preferences.getID(), Preferences.getKey());
+
+                try {
+                    if(!result.getBoolean(GlobalKeys.SUCCESS))
+                        Logger.log("There was a problem when logging user out of server!");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        }.execute();
     }
 
     /**
