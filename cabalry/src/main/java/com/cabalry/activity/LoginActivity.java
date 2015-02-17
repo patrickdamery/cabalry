@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.cabalry.R;
+import com.cabalry.service.LocationTracerService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.cabalry.db.DB;
@@ -104,7 +105,6 @@ public class LoginActivity extends Activity {
      * Resets preferences data.
      */
     private void logout() {
-
         if(Preferences.getID() != 0 && !Preferences.getKey().equals("")) {
             new AsyncTask<Void, Void, Void>() {
 
@@ -125,6 +125,8 @@ public class LoginActivity extends Activity {
                 }
             }.execute();
         }
+
+        stopService(new Intent(LoginActivity.this, LocationTracerService.class));
 
         // Reset user login data.
         Preferences.setInt(GlobalKeys.ID, 0);

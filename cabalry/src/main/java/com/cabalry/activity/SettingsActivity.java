@@ -10,7 +10,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 import com.cabalry.R;
-import com.cabalry.service.TracerLocationService;
 import com.cabalry.utils.Preferences;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.utils.Util;

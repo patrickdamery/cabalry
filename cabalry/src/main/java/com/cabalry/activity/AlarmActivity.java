@@ -16,7 +16,7 @@ import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.service.AudioPlaybackService;
 import com.cabalry.service.AudioStreamService;
-import com.cabalry.service.TracerLocationService;
+import com.cabalry.service.LocationTracerService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.google.android.gms.maps.MapFragment;
@@ -285,7 +285,7 @@ public class AlarmActivity extends CabalryMapActivity {
         // Add this user in case of selfActivated
         if(selfActivated) {
             locations.add(new CabalryLocation(Preferences.getID(),
-                    TracerLocationService.getCurrentLocation(), CabalryLocation.USER_ALERT));
+                    LocationTracerService.getCurrentLocation(), CabalryLocation.USER_ALERT));
         } else {
 
             JSONObject userAlert = DB.getLocation(id, Preferences.getID(), Preferences.getKey());

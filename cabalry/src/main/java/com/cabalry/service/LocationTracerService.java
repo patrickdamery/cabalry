@@ -17,9 +17,9 @@ import org.json.JSONObject;
 /**
  * Created by conor on 29/01/15.
  */
-public class TracerLocationService extends Service {
+public class LocationTracerService extends Service {
 
-    private TracerLocationProgram tracerProgram;
+    private LocationTracerProgram tracerProgram;
     private static LatLng currentLocation = new LatLng(0, 0);
     private static LatLng previousLocation = new LatLng(0, 0);
 
@@ -33,7 +33,7 @@ public class TracerLocationService extends Service {
         // Initialize preferences.
         Preferences.initialize(getApplicationContext());
 
-        TracerLocationListener tracerListener = new TracerLocationListener() {
+        LocationTracerListener tracerListener = new LocationTracerListener() {
             @Override
             public void onUpdateLocation(Location location) {
                 previousLocation = currentLocation;
@@ -71,8 +71,8 @@ public class TracerLocationService extends Service {
             public void onStopLocationTracer() { }
         };
 
-        tracerProgram = new TracerLocationProgram(this, tracerListener);
-        tracerProgram.startLocationUpdates(TracerLocationProgram.GPS_NETWORK, 0, 0);
+        tracerProgram = new LocationTracerProgram(this, tracerListener);
+        tracerProgram.startLocationUpdates(LocationTracerProgram.GPS_NETWORK, 0, 0);
     }
 
     @Override

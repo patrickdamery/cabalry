@@ -12,7 +12,7 @@ import com.cabalry.custom.CabalryLocationListener;
 import com.cabalry.custom.CabalryMapActivity;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
-import com.cabalry.service.TracerLocationService;
+import com.cabalry.service.LocationTracerService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Util;
 import com.cabalry.utils.Preferences;
@@ -77,7 +77,7 @@ public class MapActivity extends CabalryMapActivity {
         Preferences.initialize(getApplicationContext());
 
         // Start tracer service.
-        Intent tracer = new Intent(getApplicationContext(), TracerLocationService.class);
+        Intent tracer = new Intent(getApplicationContext(), LocationTracerService.class);
         startService(tracer);
 
         bNearby = (Button) findViewById(R.id.bNearby);
@@ -159,7 +159,7 @@ public class MapActivity extends CabalryMapActivity {
         };
 
         // Initialize locations.
-        currentLocation = TracerLocationService.getStoredLocation();
+        currentLocation = LocationTracerService.getStoredLocation();
         previousLocation = currentLocation;
 
         // Initializes cabalry map with fragment and listener.
@@ -270,8 +270,8 @@ public class MapActivity extends CabalryMapActivity {
         ArrayList<CabalryLocation> locations = new ArrayList<CabalryLocation>();
 
         // Load locations.
-        currentLocation = TracerLocationService.getCurrentLocation();
-        previousLocation = TracerLocationService.getPreviousLocation();
+        currentLocation = LocationTracerService.getCurrentLocation();
+        previousLocation = LocationTracerService.getPreviousLocation();
 
         // Add user location.
         locations.add(new CabalryLocation(Preferences.getID(), currentLocation, CabalryLocation.USER));

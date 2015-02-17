@@ -9,7 +9,7 @@ import android.os.Bundle;
 /**
  * Created by conor on 18/01/15.
  */
-public class TracerLocationProgram {
+public class LocationTracerProgram {
 
     public static final int NETWORK = 0;
     public static final int GPS = 1;
@@ -17,7 +17,7 @@ public class TracerLocationProgram {
 
     private static final int TWO_MINUTES = 1000 * 60 * 2;
 
-    private TracerLocationListener tracerListener;
+    private LocationTracerListener tracerListener;
 
     private LocationManager locationManager;
     private LocationListener gpsListener;
@@ -27,7 +27,7 @@ public class TracerLocationProgram {
 
     private static Location currentBestLocation;
 
-    public TracerLocationProgram(Context context, TracerLocationListener tracerListener) {
+    public LocationTracerProgram(Context context, LocationTracerListener tracerListener) {
         // Acquire a reference to the system Location Manager.
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
@@ -70,15 +70,15 @@ public class TracerLocationProgram {
         this.level = level;
 
         switch(level) {
-            case TracerLocationProgram.NETWORK:
+            case LocationTracerProgram.NETWORK:
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, netListener);
             break;
 
-            case TracerLocationProgram.GPS:
+            case LocationTracerProgram.GPS:
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
             break;
 
-            case TracerLocationProgram.GPS_NETWORK:
+            case LocationTracerProgram.GPS_NETWORK:
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, netListener);
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
             break;
@@ -94,15 +94,15 @@ public class TracerLocationProgram {
 
             // Remove the listener you previously added.
             switch(level) {
-                case TracerLocationProgram.NETWORK:
+                case LocationTracerProgram.NETWORK:
                     locationManager.removeUpdates(netListener);
                 break;
 
-                case TracerLocationProgram.GPS:
+                case LocationTracerProgram.GPS:
                     locationManager.removeUpdates(gpsListener);
                 break;
 
-                case TracerLocationProgram.GPS_NETWORK:
+                case LocationTracerProgram.GPS_NETWORK:
                     locationManager.removeUpdates(gpsListener);
                     locationManager.removeUpdates(netListener);
                 break;

@@ -14,13 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
 import com.cabalry.*;
-import com.cabalry.service.AlarmTimerService;
-import com.cabalry.service.AudioStreamService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
-import com.cabalry.service.TracerLocationService;
+import com.cabalry.service.LocationTracerService;
 import com.cabalry.utils.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -117,7 +115,7 @@ public class HomeActivity extends Activity {
         SettingsActivity.saveSettings();
 
         // Start tracer service.
-        Intent tracer = new Intent(getApplicationContext(), TracerLocationService.class);
+        Intent tracer = new Intent(getApplicationContext(), LocationTracerService.class);
         startService(tracer);
 
         // Register GCM.

@@ -8,18 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.webkit.*;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.cabalry.R;
 import com.cabalry.db.GlobalKeys;
-import com.cabalry.service.TracerLocationService;
-import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.cabalry.utils.Util;
 
@@ -95,7 +88,7 @@ public class RecordingsActivity extends Activity {
         webRecordings.setWebChromeClient(new WebChromeClient(){
             @Override
             public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
-                Logger.log("Hello there!!");
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder (view.getContext ());
 
                 builder. setMessage(message);
@@ -114,7 +107,12 @@ public class RecordingsActivity extends Activity {
                     public void onClick (DialogInterface dialog, int which) {
                         result.cancel();
                     }
-                });
+                }).setOnCancelListener(
+                        new DialogInterface.OnCancelListener() {
+                            public void onCancel(DialogInterface dialog) {
+                                result.cancel();
+                            }
+                        });
                 builder.show();
                 return true;
             }
