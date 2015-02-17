@@ -15,38 +15,33 @@
                 android:layout_height="180dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"/>
-        <Button
-                android:layout_width="wrap_content"
+        <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:text="@string/alarm"
-                android:background="@drawable/alarm"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#fff"
-                android:padding="15dp"
-                android:layout_marginBottom="30dp"
-                android:id="@+id/bAlarm"/>
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="80dp">
+                android:orientation="horizontal"
+                android:layout_marginBottom="80dp"
+                android:layout_gravity="center|bottom">
         <ToggleButton
                 android:id="@+id/toggleTimer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableTop="@drawable/timer"
-                android:paddingRight="60dp"
-                android:paddingLeft="60dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:layout_gravity="center"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/toggle"
                 android:textOff=""
                 android:textOn=""
-                android:textSize="0dp" />
-
-        </LinearLayout>
+                android:textSize="0dp"/>
+        <Button
+                android:id="@+id/bAlarm"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/alarm_button"
+                android:text=""
+                android:textSize="0dp"/>
+        </RelativeLayout>
 
     </FrameLayout>
     <!-- The navigation drawer -->

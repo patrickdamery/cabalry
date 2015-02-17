@@ -1,20 +1,25 @@
 package com.cabalry.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.View;
+import android.webkit.*;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.cabalry.R;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.service.TracerLocationService;
+import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.cabalry.utils.Util;
 
@@ -83,6 +88,35 @@ public class RecordingsActivity extends Activity {
                     view.getContext().startActivity(
                             new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     return true;
+            }
+        });
+
+        // Set up chrome client to enable prompt
+        webRecordings.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
+                Logger.log("Hello there!!");
+                final AlertDialog.Builder builder = new AlertDialog.Builder (view.getContext ());
+
+                builder. setMessage(message);
+
+                final EditText et = new EditText (view.getContext ());
+                et.setSingleLine();
+                et.setText(defaultValue);
+                builder.setView(et);
+                builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.confirm(et.getText().toString());
+                    }
+
+                });
+                builder.setNegativeButton ("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick (DialogInterface dialog, int which) {
+                        result.cancel();
+                    }
+                });
+                builder.show();
+                return true;
             }
         });
 

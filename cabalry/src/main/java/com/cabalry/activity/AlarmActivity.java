@@ -61,6 +61,15 @@ public class AlarmActivity extends CabalryMapActivity {
         Preferences.initialize(getApplicationContext());
 
         bStop = (Button) findViewById(R.id.bStop);
+
+        // Check if it's not self activated so we can
+        // set the background images of buttons accordingly.
+        if(!selfActivated) {
+            // Set the stop button to ignore image
+            // TODO: Replace with real ignore image
+            bStop.setBackgroundResource(R.drawable.b_alarm);
+        }
+
         bStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

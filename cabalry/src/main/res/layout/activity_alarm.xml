@@ -12,9 +12,15 @@
           android:layout_height="match_parent"
           android:name="com.google.android.gms.maps.MapFragment"/>
 
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Alarm"
+    <Button android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:text=""
+            android:textSize="0dp"
+            android:background="@drawable/b_alarm"
             android:id="@+id/bStop"
-            android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

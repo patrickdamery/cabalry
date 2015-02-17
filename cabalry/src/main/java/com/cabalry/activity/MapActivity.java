@@ -86,12 +86,6 @@ public class MapActivity extends CabalryMapActivity {
             public void onClick(View view) {
                 isNearbyEnabled = !isNearbyEnabled;
 
-                if(isNearbyEnabled) {
-                    bNearby.setText("Hide");
-                } else {
-                    bNearby.setText("NearBy");
-                }
-
                 update();
             }
         });

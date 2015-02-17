@@ -77,7 +77,7 @@ public class LoginActivity extends Activity {
                     }
 
                     protected void onPostExecute(Boolean result) {
-                        if(!result) {
+                        if(result) {
                             // User has no available internet connection.
                             Toast.makeText(getApplicationContext(), "Please connect to the internet and try again.",
                                     Toast.LENGTH_LONG).show();
@@ -105,30 +105,32 @@ public class LoginActivity extends Activity {
      */
     private void logout() {
 
+        if(Preferences.getID() != 0 && !Preferences.getKey().equals("")) {
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+
+                    JSONObject result = DB.logout(Preferences.getID(), Preferences.getKey());
+
+                    try {
+                        if (!result.getBoolean(GlobalKeys.SUCCESS))
+                            Logger.log("There was a problem when logging user out of server!");
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    return null;
+                }
+            }.execute();
+        }
+
         // Reset user login data.
         Preferences.setInt(GlobalKeys.ID, 0);
         Preferences.setString(GlobalKeys.KEY, "");
         Preferences.setBoolean(GlobalKeys.LOGIN, false);
         Preferences.setString(GlobalKeys.PROPERTY_REG_ID, "");
-
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                JSONObject result = DB.logout(Preferences.getID(), Preferences.getKey());
-
-                try {
-                    if(!result.getBoolean(GlobalKeys.SUCCESS))
-                        Logger.log("There was a problem when logging user out of server!");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-        }.execute();
     }
 
     /**

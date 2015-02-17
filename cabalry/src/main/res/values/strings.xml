@@ -34,7 +34,7 @@
     <string name="mNearby">Nearby</string>
     <string name="alarm">Activate Alarm</string>
     <string name="timer">Timer</string>
-    <string name="google_maps_key">AIzaSyA9LRUQ2sQu5BU-wbRirEeYbz9b5b_l3pI</string>
+    <string name="google_maps_key">AIzaSyAS-e4Kk_DLUqyq0Py_6PhRudbuuS5doqA</string>
 
     <string-array name="menu_array">
         <item>Profile</item>

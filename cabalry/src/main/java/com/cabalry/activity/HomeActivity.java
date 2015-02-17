@@ -292,10 +292,6 @@ public class HomeActivity extends Activity {
 
             case 6:
                 // Logout and launch login.
-                Preferences.setBoolean(GlobalKeys.LOGIN, false);
-                Preferences.setString(GlobalKeys.KEY, "");
-                Preferences.setInt(GlobalKeys.ID, 0);
-
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 break;
