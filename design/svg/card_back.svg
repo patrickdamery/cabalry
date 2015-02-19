@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="card_back.svg"
+   inkscape:export-filename="/home/conor/Github/cabalry/design/png/back_card.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs4">
     <linearGradient
@@ -168,7 +171,7 @@
            height="75"
            x="110.71429"
            y="3.4533253" /></flowRegion><flowPara
-         id="flowPara3818"></flowPara></flowRoot>    <text
+         id="flowPara3818" /></flowRoot>    <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient3830);fill-opacity:1;stroke:none;font-family:Sans"
        x="113.57143"

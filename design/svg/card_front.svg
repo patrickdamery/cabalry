@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r"
-   sodipodi:docname="card_front.svg">
+   sodipodi:docname="card_front.svg"
+   inkscape:export-filename="/home/conor/Desktop/Link to cabalry/design/png/patrick_card.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs4">
     <linearGradient
@@ -362,9 +365,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="238.62393"
-     inkscape:cy="292.65488"
+     inkscape:zoom="1.3310807"
+     inkscape:cx="206.15958"
+     inkscape:cy="112.0821"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -410,15 +413,6 @@
        width="302.72876"
        id="rect3809-5"
        style="fill:url(#linearGradient3224);fill-opacity:1;stroke:none;" />
-    <rect
-       style="fill:#000000;fill-opacity:0.33488372;stroke:none"
-       id="rect3243"
-       width="282.76178"
-       height="174.75639"
-       x="10.415437"
-       y="867.57611"
-       ry="12.121831"
-       rx="10.606602" />
     <path
        style="opacity:0.23770492;fill:url(#linearGradient4028);fill-opacity:1;stroke:none"
        d="m 82.275644,882.46234 c -13.04967,0.084 -28.40725,3.48539 -43.28199,14.21983 0,0 7.11618,11.99112 7.11618,13.11049 l 0.73111,0.70596 c -3.14358,4.03586 -6.4711,8.74129 -6.58003,9.93371 -1.32652,5.02239 0.63576,7.76039 -1.41348,16.89232 -0.45981,4.847 -30.38669,38.13279 -2.53454,49.97123 0.17561,0.0653 0.2958,0.12394 0.38993,0.15231 12.41693,6.32068 13.93174,-9.10115 20.90989,-16.53975 7.28556,-7.76667 18.69438,-12.55953 25.78396,-18.85881 5.71089,42.67854 -29.71039,40.56704 -24.66294,70.59507 l 86.856406,-0.5045 c -0.35565,-1.7099 -0.41861,-13.4166 -1.70594,-28.84293 l 12.3802,-1.4624 c -0.91514,-17.92963 0.14928,-72.52115 -40.9424,-101.60621 -3.27601,-2.51682 -16.268226,-7.87203 -33.046356,-7.76544 z m -30.12193,37.71784 c 1.3265,-0.15589 2.77786,0.5347 3.46061,1.71448 1.09235,1.88764 0.78209,5.17764 -1.16978,6.05098 -4.27569,1.91303 -8.40275,8.54541 -8.13975,5.44591 0.40373,-4.7579 1.27898,-8.4156 3.75307,-11.95073 0.53448,-0.76372 1.29996,-1.16714 2.09585,-1.26064 z"
@@ -427,57 +421,57 @@
     <text
        xml:space="preserve"
        style="font-size:16.21144295px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#e4e4e4;fill-opacity:1;stroke:none;font-family:Sans"
-       x="172.48077"
+       x="158.95793"
        y="889.19568"
        id="text4084"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4086"
-         x="172.48077"
-         y="889.19568">Conor Damery</tspan></text>
+         x="158.95793"
+         y="889.19568">Patrick Damery</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:16.21144295px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#e4e4e4;fill-opacity:1;stroke:none;font-family:Sans"
-       x="256.3085"
+       x="248.04454"
        y="912.84784"
        id="text4088"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4090"
-         x="256.3085"
+         x="248.04454"
          y="912.84784">CEO</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:16.21144295px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#e4e4e4;fill-opacity:1;stroke:none;font-family:Sans"
-       x="145.0369"
+       x="114.98612"
        y="981.53967"
        id="text4092"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4094"
-         x="145.0369"
-         y="981.53967">mike@alonica.net</tspan></text>
+         x="114.98612"
+         y="981.53967">patrick@cabalry.com</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:16.21144295px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#e4e4e4;fill-opacity:1;stroke:none;font-family:Sans"
-       x="176.12202"
+       x="167.85806"
        y="1004.7709"
        id="text4096"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="176.12202"
+         x="167.85806"
          y="1004.7709"
-         id="tspan4100">085-105-7013</tspan></text>
+         id="tspan4100">087-449-4964</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:16.21144295px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#e4e4e4;fill-opacity:1;stroke:none;font-family:Sans"
-       x="187.46527"
+       x="179.20131"
        y="1026.1658"
        id="text4104"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4106"
-         x="187.46527"
+         x="179.20131"
          y="1026.1658">Cork, Ireland</tspan></text>
   </g>
 </svg>

@@ -10,9 +10,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 import com.cabalry.R;
+import com.cabalry.db.DB;
+import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.utils.Util;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by conor on 29/01/15.
@@ -122,17 +126,22 @@ public class SettingsActivity extends Activity {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                String fakePass = "1334";
-                int timer = 5;
-                int alertCount = 15;
-                int range = 20;
-                boolean silent = false;
+                JSONObject result = DB.getSettings(Preferences.getID(), Preferences.getKey());
 
-                Preferences.setString(GlobalKeys.FAKE_PASS, fakePass);
-                Preferences.setInt(GlobalKeys.TIMER, timer);
-                Preferences.setInt(GlobalKeys.ALERT_COUNT, alertCount);
-                Preferences.setInt(GlobalKeys.RANGE, range);
-                Preferences.setBoolean(GlobalKeys.SILENT, silent);
+                try {
+                    if(result.getBoolean(GlobalKeys.SUCCESS)) {
+
+                        Preferences.setString(GlobalKeys.FAKE_PASS, result.getString(GlobalKeys.FAKE_PASS));
+                        Preferences.setInt(GlobalKeys.TIMER, result.getInt(GlobalKeys.TIMER));
+                        Preferences.setInt(GlobalKeys.ALERT_COUNT, result.getInt(GlobalKeys.ALERT_COUNT));
+                        Preferences.setInt(GlobalKeys.RANGE, result.getInt(GlobalKeys.RANGE));
+                        Preferences.setBoolean(GlobalKeys.SILENT, result.getBoolean(GlobalKeys.SILENT));
+                    } else {
+                        Logger.log("Error while getting settings!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 return null;
             }

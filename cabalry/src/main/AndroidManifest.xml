@@ -65,19 +65,9 @@
         </activity>
 
         <activity
-                android:name=".activity.AlarmNotificationActivity"
-                android:label="@string/title_activity_alarm_notification"
-                android:screenOrientation="portrait"  >
-        </activity>
-
-        <activity
-                android:name=".activity.AlarmCancelActivity"
-                android:label="@string/title_activity_alarm_cancel"
+                android:name=".activity.TimerCheckActivity"
                 android:screenOrientation="portrait"
-                android:parentActivityName=".activity.AlarmActivity" >
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activity.AlarmActivity" />
+                android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
         <activity

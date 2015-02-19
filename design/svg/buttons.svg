@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r"
-   inkscape:export-filename="/home/conor/Desktop/Link to cabalry/design/png/timer_pressed.png"
+   inkscape:export-filename="/home/conor/Desktop/Link to cabalry/design/png/b_cancel.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
    sodipodi:docname="buttons.svg">
@@ -1097,6 +1097,24 @@
        y1="35.96143"
        x2="280.61716"
        y2="561.96368" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4754-6"
+       id="linearGradient4010"
+       x1="261.42859"
+       y1="45.779446"
+       x2="261.42859"
+       y2="534.93762"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4754-6"
+       id="linearGradient4021"
+       x1="256.13751"
+       y1="72.886681"
+       x2="256.13751"
+       y2="486.45743"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1105,9 +1123,9 @@
      borderopacity="0.49019608"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.125"
-     inkscape:cx="-63.378264"
-     inkscape:cy="-14.193549"
+     inkscape:zoom="0.25"
+     inkscape:cx="143.85429"
+     inkscape:cy="560.27432"
      inkscape:document-units="px"
      inkscape:current-layer="g3015"
      showgrid="false"
@@ -1141,6 +1159,12 @@
     <g
        id="g3015"
        transform="matrix(1.0243614,0,0,1.0243614,625.18337,-182.87506)">
+      <path
+         style="fill:none;stroke:url(#linearGradient4021);stroke-width:50.58200019000000225;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+         d="M 110.30866,110.36335 394.56558,394.62027"
+         id="path4012"
+         inkscape:connector-curvature="0"
+         transform="matrix(0.97621796,0,0,0.97621796,-610.31524,706.03719)" />
       <g
          style="fill:#bfbfbf;fill-opacity:1"
          transform="matrix(-0.99999999,0,0,-0.99999999,-1795.2018,-367.59969)"
@@ -1276,7 +1300,7 @@
       <g
          style="fill:url(#linearGradient4810);fill-opacity:1"
          id="g4309"
-         transform="matrix(27.839274,0,0,27.839287,-623.17669,-28751.665)">
+         transform="matrix(27.839274,0,0,27.839287,-537.26951,-28720.426)">
         <path
            inkscape:connector-curvature="0"
            id="path4269"
@@ -1343,6 +1367,16 @@
           </g>
         </g>
       </g>
+      <path
+         sodipodi:type="arc"
+         style="fill:none;stroke:url(#linearGradient4010);stroke-width:60.44183487;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="path3234"
+         sodipodi:cx="255.97266"
+         sodipodi:cy="257.44156"
+         sodipodi:rx="248.90158"
+         sodipodi:ry="248.90158"
+         d="m 504.87424,257.44156 a 248.90158,248.90158 0 1 1 -497.8031646,0 248.90158,248.90158 0 1 1 497.8031646,0 z"
+         transform="matrix(0.8169682,0,0,0.8169682,-569.52496,745.62742)" />
     </g>
   </g>
 </svg>

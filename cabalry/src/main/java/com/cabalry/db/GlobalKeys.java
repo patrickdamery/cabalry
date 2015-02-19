@@ -25,11 +25,12 @@ public class GlobalKeys {
     public static final String STATE_FINISHED = "finished";
     public static final String STATE_LOST = "lost";
 
-    public static final String FAKE_PASS = "fakePass";
+    public static final String FAKE_PASS = "fake";
     public static final String TIMER = "timer";
+    public static final String TIMER_ENABLED = "timerEnabled";
     public static final String SILENT = "silent";
-    public static final String ALERT_COUNT = "alertCount";
-    public static final String RANGE = "rage";
+    public static final String ALERT_COUNT = "quantity";
+    public static final String RANGE = "range";
 
     public static final String SENDER_ID = "200578369108";
     public static final String PROPERTY_REG_ID = "regId";
@@ -37,6 +38,7 @@ public class GlobalKeys {
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     public static final String CABALRY_IP = "cabalry.com";
+    public static final String GETSETTINGS_URL = "https://"+CABALRY_IP+"/cabalry/getSettings.php";
     public static final String LOGIN_URL = "https://"+CABALRY_IP+"/cabalry/login.php";
     public static final String CHECKBILLING_URL = "https://"+CABALRY_IP+"/cabalry/checkBilling.php";
     public static final String CHECKPASS_URL = "https://"+CABALRY_IP+"/cabalry/checkPassword.php";

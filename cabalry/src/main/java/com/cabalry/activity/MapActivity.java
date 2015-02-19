@@ -12,8 +12,10 @@ import com.cabalry.custom.CabalryLocationListener;
 import com.cabalry.custom.CabalryMapActivity;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
+import com.cabalry.service.AlarmService;
+import com.cabalry.service.AudioPlaybackService;
+import com.cabalry.service.AudioStreamService;
 import com.cabalry.service.LocationTracerService;
-import com.cabalry.utils.Logger;
 import com.cabalry.utils.Util;
 import com.cabalry.utils.Preferences;
 import com.google.android.gms.maps.MapFragment;
@@ -68,7 +70,6 @@ public class MapActivity extends CabalryMapActivity {
                     // return to login.
                     Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(login);
-                    return;
                 }
             }
         }.execute();
@@ -94,25 +95,12 @@ public class MapActivity extends CabalryMapActivity {
         bAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startAlarm();
-            }
-        });
-
-        bLastAlarm = (Button) findViewById(R.id.bLastAlarm);
-        if(Preferences.getCachedAlarmId() == 0) bLastAlarm.setVisibility(View.GONE);
-        bLastAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                final int lastAlarmID = Preferences.getCachedAlarmId();
-                if(lastAlarmID == 0) return;
-
                 new AsyncTask<Void, Void, Boolean>() {
 
                     @Override
                     protected Boolean doInBackground(Void... voids) {
 
-                        JSONObject result = DB.addToAlarm(lastAlarmID, Preferences.getID(), Preferences.getKey());
+                        JSONObject result = DB.checkBilling(Preferences.getID(), Preferences.getKey());
 
                         try {
                             if(result.getBoolean(GlobalKeys.SUCCESS))
@@ -127,11 +115,81 @@ public class MapActivity extends CabalryMapActivity {
 
                     @Override
                     protected void onPostExecute(Boolean result) {
+                        if(!result) {
+                            Toast.makeText(getApplicationContext(), "Cannot start alarm please check your billing.",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            startService(new Intent(getApplicationContext(), AlarmService.class));
+                        }
+                    }
+                }.execute();
+            }
+        });
+
+        bLastAlarm = (Button) findViewById(R.id.bLastAlarm);
+        if(Preferences.getCachedAlarmId() == 0) bLastAlarm.setVisibility(View.GONE);
+        bLastAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int lastAlarmID = Preferences.getCachedAlarmId();
+                if(lastAlarmID == 0) return;
+
+                new AsyncTask<Void, Void, Boolean>() {
+                    @Override
+                    protected Boolean doInBackground(Void... voids) {
+
+                        // Result from DB call.
+                        JSONObject result = DB.getAlarmInfo(lastAlarmID, Preferences.getID(), Preferences.getKey());
+
+                        try {
+                            if(result.getBoolean(GlobalKeys.SUCCESS)) {
+                                if(result.getInt(GlobalKeys.ID) == Preferences.getID()) {
+                                    return true;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        return false;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+
                         if(result) {
-                            Preferences.setAlarmId(lastAlarmID);
                             // launch alarm map.
                             Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
                             startActivity(alarm);
+                        } else {
+                            new AsyncTask<Void, Void, Boolean>() {
+
+                                @Override
+                                protected Boolean doInBackground(Void... voids) {
+
+                                    JSONObject result = DB.addToAlarm(lastAlarmID, Preferences.getID(), Preferences.getKey());
+
+                                    try {
+                                        if(result.getBoolean(GlobalKeys.SUCCESS))
+                                            return true;
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    return false;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Boolean result) {
+                                    if(result) {
+                                        Preferences.setAlarmId(lastAlarmID);
+                                        // launch alarm map.
+                                        Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
+                                        startActivity(alarm);
+                                    }
+                                }
+                            }.execute();
                         }
                     }
                 }.execute();
@@ -166,49 +224,6 @@ public class MapActivity extends CabalryMapActivity {
         initMap(mapFragment, listener);
     }
 
-    private void startAlarm() {
-        new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-
-                JSONObject result = DB.alarm(Preferences.getID(), Preferences.getKey());
-
-                try {
-                    if(result.getBoolean(GlobalKeys.SUCCESS)) {
-
-                        int alarmID = result.getInt(GlobalKeys.ALARM_ID);
-                        Preferences.setCachedAlarmId(Preferences.getAlarmId());
-                        Preferences.setAlarmId(alarmID);
-                        return true;
-
-                    } else {
-                        Preferences.setCachedAlarmId(0);
-                        Preferences.setAlarmId(0);
-                        Logger.log("Could not start alarm!");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                return false;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if(result) {
-                    // Start alarm activity.
-                    Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
-                    startActivity(alarm);
-                } else {
-
-                    Toast.makeText(getApplicationContext(), "Unable to start alarm please check your billing.",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        }.execute();
-    }
-
     /**
      * Starts timer which updates map locations.
      * Called every 5000 milliseconds
@@ -236,7 +251,6 @@ public class MapActivity extends CabalryMapActivity {
                     // return to login.
                     Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(login);
-                    return;
                 }
             }
         }.execute();
@@ -267,7 +281,7 @@ public class MapActivity extends CabalryMapActivity {
     protected ArrayList<CabalryLocation> updateCabalryLocations() {
 
         // Output list of location.
-        ArrayList<CabalryLocation> locations = new ArrayList<CabalryLocation>();
+        ArrayList<CabalryLocation> locations = new ArrayList<>();
 
         // Load locations.
         currentLocation = LocationTracerService.getCurrentLocation();

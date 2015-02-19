@@ -1,11 +1,14 @@
 package com.cabalry.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +17,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
 import com.cabalry.*;
+import com.cabalry.service.AlarmService;
+import com.cabalry.service.AlarmTimerService;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.cabalry.db.DB;
@@ -50,6 +55,11 @@ public class HomeActivity extends Activity {
     private String[] mMenuTitles;
     private TypedArray mMenuIcons;
 
+    private ToggleButton bTimer;
+    private Button bAlarm;
+
+    private static boolean hasCheckedGps = false;
+
     /**
      * Initializes activity components.
      */
@@ -61,17 +71,73 @@ public class HomeActivity extends Activity {
         // Initialize preferences.
         Preferences.initialize(getApplicationContext());
 
+        bTimer = (ToggleButton) findViewById(R.id.toggleTimer);
+        bAlarm = (Button) findViewById(R.id.bAlarm);
+
+        if(Preferences.getBoolean(GlobalKeys.TIMER_ENABLED)) {
+            bTimer.setChecked(true);
+        } else {
+            bTimer.setChecked(false);
+        }
+
+        bTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Preferences.setBoolean(GlobalKeys.TIMER_ENABLED, bTimer.isChecked());
+
+                if(Preferences.getBoolean(GlobalKeys.TIMER_ENABLED)) {
+                    startService(new Intent(getApplicationContext(), AlarmTimerService.class));
+                } else {
+                    AlarmTimerService.stopTimer();
+                    stopService(new Intent(HomeActivity.this, AlarmTimerService.class));
+                }
+            }
+        });
+
+        bAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AsyncTask<Void, Void, Boolean>() {
+
+                    @Override
+                    protected Boolean doInBackground(Void... voids) {
+
+                        JSONObject result = DB.checkBilling(Preferences.getID(), Preferences.getKey());
+
+                        try {
+                            if(result.getBoolean(GlobalKeys.SUCCESS))
+                                return true;
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        return false;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if(!result) {
+                            Toast.makeText(getApplicationContext(), "Cannot start alarm please check your billing.",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            startService(new Intent(getApplicationContext(), AlarmService.class));
+                        }
+                    }
+                }.execute();
+            }
+        });
+
         // Check if user still has connection.
         new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... voids) {
-
                 return !Util.hasActiveInternetConnection(getApplicationContext());
             }
 
             protected void onPostExecute(Boolean result) {
-
                 if(result) {
                     // User has no available internet connection.
                     Toast.makeText(getApplicationContext(), "Please re-connect to the internet and login again.",
@@ -114,6 +180,13 @@ public class HomeActivity extends Activity {
         // Saves current settings.
         SettingsActivity.saveSettings();
 
+        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !hasCheckedGps) {
+            alertNoGpsEnabled();
+            hasCheckedGps = true;
+        }
+
         // Start tracer service.
         Intent tracer = new Intent(getApplicationContext(), LocationTracerService.class);
         startService(tracer);
@@ -132,20 +205,20 @@ public class HomeActivity extends Activity {
 
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, R.id.drawer_item_text, mMenuTitles){
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    LayoutInflater inflater = (LayoutInflater) getApplicationContext()
-                            .getSystemService(getApplicationContext().LAYOUT_INFLATER_SERVICE);
-                    View rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+                R.layout.drawer_list_item, R.id.drawer_item_text, mMenuTitles) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+                        .getSystemService(getApplicationContext().LAYOUT_INFLATER_SERVICE);
+                View rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
 
-                    TextView text = (TextView)rowView.findViewById(R.id.drawer_item_text);
-                    text.setText(mMenuTitles[position]);
+                TextView text = (TextView) rowView.findViewById(R.id.drawer_item_text);
+                text.setText(mMenuTitles[position]);
 
-                    ImageView icon = (ImageView)rowView.findViewById(R.id.drawer_item_icon);
-                    icon.setImageDrawable(getResources().getDrawable(mMenuIcons.getResourceId(position, -1)));
-                    return rowView;
-                }
+                ImageView icon = (ImageView) rowView.findViewById(R.id.drawer_item_icon);
+                icon.setImageDrawable(getResources().getDrawable(mMenuIcons.getResourceId(position, -1)));
+                return rowView;
+            }
         });
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -178,6 +251,24 @@ public class HomeActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    private void alertNoGpsEnabled() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This app cannot function properly without GPS, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     /**
      * Calls drawer toggle item select callback.
      */
@@ -207,6 +298,16 @@ public class HomeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(Preferences.getBoolean(GlobalKeys.TIMER_ENABLED)) {
+            bTimer.setChecked(true);
+        } else {
+            bTimer.setChecked(false);
+        }
+
+        // Start tracer service.
+        Intent tracer = new Intent(getApplicationContext(), LocationTracerService.class);
+        startService(tracer);
 
         // Check if user still has connection.
         new AsyncTask<Void, Void, Boolean>() {

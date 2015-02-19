@@ -1,6 +1,7 @@
 package com.cabalry.utils;
 
 import android.content.Context;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import com.google.android.gms.maps.model.LatLng;
@@ -8,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by conor on 29/01/15.
@@ -15,6 +17,14 @@ import java.net.URL;
 public class Util {
 
     public static final double LOCATION_THRESHOLD = 10;
+
+    public static boolean hasGPSDevice(Context context) {
+        final LocationManager mgr = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        if ( mgr == null ) return false;
+        final List<String> providers = mgr.getAllProviders();
+        if ( providers == null ) return false;
+        return providers.contains(LocationManager.GPS_PROVIDER);
+    }
 
     public static boolean hasActiveInternetConnection(Context context) {
         if (isNetworkAvailable(context)) {

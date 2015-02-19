@@ -1,8 +1,12 @@
 package com.cabalry.service;
 
+import android.app.AlertDialog;
 import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.*;
 import com.cabalry.custom.*;
 import com.cabalry.db.DB;
@@ -23,15 +27,14 @@ public class LocationTracerService extends Service {
     private static LatLng currentLocation = new LatLng(0, 0);
     private static LatLng previousLocation = new LatLng(0, 0);
 
-    private boolean running = false;
-
     @Override
     public void onCreate() {
-        if(running) return;
-        running = true;
-
         // Initialize preferences.
         Preferences.initialize(getApplicationContext());
+
+        Logger.log("Device has GPS "+Util.hasGPSDevice(getApplicationContext()));
+
+        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         LocationTracerListener tracerListener = new LocationTracerListener() {
             @Override
@@ -72,11 +75,29 @@ public class LocationTracerService extends Service {
         };
 
         tracerProgram = new LocationTracerProgram(this, tracerListener);
-        tracerProgram.startLocationUpdates(LocationTracerProgram.GPS_NETWORK, 0, 0);
+
+        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Logger.log("GPS");
+            tracerProgram.startLocationUpdates(LocationTracerProgram.GPS, 0, 0);
+        } else {
+            Logger.log("GPS_NET");
+            tracerProgram.startLocationUpdates(LocationTracerProgram.GPS_NETWORK, 0, 0);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Logger.log("GPS");
+            tracerProgram.startLocationUpdates(LocationTracerProgram.GPS, 0, 0);
+        } else {
+            Logger.log("GPS_NET");
+            tracerProgram.startLocationUpdates(LocationTracerProgram.GPS_NETWORK, 0, 0);
+        }
+
         // If we get killed, after returning from here, stop
         return START_NOT_STICKY;
     }
@@ -89,7 +110,6 @@ public class LocationTracerService extends Service {
 
     @Override
     public void onDestroy() {
-        running = false;
         tracerProgram.stopLocationUpdates();
     }
 

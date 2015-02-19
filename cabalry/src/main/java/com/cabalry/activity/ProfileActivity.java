@@ -34,6 +34,8 @@ public class ProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        Preferences.initialize(getApplicationContext());
+
         // Check if user still has connection.
         new AsyncTask<Void, Void, Boolean>() {
 

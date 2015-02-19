@@ -25,7 +25,8 @@ public class CabalryActivity extends Activity {
         // Initializes the SharePreference instance.
         Preferences.initialize(getApplicationContext());
 
-        Preferences.setAlarmId(0);
+        // Reset timer.
+        Preferences.setBoolean(GlobalKeys.TIMER_ENABLED, false);
 
         if(Preferences.getAlarmId() != 0) {
 

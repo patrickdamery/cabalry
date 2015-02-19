@@ -302,6 +302,31 @@ public class DB {
     }
 
     /***
+     * Function that returns user's settings
+     * @param id of user
+     * @param key of user
+     * @return JSON object that contains:
+     *          success : returns true if information is found
+     *          timer : time set by user
+     *          fake : fake password of user
+     *          silent : returns true if enabled
+     *          quantity : quantity we should contact in case of alarm
+     *			range : range to be used for nearby function
+     */
+    public static JSONObject getSettings(final int id, final String key) {
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+
+        // getting JSON Object
+        JSONObject json;
+        json = new JSONParser().makeHttpRequest(GlobalKeys.GETSETTINGS_URL, "POST", params);
+
+        return json;
+    }
+
+    /***
      * Function that returns alarm info
      * @param alarmId of alarm we want information from
      * @param id of user

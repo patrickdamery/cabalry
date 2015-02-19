@@ -5,8 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import com.cabalry.R;
 import com.cabalry.custom.CabalryLocation;
@@ -14,6 +17,7 @@ import com.cabalry.custom.CabalryLocationListener;
 import com.cabalry.custom.CabalryMapActivity;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
+import com.cabalry.service.AlarmService;
 import com.cabalry.service.AudioPlaybackService;
 import com.cabalry.service.AudioStreamService;
 import com.cabalry.service.LocationTracerService;
@@ -49,6 +53,9 @@ public class AlarmActivity extends CabalryMapActivity {
     // True if this user called the alarm.
     private boolean selfActivated;
 
+    // Amount of times user has failed password.
+    private int failedCount = 0;
+
     /**
      * Initializes activity components.
      */
@@ -57,26 +64,23 @@ public class AlarmActivity extends CabalryMapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
+        stopService(new Intent(AlarmActivity.this, AlarmService.class));
+
         // Initializes the SharePreference instance.
         Preferences.initialize(getApplicationContext());
 
-        bStop = (Button) findViewById(R.id.bStop);
+        // Start tracer service.
+        Intent tracer = new Intent(getApplicationContext(), LocationTracerService.class);
+        startService(tracer);
 
-        // Check if it's not self activated so we can
-        // set the background images of buttons accordingly.
-        if(!selfActivated) {
-            // Set the stop button to ignore image
-            // TODO: Replace with real ignore image
-            bStop.setBackgroundResource(R.drawable.b_alarm);
-        }
+        bStop = (Button) findViewById(R.id.bStop);
 
         bStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(selfActivated) {
-                    // Prompt to cancel activity.
-                    Intent cancel = new Intent(getApplicationContext(), AlarmCancelActivity.class);
-                    startActivity(cancel);
+                    // Prompt password.
+                    promptPassword();
                 } else {
 
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -176,12 +180,14 @@ public class AlarmActivity extends CabalryMapActivity {
 
                 if(selfActivated) {
                     bStop.setText("Stop");
+                    bStop.setBackgroundResource(R.drawable.b_cancel);
 
                     // Start audio stream service.
                     Intent streamer = new Intent(getApplicationContext(), AudioStreamService.class);
                     startService(streamer);
                 } else {
                     bStop.setText("Ignore");
+                    bStop.setBackgroundResource(R.drawable.b_cancel);
 
                     // Start audio playback service.
                     Intent playback = new Intent(getApplicationContext(), AudioPlaybackService.class);
@@ -243,6 +249,132 @@ public class AlarmActivity extends CabalryMapActivity {
         Intent home = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(home);
         finish();
+    }
+
+    private void promptPassword() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setMessage("Please enter your password.");
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                final String value = input.getText().toString();
+                new AsyncTask<Void, Void, Boolean>() {
+
+                    @Override
+                    protected Boolean doInBackground(Void... voids) {
+                        if(value.equals("")) {
+                            failedCount++;
+                            if(failedCount > 3) {
+                                fakeAlarmStop();
+                            }
+                            return false;
+                        }
+
+                        if(checkRealPassword(value)) {
+
+                            // Really stop alarm.
+                            realAlarmStop();
+
+                        } else if(checkFakePassword(value)) {
+
+                            // Fake stop alarm.
+                            fakeAlarmStop();
+
+                        } else {
+                            failedCount++;
+                            if(failedCount > 3) {
+                                fakeAlarmStop();
+                            }
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if(!result) {
+                            Toast.makeText(getApplicationContext(), "Incorrect password please try again.",
+                                    Toast.LENGTH_LONG).show();
+
+                            promptPassword();
+                        }
+                    }
+                }.execute();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) { }
+        });
+
+        alert.show();
+    }
+
+    private boolean checkRealPassword(String password) {
+
+        JSONObject result = DB.checkPass(Preferences.getID(), Preferences.getKey(), password);
+
+        try {
+            if(result.getBoolean(GlobalKeys.SUCCESS)) {
+                return true;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    private boolean checkFakePassword(String password) {
+
+        if(password.equals(Preferences.getString(GlobalKeys.FAKE_PASS))) {
+            return true;
+        }
+        return false;
+    }
+
+    private void realAlarmStop() {
+
+        JSONObject result = DB.stopAlarm(Preferences.getAlarmId(), Preferences.getID(), Preferences.getKey());
+        Preferences.setCachedAlarmId(0);
+        Preferences.setAlarmId(0);
+
+        AudioPlaybackService.stopAudioPlayback();
+        AudioStreamService.stopAudioStream();
+
+        stopService(new Intent(AlarmActivity.this, AudioStreamService.class));
+        stopService(new Intent(AlarmActivity.this, AudioPlaybackService.class));
+
+        try {
+            if(!result.getBoolean(GlobalKeys.SUCCESS)) {
+                Logger.log("Unable to stop alarm on server!");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // return to home.
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
+    }
+
+    private void fakeAlarmStop() {
+
+        Preferences.setCachedAlarmId(alarmID);
+        Preferences.setAlarmId(alarmID);
+
+        // return to home.
+        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(home);
     }
 
     /**

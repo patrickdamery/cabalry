@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.webkit.*;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -89,13 +91,14 @@ public class RecordingsActivity extends Activity {
             @Override
             public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder (view.getContext ());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-                builder. setMessage(message);
+                builder.setMessage(message);
 
-                final EditText et = new EditText (view.getContext ());
-                et.setSingleLine();
-                et.setText(defaultValue);
+                final EditText et = new EditText(view.getContext());
+                et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                et.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
                 builder.setView(et);
                 builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
