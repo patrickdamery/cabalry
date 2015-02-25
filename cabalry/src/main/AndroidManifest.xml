@@ -198,6 +198,9 @@
         <service android:name=".service.SilentAlarmService"
                  android:exported="false" />
 
+        <service android:name=".service.AlarmSoundService"
+                 android:exported="false" />
+
     </application>
 
 </manifest>

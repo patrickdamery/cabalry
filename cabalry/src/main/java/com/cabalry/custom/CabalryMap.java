@@ -165,24 +165,37 @@ public class CabalryMap implements OnMapReadyCallback {
                 CabalryLocation.getMarkerOptions(
                         location.id, location.type, location.location));
 
+        setMarkerInfo(marker, location);
+
+        locations.put(location.id, location);
+        markerLocations.put(marker, location);
+        return markers.put(location.id, marker);
+    }
+
+    private void setMarkerInfo(final Marker marker, final CabalryLocation location) {
+        Logger.log("Step 1");
         new AsyncTask<Void, Void, String[]>(){
 
             @Override
             protected String[] doInBackground(Void... voids) {
-
+                Logger.log("Step 2");
                 String[] names = new String[2];
+                Logger.log("Step 3");
                 JSONObject result = DB.userInfo(location.id, Preferences.getID(), Preferences.getKey());
-
+                Logger.log("Step 4");
                 try {
+                    Logger.log("Step 5");
                     if(result.getBoolean(GlobalKeys.SUCCESS)) {
+                        Logger.log("Step 6");
                         names[0] = result.getString("name");
                         names[1] = result.getString("color")+" "+result.getString("make");
+                        Logger.log("Success get user info id = "+location.id);
+
                         return names;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 return null;
             }
 
@@ -194,10 +207,6 @@ public class CabalryMap implements OnMapReadyCallback {
             }
 
         }.execute();
-
-        locations.put(location.id, location);
-        markerLocations.put(marker, location);
-        return markers.put(location.id, marker);
     }
 
     public void removeMarker(int id) {

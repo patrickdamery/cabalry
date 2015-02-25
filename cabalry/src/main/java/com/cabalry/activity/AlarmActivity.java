@@ -17,10 +17,7 @@ import com.cabalry.custom.CabalryLocationListener;
 import com.cabalry.custom.CabalryMapActivity;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
-import com.cabalry.service.AlarmService;
-import com.cabalry.service.AudioPlaybackService;
-import com.cabalry.service.AudioStreamService;
-import com.cabalry.service.LocationTracerService;
+import com.cabalry.service.*;
 import com.cabalry.utils.Logger;
 import com.cabalry.utils.Preferences;
 import com.google.android.gms.maps.MapFragment;
@@ -31,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by conor on 29/01/15.
@@ -65,6 +63,7 @@ public class AlarmActivity extends CabalryMapActivity {
         setContentView(R.layout.activity_alarm);
 
         stopService(new Intent(AlarmActivity.this, AlarmService.class));
+        stopService(new Intent(AlarmActivity.this, AlarmSoundService.class));
 
         // Initializes the SharePreference instance.
         Preferences.initialize(getApplicationContext());
@@ -487,7 +486,7 @@ public class AlarmActivity extends CabalryMapActivity {
             return;
         }
 
-        if(!selfActivated) {
+        /*if(!selfActivated) {
 
             LatLng userLocation = null;
             LatLng alertLocation = null;
@@ -500,7 +499,7 @@ public class AlarmActivity extends CabalryMapActivity {
                     alertLocation = location.location;
                 }
             }
-        }
+        }*/
 
         // Updates map to fit every location.
         int transTime = 1000;       // Transition time in millis.

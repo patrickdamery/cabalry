@@ -50,7 +50,7 @@ public class SilentAlarmService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.m_alert)
                         .setContentTitle("Cabalry Alarm")
                         .setAutoCancel(true)
                         .setStyle(new NotificationCompat.BigTextStyle()

@@ -22,7 +22,7 @@ public class SilentAlarmReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
         Preferences.initialize(context);
-        if(!Preferences.getBoolean(GlobalKeys.SILENT) || lock) return;
+        if(Preferences.getAlarmId() != 0 || !Preferences.getBoolean(GlobalKeys.SILENT) || lock) return;
         lock = true;
         count++;
 
@@ -60,7 +60,7 @@ public class SilentAlarmReceiver extends WakefulBroadcastReceiver {
         timerReset.schedule(taskReset, 5000);
 
         Timer timerLock = new Timer();
-        timerLock.schedule(taskLock, 500);
+        timerLock.schedule(taskLock, 100);
     }
 
     private void startSilentAlarm(Context context) {

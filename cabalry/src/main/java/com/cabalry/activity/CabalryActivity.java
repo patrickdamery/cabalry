@@ -1,6 +1,8 @@
 package com.cabalry.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,44 +30,6 @@ public class CabalryActivity extends Activity {
         // Reset timer.
         Preferences.setBoolean(GlobalKeys.TIMER_ENABLED, false);
 
-        if(Preferences.getAlarmId() != 0) {
-
-            // Launch alarm.
-            Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
-            startActivity(alarm);
-            return;
-        }
-
-        Preferences.setAlarmId(0);
-        Preferences.setCachedAlarmId(0);
-
-        // Saves current settings.
-        SettingsActivity.saveSettings();
-
-        // Check if user still has connection.
-        new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-
-                return !Util.hasActiveInternetConnection(getApplicationContext());
-            }
-
-            protected void onPostExecute(Boolean result) {
-
-                if(result) {
-                    // User has no available internet connection.
-                    Toast.makeText(getApplicationContext(), "Please connect to the internet and login.",
-                            Toast.LENGTH_LONG).show();
-
-                    // return to login.
-                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(login);
-                    return;
-                }
-            }
-        }.execute();
-
         // Check if user is logged in.
         boolean login = Preferences.getBoolean(GlobalKeys.LOGIN);
         if (!login) {
@@ -75,9 +39,33 @@ public class CabalryActivity extends Activity {
             startActivity(log);
         } else {
 
-            // Launch home.
-            Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(home);
+            // Check if user still has connection.
+            AsyncTask<Void, Void, Boolean> execute = new AsyncTask<Void, Void, Boolean>() {
+
+                @Override
+                protected Boolean doInBackground(Void... voids) {
+
+                    return !Util.hasActiveInternetConnection(getApplicationContext());
+                }
+
+                protected void onPostExecute(Boolean result) {
+
+                    if (result) {
+                        // User has no available internet connection.
+                        Toast.makeText(getApplicationContext(), "Please connect to the internet and login.",
+                                Toast.LENGTH_LONG).show();
+
+                        // return to login.
+                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(login);
+                    } else {
+
+                        // Launch home.
+                        Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(home);
+                    }
+                }
+            }.execute();
         }
     }
 

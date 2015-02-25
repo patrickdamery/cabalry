@@ -22,13 +22,14 @@ public class AudioStreamService extends Service {
 
         audioStreamProgram = new AudioStreamProgram();
 
-        new AsyncTask<Void, Void, Void>() {
+        Thread streamThread = new Thread(new Runnable() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void run() {
                 audioStreamProgram.startStream();
-                return null;
             }
-        }.execute();
+        });
+
+        streamThread.start();
     }
 
     @Override

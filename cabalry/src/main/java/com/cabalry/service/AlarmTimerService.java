@@ -34,7 +34,7 @@ public class AlarmTimerService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         Preferences.initialize(getApplicationContext());
-        int timerTime = Preferences.getInt(GlobalKeys.TIMER) * 60 * 1000;
+        int timerTime = Preferences.getInt(GlobalKeys.TIMER) * 1000;
 
         timerTask = new TimerTask() {
             @Override

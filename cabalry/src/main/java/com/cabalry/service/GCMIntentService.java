@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import com.cabalry.R;
@@ -60,6 +61,8 @@ public class GCMIntentService extends IntentService {
                 Preferences.initialize(getApplicationContext());
                 Preferences.setAlarmId(alarmID);
 
+                startService(new Intent(getApplicationContext(), AlarmSoundService.class));
+
                 // Post notification of received message.
                 sendNotification(alarmID);
             }
@@ -81,7 +84,6 @@ public class GCMIntentService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        //.setSmallIcon(R.drawable.ic_launcher)
                         .setSmallIcon(R.drawable.m_alert)
                         .setContentTitle("Cabalry Alarm")
                         .setAutoCancel(true)
@@ -91,5 +93,10 @@ public class GCMIntentService extends IntentService {
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -33,7 +33,7 @@ public abstract class CabalryMapActivity extends Activity {
         cabalryMap = new CabalryMap(mapFragment);
         cabalryMap.setMarkerListener(listener);
 
-        //update();
+        update();
     }
 
     protected void startTimer(long delay, long time) {

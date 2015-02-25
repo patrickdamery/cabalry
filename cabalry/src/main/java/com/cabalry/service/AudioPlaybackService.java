@@ -34,11 +34,18 @@ public class AudioPlaybackService extends Service {
                 JSONObject result = DB.updateListenerInfo(
                         Preferences.getAlarmId(), Preferences.getID(),
                         Preferences.getKey(), 50000);
-
-                audioPlaybackProgram.startPlayback(2048, 50000);
                 return null;
             }
         }.execute();
+
+        Thread playbackThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                audioPlaybackProgram.startPlayback(2048, 50000);
+            }
+        });
+
+        playbackThread.start();
     }
 
     @Override

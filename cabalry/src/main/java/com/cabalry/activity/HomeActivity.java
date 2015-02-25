@@ -180,13 +180,6 @@ public class HomeActivity extends Activity {
         // Saves current settings.
         SettingsActivity.saveSettings();
 
-        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-
-        if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !hasCheckedGps) {
-            alertNoGpsEnabled();
-            hasCheckedGps = true;
-        }
-
         // Start tracer service.
         Intent tracer = new Intent(getApplicationContext(), LocationTracerService.class);
         startService(tracer);
@@ -249,6 +242,40 @@ public class HomeActivity extends Activity {
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        if (Preferences.getAlarmId() != 0) {
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("An alarm is currently active, do you want to view it?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+
+                            // Launch alarm.
+                            Intent alarm = new Intent(getApplicationContext(), AlarmActivity.class);
+                            startActivity(alarm);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            Preferences.setAlarmId(0);
+                            Preferences.setCachedAlarmId(0);
+
+                            dialog.cancel();
+                        }
+                    });
+
+            final AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+
+            final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !hasCheckedGps) {
+                alertNoGpsEnabled();
+                hasCheckedGps = true;
+            }
+        }
     }
 
     private void alertNoGpsEnabled() {
