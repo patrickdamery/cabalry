@@ -38,11 +38,13 @@ public class LocationTracerService extends Service {
         Logger.log("Device has GPS "+Util.hasGPSDevice(getApplicationContext()));
 
         final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        
+        currentLocation = getStoredLocation();
+        updateDBLocation();
 
         LocationTracerListener tracerListener = new LocationTracerListener() {
             @Override
             public void onUpdateLocation(Location location) {
-                previousLocation = currentLocation;
                 currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
                 // Store location.
@@ -82,6 +84,8 @@ public class LocationTracerService extends Service {
     }
 
     private void updateDBLocation() {
+        previousLocation = currentLocation;
+        
         new AsyncTask<Void, Void, Void>() {
             @Override
             public Void doInBackground(Void... voids) {
