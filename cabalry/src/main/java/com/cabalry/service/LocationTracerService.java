@@ -1,9 +1,7 @@
 package com.cabalry.service;
 
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
@@ -27,6 +25,11 @@ public class LocationTracerService extends Service {
     private static LatLng currentLocation = new LatLng(0, 0);
     private static LatLng previousLocation = new LatLng(0, 0);
 
+    private static boolean firstUpdate = false;
+
+    private static final int WAIT_TIME = 1000*60*10;
+    private long startTime = System.currentTimeMillis();
+
     @Override
     public void onCreate() {
         // Initialize preferences.
@@ -45,26 +48,19 @@ public class LocationTracerService extends Service {
                 // Store location.
                 Preferences.setStoredLocation(currentLocation);
 
-                if(Util.getDistance(currentLocation, previousLocation) < Util.LOCATION_THRESHOLD) return;
+                if(!firstUpdate) {
+                    updateDBLocation();
+                    firstUpdate = true;
 
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    public Void doInBackground(Void... voids) {
-
-                        JSONObject result = DB.updateLocation(currentLocation.latitude, currentLocation.longitude,
-                                Preferences.getID(), Preferences.getKey());
-
-                        try {
-                            if(!result.getBoolean(GlobalKeys.SUCCESS)) {
-                                Logger.log("Could not update db location!");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        return null;
+                } else if(Util.getDistance(currentLocation, previousLocation) < Util.LOCATION_THRESHOLD) {
+                    if(System.currentTimeMillis() - startTime >= WAIT_TIME) {
+                        startTime = System.currentTimeMillis();
+                        updateDBLocation();
                     }
-                }.execute();
+
+                } else {
+                    updateDBLocation();
+                }
             }
 
             @Override
@@ -83,6 +79,27 @@ public class LocationTracerService extends Service {
             Logger.log("GPS_NET");
             tracerProgram.startLocationUpdates(LocationTracerProgram.GPS_NETWORK, 0, 0);
         }
+    }
+
+    private void updateDBLocation() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            public Void doInBackground(Void... voids) {
+
+                JSONObject result = DB.updateLocation(currentLocation.latitude, currentLocation.longitude,
+                        Preferences.getID(), Preferences.getKey());
+
+                try {
+                    if(!result.getBoolean(GlobalKeys.SUCCESS)) {
+                        Logger.log("Could not update db location!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        }.execute();
     }
 
     @Override
