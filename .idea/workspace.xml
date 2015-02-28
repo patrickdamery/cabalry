@@ -24,44 +24,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.cabalry" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd74ae1e-7b33-4c1d-8fa1-df92120fb31b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/fx_alarm.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/b_alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/b_alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/b_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/b_hide.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/b_nearby.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/b_restore.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/back_card.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/billing_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/cabalry.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/help_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/i_notification.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/logout_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/m_alert.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/m_alerted.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/m_near.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/m_user.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/map_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/mike_card.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/patrick_card.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/profile_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/recordings_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/settings_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/timer_off.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/timer_on.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/timer_on2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/timer_on3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/png/timer_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/svg/buttons.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/svg/cabalry.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/svg/card_back.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/svg/card_front.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/svg/direction_arrow.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/svg/icons.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/svg/markers.svg" afterPath="" />
+    <list default="true" id="cd74ae1e-7b33-4c1d-8fa1-df92120fb31b" name="Default" comment="Update 0.9.3 - Design folder structure fixed and different resolutions added">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Cabalry.iws" />
@@ -90,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/LocationTracerService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.41221374" vertical-offset="1548" max-vertical-offset="2520">
-              <caret line="97" column="31" selection-start-line="97" selection-start-column="31" selection-end-line="97" selection-end-column="31" />
+              <caret line="97" column="68" selection-start-line="97" selection-start-column="68" selection-end-line="97" selection-end-column="68" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -934,90 +897,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cabalry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -1326,7 +1205,13 @@
       <option name="project" value="LOCAL" />
       <updated>1425078231514</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Update 0.9.3 - Design folder structure fixed and different resolutions added">
+      <created>1425082278029</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1425082278029</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1344,6 +1229,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3287037" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32253087" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328" sideWeight="0.5294562" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32263243" sideWeight="0.55636895" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1354,13 +1240,12 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17348485" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32253087" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972136" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32817337" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1419,7 +1304,8 @@
     <MESSAGE value="Added start alarm from volume key, Fix accept alarms immediately, Added distance check for location tracer, whole bunch of other fixes" />
     <MESSAGE value="Added custom buttons to map, alarm and home screen. Also enabled js prompt in recordings with alert dialog." />
     <MESSAGE value="Update 0.9.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update 0.9.2" />
+    <MESSAGE value="Update 0.9.3 - Design folder structure fixed and different resolutions added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 0.9.3 - Design folder structure fixed and different resolutions added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1792,7 +1678,7 @@
     <entry file="file://$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/LocationTracerService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.41221374" vertical-offset="1548" max-vertical-offset="2520">
-          <caret line="97" column="31" selection-start-line="97" selection-start-column="31" selection-end-line="97" selection-end-column="31" />
+          <caret line="97" column="68" selection-start-line="97" selection-start-column="68" selection-end-line="97" selection-end-column="68" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
