@@ -144,7 +144,7 @@ public class CabalryMap implements OnMapReadyCallback {
         }
         LatLngBounds bounds = builder.build();
 
-        int padding = 64; // offset from edges of the map in pixels
+        int padding = 128; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
         // Animate the change in camera view over some time.
@@ -173,20 +173,14 @@ public class CabalryMap implements OnMapReadyCallback {
     }
 
     private void setMarkerInfo(final Marker marker, final CabalryLocation location) {
-        Logger.log("Step 1");
         new AsyncTask<Void, Void, String[]>(){
 
             @Override
             protected String[] doInBackground(Void... voids) {
-                Logger.log("Step 2");
                 String[] names = new String[2];
-                Logger.log("Step 3");
                 JSONObject result = DB.userInfo(location.id, Preferences.getID(), Preferences.getKey());
-                Logger.log("Step 4");
                 try {
-                    Logger.log("Step 5");
                     if(result.getBoolean(GlobalKeys.SUCCESS)) {
-                        Logger.log("Step 6");
                         names[0] = result.getString("name");
                         names[1] = result.getString("color")+" "+result.getString("make");
                         Logger.log("Success get user info id = "+location.id);
@@ -220,14 +214,7 @@ public class CabalryMap implements OnMapReadyCallback {
         getMarker(location.id).setPosition(location.location);
         locations.put(location.id, location);
     }
-
-    public void removeRoute() {
-        if(currentRoute != null) {
-            currentRoute.remove();
-            currentRoute = null;
-        }
-    }
-
+    
     public void setMarkerListener(CabalryLocationListener markerListener) { this.markerListener = markerListener; }
     public UiSettings getSettings() { return settings; }
     public GoogleMap getGoogleMap() { return googleMap; }

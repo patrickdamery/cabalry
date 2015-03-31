@@ -85,6 +85,7 @@ public class LocationTracerService extends Service {
 
     private void updateDBLocation() {
         previousLocation = currentLocation;
+        Preferences.setStoredLocation(currentLocation);
         
         new AsyncTask<Void, Void, Void>() {
             @Override

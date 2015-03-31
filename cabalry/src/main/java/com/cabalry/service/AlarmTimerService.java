@@ -2,14 +2,7 @@ package com.cabalry.service;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import com.cabalry.R;
-import com.cabalry.activity.AlarmActivity;
-import com.cabalry.activity.HomeActivity;
-import com.cabalry.activity.MapActivity;
 import com.cabalry.activity.TimerCheckActivity;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.utils.Preferences;
@@ -22,8 +15,6 @@ import java.util.TimerTask;
  */
 public class AlarmTimerService extends IntentService {
 
-    public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
     private static TimerTask timerTask = null;
 
     public AlarmTimerService() {

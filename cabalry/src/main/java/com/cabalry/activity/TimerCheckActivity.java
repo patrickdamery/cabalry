@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.cabalry.db.DB;
 import com.cabalry.db.GlobalKeys;
 import com.cabalry.service.AlarmService;
+import com.cabalry.service.AlarmTimerService;
 import com.cabalry.utils.Preferences;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,16 +50,17 @@ public class TimerCheckActivity extends Activity {
 
         builder.setMessage("Time is up! Are you ok?");
 
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Preferences.setBoolean(GlobalKeys.TIMER_ENABLED, false);
+                startService(new Intent(getApplicationContext(), AlarmTimerService.class));
+                Preferences.setBoolean(GlobalKeys.TIMER_ENABLED, true);
                 timerTask.cancel();
                 onBackPressed();
             }
 
         });
 
-        builder.setNegativeButton("Alarm!", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Alarm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Preferences.setBoolean(GlobalKeys.TIMER_ENABLED, false);

@@ -32,32 +32,10 @@ public class SilentAlarmService extends IntentService {
         // The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
         v.vibrate(pattern, -1);
 
-        sendNotification();
-
         // Start alarm.
         startService(new Intent(getApplicationContext(), AlarmService.class));
 
         // Release the wake lock provided by the WakefulBroadcastReceiver.
         SilentAlarmReceiver.completeWakefulIntent(intent);
-    }
-
-    private void sendNotification() {
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MapActivity.class), 0);
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.m_alert)
-                        .setContentTitle("Cabalry Alarm")
-                        .setAutoCancel(true)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("An alarm has been triggered! AlarmID : "))
-                        .setContentText("An alarm has been triggered! AlarmID : ");
-
-        mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }
