@@ -1,11 +1,8 @@
 package com.cabalry.map;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.cabalry.*;
-import com.cabalry.R;
 import com.cabalry.db.DB;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -14,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -25,9 +23,12 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
 
     private CabalryMarker mUserMaker;
     private CabalryMarker mAlarmMaker;
-    private Vector<CabalryMarker> mMarkers = new Vector<>();
 
-    public void setupMap(SupportMapFragment mapFragment) {
+    private HashMap<Integer, Marker> mMarkerMap;
+    private Vector<CabalryUser> mPastUsers = new Vector<>();
+
+    public void initializeMap(SupportMapFragment mapFragment) {
+        // This is to call the onMapReady callback
         mapFragment.getMapAsync(this);
     }
 
@@ -35,28 +36,9 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                //if(markerListener != null) {
-                //    markerListener.onClick(marker, markerLocations.get(marker));
-                //    return true;
-                //}
-                return false;
-            }
-        });
-
-        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                //if(markerListener != null) {
-                //    markerListener.onInfoClick(marker, markerLocations.get(marker));
-                //}
-            }
-        });
-
-        // Load map settings.
-        //loadSettings();
+        MarkerListener markerListener = new MarkerListener();
+        mMap.setOnMarkerClickListener(markerListener);
+        mMap.setOnInfoWindowClickListener(markerListener);
     }
 
     public void onUpdateLocation() {
@@ -64,11 +46,56 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void addMarker(final CabalryMarker marker) {
-        mMarkers.add(marker);
+
     }
 
-    public void updateMarkers() {
+    public Marker getMarker(int id) { return mMarkerMap.get(id); }
 
+    public void updateUsers(final Vector<CabalryUser> newUsers) {
+
+        int[] rmvArray = new int[mPastUsers.size()];
+        for(int i = 0; i < mPastUsers.size(); i++) {
+            boolean exit = false;
+
+            for(int j = 0; j < newUsers.size() || exit; j++) {
+
+                // Compare id's
+                if(mPastUsers.get(i).getID() == newUsers.get(j).getID())
+                    exit = true;
+            }
+
+            if(!exit)
+                // ID is obsolete, will be removed later
+                rmvArray[i] = mPastUsers.get(i).getID();
+        }
+
+        // Remove all obsolete markers
+        for(int i = 0; i < rmvArray.length; i++)
+            if(rmvArray[i] != 0)
+                mPastUsers.remove(i);
+    }
+
+    /**
+     * Class implementation for marker related callbacks
+     */
+    private class MarkerListener implements
+            GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
+
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            //if(markerListener != null) {
+            //    markerListener.onInfoClick(marker, markerLocations.get(marker));
+            //}
+        }
+
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            //if(markerListener != null) {
+            //    markerListener.onClick(marker, markerLocations.get(marker));
+            //    return true;
+            //}
+            return false;
+        }
     }
 
     /**

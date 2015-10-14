@@ -27,7 +27,7 @@ public class MapActivity extends CabalryMap {
         if(mMapFragment == null) {
             // Try to obtain the map from the SupportMapFragment
             mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-            setupMap(mMapFragment);
+            initializeMap(mMapFragment);
         }
     }
 }

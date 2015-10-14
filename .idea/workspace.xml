@@ -1,377 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a82c972b-b256-483c-be12-01849d532125" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/drawer_shadow.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/drawer_shadow.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/drawer_shadow.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/drawer_shadow.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_drawer.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_drawer.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_drawer.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_drawer.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMap.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMarker.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/CabalryPrefs.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/db/DB.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/HomeActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/db/JSONParser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/LoginActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/MapActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/NavigationDrawerFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_map.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/values-w820dp/dimens.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_navigation_drawer.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/cache.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/cache.properties.lock" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/fileHashes.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/fileSnapshots.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/outputFileStates.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.1/taskArtifacts/taskArtifacts.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dictionaries/root.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_21_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_21_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/build.gradle" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/cabalry-cabalry.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/cabalry-debug.apk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/cabalry-release.apk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/cabalry.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/manifest-merger-debug-report.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/manifest-merger-release-report.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/proguard-rules.pro" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/androidTest/java/com/cabalry/ApplicationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/debug/res/values/google_maps_api.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/ic_launcher-web.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/AlarmActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/BillingActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/CabalryActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ForgotActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/HomeActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/LoginActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/MapActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/ProfileActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RecordingsActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/RegisterActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/SettingsActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/TimerCheckActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/activity/UserInfoActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/AudioPlaybackProgram.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/AudioStreamProgram.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocation.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryLocationListener.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMap.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/CabalryMapActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/LocationTracerListener.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/custom/LocationTracerProgram.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/DB.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/GlobalKeys.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/db/JSONParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/AlarmService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/AlarmSoundService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/AlarmTimerService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/AudioPlaybackService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/AudioStreamService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/GCMBroadcastReceiver.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/GCMIntentService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/LocationTracerService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/NetworkStateReceiver.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/SilentAlarmReceiver.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/service/SilentAlarmService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/utils/Logger.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/utils/Preferences.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/java/com/cabalry/utils/Util.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ab_bottom_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ab_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ab_stacked_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ab_texture_tile_cabalry.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ab_transparent_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/billing_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/btn_cab_done_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/btn_cab_done_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/btn_cab_done_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/cab_background_bottom_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/cab_background_top_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/help_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_action_help.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_action_logout.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_action_map.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_action_mic.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_action_person.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_action_settings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_drawer.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/list_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/list_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/logout_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/map_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/menu_dropdown_panel_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/profile_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/progress_bg_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/progress_primary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/progress_secondary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/recordings_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/settings_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/spinner_ab_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/spinner_ab_disabled_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/spinner_ab_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/spinner_ab_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/tab_selected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/tab_selected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/tab_selected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/tab_unselected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/tab_unselected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-hdpi/tab_unselected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/ab_bottom_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/ab_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/ab_stacked_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/ab_texture_tile_cabalry.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/ab_transparent_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/btn_cab_done_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/btn_cab_done_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/btn_cab_done_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/cab_background_bottom_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/cab_background_top_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/list_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/list_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/menu_dropdown_panel_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/progress_bg_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/progress_primary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/progress_secondary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/spinner_ab_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/spinner_ab_disabled_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/spinner_ab_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/spinner_ab_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/tab_selected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/tab_selected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/tab_selected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/tab_unselected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/tab_unselected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-mdpi/tab_unselected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/ab_bottom_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/ab_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/ab_stacked_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/ab_texture_tile_cabalry.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/ab_transparent_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/btn_cab_done_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/btn_cab_done_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/btn_cab_done_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/cab_background_bottom_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/cab_background_top_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/list_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/list_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/menu_dropdown_panel_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/progress_bg_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/progress_primary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/progress_secondary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/spinner_ab_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/spinner_ab_disabled_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/spinner_ab_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/spinner_ab_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/tab_selected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/tab_selected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/tab_selected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/tab_unselected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/tab_unselected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xhdpi/tab_unselected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/ab_bottom_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/ab_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/ab_stacked_solid_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/ab_texture_tile_cabalry.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/ab_transparent_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/btn_cab_done_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/btn_cab_done_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/btn_cab_done_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/cab_background_bottom_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/cab_background_top_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/list_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/list_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/menu_dropdown_panel_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/progress_bg_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/progress_primary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/progress_secondary_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/spinner_ab_default_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/spinner_ab_disabled_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/spinner_ab_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/spinner_ab_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/tab_selected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/tab_selected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/tab_selected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/tab_unselected_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/tab_unselected_focused_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable-xxhdpi/tab_unselected_pressed_cabalry.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/ab_background_textured_cabalry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/alarm_button.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/b_alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/b_alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/b_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/b_hide.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/b_nearby.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/b_restore.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/btn_cab_done_cabalry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/direction_arrow.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/homelogo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/logotext.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/m_alert.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/m_alerted.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/m_near.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/m_user.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/nearby_selector.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/progress_horizontal_cabalry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/round.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/selectable_background_cabalry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/spinner_background_ab_cabalry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/tab_indicator_ab_cabalry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/timer.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/timer_off.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/timer_on.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/timer_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/drawable/toggle.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_alarm.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_billing.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_forgot.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_home.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_login.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_map.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_profile.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_recordings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_register.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/activity_user_info.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/layout/drawer_list_item.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/menu/menu_map.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/menu/menu_profile.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/menu/menu_recordings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/menu/menu_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/raw/fx_alarm.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/values-w820dp/dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/values/dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/values/strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/main/res/values/styles_cabalry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cabalry/src/release/res/values/google_maps_api.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/alarm_sfx.wav" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/buttons.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/cabalry.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/cards.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_alarm_released.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_billing.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_help.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_logout.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_map.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_neaby.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_profile.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_recordings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_recover.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_settings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_solo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_timer_active.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_timer_inactive.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/b_timer_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-hdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_alarm_released.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_billing.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_help.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_logout.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_map.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_neaby.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_profile.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_recordings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_recover.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_settings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_solo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_timer_active.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_timer_inactive.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/b_timer_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-mdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_alarm_released.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_billing.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_help.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_logout.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_map.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_neaby.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_profile.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_recordings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_recover.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_settings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_solo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_timer_active.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_timer_inactive.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/b_timer_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xhdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_alarm.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_alarm_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_alarm_released.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_billing.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_help.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_logout.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_map.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_neaby.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_profile.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_recordings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_recover.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_settings.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_solo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_timer_active.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_timer_inactive.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/b_timer_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable-xxhdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable/logotext.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable/m_alert.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable/m_alerted.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable/m_nearby.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/drawable/m_user.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/design/markers.svg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cabalry.iml" afterPath="$PROJECT_DIR$/Cabalry.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
+    <list default="true" id="2178105a-2d00-49d7-b3c1-5a78cb978a4d" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryUser.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cabalry.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Cabalry.iml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMap.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMap.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMarker.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMarker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/MapActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/MapActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradle.properties" afterPath="$PROJECT_DIR$/gradle.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.gradle" afterPath="$PROJECT_DIR$/settings.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cabalry.iws" />
@@ -393,27 +35,60 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <file leaf-file-name="MapActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/MapActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.40980735">
-              <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
+      <file leaf-file-name="CabalryMap.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.04812834">
+              <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CabalryMarker.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMarker.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CabalryUser.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryUser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="2" column="48" selection-start-line="2" selection-start-column="48" selection-end-line="2" selection-end-column="48" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -2120,11 +1795,16 @@
       <projects_view />
     </option>
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="Bundled (Maven 3)" />
-      </MavenGeneralSettings>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/MapActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/MarkerList.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMarker.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryUserInfo.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryUser.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMap.java" />
+      </list>
     </option>
   </component>
   <component name="NamedScopeManager">
@@ -2142,7 +1822,7 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="2" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
@@ -2158,9 +1838,9 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
       <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
@@ -2183,9 +1863,19 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+              <option name="myItemId" value="cabalry" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -2197,6 +1887,36 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cabalry" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cabalry" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cabalry" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -2206,6 +1926,11 @@
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
+    <property name="android.project.structure.last.selected" value="app" />
+    <property name="android.project.structure.proportion" value="0.15" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="3a28820" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RunManager" selected="Android Application.app">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -2395,43 +2120,43 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a82c972b-b256-483c-be12-01849d532125" name="Default" comment="" />
-      <created>1444779141120</created>
+      <changelist id="2178105a-2d00-49d7-b3c1-5a78cb978a4d" name="Default" comment="" />
+      <created>1444831149453</created>
       <option name="number" value="Default" />
-      <updated>1444779141120</updated>
+      <updated>1444831149453</updated>
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1366" height="738" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32930514" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32943144" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32943144" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -2442,19 +2167,41 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/MapActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="48" selection-start-line="2" selection-start-column="48" selection-end-line="2" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMarker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40980735">
-          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/map/CabalryMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.04812834">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

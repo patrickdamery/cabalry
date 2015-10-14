@@ -2,74 +2,25 @@
 <items version="2" >
 
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/8.1.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="3b05c18f60969ecc2ba49c0409c4b96be2d9cb0c">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-c4ab37fde24db7c883dc4d2b924976b5b35a1a85.jar" />
+        sha1="3c729e6d76a36c5dc27e6a4c4009296f49eaa88a">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-af48ac8cf7f3df68e2b2cf705e15acb4c5b7cc43.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d61920aba361832a9545a43fa8c9453eb02f18f7">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-01e03d18c5f6db6fed0edf04945c455f65b39546.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-02886c5894007f804aeb65c66492e6b938a774a2.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="95758a2905669affbffc5ddd262921d375674fad">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f752c16cc4d1ff73e6331a88b501cba6bc9d792d.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d294caf562c4c678b2ef351662a0ca6f1a4d06c0">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-54a4f69abfa1a4c74b9973537c4a93a9c54dd96a.jar" />
+        sha1="17449c47df35c754b257532052f1270c444f7993">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-96a3e7e213b87660afb84e4d78037d1508918012.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/8.1.0/jars/classes.jar"
         jumboMode="false"
-        revision="21.1.2"
+        revision="23.0.1"
         sha1="d93480da1d303122ee67dc3bc23e6297bdef9951">
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-17815a4c3681bcc635a177932ffdf1e9e81bc086.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="dcb5b75baf05d92e61d5706737200ee55949f97b">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d480d7be6dee3a23d019201bcf1f98280047d04e.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-2d670c5214c780c40b687bed42e908150134ad29.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="041d93cf0533591c29d1d7263b2fa114dbfb20bd">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-1a4175b36c51d2256c9d127e2a197a217f4eaa95.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="997773777cf3904c11d6764fe3b7668538220e49">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-ba86ac8d8a9de4eea35241a791ef800d1320d752.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/8.1.0/jars/classes.jar"
@@ -79,18 +30,67 @@
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-075f04a70af490b128a5f6db0fe17e6d0d707247.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-8c564d2ece759efd819874f61ebc8f060e096884.jar" />
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-086e4bea436f63777c776ddbe0bd0c54e2527138.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.1.0/jars/classes.jar"
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="2a7e47da654546f9457deb6132364f1bf33a1857">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-9de54cc1b1f1e2f5f54f87e452290305d5f12a90.jar" />
+        sha1="d93480da1d303122ee67dc3bc23e6297bdef9951">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-17815a4c3681bcc635a177932ffdf1e9e81bc086.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="325788a04b436a0bccbc5b4c54cf0f12ebdcbd2d">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-075f04a70af490b128a5f6db0fe17e6d0d707247.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-measurement/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="482de223655d06253cc6a4955d653f8994169500">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-8e40cbb3dcad5c2c829f3cef6db1167d742e0ea4.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d61920aba361832a9545a43fa8c9453eb02f18f7">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-01e03d18c5f6db6fed0edf04945c455f65b39546.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="82825756edeeb3b56b15e73b2edd56e93da5a444">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f09714fa70af8676f84357dcbd02dabf491112b4.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d294caf562c4c678b2ef351662a0ca6f1a4d06c0">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-54a4f69abfa1a4c74b9973537c4a93a9c54dd96a.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4477ea44f5ec5ad064022a22691732d7638ff197">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-780299cff0f26c86b54adae34b01f55bb6830cf6.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="95758a2905669affbffc5ddd262921d375674fad">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f752c16cc4d1ff73e6331a88b501cba6bc9d792d.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
@@ -100,30 +100,23 @@
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-0a1b30952ecd40a10c040402169ad117aacd701d.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/8.1.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="3178362320bcf51228835b60ff978efadfd1f783">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-fd076dd2e44ed7a4cbb693b39c811d350fa6ec86.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
         sha1="dcb5b75baf05d92e61d5706737200ee55949f97b">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d480d7be6dee3a23d019201bcf1f98280047d04e.jar" />
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-c7f42f18c4d8fa6a3498c8fd66a29670812f0d8f.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/8.1.0/jars/classes.jar"
         jumboMode="false"
-        revision="23.0.1"
-        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-2e60b2624f620fdc8faad0d03b8d4dfc94fa2a46.jar" />
+        revision="21.1.2"
+        sha1="997773777cf3904c11d6764fe3b7668538220e49">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-f27b62c0e96e6960e1a84f2487375fbb29360721.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/8.1.0/jars/classes.jar"
         jumboMode="false"
-        revision="21.1.2"
+        revision="23.0.1"
         sha1="d61920aba361832a9545a43fa8c9453eb02f18f7">
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-01e03d18c5f6db6fed0edf04945c455f65b39546.jar" />
     </item>
@@ -135,27 +128,6 @@
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-c4ab37fde24db7c883dc4d2b924976b5b35a1a85.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="b92002cb2f0e11a226ac5bac6dff1dc2a9d0b774">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-571f06cb39883fe1fc72fb880bc3c2ab2c0f8708.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="17449c47df35c754b257532052f1270c444f7993">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-96a3e7e213b87660afb84e4d78037d1508918012.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d93480da1d303122ee67dc3bc23e6297bdef9951">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-17815a4c3681bcc635a177932ffdf1e9e81bc086.jar" />
-    </item>
-    <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -163,18 +135,11 @@
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-2d670c5214c780c40b687bed42e908150134ad29.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4477ea44f5ec5ad064022a22691732d7638ff197">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-780299cff0f26c86b54adae34b01f55bb6830cf6.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-measurement/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="482de223655d06253cc6a4955d653f8994169500">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-8e40cbb3dcad5c2c829f3cef6db1167d742e0ea4.jar" />
+        sha1="2a7e47da654546f9457deb6132364f1bf33a1857">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-9de54cc1b1f1e2f5f54f87e452290305d5f12a90.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
@@ -184,25 +149,116 @@
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-02886c5894007f804aeb65c66492e6b938a774a2.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.1.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="82825756edeeb3b56b15e73b2edd56e93da5a444">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f09714fa70af8676f84357dcbd02dabf491112b4.jar" />
+        sha1="4477ea44f5ec5ad064022a22691732d7638ff197">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-f2708eee37501042baf4605bf88c9939efe8564f.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/8.1.0/jars/classes.jar"
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="b92002cb2f0e11a226ac5bac6dff1dc2a9d0b774">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-571f06cb39883fe1fc72fb880bc3c2ab2c0f8708.jar" />
+        sha1="d294caf562c4c678b2ef351662a0ca6f1a4d06c0">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-54a4f69abfa1a4c74b9973537c4a93a9c54dd96a.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-2e60b2624f620fdc8faad0d03b8d4dfc94fa2a46.jar" />
+        sha1="993834cb17d07d51b92db89d2c330243592ebf77">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-f7a6f93b2ec16b2327b937d9df271d6457aec5b7.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="041d93cf0533591c29d1d7263b2fa114dbfb20bd">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-1a4175b36c51d2256c9d127e2a197a217f4eaa95.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-02886c5894007f804aeb65c66492e6b938a774a2.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2a7e47da654546f9457deb6132364f1bf33a1857">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-5e6620b2914e4be1b895252f3f9f9b6ac00f2845.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d294caf562c4c678b2ef351662a0ca6f1a4d06c0">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-5d89ca4e3ec85c1dffa5e69dce700af79eda8489.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="993834cb17d07d51b92db89d2c330243592ebf77">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-b1ed06484b33c38434cc68bd383b5b70e052944e.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3178362320bcf51228835b60ff978efadfd1f783">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-fd076dd2e44ed7a4cbb693b39c811d350fa6ec86.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-2d670c5214c780c40b687bed42e908150134ad29.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dcb5b75baf05d92e61d5706737200ee55949f97b">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d480d7be6dee3a23d019201bcf1f98280047d04e.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d61920aba361832a9545a43fa8c9453eb02f18f7">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-e03eae613972f1ddfe2e84938d8408d20f61a7b4.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3c729e6d76a36c5dc27e6a4c4009296f49eaa88a">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d1be109f5820f6e3675ef94dc81193e33caf3f3a.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="325788a04b436a0bccbc5b4c54cf0f12ebdcbd2d">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-689e8787ee8734218e69bbf61f2c3263345459dd.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3aed37c38c56679602255dd72ef356da5d327cda">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-afca6ceb44b49ef6f7f00320ce32346c9f64ed66.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-bda3605a4591291ef5395c543ec6e295d485549f.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
@@ -214,93 +270,37 @@
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/8.1.0/jars/classes.jar"
         jumboMode="false"
-        revision="21.1.2"
-        sha1="9cf8c0ef60847621c7ad00b4f78dbfc9daba4af2">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-736df483795956e5da8c3b817d2d3de1d1e5bc29.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/8.1.0/jars/classes.jar"
-        jumboMode="false"
         revision="23.0.1"
         sha1="9cf8c0ef60847621c7ad00b4f78dbfc9daba4af2">
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-736df483795956e5da8c3b817d2d3de1d1e5bc29.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/8.1.0/jars/classes.jar"
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="993834cb17d07d51b92db89d2c330243592ebf77">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-b1ed06484b33c38434cc68bd383b5b70e052944e.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="17449c47df35c754b257532052f1270c444f7993">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-96a3e7e213b87660afb84e4d78037d1508918012.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="041d93cf0533591c29d1d7263b2fa114dbfb20bd">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-1a4175b36c51d2256c9d127e2a197a217f4eaa95.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="997773777cf3904c11d6764fe3b7668538220e49">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-ba86ac8d8a9de4eea35241a791ef800d1320d752.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3178362320bcf51228835b60ff978efadfd1f783">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-fd076dd2e44ed7a4cbb693b39c811d350fa6ec86.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="993834cb17d07d51b92db89d2c330243592ebf77">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-b1ed06484b33c38434cc68bd383b5b70e052944e.jar" />
+        sha1="dcb5b75baf05d92e61d5706737200ee55949f97b">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d480d7be6dee3a23d019201bcf1f98280047d04e.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.1.0/jars/classes.jar"
         jumboMode="false"
-        revision="21.1.2"
+        revision="23.0.1"
         sha1="3aed37c38c56679602255dd72ef356da5d327cda">
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-392e795f99c47979cab8f840502b213513d4c661.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/8.1.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="95758a2905669affbffc5ddd262921d375674fad">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f752c16cc4d1ff73e6331a88b501cba6bc9d792d.jar" />
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-b273d8d0bf7ae123ed22d8bcdecc690994928ddb.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-measurement/8.1.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-measurement/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="482de223655d06253cc6a4955d653f8994169500">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-8e40cbb3dcad5c2c829f3cef6db1167d742e0ea4.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3c729e6d76a36c5dc27e6a4c4009296f49eaa88a">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d1be109f5820f6e3675ef94dc81193e33caf3f3a.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="97f3b099801a9ad9d70e835b9125273e986eb68d">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-ad2326ee810c4cda3212128b4dc6c81d262c3fe9.jar" />
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-b6bf7014b429c8c97f633729c87a969c3cb906f2.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.1.0/jars/classes.jar"
@@ -310,32 +310,18 @@
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-9de54cc1b1f1e2f5f54f87e452290305d5f12a90.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3c729e6d76a36c5dc27e6a4c4009296f49eaa88a">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d1be109f5820f6e3675ef94dc81193e33caf3f3a.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3aed37c38c56679602255dd72ef356da5d327cda">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-392e795f99c47979cab8f840502b213513d4c661.jar" />
-    </item>
-    <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/8.1.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="325788a04b436a0bccbc5b4c54cf0f12ebdcbd2d">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-075f04a70af490b128a5f6db0fe17e6d0d707247.jar" />
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-8afbb9d8ebb5b84a03be0a8363f1483479d2b4d4.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/8.1.0/jars/classes.jar"
         jumboMode="false"
-        revision="21.1.2"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-996dc56d4631e84156d8b31733ffefdbb8e1fa5e.jar" />
+        revision="23.0.1"
+        sha1="b92002cb2f0e11a226ac5bac6dff1dc2a9d0b774">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-571f06cb39883fe1fc72fb880bc3c2ab2c0f8708.jar" />
     </item>
     <item
         jar="/home/conor/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
@@ -345,18 +331,60 @@
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-d7ef2953ad079f1a8661982f62b3f0022766bf3c.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/8.1.0/jars/classes.jar"
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="d294caf562c4c678b2ef351662a0ca6f1a4d06c0">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-54a4f69abfa1a4c74b9973537c4a93a9c54dd96a.jar" />
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-2e60b2624f620fdc8faad0d03b8d4dfc94fa2a46.jar" />
     </item>
     <item
-        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.1.0/jars/classes.jar"
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/8.1.0/jars/classes.jar"
         jumboMode="false"
-        revision="23.0.1"
+        revision="21.1.2"
+        sha1="3178362320bcf51228835b60ff978efadfd1f783">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-50920c131abd95cf69d4829696451905bce6baa8.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-996dc56d4631e84156d8b31733ffefdbb8e1fa5e.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="041d93cf0533591c29d1d7263b2fa114dbfb20bd">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-1a4175b36c51d2256c9d127e2a197a217f4eaa95.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3178362320bcf51228835b60ff978efadfd1f783">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-fd076dd2e44ed7a4cbb693b39c811d350fa6ec86.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-8c564d2ece759efd819874f61ebc8f060e096884.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3aed37c38c56679602255dd72ef356da5d327cda">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-392e795f99c47979cab8f840502b213513d4c661.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
         sha1="82825756edeeb3b56b15e73b2edd56e93da5a444">
-        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f09714fa70af8676f84357dcbd02dabf491112b4.jar" />
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-e220e704b03b03e1e5852d002edab3ff5d80a973.jar" />
     </item>
     <item
         jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/8.1.0/jars/classes.jar"
@@ -364,6 +392,167 @@
         revision="23.0.1"
         sha1="97f3b099801a9ad9d70e835b9125273e986eb68d">
         <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-ad2326ee810c4cda3212128b4dc6c81d262c3fe9.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="97f3b099801a9ad9d70e835b9125273e986eb68d">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-ad2326ee810c4cda3212128b4dc6c81d262c3fe9.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="95758a2905669affbffc5ddd262921d375674fad">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f752c16cc4d1ff73e6331a88b501cba6bc9d792d.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="17449c47df35c754b257532052f1270c444f7993">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-96a3e7e213b87660afb84e4d78037d1508918012.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-measurement/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="482de223655d06253cc6a4955d653f8994169500">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-8e40cbb3dcad5c2c829f3cef6db1167d742e0ea4.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-2e60b2624f620fdc8faad0d03b8d4dfc94fa2a46.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9cf8c0ef60847621c7ad00b4f78dbfc9daba4af2">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-736df483795956e5da8c3b817d2d3de1d1e5bc29.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="997773777cf3904c11d6764fe3b7668538220e49">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-ba86ac8d8a9de4eea35241a791ef800d1320d752.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b05c18f60969ecc2ba49c0409c4b96be2d9cb0c">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-81b2dc1b90d8b65f8098e17d2cebb617e4ef4a0b.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="997773777cf3904c11d6764fe3b7668538220e49">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-ba86ac8d8a9de4eea35241a791ef800d1320d752.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b92002cb2f0e11a226ac5bac6dff1dc2a9d0b774">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-571f06cb39883fe1fc72fb880bc3c2ab2c0f8708.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b05c18f60969ecc2ba49c0409c4b96be2d9cb0c">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-c4ab37fde24db7c883dc4d2b924976b5b35a1a85.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="17449c47df35c754b257532052f1270c444f7993">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-4ee219cd837a636c1a9d65e35c5ec0fcd41806d7.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="993834cb17d07d51b92db89d2c330243592ebf77">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-b1ed06484b33c38434cc68bd383b5b70e052944e.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="82825756edeeb3b56b15e73b2edd56e93da5a444">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-f09714fa70af8676f84357dcbd02dabf491112b4.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="041d93cf0533591c29d1d7263b2fa114dbfb20bd">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-25f97b3ca1d428de7469f3f0195ad6f57c6af623.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-4af8712b1aeeeb9b0543687677e6b40ff1887e1e.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d93480da1d303122ee67dc3bc23e6297bdef9951">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-cf9d01720abe973aee852c1479cc3e1098e53fe7.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9cf8c0ef60847621c7ad00b4f78dbfc9daba4af2">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-3e87f3639d378a3eda6e9ad8060cfb0e4bd7ea98.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-910bf617e0a09685eeb1e0e4e7b4604dac2b48f5.jar" />
+    </item>
+    <item
+        jar="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3c729e6d76a36c5dc27e6a4c4009296f49eaa88a">
+        <dex dex="/home/conor/AndroidStudioProjects/Cabalry/app/build/intermediates/pre-dexed/debug/classes-d1be109f5820f6e3675ef94dc81193e33caf3f3a.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="97f3b099801a9ad9d70e835b9125273e986eb68d">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-9911bf69e29342f9fb918a7c4f08bb560e39102d.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b92002cb2f0e11a226ac5bac6dff1dc2a9d0b774">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-0bbc944e0b2d98dcedbe3a8a2ac438a37def3569.jar" />
+    </item>
+    <item
+        jar="/home/conor/Git/cabalry/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="95758a2905669affbffc5ddd262921d375674fad">
+        <dex dex="/home/conor/Git/cabalry/app/build/intermediates/pre-dexed/debug/classes-5a82871524a3ef347e93d609b68916a07e1d3419.jar" />
     </item>
 
 </items>
