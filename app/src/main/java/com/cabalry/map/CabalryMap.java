@@ -21,11 +21,11 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private CabalryMarker mUserMaker;
-    private CabalryMarker mAlarmMaker;
+    private CabalryUser mUser;
+    private CabalryUser mAlarm;
 
     private HashMap<Integer, Marker> mMarkerMap;
-    private Vector<CabalryUser> mPastUsers = new Vector<>();
+    private Vector<CabalryUser> mUsers = new Vector<>();
 
     public void initializeMap(SupportMapFragment mapFragment) {
         // This is to call the onMapReady callback
@@ -45,34 +45,75 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
-    public void addMarker(final CabalryMarker marker) {
-
+    public Marker createMarker(final CabalryUser user) {
+        return mMap.addMarker(new MarkerOptions()
+                .position(user.getPosition())
+                .title("Marker"));
     }
 
     public Marker getMarker(int id) { return mMarkerMap.get(id); }
 
+    public void add(final CabalryUser user) {
+        mUsers.add(user);
+        mMarkerMap.put(user.getID(), createMarker(user));
+    }
+
+    public void update(final CabalryUser oldUsr, final CabalryUser newUsr) {
+
+    }
+
+    public void remove(final CabalryUser user) {
+        mUsers.remove(user);
+        mMarkerMap.remove(user.getID()).remove();
+    }
+
+    /**
+     * Algorithm that safely removes, inserts and updates
+     * new users with the current list users and map markers.
+     */
     public void updateUsers(final Vector<CabalryUser> newUsers) {
+        Vector<CabalryUser> removeList = new Vector<>();
 
-        int[] rmvArray = new int[mPastUsers.size()];
-        for(int i = 0; i < mPastUsers.size(); i++) {
+        /**
+         * First pass compare and update
+         */
+        for(int i = 0; i < mUsers.size(); i++) {
+            CabalryUser oldUsr = mUsers.get(i);
             boolean exit = false;
+            int index = 0; // Only used if exit is true
 
-            for(int j = 0; j < newUsers.size() || exit; j++) {
+            for(int j = 0; j < newUsers.size() && !exit; j++) {
+                CabalryUser newUsr = newUsers.get(j);
 
                 // Compare id's
-                if(mPastUsers.get(i).getID() == newUsers.get(j).getID())
+                if(oldUsr.getID() == newUsr.getID()) {
+                    update(oldUsr, newUsr); // ID already exists, update
+
                     exit = true;
+                    index = j;
+                }
             }
 
-            if(!exit)
-                // ID is obsolete, will be removed later
-                rmvArray[i] = mPastUsers.get(i).getID();
+            // Check output
+            if(exit)
+                newUsers.remove(index); // Updated, remove from new
+            else
+                removeList.add(oldUsr); // Outdated, queue for remove
         }
 
-        // Remove all obsolete markers
-        for(int i = 0; i < rmvArray.length; i++)
-            if(rmvArray[i] != 0)
-                mPastUsers.remove(i);
+        /**
+         * Second pass remove
+         */
+        for(int i = 0; i < removeList.size(); i++) {
+            remove(removeList.get(i));
+        }
+
+        /**
+         * Third pass add
+         */
+        for(int i = 0; i < newUsers.size(); i++) {
+            add(newUsers.get(i));
+        }
     }
 
     /**
@@ -95,60 +136,6 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
             //    return true;
             //}
             return false;
-        }
-    }
-
-    /**
-     * Represents an asynchronous task that collects locations
-     * of nearby cabalry members
-     */
-    private class CollectNearby extends AsyncTask<Void, Void, Vector<CabalryMarker>> {
-
-        private final int mID;
-        private final String mKey;
-
-        public CollectNearby(int id, String key) {
-            mID = id; mKey = key;
-        }
-
-        @Override
-        protected Vector<CabalryMarker> doInBackground(Void... params) {
-            Vector<CabalryMarker> nearbyMarkers = null;
-
-            JSONObject result;
-            boolean success = false;
-
-            try {
-                result = DB.getNearby(mID, mKey);
-                try {
-                    success = result.getBoolean(DB.SUCCESS);
-
-                    if(success) {
-                        nearbyMarkers = new Vector<>();
-
-                        // Get locations array
-                        JSONArray locations = result.getJSONArray(DB.LOCATION);
-
-                        for(int i = 0; i < locations.length(); i++) {
-                            JSONObject location = locations.getJSONObject(i);
-
-                            int id = location.getInt(DB.USER_ID);
-                            double lat = location.getDouble(DB.LATITUDE);
-                            double lng = location.getDouble(DB.LONGITUDE);
-
-                            // Add location to list
-                            nearbyMarkers.add(new CabalryMarker(id, lat, lng, null));
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return nearbyMarkers;
         }
     }
 }

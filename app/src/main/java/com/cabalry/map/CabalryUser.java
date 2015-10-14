@@ -17,15 +17,17 @@ public class CabalryUser {
     public CabalryUser(final int id, double lat, double lng, UserType type) {
         mID = id;
         mType = type;
-        updateLocation(lat, lng);
+        updatePosition(lat, lng);
     }
 
-    public void updateLocation(double lat, double lng) {
+    public void updatePosition(double lat, double lng) {
         mLat = lat;
         mLng = lng;
     }
 
-    public LatLng getLocation() { return new LatLng(mLat, mLng); }
+    public LatLng getPosition() { return new LatLng(mLat, mLng); }
+    public double getLat() { return mLat; }
+    public double getLng() { return mLng; }
 
     public int getID() { return mID; }
 }

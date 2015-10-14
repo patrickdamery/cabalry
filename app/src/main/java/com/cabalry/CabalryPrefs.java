@@ -28,6 +28,14 @@ public class CabalryPrefs {
         mEditor = mPrefs.edit();
     }
 
+    public static int getUserID() {
+        return mPrefs.getInt(USER_ID, 0);
+    }
+
+    public static String getUserKey() {
+        return mPrefs.getString(USER_KEY, "");
+    }
+
     public static boolean isUserLogin() {
         return mPrefs.getBoolean(USER_LOGIN, false);
     }

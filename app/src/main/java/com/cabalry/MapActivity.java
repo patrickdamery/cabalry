@@ -3,7 +3,13 @@ package com.cabalry;
 import android.os.Bundle;
 
 import com.cabalry.map.CabalryMap;
+import com.cabalry.map.CabalryUser;
+import com.google.android.gms.games.internal.constants.RequestType;
 import com.google.android.gms.maps.SupportMapFragment;
+
+import java.util.Vector;
+
+import static com.cabalry.CabalryUtility.*;
 
 public class MapActivity extends CabalryMap {
 
@@ -14,6 +20,21 @@ public class MapActivity extends CabalryMap {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         setUpMapIfNeeded();
+
+        CabalryPrefs.begin(this);
+        int id = CabalryPrefs.getUserID();
+        String key = CabalryPrefs.getUserKey();
+        CollectUsersTask collectUsers = new CollectUsersTask(id, key, UserRequestType.NEARBY, 0) {
+            @Override
+            protected void onPostExecute(Vector<CabalryUser> users) {
+                if(users == null)
+                    System.out.println("User is null 2");
+                else
+                    PrintCabalryUserList(users);
+            }
+        };
+
+        collectUsers.execute();
     }
 
     @Override

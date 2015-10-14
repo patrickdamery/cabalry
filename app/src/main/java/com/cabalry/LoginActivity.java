@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -25,30 +25,50 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cabalry.db.DB;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.cabalry.CabalryUtility.*;
 
 /**
  * Login screen for Cabalry app.
+ *
+ * Created by conor on 06/10/15.
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
-    enum StartupActivity { HOME, MAP }
-    StartupActivity mStartupActivity = StartupActivity.MAP;
+    enum StartupActivity { LOGIN, HOME, MAP }
+    StartupActivity mStartupActivity = StartupActivity.MAP; // [ Debug Only ]
 
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     // Keep track of the login task to ensure we can cancel it if requested.
-    private UserLoginTask mAuthTask = null;
+    private final UserLoginTask loginTask = new UserLoginTask() {
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            showProgress(false);
+
+            if (success) {
+                CabalryPrefs.userLogin(getID(), getKey());
+
+                Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(home);
+            } else {
+                CabalryPrefs.userLogout();
+
+                mPasswordView.setError(getString(R.string.error_incorrect_login));
+                mPasswordView.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            showProgress(false);
+        }
+    };
 
     // UI references.
     private AutoCompleteTextView mUserView;
@@ -92,8 +112,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     private void gotoStartup() {
-        Intent intent;
+        Intent intent = null;
+
         switch(mStartupActivity) {
+            case LOGIN : break;
+
             case HOME :
                 intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
@@ -103,19 +126,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 intent = new Intent(getApplicationContext(), MapActivity.class);
                 startActivity(intent);
                 break;
+
             default :
                 intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
                 break;
         }
 
-        startActivity(intent);
+        if(intent != null)
+            startActivity(intent);
     }
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -123,7 +147,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
-        if (mAuthTask != null) {
+        if (loginTask.getStatus() == AsyncTask.Status.RUNNING) {
             return;
         }
 
@@ -144,7 +168,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             focusView = mUserView;
             cancel = true;
 
-        } else {
+        } else if(!isValidUser(user)) {
             if(!isValidEmail(user)) {
                 mUserView.setError(getString(R.string.error_invalid_email));
                 focusView = mUserView;
@@ -157,12 +181,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
-        } else {
-            if(!isValidPassword(password)) {
-                mPasswordView.setError(getString(R.string.error_invalid_password));
-                focusView = mPasswordView;
-                cancel = true;
-            }
+
+        } else if(!isValidPassword(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
         }
 
         if (cancel) {
@@ -171,17 +194,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         } else {
             // Show a progress spinner, and perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(user, password);
-            mAuthTask.execute((Void) null);
+            loginTask.setLoginInfo(user, password);
+            loginTask.execute();
         }
     }
 
+    private boolean isValidUser(String user) {
+        return !user.contains("@") && !user.contains(".");
+    }
+
     private boolean isValidEmail(String user) {
-        if(user.contains("@") && user.contains(".")) {
-            Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(user);
-            return matcher.find();
-        }
-        return false;
+        return VALID_EMAIL_ADDRESS_REGEX.matcher(user).find();
     }
 
     private boolean isValidPassword(String password) {
@@ -274,74 +297,4 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mUserView.setAdapter(adapter);
     }
-
-    /**
-     * Represents an asynchronous login task used to authenticate
-     * the user.
-     */
-    private class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mUser;
-        private final String mPassword;
-
-        UserLoginTask(String user, String password) {
-            mUser = user;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            JSONObject result;
-            boolean success = false;
-
-            CabalryPrefs.begin(LoginActivity.this);
-
-            try {
-                result = DB.requestLogin(mUser, mPassword);
-                try {
-                    success = result.getBoolean(DB.SUCCESS);
-
-                    if (success) {
-
-                        // Register user.
-                        int id = result.getInt(DB.USER_ID);
-                        String key = result.getString(DB.USER_KEY);
-                        CabalryPrefs.userLogin(id, key);
-
-                    } else {
-                        CabalryPrefs.userLogout();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return success;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-
-                Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(home);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_login));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
-
