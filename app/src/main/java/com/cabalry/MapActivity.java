@@ -27,10 +27,10 @@ public class MapActivity extends CabalryMap {
         CollectUsersTask collectUsers = new CollectUsersTask(id, key, UserRequestType.NEARBY, 0) {
             @Override
             protected void onPostExecute(Vector<CabalryUser> users) {
-                if(users == null)
-                    System.out.println("User is null 2");
+                if(users != null)
+                    updateUsers(users);
                 else
-                    PrintCabalryUserList(users);
+                    System.out.println(getFailState());
             }
         };
 

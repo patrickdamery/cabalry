@@ -20,6 +20,11 @@ public class CabalryUser {
         updatePosition(lat, lng);
     }
 
+    public void updatePosition(final LatLng position) {
+        mLat = position.latitude;
+        mLng = position.latitude;
+    }
+
     public void updatePosition(double lat, double lng) {
         mLat = lat;
         mLng = lng;

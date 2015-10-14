@@ -43,9 +43,13 @@ public class CabalryUtility {
         private final UserRequestType mType;
         private final int mAlarmID;
 
+        private String failState;
+
         public CollectUsersTask(int id, String key, UserRequestType type, int alarmID) {
             mID = id; mKey = key; mType = type; mAlarmID = alarmID;
         }
+
+        public String getFailState() { return failState; }
 
         @Override
         protected Vector<CabalryUser> doInBackground(Void... params) {
@@ -55,11 +59,9 @@ public class CabalryUtility {
             boolean success;
 
             try {
-
-                System.out.println(mID+", "+mKey);
                 // Get correct result
                 switch(mType) {
-                    case NEARBY : System.out.println("nearby"); result = DB.getNearby(mID, mKey); break;
+                    case NEARBY : result = DB.getNearby(mID, mKey); break;
                     case ALARM  : result = DB.getAlarmNearby(mAlarmID, mID, mKey); break;
                     default     : result = DB.getNearby(mID, mKey); break;
                 }
@@ -67,7 +69,6 @@ public class CabalryUtility {
                 try {
                     // Check if request was successful
                     success = result.getBoolean(DB.SUCCESS);
-                    System.out.println(result.getBoolean(DB.SUCCESS));
                     if(success) {
                         users = new Vector<>();
 
@@ -83,9 +84,9 @@ public class CabalryUtility {
 
                             // Add location to list
                             users.add(new CabalryUser(id, lat, lng, null));
-
-                            System.out.println(id+", "+lat+", "+lng);
                         }
+                    } else {
+                        failState = result.getString(DB.FAIL_STATE);
                     }
 
                 } catch (JSONException e) {
@@ -95,8 +96,6 @@ public class CabalryUtility {
                 e.printStackTrace();
             }
 
-            if(users == null)
-                System.out.println("User is null 1");
             return users;
         }
     }

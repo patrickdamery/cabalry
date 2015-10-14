@@ -28,6 +28,12 @@ public class DB {
     public static final String SENT = "sent";
     public static final String START = "start";
     public static final String PORT = "port";
+    public static final String FAIL_STATE = "failstate";
+    public static final String KEY_FAIL = "keyfail";
+    public static final String NEAR_FAIL = "nearfail";
+    public static final String CARD_FAIL = "cardfail";
+    public static final String PAY_FAIL = "payfail";
+    public static final String UNKNOWN_FAIL = "unknownfail";
 
     public static final String ALARM_STATE = "state";
     public static final String STATE_ACTIVE = "active";
