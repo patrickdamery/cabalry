@@ -25,10 +25,12 @@ public class CabalryUtility {
      * Simple method that prints the elements of a list of users
      */
     @SuppressWarnings("unused")
-    public static void PrintCabalryUserList(final Vector<CabalryUser> userList) {
+    public static void PrintCabalryUserList(String msg, final Vector<CabalryUser> userList) {
+        String str = "{\n";
         for(CabalryUser user : userList) {
-            System.out.println("[ id = "+user.getID()+", lat = "+user.getLat()+", lng = "+user.getLng()+" ]");
+            str += "\t[ id = "+user.getID()+", lat = "+user.getLat()+", lng = "+user.getLng()+" ]\n";
         }
+        System.out.println(msg+" : "+str+"}");
     }
 
     /**

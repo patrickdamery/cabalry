@@ -20,8 +20,6 @@ public class MapActivity extends CabalryMap {
         protected void onPostExecute(Vector<CabalryUser> users) {
             if(users != null)
                 updateUsers(users);
-            else
-                System.out.println(getFailState());
         }
     };
 

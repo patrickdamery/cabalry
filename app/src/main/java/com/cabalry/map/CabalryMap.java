@@ -25,7 +25,7 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
     private CabalryUser mUser;
     private CabalryUser mAlarm;
 
-    private HashMap<Integer, Marker> mMarkerMap;
+    private HashMap<Integer, Marker> mMarkerMap = new HashMap<>();
     private Vector<CabalryUser> mUsers = new Vector<>();
 
     public void initializeMap(SupportMapFragment mapFragment) {
@@ -49,14 +49,14 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
     public Marker createMarker(final CabalryUser user) {
         return mMap.addMarker(new MarkerOptions()
                 .position(user.getPosition())
-                .title("Marker"));
+                .title("Marker "+user.getID()));
     }
 
     public Marker getMarker(int id) { return mMarkerMap.get(id); }
 
     public void add(final CabalryUser user) {
         mUsers.add(user);
-        //mMarkerMap.put(user.getID(), createMarker(user));
+        mMarkerMap.put(user.getID(), createMarker(user));
     }
 
     public void update(final CabalryUser oldUsr, final CabalryUser newUsr) {
@@ -65,7 +65,7 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
 
     public void remove(final CabalryUser user) {
         mUsers.remove(user);
-        //mMarkerMap.remove(user.getID()).remove();
+        mMarkerMap.remove(user.getID()).remove();
     }
 
     /**
@@ -119,7 +119,7 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
             add(newUsers.get(i));
         }
 
-        CabalryUtility.PrintCabalryUserList(mUsers);
+        CabalryUtility.PrintCabalryUserList("Updated", mUsers);
     }
 
     /**
