@@ -1,6 +1,5 @@
 package com.cabalry;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.cabalry.db.DB;
@@ -36,17 +35,28 @@ public class CabalryUtility {
      * Represents an asynchronous task that collects locations
      * of nearby cabalry members
      */
-    public static class CollectUsersTask extends AsyncTask<Void, Void, Vector<CabalryUser>> {
+    public static abstract class CollectUsersTask extends AsyncTask<Void, Void, Vector<CabalryUser>> {
 
-        private final int mID;
-        private final String mKey;
-        private final UserRequestType mType;
-        private final int mAlarmID;
+        private int mID;
+        private String mKey;
+        private UserRequestType mType;
+        private int mAlarmID;
 
         private String failState;
 
-        public CollectUsersTask(int id, String key, UserRequestType type, int alarmID) {
-            mID = id; mKey = key; mType = type; mAlarmID = alarmID;
+        public void setCollectInfo(int id, String key) {
+            mID = id; mKey = key;
+            mType = UserRequestType.NEARBY;
+        }
+
+        public void setCollectInfo(int id, String key, int alarmID) {
+            mID = id; mKey = key; mAlarmID = alarmID;
+            mType = UserRequestType.ALARM;
+        }
+
+        @SuppressWarnings("unused")
+        public void setCollectInfo(int id, String key, UserRequestType type) {
+            mID = id; mKey = key; mType = type;
         }
 
         public String getFailState() { return failState; }
@@ -98,13 +108,16 @@ public class CabalryUtility {
 
             return users;
         }
+
+        @Override
+        protected abstract void onPostExecute(Vector<CabalryUser> users);
     }
 
     /**
      * Represents an asynchronous login task used to authenticate
      * the user.
      */
-    public static class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public static abstract class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private String mUser;
         private String mPassword;
@@ -146,5 +159,11 @@ public class CabalryUtility {
 
             return success;
         }
+
+        @Override
+        protected abstract void onPostExecute(final Boolean success);
+
+        @Override
+        protected abstract void onCancelled();
     }
 }

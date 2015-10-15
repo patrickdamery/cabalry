@@ -4,16 +4,26 @@ import android.os.Bundle;
 
 import com.cabalry.map.CabalryMap;
 import com.cabalry.map.CabalryUser;
-import com.google.android.gms.games.internal.constants.RequestType;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.Vector;
 
 import static com.cabalry.CabalryUtility.*;
+import static com.cabalry.CabalryPrefs.*;
 
 public class MapActivity extends CabalryMap {
 
     private SupportMapFragment mMapFragment;
+
+    private final CollectUsersTask collectUsersTask = new CollectUsersTask() {
+        @Override
+        protected void onPostExecute(Vector<CabalryUser> users) {
+            if(users != null)
+                updateUsers(users);
+            else
+                System.out.println(getFailState());
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +31,11 @@ public class MapActivity extends CabalryMap {
         setContentView(R.layout.activity_map);
         setUpMapIfNeeded();
 
-        CabalryPrefs.begin(this);
-        int id = CabalryPrefs.getUserID();
-        String key = CabalryPrefs.getUserKey();
-        CollectUsersTask collectUsers = new CollectUsersTask(id, key, UserRequestType.NEARBY, 0) {
-            @Override
-            protected void onPostExecute(Vector<CabalryUser> users) {
-                if(users != null)
-                    updateUsers(users);
-                else
-                    System.out.println(getFailState());
-            }
-        };
+        int id = GetUserID(this);
+        String key = GetUserKey(this);
 
-        collectUsers.execute();
+        collectUsersTask.setCollectInfo(id, key);
+        collectUsersTask.execute();
     }
 
     @Override

@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.cabalry.CabalryUtility.*;
+import static com.cabalry.CabalryPrefs.*;
 
 /**
  * Login screen for Cabalry app.
@@ -52,12 +53,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
-                CabalryPrefs.userLogin(getID(), getKey());
+                UserLogin(LoginActivity.this, getID(), getKey());
 
                 Intent home = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(home);
             } else {
-                CabalryPrefs.userLogout();
+                UserLogout(LoginActivity.this);
 
                 mPasswordView.setError(getString(R.string.error_incorrect_login));
                 mPasswordView.requestFocus();
@@ -65,9 +66,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
-        protected void onCancelled() {
-            showProgress(false);
-        }
+        protected void onCancelled() { showProgress(false); }
     };
 
     // UI references.
@@ -81,8 +80,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        CabalryPrefs.begin(this);
-        if(CabalryPrefs.isUserLogin()) {
+        if(IsUserLogin(this)) {
             gotoStartup(); // Redirects to mStartupActivity
         }
 

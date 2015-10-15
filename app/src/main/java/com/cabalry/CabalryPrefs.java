@@ -20,37 +20,35 @@ public class CabalryPrefs {
     public static final String ALERT_COUNT = "ALERT_COUNT";
     public static final String ALARM_RANGE = "ALERT_RANGE";
 
-    private static SharedPreferences mPrefs;
-    private static SharedPreferences.Editor mEditor;
-
-    public static void begin(Context context) {
-        mPrefs = context.getSharedPreferences(PACKAGE_NAME, context.MODE_PRIVATE);
-        mEditor = mPrefs.edit();
+    public static int GetUserID(Context context) {
+        return getSharedPrefs(context).getInt(USER_ID, 0);
     }
 
-    public static int getUserID() {
-        return mPrefs.getInt(USER_ID, 0);
+    public static String GetUserKey(Context context) {
+        return getSharedPrefs(context).getString(USER_KEY, "");
     }
 
-    public static String getUserKey() {
-        return mPrefs.getString(USER_KEY, "");
+    public static boolean IsUserLogin(Context context) {
+        return getSharedPrefs(context).getBoolean(USER_LOGIN, false);
     }
 
-    public static boolean isUserLogin() {
-        return mPrefs.getBoolean(USER_LOGIN, false);
+    public static void UserLogin(Context context, int id, String key) {
+        SharedPreferences.Editor editor = getSharedPrefs(context).edit();
+        editor.putInt(USER_ID, id);
+        editor.putString(USER_KEY, key);
+        editor.putBoolean(USER_LOGIN, true);
+        editor.commit();
     }
 
-    public static void userLogin(int id, String key) {
-        mEditor.putInt(USER_ID, id);
-        mEditor.putString(USER_KEY, key);
-        mEditor.putBoolean(USER_LOGIN, true);
-        mEditor.commit();
+    public static void UserLogout(Context context) {
+        SharedPreferences.Editor editor = getSharedPrefs(context).edit();
+        editor.putInt(USER_ID, 0);
+        editor.putString(USER_KEY, "");
+        editor.putBoolean(USER_LOGIN, false);
+        editor.commit();
     }
 
-    public static void userLogout() {
-        mEditor.putInt(USER_ID, 0);
-        mEditor.putString(USER_KEY, "");
-        mEditor.putBoolean(USER_LOGIN, false);
-        mEditor.commit();
+    private static SharedPreferences getSharedPrefs(Context context) {
+        return context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
     }
 }
