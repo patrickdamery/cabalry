@@ -5,18 +5,26 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by conor on 14/10/15.
  */
-public class CabalryUser {
+public class MapUser {
 
     private final int mID;
-    private double mLat;
-    private double mLng;
+    private final String mName;
+    private final String mCar;
+    private final String mColor;
 
     public enum UserType { USER, NEARBY, ALARM }
     private UserType mType;
+    private double mLat;
+    private double mLng;
 
-    public CabalryUser(final int id, double lat, double lng, UserType type) {
+    public MapUser(final int id, String name, String car, String color,
+                   double lat, double lng, UserType type) {
         mID = id;
+        mName = name;
+        mCar = car;
+        mColor = color;
         mType = type;
+
         updatePosition(lat, lng);
     }
 
@@ -35,4 +43,7 @@ public class CabalryUser {
     public double getLng() { return mLng; }
 
     public int getID() { return mID; }
+    public String getName() { return mName; }
+    public String getCar() { return mCar; }
+    public String getColor() { return mColor; }
 }

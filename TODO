@@ -1,0 +1,30 @@
+General:
+    - Add webview activities
+    - Change theme
+    - Add GCM support
+    - Track and update location
+
+Home:
+    - Add nav drawer
+    - Set layout and buttons
+    -
+
+Map:
+    - Set map settings
+    - Add custom markers
+    - Add selection zoom
+    - Implement algorithm for map markers (done)
+
+Alarm:
+    - Add modular alarm activation
+    - Add timer feature
+    - Add silent feature
+    - Add fake deactivation
+    -
+
+Button:
+    - Add interface for bluetooth
+    -
+
+Bugs:
+    -

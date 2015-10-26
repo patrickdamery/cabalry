@@ -1,16 +1,10 @@
 package com.cabalry.map;
 
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 
-import com.cabalry.CabalryUtility;
-import com.cabalry.db.DB;
+import com.cabalry.util.Utility;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Vector;
@@ -18,15 +12,15 @@ import java.util.Vector;
 /**
  * Created by conor on 11/01/15.
  */
-public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private CabalryUser mUser;
-    private CabalryUser mAlarm;
+    private MapUser mUser;
+    private MapUser mAlarm;
 
     private HashMap<Integer, Marker> mMarkerMap = new HashMap<>();
-    private Vector<CabalryUser> mUsers = new Vector<>();
+    private Vector<MapUser> mUsers = new Vector<>();
 
     public void initializeMap(SupportMapFragment mapFragment) {
         // This is to call the onMapReady callback
@@ -46,24 +40,27 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
-    public Marker createMarker(final CabalryUser user) {
+    public Marker createMarker(final MapUser user) {
+        LatLng position = user.getPosition();
+        String title = user.getName() +" "+ user.getCar() +" "+ user.getColor();
+
         return mMap.addMarker(new MarkerOptions()
-                .position(user.getPosition())
-                .title("Marker "+user.getID()));
+                .position(position)
+                .title(title));
     }
 
     public Marker getMarker(int id) { return mMarkerMap.get(id); }
 
-    public void add(final CabalryUser user) {
+    public void add(final MapUser user) {
         mUsers.add(user);
         mMarkerMap.put(user.getID(), createMarker(user));
     }
 
-    public void update(final CabalryUser oldUsr, final CabalryUser newUsr) {
+    public void update(final MapUser oldUsr, final MapUser newUsr) {
         oldUsr.updatePosition(newUsr.getPosition());
     }
 
-    public void remove(final CabalryUser user) {
+    public void remove(final MapUser user) {
         mUsers.remove(user);
         mMarkerMap.remove(user.getID()).remove();
     }
@@ -72,22 +69,22 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
      * Algorithm that safely removes, inserts and updates
      * new users with the current list users and map markers.
      */
-    public void updateUsers(final Vector<CabalryUser> newUsers) {
+    public void updateUsers(final Vector<MapUser> newUsers) {
         if(newUsers == null)
             throw new NullPointerException("newUsers can't be null!");
 
-        Vector<CabalryUser> removeList = new Vector<>();
+        Vector<MapUser> removeList = new Vector<>();
 
         /**
          * First pass compare and update
          */
         for(int i = 0; i < mUsers.size(); i++) {
-            CabalryUser oldUsr = mUsers.get(i);
+            MapUser oldUsr = mUsers.get(i);
             boolean exit = false;
             int index = 0; // Only used if exit is true
 
             for(int j = 0; j < newUsers.size() && !exit; j++) {
-                CabalryUser newUsr = newUsers.get(j);
+                MapUser newUsr = newUsers.get(j);
 
                 // Compare id's
                 if(oldUsr.getID() == newUsr.getID()) {
@@ -119,7 +116,7 @@ public class CabalryMap extends FragmentActivity implements OnMapReadyCallback {
             add(newUsers.get(i));
         }
 
-        CabalryUtility.PrintCabalryUserList("Updated", mUsers);
+        Utility.PrintCabalryUserList("Updated", mUsers);
     }
 
     /**

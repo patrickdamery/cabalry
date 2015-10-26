@@ -1,4 +1,4 @@
-package com.cabalry.db;
+package com.cabalry.util;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,6 +19,9 @@ public class DB {
     public static final String SUCCESS = "success";
     public static final String USER_ID = "id";
     public static final String USER_KEY = "key";
+    public static final String USER_NAME = "name";
+    public static final String USER_CAR = "make";
+    public static final String USER_COLOR = "color";
     public static final String LATITUDE = "lat";
     public static final String LONGITUDE = "lon";
     public static final String LOGIN = "login";
@@ -87,14 +90,14 @@ public class DB {
      *          id : returns integer id for user
      *          key : returns authorization key for user
      */
-    public static JSONObject requestLogin(final String username, final String password) {
+    public static JSONObject RequestLogin(final String username, final String password) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
 
-        return request(new RequestObject(params, LOGIN_URL));
+        return sendRequest(new RequestObject(params, LOGIN_URL));
     }
 
     /**
@@ -105,14 +108,14 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if successfully logged out
      */
-    public static JSONObject requestLogout(final int id, final String key) {
+    public static JSONObject RequestLogout(final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, LOGOUT_URL));
+        return sendRequest(new RequestObject(params, LOGOUT_URL));
     }
 
     /**
@@ -123,14 +126,14 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if billing inputStream ok, false otherwise
      */
-    public static JSONObject checkBilling(final int id, final String key) {
+    public static JSONObject CheckBilling(final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, CHECK_BILLING_URL));
+        return sendRequest(new RequestObject(params, CHECK_BILLING_URL));
     }
 
     /**
@@ -142,7 +145,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if password inputStream correct
      */
-    public static JSONObject checkPassword(final int id, final String key, final String password) {
+    public static JSONObject CheckPassword(final int id, final String key, final String password) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -150,7 +153,7 @@ public class DB {
         params.add(new BasicNameValuePair("key", key));
         params.add(new BasicNameValuePair("password", password));
 
-        return request(new RequestObject(params, CHECK_PASS_URL));
+        return sendRequest(new RequestObject(params, CHECK_PASS_URL));
     }
 
     /**
@@ -163,7 +166,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if successfully updated location
      */
-    public static JSONObject updateUserLocation(final double latitude, final double longitude, final int id, final String key) {
+    public static JSONObject UpdateUserLocation(final double latitude, final double longitude, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -172,7 +175,7 @@ public class DB {
         params.add(new BasicNameValuePair("latitude", Double.toString(latitude)));
         params.add(new BasicNameValuePair("longitude", Double.toString(longitude)));
 
-        return request(new RequestObject(params, LOCATION_URL));
+        return sendRequest(new RequestObject(params, LOCATION_URL));
     }
 
     /**
@@ -186,7 +189,7 @@ public class DB {
      *          lat : latitude of user
      *          lon : longitude of user
      */
-    public static JSONObject getUserLocation(final int userId, final int id, final String key) {
+    public static JSONObject GetUserLocation(final int userId, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -194,7 +197,7 @@ public class DB {
         params.add(new BasicNameValuePair("key", key));
         params.add(new BasicNameValuePair("userId", Integer.toString(userId)));
 
-        return request(new RequestObject(params, GET_LOCATION_URL));
+        return sendRequest(new RequestObject(params, GET_LOCATION_URL));
     }
 
     /**
@@ -206,7 +209,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if successfully updated gcm key
      */
-    public static JSONObject updateUserGCM(final String gcm, final int id, final String key) {
+    public static JSONObject UpdateUserGCM(final String gcm, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -214,7 +217,7 @@ public class DB {
         params.add(new BasicNameValuePair("key", key));
         params.add(new BasicNameValuePair("gcm", gcm));
 
-        return request(new RequestObject(params, GCM_URL));
+        return sendRequest(new RequestObject(params, GCM_URL));
     }
 
     /**
@@ -224,16 +227,16 @@ public class DB {
      * @param key of user
      * @return JSON object that contains:
      *          success : returns true if users were located
-     *          location : Array that contains id, latitude and longitude of each user.
+     *          location : Array that contains id, name, car, latitude and longitude of each user.
      */
-    public static JSONObject getNearby(final int id, final String key) {
+    public static JSONObject GetNearby(final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, NEARBY_URL));
+        return sendRequest(new RequestObject(params, NEARBY_URL));
     }
 
     /**
@@ -248,7 +251,7 @@ public class DB {
      *			make : make of car
      *			color : color of car
      */
-    public static JSONObject getUserInfo(final int userId, final int id, final String key) {
+    public static JSONObject GetUserInfo(final int userId, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -256,7 +259,7 @@ public class DB {
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, USERINFO_URL));
+        return sendRequest(new RequestObject(params, USERINFO_URL));
     }
 
     /**
@@ -268,14 +271,14 @@ public class DB {
      *          success : returns true if alarm was successfully created
      *          alarmId : id of alarm created
      */
-    public static JSONObject startAlarm(final int id, final String key) {
+    public static JSONObject StartAlarm(final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, START_ALARM_URL));
+        return sendRequest(new RequestObject(params, START_ALARM_URL));
     }
 
     /**
@@ -289,7 +292,7 @@ public class DB {
      *          state : state of alarm
      *			sent : JSON array of locations of user's that were alerted
      */
-    public static JSONObject getAlarmNearby(final int alarmId, final int id, final String key) {
+    public static JSONObject GetAlarmNearby(final int alarmId, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -297,7 +300,7 @@ public class DB {
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, ALARM_LIST_URL));
+        return sendRequest(new RequestObject(params, ALARM_LIST_URL));
     }
 
     /**
@@ -309,7 +312,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if removed successfully
      */
-    public static JSONObject ignoreAlarm(final int alarmId, final int id, final String key) {
+    public static JSONObject IgnoreAlarm(final int alarmId, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -317,7 +320,7 @@ public class DB {
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, IGNORE_ALARM_URL));
+        return sendRequest(new RequestObject(params, IGNORE_ALARM_URL));
     }
 
     /***
@@ -328,7 +331,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if removed? successfully
      */
-    public static JSONObject addToAlarm(final int alarmId, final int id, final String key) {
+    public static JSONObject AddToAlarm(final int alarmId, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -336,7 +339,7 @@ public class DB {
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, ADDTO_ALARM_URL));
+        return sendRequest(new RequestObject(params, ADDTO_ALARM_URL));
     }
 
     /***
@@ -352,14 +355,14 @@ public class DB {
      *          quantity : quantity we should contact in case of alarm
      *			range : range to be used for nearby function
      */
-    public static JSONObject getUserSettings(final int id, final String key) {
+    public static JSONObject GetUserSettings(final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, GET_SETTINGS_URL));
+        return sendRequest(new RequestObject(params, GET_SETTINGS_URL));
     }
 
     /***
@@ -376,7 +379,7 @@ public class DB {
      *          id : of user who raised alarm
      *			sent : JSON array of locations of user's that were alerted
      */
-    public static JSONObject getAlarmInfo(final int alarmId, final int id, final String key) {
+    public static JSONObject GetAlarmInfo(final int alarmId, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -384,7 +387,7 @@ public class DB {
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, ALARM_INFO_URL));
+        return sendRequest(new RequestObject(params, ALARM_INFO_URL));
     }
 
     /***
@@ -397,7 +400,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if update inputStream successful
      */
-    public static JSONObject updateListenerInfo(final int alarmId, final int id, final String key, final int port) {
+    public static JSONObject UpdateListenerInfo(final int alarmId, final int id, final String key, final int port) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -406,7 +409,7 @@ public class DB {
         params.add(new BasicNameValuePair("key", key));
         params.add(new BasicNameValuePair("port", Integer.toString(port)));
 
-        return request(new RequestObject(params, UPDATE_LISTENER_URL));
+        return sendRequest(new RequestObject(params, UPDATE_LISTENER_URL));
     }
 
     /***
@@ -418,7 +421,7 @@ public class DB {
      * @return JSON object that contains:
      *          success : returns true if alarm was succesfully stopped
      */
-    public static JSONObject stopAlarm(final int alarmId, final int id, final String key) {
+    public static JSONObject StopAlarm(final int alarmId, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
@@ -426,10 +429,10 @@ public class DB {
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return request(new RequestObject(params, STOP_ALARM_URL));
+        return sendRequest(new RequestObject(params, STOP_ALARM_URL));
     }
 
-    private static JSONObject request(final RequestObject request) {
+    private static JSONObject sendRequest(final RequestObject request) {
 
         // return JSON object
         return new JSONParser().makeHttpRequest(request.url, request.method, request.params);
