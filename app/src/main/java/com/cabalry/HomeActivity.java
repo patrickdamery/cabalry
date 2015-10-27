@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.cabalry.ui.NavigationDrawerFragment;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 

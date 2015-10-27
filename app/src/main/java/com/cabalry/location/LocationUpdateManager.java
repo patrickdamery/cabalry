@@ -54,10 +54,9 @@ public class LocationUpdateManager implements LocationListener {
         }
     }
 
-    public void stopLocationUpdates() {
-        mLocationManager.removeUpdates(this);
-    }
+    public void stopLocationUpdates() { mLocationManager.removeUpdates(this); }
 
+    @Override
     public void onLocationChanged(Location location) {
         // Called when a new location is found by the network location provider.
         if (IsBetterLocation(location, mCurrentBestLocation)) {
@@ -68,9 +67,10 @@ public class LocationUpdateManager implements LocationListener {
             mUpdateListener.onUpdateLocation(mCurrentBestLocation);
     }
 
+    @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {}
-
+    @Override
     public void onProviderEnabled(String provider) {}
-
+    @Override
     public void onProviderDisabled(String provider) {}
 }

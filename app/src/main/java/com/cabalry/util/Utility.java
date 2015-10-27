@@ -29,42 +29,42 @@ public class Utility {
     public static final int TWO_MINUTES = 12000;
 
     public static final String PACKAGE_NAME = "CABALRY";
-    public static final String USER_ID = "ID";
-    public static final String USER_KEY = "KEY";
-    public static final String USER_LOGIN = "LOGIN";
+    public static final String PREF_USER_ID = "ID";
+    public static final String PREF_USER_KEY = "KEY";
+    public static final String PREF_USER_LOGIN = "LOGIN";
 
-    public static final String FAKE_PASS = "FAKE";
-    public static final String TIMER = "TIMER";
-    public static final String TIMER_ENABLED = "TIMER_ENABLED";
-    public static final String SILENT = "SILENT";
-    public static final String ALERT_COUNT = "ALERT_COUNT";
-    public static final String ALARM_RANGE = "ALERT_RANGE";
+    public static final String PREF_FAKE_PASS = "FAKE";
+    public static final String PREF_TIMER = "TIMER";
+    public static final String PREF_TIMER_ENABLED = "TIMER_ENABLED";
+    public static final String PREF_SILENT = "SILENT";
+    public static final String PREF_ALERT_COUNT = "ALERT_COUNT";
+    public static final String PREF_ALARM_RANGE = "ALERT_RANGE";
 
     public static int GetUserID(Context context) {
-        return getSharedPrefs(context).getInt(USER_ID, 0);
+        return getSharedPrefs(context).getInt(PREF_USER_ID, 0);
     }
 
     public static String GetUserKey(Context context) {
-        return getSharedPrefs(context).getString(USER_KEY, "");
+        return getSharedPrefs(context).getString(PREF_USER_KEY, "");
     }
 
     public static boolean IsUserLogin(Context context) {
-        return getSharedPrefs(context).getBoolean(USER_LOGIN, false);
+        return getSharedPrefs(context).getBoolean(PREF_USER_LOGIN, false);
     }
 
     public static void LoginUser(Context context, int id, String key) {
         SharedPreferences.Editor editor = getSharedPrefs(context).edit();
-        editor.putInt(USER_ID, id);
-        editor.putString(USER_KEY, key);
-        editor.putBoolean(USER_LOGIN, true);
+        editor.putInt(PREF_USER_ID, id);
+        editor.putString(PREF_USER_KEY, key);
+        editor.putBoolean(PREF_USER_LOGIN, true);
         editor.commit();
     }
 
     public static void LogoutUser(Context context) {
         SharedPreferences.Editor editor = getSharedPrefs(context).edit();
-        editor.putInt(USER_ID, 0);
-        editor.putString(USER_KEY, "");
-        editor.putBoolean(USER_LOGIN, false);
+        editor.putInt(PREF_USER_ID, 0);
+        editor.putString(PREF_USER_KEY, "");
+        editor.putBoolean(PREF_USER_LOGIN, false);
         editor.commit();
     }
 
@@ -77,7 +77,7 @@ public class Utility {
 
     public static LatLng GetLocation(Context context) {
         SharedPreferences prefs = getSharedPrefs(context);
-        return new LatLng(prefs.getFloat(USER_KEY, 0), prefs.getFloat(USER_KEY, 0));
+        return new LatLng(prefs.getFloat(PREF_USER_KEY, 0), prefs.getFloat(PREF_USER_KEY, 0));
     }
 
     private static SharedPreferences getSharedPrefs(Context context) {
@@ -209,28 +209,28 @@ public class Utility {
 
                 try {
                     // Check if request was successful
-                    success = result.getBoolean(SUCCESS);
+                    success = result.getBoolean(REQ_SUCCESS);
                     if(success) {
                         users = new Vector<>();
 
                         // Get locations array
-                        JSONArray locations = result.getJSONArray(LOCATION);
+                        JSONArray locations = result.getJSONArray(REQ_LOCATION);
 
                         for(int i = 0; i < locations.length(); i++) {
                             JSONObject location = locations.getJSONObject(i);
 
-                            int id = location.getInt(USER_ID);
-                            String name = location.getString(USER_NAME);
-                            String car = location.getString(USER_CAR);
-                            String color = location.getString(USER_COLOR);
-                            double lat = location.getDouble(LATITUDE);
-                            double lng = location.getDouble(LONGITUDE);
+                            int id = location.getInt(REQ_USER_ID);
+                            String name = location.getString(REQ_USER_NAME);
+                            String car = location.getString(REQ_USER_CAR);
+                            String color = location.getString(REQ_USER_COLOR);
+                            double lat = location.getDouble(REQ_LATITUDE);
+                            double lng = location.getDouble(REQ_LONGITUDE);
 
                             // Add location to list
                             users.add(new MapUser(id, name, car, color, lat, lng, null));
                         }
                     } else {
-                        failState = result.getString(FAIL_STATE);
+                        failState = result.getString(REQ_FAIL_STATE);
                     }
 
                 } catch (JSONException e) {
@@ -275,13 +275,13 @@ public class Utility {
             try {
                 result = RequestLogin(mUser, mPassword);
                 try {
-                    success = result.getBoolean(SUCCESS);
+                    success = result.getBoolean(REQ_SUCCESS);
 
                     if (success) {
 
                         // Register user.
-                        mID = result.getInt(USER_ID);
-                        mKey = result.getString(USER_KEY);
+                        mID = result.getInt(REQ_USER_ID);
+                        mKey = result.getString(REQ_USER_KEY);
                     }
 
                 } catch (JSONException e) {

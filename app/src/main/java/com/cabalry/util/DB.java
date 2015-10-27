@@ -14,43 +14,45 @@ import java.util.List;
 public class DB {
 
     /**
-     * Global strings for database response
-     */
-    public static final String SUCCESS = "success";
-    public static final String USER_ID = "id";
-    public static final String USER_KEY = "key";
-    public static final String USER_NAME = "name";
-    public static final String USER_CAR = "make";
-    public static final String USER_COLOR = "color";
-    public static final String LATITUDE = "lat";
-    public static final String LONGITUDE = "lon";
-    public static final String LOGIN = "login";
-    public static final String USER_IP = "ip";
-    public static final String ALARM_ID = "alarmId";
-    public static final String LOCATION = "location";
-    public static final String SENT = "sent";
-    public static final String START = "start";
-    public static final String PORT = "port";
-    public static final String FAIL_STATE = "failstate";
+    * Request response string keys
+    */
+    public static final String REQ_SUCCESS = "success";
+    public static final String REQ_USER_ID = "id";
+    public static final String REQ_USER_KEY = "key";
+    public static final String REQ_USER_NAME = "name";
+    public static final String REQ_USER_CAR = "make";
+    public static final String REQ_USER_COLOR = "color";
+    public static final String REQ_LATITUDE = "lat";
+    public static final String REQ_LONGITUDE = "lon";
+    public static final String REQ_LOGIN = "login";
+    public static final String REQ_USER_IP = "ip";
+    public static final String REQ_ALARM_ID = "alarmId";
+    public static final String REQ_LOCATION = "location";
+    public static final String REQ_SENT = "sent";
+    public static final String REQ_START = "start";
+    public static final String REQ_PORT = "port";
+
+    public static final String REQ_FAIL_STATE = "failstate";
     public static final String KEY_FAIL = "keyfail";
     public static final String NEAR_FAIL = "nearfail";
     public static final String CARD_FAIL = "cardfail";
     public static final String PAY_FAIL = "payfail";
     public static final String UNKNOWN_FAIL = "unknownfail";
 
-    public static final String ALARM_STATE = "state";
-    public static final String STATE_ACTIVE = "active";
-    public static final String STATE_INACTIVE = "inactive";
-    public static final String STATE_FINISHED = "finished";
-    public static final String STATE_LOST = "lost";
+    public static final String REQ_ALARM_STATE = "state";
+    public static final String ACTIVE_ALARM = "active";
+    public static final String INACTIVE_ALARM = "inactive";
+    public static final String FINISHED_ALARM = "finished";
+    public static final String LOST_ALARM = "lost";
 
+    // ?
     public static final String SENDER_ID = "200578369108";
     public static final String PROPERTY_REG_ID = "regId";
     public static final String PROPERTY_APP_VERSION = "0.7.5";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     /**
-     * Global cabalry url's
+     * Cabalry url's
      */
     public static final String CABALRY_URL = "cabalry.com";
     public static final String GET_SETTINGS_URL = "https://"+ CABALRY_URL +"/cabalry/getSettings.php";
@@ -60,7 +62,7 @@ public class DB {
     public static final String START_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/startAlarm.php";
     public static final String STOP_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/stopAlarm.php";
     public static final String IGNORE_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/ignore.php";
-    public static final String ADDTO_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/addToAlarm.php";
+    public static final String ADD_TO_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/addToAlarm.php";
     public static final String ALARM_LIST_URL = "https://"+ CABALRY_URL +"/cabalry/alarmList.php";
     public static final String ALARM_INFO_URL = "https://"+ CABALRY_URL +"/cabalry/alarmInfo.php";
     public static final String UPDATE_LISTENER_URL = "https://"+ CABALRY_URL +"/cabalry/updateListener.php";
@@ -339,7 +341,7 @@ public class DB {
         params.add(new BasicNameValuePair("id", Integer.toString(id)));
         params.add(new BasicNameValuePair("key", key));
 
-        return sendRequest(new RequestObject(params, ADDTO_ALARM_URL));
+        return sendRequest(new RequestObject(params, ADD_TO_ALARM_URL));
     }
 
     /***

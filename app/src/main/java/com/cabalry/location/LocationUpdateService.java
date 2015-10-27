@@ -66,7 +66,7 @@ public class LocationUpdateService extends Service implements LocationUpdateList
                         GetUserID(LocationUpdateService.this), GetUserKey(LocationUpdateService.this));
 
                 try {
-                    result.getBoolean(SUCCESS);
+                    result.getBoolean(REQ_SUCCESS);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

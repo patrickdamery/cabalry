@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.cabalry.util.Utility.*;
-import static com.cabalry.util.DB.*;
 
 /**
  * Login screen for Cabalry app.
@@ -39,7 +38,7 @@ import static com.cabalry.util.DB.*;
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     enum StartupActivity { LOGIN, HOME, MAP }
-    StartupActivity mStartupActivity = StartupActivity.MAP; // [ Debug Only ]
+    StartupActivity mStartupActivity = StartupActivity.MAP;
 
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -143,9 +142,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             startActivity(intent);
     }
 
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
-    }
+    private void populateAutoComplete() { getLoaderManager().initLoader(0, null, this); }
 
     /**
      * Attempts to sign in or register the account specified by the login form.

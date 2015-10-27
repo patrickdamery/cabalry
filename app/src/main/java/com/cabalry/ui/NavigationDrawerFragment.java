@@ -1,4 +1,4 @@
-package com.cabalry;
+package com.cabalry.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.cabalry.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
