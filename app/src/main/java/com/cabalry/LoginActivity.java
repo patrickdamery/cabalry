@@ -37,8 +37,9 @@ import static com.cabalry.util.Utility.*;
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
-    enum StartupActivity { LOGIN, HOME, MAP }
-    StartupActivity mStartupActivity = StartupActivity.MAP;
+    enum StartupActivity { LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
+                           SETTINGS, USER_INFO }
+    StartupActivity mStartupActivity = StartupActivity.USER_MAP;
 
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -123,18 +124,43 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             case LOGIN : break;
 
             case HOME :
-                intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 break;
 
-            case MAP :
-                intent = new Intent(getApplicationContext(), UserMapActivity.class);
-                startActivity(intent);
+            case USER_MAP:
+                startActivity(new Intent(getApplicationContext(), UserMapActivity.class));
+                break;
+
+            case BILLING :
+                startActivity(new Intent(getApplicationContext(), BillingActivity.class));
+                break;
+
+            case FORGOT :
+                startActivity(new Intent(getApplicationContext(), ForgotActivity.class));
+                break;
+
+            case PROFILE :
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                break;
+
+            case RECORDINGS :
+                startActivity(new Intent(getApplicationContext(), RecordingsActivity.class));
+                break;
+
+            case REGISTER :
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                break;
+
+            case SETTINGS :
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                break;
+
+            case USER_INFO:
+                startActivity(new Intent(getApplicationContext(), UserInfoActivity.class));
                 break;
 
             default :
-                intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 break;
         }
 

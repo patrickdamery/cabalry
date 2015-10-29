@@ -32,6 +32,8 @@ public class Utility {
     public static final String PREF_USER_ID = "ID";
     public static final String PREF_USER_KEY = "KEY";
     public static final String PREF_USER_LOGIN = "LOGIN";
+    public static final String PREF_LATITUDE = "LAT";
+    public static final String PREF_LONGITUDE = "LNG";
 
     public static final String PREF_FAKE_PASS = "FAKE";
     public static final String PREF_TIMER = "TIMER";
@@ -70,14 +72,14 @@ public class Utility {
 
     public static void StoreLocation(Context context, LatLng location) {
         SharedPreferences.Editor editor = getSharedPrefs(context).edit();
-        editor.putFloat("", (float)location.latitude);
-        editor.putFloat("", (float)location.longitude);
+        editor.putFloat(PREF_LATITUDE, (float)location.latitude);
+        editor.putFloat(PREF_LONGITUDE, (float)location.longitude);
         editor.commit();
     }
 
     public static LatLng GetLocation(Context context) {
         SharedPreferences prefs = getSharedPrefs(context);
-        return new LatLng(prefs.getFloat(PREF_USER_KEY, 0), prefs.getFloat(PREF_USER_KEY, 0));
+        return new LatLng(prefs.getFloat(PREF_LATITUDE, 0), prefs.getFloat(PREF_LONGITUDE, 0));
     }
 
     private static SharedPreferences getSharedPrefs(Context context) {

@@ -1,7 +1,9 @@
 package com.cabalry;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.cabalry.location.LocationUpdateService;
 import com.cabalry.map.MapActivity;
 import com.cabalry.map.MapUser;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -33,9 +35,10 @@ public class UserMapActivity extends MapActivity {
         setContentView(R.layout.activity_user_map);
         initialize();
 
-        // Start tracer service.
-        //Intent tracer = new Intent(getApplicationContext(), LocationUpdateService.class);
-        //startService(tracer);
+        System.out.println("Creating Location Update Service");
+        // Start location update service.
+        Intent intent = new Intent(getApplicationContext(), LocationUpdateService.class);
+        startService(intent);
     }
 
     @Override

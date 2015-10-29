@@ -21,11 +21,10 @@ import static com.cabalry.util.DB.*;
 public class LocationUpdateService extends Service implements LocationUpdateListener {
 
     public static final double LOCATION_THRESHOLD = 10;
-
-    private LocationUpdateManager mUpdateManager;
-
     private static final int WAIT_TIME = 600000;
     private long startTime = System.currentTimeMillis();
+
+    private LocationUpdateManager mUpdateManager;
 
     private LatLng currentLocation, lastLocation;
 
@@ -36,6 +35,8 @@ public class LocationUpdateService extends Service implements LocationUpdateList
 
         currentLocation = GetLocation(this);
         updateDBLocation();
+
+        System.out.println("Location Update Service created");
     }
 
     @Override
