@@ -1,6 +1,7 @@
 package com.cabalry;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.cabalry.ui.NavigationDrawerFragment;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -27,6 +30,12 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        final String[] navDrawerStrings = new String[] {
+                getString(R.string.title_map),
+                getString(R.string.title_logout),
+                getString(R.string.title_settings)
+        };
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -38,7 +47,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
+        // Update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
@@ -47,15 +56,9 @@ public class HomeActivity extends AppCompatActivity
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
-
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
+            case 1: break;
+            case 2: break;
+            case 3: break;
         }
     }
 
@@ -77,6 +80,11 @@ public class HomeActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        switch(id) {
+            case 1:
+                startActivity(new Intent(getApplicationContext(), UserMapActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -103,8 +111,7 @@ public class HomeActivity extends AppCompatActivity
             return fragment;
         }
 
-        public PlaceholderFragment() {
-        }
+        public PlaceholderFragment() { }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

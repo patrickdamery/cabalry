@@ -72,8 +72,8 @@ public class Utility {
 
     public static void StoreLocation(Context context, LatLng location) {
         SharedPreferences.Editor editor = getSharedPrefs(context).edit();
-        editor.putFloat(PREF_LATITUDE, (float)location.latitude);
-        editor.putFloat(PREF_LONGITUDE, (float)location.longitude);
+        editor.putFloat(PREF_LATITUDE, (float) location.latitude);
+        editor.putFloat(PREF_LONGITUDE, (float) location.longitude);
         editor.commit();
     }
 
