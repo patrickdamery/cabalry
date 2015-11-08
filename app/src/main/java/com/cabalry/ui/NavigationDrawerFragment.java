@@ -12,8 +12,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +31,13 @@ public class NavigationDrawerFragment extends Fragment {
     /**
      * Remember the position of the selected item.
      */
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+    private static final String STATE_SELECTED_POSITION = "SELECTED_NAVDR_POS";
 
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
      */
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String PREF_USER_LEARNED_DRAWER = "NAVDR_LEARNED";
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -59,22 +57,14 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    private String[] mNavDrawerStrings;
-
     public NavigationDrawerFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //mNavDrawerStrings = savedInstanceState.getStringArray(NAV_DRAWER_STRINGS);
-        //if(mNavDrawerStrings == null)
-        //    throw new NullPointerException("Navigation drawer has no strings!");
-
-
-        // TODO replace with custom utility
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
-        // drawer. See PREF_USER_LEARNED_DRAWER for details.
+        // drawer. See Utility.PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
@@ -85,6 +75,14 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
+    }
+
+    public void setNavDrawerStrings(String[] navDrawerStrings) {
+        mDrawerListView.setAdapter(new ArrayAdapter<>(
+                getActionBar().getThemedContext(),
+                android.R.layout.simple_list_item_activated_1,
+                android.R.id.text1,
+                navDrawerStrings));
     }
 
     @Override
@@ -107,12 +105,6 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-
-        mDrawerListView.setAdapter(new ArrayAdapter<>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                mNavDrawerStrings));
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

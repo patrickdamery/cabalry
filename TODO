@@ -2,7 +2,6 @@ General:
     - Add webview activities
     - Change theme
     - Add GCM support
-    - Add nav drawer
     - Set layout and buttons
     - Set map settings
     - Add custom markers
@@ -16,6 +15,7 @@ General:
 Completed:
     - Track and update location
     - Implement algorithm for map markers
+    - Add nav drawer
 
 Bugs:
     -
