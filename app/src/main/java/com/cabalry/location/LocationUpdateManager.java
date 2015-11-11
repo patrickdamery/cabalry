@@ -6,6 +6,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import java.util.Vector;
+
 import static com.cabalry.util.Utility.*;
 
 /**
@@ -18,10 +20,11 @@ public class LocationUpdateManager implements LocationListener {
 
     private LocationManager mLocationManager;
     private Location mCurrentBestLocation;
-    private LocationUpdateListener mUpdateListener;
 
     private long mMinTime = 0;
     private float mMinDistance = 0;
+
+    private static Vector<LocationUpdateListener> mLocationUpdateListenerVector = new Vector<>();
 
     public LocationUpdateManager(Context context) {
         // Acquire a reference to the system Location Manager.
@@ -32,8 +35,8 @@ public class LocationUpdateManager implements LocationListener {
         mUpdateProvider = updateProvider;
     }
 
-    public void setLocationUpdateListener(LocationUpdateListener updateListener) {
-        mUpdateListener = updateListener;
+    public static void registerUpdateListener(LocationUpdateListener updateListener) {
+        mLocationUpdateListenerVector.add(updateListener);
     }
 
     public void startLocationUpdates() {
@@ -63,8 +66,9 @@ public class LocationUpdateManager implements LocationListener {
             mCurrentBestLocation = location;
         }
 
-        if(mUpdateListener != null)
-            mUpdateListener.onUpdateLocation(mCurrentBestLocation);
+        if(mLocationUpdateListenerVector != null && !mLocationUpdateListenerVector.isEmpty())
+            for(LocationUpdateListener updateListener : mLocationUpdateListenerVector)
+                updateListener.onUpdateLocation(mCurrentBestLocation);
     }
 
     @Override

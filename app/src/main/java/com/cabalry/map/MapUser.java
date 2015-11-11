@@ -30,7 +30,7 @@ public class MapUser {
 
     public void updatePosition(final LatLng position) {
         mLat = position.latitude;
-        mLng = position.latitude;
+        mLng = position.longitude;
     }
 
     public void updatePosition(double lat, double lng) {

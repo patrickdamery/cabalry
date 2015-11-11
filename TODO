@@ -1,11 +1,9 @@
 General:
-    - Add webview activities
     - Change theme
     - Add GCM support
     - Set layout and buttons
-    - Set map settings
     - Add custom markers
-    - Add selection zoom
+    - Add loading screens
     - Add modular alarm activation
     - Add timer feature
     - Add silent feature
@@ -16,6 +14,9 @@ Completed:
     - Track and update location
     - Implement algorithm for map markers
     - Add nav drawer
+    - Add webview activities
+    - Set map settings
+    - Add selection zoom
 
 Bugs:
     -

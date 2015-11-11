@@ -31,7 +31,7 @@ public class LocationUpdateService extends Service implements LocationUpdateList
     @Override
     public void onCreate() {
         mUpdateManager = new LocationUpdateManager(this);
-        mUpdateManager.setLocationUpdateListener(this);
+        LocationUpdateManager.registerUpdateListener(this);
 
         currentLocation = GetLocation(this);
         updateDBLocation();

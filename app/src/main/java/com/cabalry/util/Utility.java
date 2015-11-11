@@ -43,19 +43,19 @@ public class Utility {
     public static final String PREF_ALARM_RANGE = "ALERT_RANGE";
 
     public static int GetUserID(Context context) {
-        return getSharedPrefs(context).getInt(PREF_USER_ID, 0);
+        return GetSharedPrefs(context).getInt(PREF_USER_ID, 0);
     }
 
     public static String GetUserKey(Context context) {
-        return getSharedPrefs(context).getString(PREF_USER_KEY, "");
+        return GetSharedPrefs(context).getString(PREF_USER_KEY, "");
     }
 
     public static boolean IsUserLogin(Context context) {
-        return getSharedPrefs(context).getBoolean(PREF_USER_LOGIN, false);
+        return GetSharedPrefs(context).getBoolean(PREF_USER_LOGIN, false);
     }
 
     public static void LoginUser(Context context, int id, String key) {
-        SharedPreferences.Editor editor = getSharedPrefs(context).edit();
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putInt(PREF_USER_ID, id);
         editor.putString(PREF_USER_KEY, key);
         editor.putBoolean(PREF_USER_LOGIN, true);
@@ -63,7 +63,7 @@ public class Utility {
     }
 
     public static void LogoutUser(Context context) {
-        SharedPreferences.Editor editor = getSharedPrefs(context).edit();
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putInt(PREF_USER_ID, 0);
         editor.putString(PREF_USER_KEY, "");
         editor.putBoolean(PREF_USER_LOGIN, false);
@@ -71,18 +71,18 @@ public class Utility {
     }
 
     public static void StoreLocation(Context context, LatLng location) {
-        SharedPreferences.Editor editor = getSharedPrefs(context).edit();
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putFloat(PREF_LATITUDE, (float) location.latitude);
         editor.putFloat(PREF_LONGITUDE, (float) location.longitude);
         editor.commit();
     }
 
     public static LatLng GetLocation(Context context) {
-        SharedPreferences prefs = getSharedPrefs(context);
+        SharedPreferences prefs = GetSharedPrefs(context);
         return new LatLng(prefs.getFloat(PREF_LATITUDE, 0), prefs.getFloat(PREF_LONGITUDE, 0));
     }
 
-    private static SharedPreferences getSharedPrefs(Context context) {
+    public static SharedPreferences GetSharedPrefs(Context context) {
         return context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
     }
 
@@ -150,18 +150,6 @@ public class Utility {
             return provider2 == null;
         }
         return provider1.equals(provider2);
-    }
-
-    /**
-     * Simple method that prints the elements of a list of users
-     */
-    @SuppressWarnings("unused")
-    public static void PrintCabalryUserList(String msg, final Vector<MapUser> userList) {
-        String str = "{\n";
-        for(MapUser user : userList) {
-            str += "\t[ id = "+user.getID()+", lat = "+user.getLat()+", lng = "+user.getLng()+" ]\n";
-        }
-        System.out.println(msg+" : "+str+"}");
     }
 
     /**
@@ -247,6 +235,63 @@ public class Utility {
 
         @Override
         protected abstract void onPostExecute(Vector<MapUser> users);
+    }
+
+    /**
+     * Represents an asynchronous task that collects the users info
+     */
+    public static abstract class CollectUserInfoTask extends AsyncTask<Void, Void, MapUser> {
+
+        private int mUserID;
+        private int mID;
+        private String mKey;
+
+        private String failState;
+
+        public void set(int userID, int id, String key) {
+            mUserID = userID; mID = id; mKey = key;
+        }
+
+        public String getFailState() { return failState; }
+
+        @Override
+        protected MapUser doInBackground(Void... params) {
+            MapUser user = null;
+
+            JSONObject result;
+            boolean success;
+
+            try {
+                result = GetUserInfo(mUserID, mID, mKey);
+
+                try {
+                    // Check if request was successful
+                    success = result.getBoolean(REQ_SUCCESS);
+                    if(success) {
+                        String name = result.getString(REQ_USER_NAME);
+                        String car = result.getString(REQ_USER_CAR);
+                        String color = result.getString(REQ_USER_COLOR);
+                        double lat = result.getDouble(REQ_LATITUDE);
+                        double lng = result.getDouble(REQ_LONGITUDE);
+
+                        user = new MapUser(mID, name, car, color, lat, lng, MapUser.UserType.USER);
+
+                    } else {
+                        failState = result.getString(REQ_FAIL_STATE);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return user;
+        }
+
+        @Override
+        protected abstract void onPostExecute(MapUser user);
     }
 
     /**
