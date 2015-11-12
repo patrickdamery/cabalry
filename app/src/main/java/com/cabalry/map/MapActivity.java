@@ -16,10 +16,15 @@ import java.util.Vector;
  */
 public abstract class MapActivity extends FragmentActivity implements OnMapReadyCallback, LocationUpdateListener {
 
+    public static final int MAP_PADDING = 128;
+
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     private HashMap<Integer, Marker> mMarkerMap = new HashMap<>();
     private Vector<MapUser> mUsers = new Vector<>();
+
+    private final MarkerListener mMarkerListener = new MarkerListener();
+    private final CameraAnimationListener mCameraAnimationListener = new CameraAnimationListener();
 
     public void initializeMap(SupportMapFragment mapFragment) {
         LocationUpdateManager.registerUpdateListener(this);
@@ -45,9 +50,9 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        MarkerListener markerListener = new MarkerListener();
-        mMap.setOnMarkerClickListener(markerListener);
-        mMap.setOnInfoWindowClickListener(markerListener);
+
+        mMap.setOnMarkerClickListener(mMarkerListener);
+        mMap.setOnInfoWindowClickListener(mMarkerListener);
 
         // TODO uncomment line below
         //loadGoogleMapSettings();
@@ -92,25 +97,21 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
                 .bearing(bearing)
                 .build();
 
-        // Animate the change in camera view over some time.
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
-                transTime, null);
+                transTime, mCameraAnimationListener);
     }
 
     public void setCameraFocus(Vector<LatLng> targets, int transTime) {
         if(targets.isEmpty()) return;
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (LatLng latLng : targets)
+        for(LatLng latLng : targets)
             builder.include(latLng);
 
         LatLngBounds bounds = builder.build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, MAP_PADDING);
 
-        int padding = 128; // Offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-
-        // Animate the change in camera view over some time.
-        mMap.animateCamera(cu, transTime, null);
+        mMap.animateCamera(cameraUpdate, transTime, mCameraAnimationListener);
     }
 
     /**
@@ -189,6 +190,20 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
             //    return true;
             //}
             return false;
+        }
+    }
+
+    /**
+     * Class implementation for camera animation callbacks
+     */
+    private class CameraAnimationListener implements GoogleMap.CancelableCallback {
+
+        @Override
+        public void onFinish() {
+        }
+
+        @Override
+        public void onCancel() {
         }
     }
 }

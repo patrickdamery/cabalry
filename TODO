@@ -9,6 +9,7 @@ General:
     - Add silent feature
     - Add fake deactivation
     - Add interface for bluetooth
+    - Handle case of no available servers for alarm (keep trying)
 
 Completed:
     - Track and update location
@@ -19,4 +20,4 @@ Completed:
     - Add selection zoom
 
 Bugs:
-    -
+    - MapActivity.createMarker[ mMap is sometimes null ]
