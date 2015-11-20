@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,21 +20,25 @@ import static com.cabalry.util.Utility.*;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    private static final String TAG = "HomeActivity";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+    private boolean mStart = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        System.out.println("CABALRY - onCreate 1");
+        mStart = true;
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        //navigation_drawer
+        //left_drawer
 
         final String[] navDrawerStrings = new String[] {
                 getString(R.string.title_profile),
@@ -50,8 +55,6 @@ public class HomeActivity extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        System.out.println("CABALRY - onCreate 2");
     }
 
     @Override
@@ -63,13 +66,9 @@ public class HomeActivity extends AppCompatActivity
                 .commit();
     }
 
-    boolean start = true;
     public void onSectionAttached(int number) {
-        if(start) {
-            start = false;
-        }
-        else {
-            System.out.println("CABALRY - onSectionAttached, "+number);
+        if(!mStart) {
+            Log.d(TAG, "onSectionAttached(): "+number);
             Intent intent = null;
             switch (number) {
                 case 1: intent = new Intent(getApplicationContext(), ProfileActivity.class); break;
@@ -86,9 +85,12 @@ public class HomeActivity extends AppCompatActivity
                     break;
             }
 
-            if(intent != null)
+            if(intent != null) {
                 startActivity(intent);
+                finish();
+            }
         }
+        mStart = false;
     }
 
     @Override
@@ -97,7 +99,10 @@ public class HomeActivity extends AppCompatActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
+
+            // TODO look into this
             //getMenuInflater().inflate(R.menu.main, menu);
+
             return true;
         }
         return super.onCreateOptionsMenu(menu);

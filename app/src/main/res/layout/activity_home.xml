@@ -3,6 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/drawer_layout"
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context=".MainActivity">
+    
+    <!-- The main content view -->
+    <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F5F5F5">
+        <ImageView
+                android:background="@drawable/homelogo"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp"/>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="80dp"
+                android:layout_gravity="center|bottom">
+        <ToggleButton
+                android:id="@+id/toggleTimer"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/toggle"
+                android:textSize="0dp"/>
+        <Button
+                android:id="@+id/bAlarm"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/alarm_button"
+                android:textSize="0dp"/>
+        </RelativeLayout>
+    </FrameLayout>
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
@@ -17,8 +55,10 @@
     <!-- The drawer is given a fixed width in dp and extends the full height of
          the container. -->
     <fragment android:id="@+id/navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
-        android:layout_gravity="start" android:name="com.cabalry.ui.NavigationDrawerFragment"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="com.cabalry.ui.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

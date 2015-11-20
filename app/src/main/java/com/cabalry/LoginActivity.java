@@ -40,7 +40,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     enum StartupActivity { LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
                            SETTINGS, USER_INFO }
-    StartupActivity mStartupActivity = StartupActivity.HOME;
+    StartupActivity mStartupActivity = StartupActivity.LOGIN;
 
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =

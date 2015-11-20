@@ -10,6 +10,7 @@ General:
     - Add fake deactivation
     - Add interface for bluetooth
     - Handle case of no available servers for alarm (keep trying)
+    - Set back action on activities
 
 Completed:
     - Track and update location
@@ -21,3 +22,4 @@ Completed:
 
 Bugs:
     - MapActivity.createMarker[ mMap is sometimes null ]
+    - HomeActivity.onSectionAttached[  ]

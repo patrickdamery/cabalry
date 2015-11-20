@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.*;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,6 +20,7 @@ import static com.cabalry.util.DB.*;
  * Created by conor on 29/01/15.
  */
 public class LocationUpdateService extends Service implements LocationUpdateListener {
+    private static final String TAG = "LocationUpdateService";
 
     public static final double LOCATION_THRESHOLD = 10;
     private static final int WAIT_TIME = 600000;
@@ -36,7 +38,7 @@ public class LocationUpdateService extends Service implements LocationUpdateList
         currentLocation = GetLocation(this);
         updateDBLocation();
 
-        System.out.println("Location Update Service created");
+        Log.i("TAG", "Service created");
     }
 
     @Override
@@ -55,7 +57,7 @@ public class LocationUpdateService extends Service implements LocationUpdateList
 
         } else updateDBLocation();
 
-        System.out.println("onUpdateLocation : "+location.toString());
+        Log.d("TAG", "onUpdateLocation(): "+location.toString());
     }
 
     private void updateDBLocation() {
@@ -83,13 +85,16 @@ public class LocationUpdateService extends Service implements LocationUpdateList
         final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS);
+
+            if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
+            }
+            else {
+                mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS);
+            }
 
         } else if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.NETWORK);
-
-        } else {
-            mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
         }
 
         mUpdateManager.startLocationUpdates();

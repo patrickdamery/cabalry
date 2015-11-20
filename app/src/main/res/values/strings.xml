@@ -33,6 +33,9 @@
     <string name="action_login">Log in</string>
     <string name="action_login_short">Login</string>
 
+    <string name="action_forgot">Forgot</string>
+    <string name="action_register">Register</string>
+
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">Password must be at least 6 characters long</string>
     <string name="error_incorrect_login">An error has occurred please check your login info</string>
