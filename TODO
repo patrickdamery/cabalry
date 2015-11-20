@@ -1,5 +1,5 @@
 General:
-    - Change theme
+    - Change theme (In progress)
     - Add GCM support
     - Set layout and buttons
     - Add custom markers
@@ -22,4 +22,4 @@ Completed:
 
 Bugs:
     - MapActivity.createMarker[ mMap is sometimes null ]
-    - HomeActivity.onSectionAttached[  ]
+    - HomeActivity.onSectionAttached[ ] (Possibly fixed)
