@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.cabalry.map.MapUser;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,6 +33,8 @@ public class Utility {
     public static final String PREF_USER_ID = "ID";
     public static final String PREF_USER_KEY = "KEY";
     public static final String PREF_USER_LOGIN = "LOGIN";
+    public static final String PREF_USER_IP = "IP";
+    public static final String PREF_ALARM_ID = "ALARMID";
     public static final String PREF_LATITUDE = "LAT";
     public static final String PREF_LONGITUDE = "LNG";
 
@@ -48,6 +51,14 @@ public class Utility {
 
     public static String GetUserKey(Context context) {
         return GetSharedPrefs(context).getString(PREF_USER_KEY, "");
+    }
+
+    public static int GetAlarmID(Context context) {
+        return GetSharedPrefs(context).getInt(PREF_ALARM_ID, 0);
+    }
+
+    public static String GetUserIP(Context context) {
+        return GetSharedPrefs(context).getString(PREF_USER_IP, "");
     }
 
     public static boolean IsUserLogin(Context context) {
@@ -346,5 +357,53 @@ public class Utility {
 
         @Override
         protected abstract void onCancelled();
+    }
+
+    /**
+     * Represents an asynchronous
+     */
+    public static class UpdateListenerInfoTask extends AsyncTask<Void, Void, Void> {
+        private static final String TAG = "UpdateListenerInfoTask";
+
+        private int mID;
+        private String mKey;
+        private int mAlarmID;
+        private int mPort;
+
+        public void setListenerInfo(int id, String key, int alarmID, int port) {
+            mID = id; mKey = key;
+            mAlarmID = alarmID;
+            mPort = port;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            JSONObject result;
+            boolean success = false;
+
+            try {
+                result = UpdateListenerInfo(mAlarmID, mID, mKey, mPort);
+                try {
+                    success = result.getBoolean(REQ_SUCCESS);
+
+                    if(!success) {
+                        Log.e(TAG, "Could not update listener info!");
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Void result) {}
+
+        @Override
+        protected void onCancelled() {}
     }
 }

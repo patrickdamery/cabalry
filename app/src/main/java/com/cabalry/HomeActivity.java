@@ -90,7 +90,7 @@ public class HomeActivity extends AppCompatActivity
                 finish();
             }
         }
-        mStart = false;
+        else mStart = false;
     }
 
     @Override

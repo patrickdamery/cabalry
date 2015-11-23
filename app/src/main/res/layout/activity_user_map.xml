@@ -1,4 +1,55 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:id="@+id/map" tools:context=".CabalryMap"
-    android:name="com.google.android.gms.maps.SupportMapFragment" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapActivity"
+    android:keepScreenOn="true" >
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_above="@+id/relativeLayout"/>
+
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_gravity="bottom"
+        android:background="#000"
+        android:gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout">
+        <ToggleButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textOn=""
+            android:textOff=""
+            android:textSize="0sp"
+            android:background="@drawable/nearby_selector"
+            android:id="@+id/bNearby"
+            android:layout_alignParentBottom="true" />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text=""
+            android:textSize="0sp"
+            android:id="@+id/bAlarm"
+            android:background="@drawable/b_alarm"
+            android:layout_alignBottom="@+id/bNearby"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"/>
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text=""
+            android:textSize="0sp"
+            android:background="@drawable/b_restore"
+            android:id="@+id/bLastAlarm"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -40,7 +40,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     enum StartupActivity { LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
                            SETTINGS, USER_INFO }
-    StartupActivity mStartupActivity = StartupActivity.LOGIN;
+    StartupActivity mStartupActivity = StartupActivity.HOME;
 
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -109,9 +109,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         Button mLogInButton = (Button) findViewById(R.id.login_button);
         mLogInButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
+            public void onClick(View view) { attemptLogin(); }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
@@ -154,18 +152,18 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             return;
         }
 
-        // Reset errors.
+        // Reset errors
         mUserView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
+        // Store values at the time of the login attempt
         String user = mUserView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid user.
+        // Check for a valid user
         if(TextUtils.isEmpty(user)) {
             mUserView.setError(getString(R.string.error_field_required));
             focusView = mUserView;
@@ -179,7 +177,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         }
 
-        // Check for a valid password.
+        // Check for a valid password
         if(TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
@@ -192,10 +190,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         if (cancel) {
-            // There was an error. Focus on source.
+            // There was an error. Focus on source
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and perform the user login attempt.
+            // Show a progress spinner, and perform the user login attempt
             showProgress(true);
 
             loginTask = getLoginTask();
