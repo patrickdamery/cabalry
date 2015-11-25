@@ -1,9 +1,10 @@
-package com.cabalry;
+package com.cabalry.app;
 
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 
+import com.cabalry.R;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.map.MapActivity;
 import com.cabalry.map.MapUser;
@@ -12,9 +13,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Vector;
 
-import static com.cabalry.util.Utility.*;
+import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.TasksUtil.*;
 
-public class UserMapActivity extends MapActivity {
+public class AlarmMapActivity extends MapActivity {
 
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;

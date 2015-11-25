@@ -1,18 +1,18 @@
-package com.cabalry;
+package com.cabalry.app;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import static com.cabalry.util.DB.FORGOT_URL;
-import static com.cabalry.util.Utility.GetUserID;
-import static com.cabalry.util.Utility.GetUserKey;
+import static com.cabalry.util.DB.REGISTER_URL;
+import static com.cabalry.util.PrefsUtil.GetUserID;
+import static com.cabalry.util.PrefsUtil.GetUserKey;
 
 /**
  * Created by conor on 29/01/15.
  *
- * Activity which prompts forgot password screen.
+ * Activity which displays the user's profile info and also modify it.
  */
-public class ForgotActivity extends WebViewActivity {
+public class RegisterActivity extends WebViewActivity {
 
     /**
      * Initializes activity components.
@@ -22,7 +22,7 @@ public class ForgotActivity extends WebViewActivity {
         super.onCreate(savedInstanceState);
 
         // Load Url.
-        getWebView().loadUrl(FORGOT_URL + "?id=" + GetUserID(this) + "&auth_key=" + GetUserKey(this));
+        getWebView().loadUrl(REGISTER_URL + "?id=" + GetUserID(this) + "&auth_key=" + GetUserKey(this));
     }
 
     @Override

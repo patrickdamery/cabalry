@@ -1,8 +1,10 @@
 package com.cabalry.map;
 
+import android.content.Intent;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 
+import com.cabalry.app.HomeActivity;
 import com.cabalry.location.LocationUpdateListener;
 import com.cabalry.location.LocationUpdateManager;
 import com.google.android.gms.maps.*;
@@ -17,6 +19,8 @@ import java.util.Vector;
 public abstract class MapActivity extends FragmentActivity implements OnMapReadyCallback, LocationUpdateListener {
 
     public static final int MAP_PADDING = 128;
+    public static final int CAM_MIN_ZOOM = 17;
+    public static final int CAM_MAX_ZOOM = 15;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -24,13 +28,30 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
     private Vector<MapUser> mUsers = new Vector<>();
 
     private final MarkerListener mMarkerListener = new MarkerListener();
-    private final CameraAnimationListener mCameraAnimationListener = new CameraAnimationListener();
+    private final CameraListener mCameraListener = new CameraListener();
 
     public void initializeMap(SupportMapFragment mapFragment) {
         LocationUpdateManager.registerUpdateListener(this);
 
         // This is to call the onMapReady callback
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Return to home
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mMap.setOnMarkerClickListener(mMarkerListener);
+        mMap.setOnInfoWindowClickListener(mMarkerListener);
+        mMap.setOnCameraChangeListener(mCameraListener);
+
+        loadGoogleMapSettings();
     }
 
     public void loadGoogleMapSettings() {
@@ -44,18 +65,6 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         settings.setMapToolbarEnabled(false);
         settings.setIndoorLevelPickerEnabled(false);
         settings.setCompassEnabled(false);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-
-        mMap.setOnMarkerClickListener(mMarkerListener);
-        mMap.setOnInfoWindowClickListener(mMarkerListener);
-
-        // TODO uncomment line below
-        //loadGoogleMapSettings();
     }
 
     public Marker createMarker(final MapUser user) {
@@ -98,7 +107,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
                 .build();
 
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
-                transTime, mCameraAnimationListener);
+                transTime, mCameraListener);
     }
 
     public void setCameraFocus(Vector<LatLng> targets, int transTime) {
@@ -111,7 +120,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         LatLngBounds bounds = builder.build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, MAP_PADDING);
 
-        mMap.animateCamera(cameraUpdate, transTime, mCameraAnimationListener);
+        mMap.animateCamera(cameraUpdate, transTime, mCameraListener);
     }
 
     /**
@@ -178,17 +187,12 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
 
         @Override
         public void onInfoWindowClick(Marker marker) {
-            //if(markerListener != null) {
-            //    markerListener.onInfoClick(marker, markerLocations.get(marker));
-            //}
+
         }
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-            //if(markerListener != null) {
-            //    markerListener.onClick(marker, markerLocations.get(marker));
-            //    return true;
-            //}
+
             return false;
         }
     }
@@ -196,7 +200,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
     /**
      * Class implementation for camera animation callbacks
      */
-    private class CameraAnimationListener implements GoogleMap.CancelableCallback {
+    private class CameraListener implements GoogleMap.CancelableCallback, GoogleMap.OnCameraChangeListener  {
 
         @Override
         public void onFinish() {
@@ -204,6 +208,10 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
 
         @Override
         public void onCancel() {
+        }
+
+        @Override
+        public void onCameraChange(CameraPosition cameraPosition) {
         }
     }
 }

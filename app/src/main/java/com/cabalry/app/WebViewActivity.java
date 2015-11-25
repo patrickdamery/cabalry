@@ -1,4 +1,4 @@
-package com.cabalry;
+package com.cabalry.app;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.cabalry.R;
 
 /**
  * Created by conor on 29/10/15.
@@ -68,8 +70,7 @@ public abstract class WebViewActivity extends Activity {
     @Override
     public void onBackPressed() {
         // Return to home
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }
 
     protected WebView getWebView() { return mWebView; }

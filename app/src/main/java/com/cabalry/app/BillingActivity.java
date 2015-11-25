@@ -1,10 +1,10 @@
-package com.cabalry;
+package com.cabalry.app;
 
 import android.os.Bundle;
 
 import static com.cabalry.util.DB.BILLING_URL;
-import static com.cabalry.util.Utility.GetUserID;
-import static com.cabalry.util.Utility.GetUserKey;
+import static com.cabalry.util.PrefsUtil.GetUserID;
+import static com.cabalry.util.PrefsUtil.GetUserKey;
 
 /**
  * Created by Conor Damery on 29/01/15.

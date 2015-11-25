@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import static com.cabalry.util.Utility.*;
+import static com.cabalry.util.PrefsUtil.*;
 
 /**
  * Created by conor on 01/02/15.

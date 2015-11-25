@@ -1,4 +1,4 @@
-package com.cabalry;
+package com.cabalry.app;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,9 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.cabalry.R;
 import com.cabalry.ui.NavigationDrawerFragment;
 
-import static com.cabalry.util.Utility.*;
+import static com.cabalry.util.PrefsUtil.*;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -55,6 +56,11 @@ public class HomeActivity extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
     @Override

@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class DB {
 
+    public static enum UserRequestType { NEARBY, ALARM }
+
     /**
     * Request response string keys
     */

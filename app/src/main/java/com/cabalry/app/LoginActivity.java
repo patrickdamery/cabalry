@@ -1,4 +1,4 @@
-package com.cabalry;
+package com.cabalry.app;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,11 +25,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cabalry.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.cabalry.util.Utility.*;
+import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.TasksUtil.*;
 
 /**
  * Login screen for Cabalry app.
@@ -114,6 +117,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    public void onBackPressed() {
+        LogoutUser(this);
+        moveTaskToBack(true);
     }
 
     private void gotoStartup() {

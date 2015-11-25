@@ -17,6 +17,12 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <!-- To declare that your app is available to BLE-capable devices only, set required = true -->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -42,7 +48,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".app.LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden" >
 
@@ -54,67 +60,67 @@
         </activity>
 
         <activity
-            android:name=".HomeActivity"
+            android:name=".app.HomeActivity"
             android:label="@string/app_name" >
         </activity>
 
         <activity
-            android:name=".UserMapActivity"
+            android:name=".app.UserMapActivity"
             android:label="@string/title_activity_user_map" >
         </activity>
 
         <activity
-            android:name=".ProfileActivity"
+            android:name=".app.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".HomeActivity" >
+            android:parentActivityName=".app.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value=".app.HomeActivity" />
         </activity>
 
         <activity
-            android:name=".RecordingsActivity"
+            android:name=".app.RecordingsActivity"
             android:label="@string/title_activity_recordings"
-            android:parentActivityName=".HomeActivity" >
+            android:parentActivityName=".app.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value=".app.HomeActivity" />
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".app.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".HomeActivity" >
+            android:parentActivityName=".app.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value=".app.HomeActivity" />
         </activity>
 
         <activity
-            android:name=".BillingActivity"
+            android:name=".app.BillingActivity"
             android:label="@string/title_activity_billing"
-            android:parentActivityName="com.cabalry.HomeActivity" >
+            android:parentActivityName=".app.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.cabalry.HomeActivity" />
+                android:value=".app.HomeActivity" />
         </activity>
 
         <activity
-            android:name=".RegisterActivity"
+            android:name=".app.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:parentActivityName=".LoginActivity" >
+            android:parentActivityName=".app.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.cabalry.LoginActivity" />
+                android:value=".app.LoginActivity" />
         </activity>
 
         <activity
-            android:name="com.cabalry.ForgotActivity"
+            android:name=".app.ForgotActivity"
             android:label="@string/title_activity_forgot"
-            android:parentActivityName=".LoginActivity" >
+            android:parentActivityName=".app.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value=".app.LoginActivity" />
         </activity>
 
         <service android:name=".location.LocationUpdateService"

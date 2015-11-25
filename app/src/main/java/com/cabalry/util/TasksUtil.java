@@ -1,13 +1,9 @@
 package com.cabalry.util;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cabalry.map.MapUser;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,150 +14,9 @@ import java.util.Vector;
 import static com.cabalry.util.DB.*;
 
 /**
- * Utility class for server request async-tasks,
- * debug methods, etc
- *
- * Created by conor on 14/10/15.
+ * Created by conor on 24/11/15.
  */
-public class Utility {
-
-    public enum UserRequestType { NEARBY, ALARM }
-
-    public static final int TWO_MINUTES = 12000;
-
-    public static final String PACKAGE_NAME = "CABALRY";
-    public static final String PREF_USER_ID = "ID";
-    public static final String PREF_USER_KEY = "KEY";
-    public static final String PREF_USER_LOGIN = "LOGIN";
-    public static final String PREF_USER_IP = "IP";
-    public static final String PREF_ALARM_ID = "ALARMID";
-    public static final String PREF_LATITUDE = "LAT";
-    public static final String PREF_LONGITUDE = "LNG";
-
-    public static final String PREF_FAKE_PASS = "FAKE";
-    public static final String PREF_TIMER = "TIMER";
-    public static final String PREF_TIMER_ENABLED = "TIMER_ENABLED";
-    public static final String PREF_SILENT = "SILENT";
-    public static final String PREF_ALERT_COUNT = "ALERT_COUNT";
-    public static final String PREF_ALARM_RANGE = "ALERT_RANGE";
-
-    public static int GetUserID(Context context) {
-        return GetSharedPrefs(context).getInt(PREF_USER_ID, 0);
-    }
-
-    public static String GetUserKey(Context context) {
-        return GetSharedPrefs(context).getString(PREF_USER_KEY, "");
-    }
-
-    public static int GetAlarmID(Context context) {
-        return GetSharedPrefs(context).getInt(PREF_ALARM_ID, 0);
-    }
-
-    public static String GetUserIP(Context context) {
-        return GetSharedPrefs(context).getString(PREF_USER_IP, "");
-    }
-
-    public static boolean IsUserLogin(Context context) {
-        return GetSharedPrefs(context).getBoolean(PREF_USER_LOGIN, false);
-    }
-
-    public static void LoginUser(Context context, int id, String key) {
-        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putInt(PREF_USER_ID, id);
-        editor.putString(PREF_USER_KEY, key);
-        editor.putBoolean(PREF_USER_LOGIN, true);
-        editor.commit();
-    }
-
-    public static void LogoutUser(Context context) {
-        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putInt(PREF_USER_ID, 0);
-        editor.putString(PREF_USER_KEY, "");
-        editor.putBoolean(PREF_USER_LOGIN, false);
-        editor.commit();
-    }
-
-    public static void StoreLocation(Context context, LatLng location) {
-        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putFloat(PREF_LATITUDE, (float) location.latitude);
-        editor.putFloat(PREF_LONGITUDE, (float) location.longitude);
-        editor.commit();
-    }
-
-    public static LatLng GetLocation(Context context) {
-        SharedPreferences prefs = GetSharedPrefs(context);
-        return new LatLng(prefs.getFloat(PREF_LATITUDE, 0), prefs.getFloat(PREF_LONGITUDE, 0));
-    }
-
-    public static SharedPreferences GetSharedPrefs(Context context) {
-        return context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
-    }
-
-    public static double GetDistance(LatLng a, LatLng b) {
-        if(a == null || b == null) return 0;
-
-        int R = 6371000; // metres
-        double lat1 = Math.toRadians(a.latitude);
-        double lat2 = Math.toRadians(b.latitude);
-        double dLng = Math.toRadians(b.longitude - a.longitude);
-
-        return Math.acos(Math.sin(lat1)*Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2)*Math.cos(dLng)) * R;
-    }
-
-    /**
-     * Determines whether one Location reading is better than the current Location fix.
-     * @param location  The new Location that you want to evaluate.
-     * @param currentBestLocation  The current Location fix, to which you want to compare the new one.
-     */
-    public static boolean IsBetterLocation(Location location, Location currentBestLocation) {
-        if (currentBestLocation == null) {
-            // A new location is always better than no location.
-            return true;
-        }
-
-        // Check whether the new location fix is newer or older.
-        long timeDelta = location.getTime() - currentBestLocation.getTime();
-        boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-        boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-        boolean isNewer = timeDelta > 0;
-
-        // If it's been more than two minutes since the current location, use the new location
-        // because the user has likely moved.
-        if (isSignificantlyNewer) {
-            return true;
-            // If the new location is more than two minutes older, it must be worse.
-        } else if (isSignificantlyOlder) {
-            return false;
-        }
-
-        // Check whether the new location fix is more or less accurate.
-        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-        boolean isLessAccurate = accuracyDelta > 0;
-        boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-
-        // Check if the old and new location are from the same provider.
-        boolean isFromSameProvider = IsSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
-
-        // Determine location quality using a combination of timeliness and accuracy.
-        if (isMoreAccurate) {
-            return true;
-        } else if (isNewer && !isLessAccurate) {
-            return true;
-        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-            return true;
-        }
-        return false;
-    }
-
-    /** Checks whether two providers are the same */
-    public static boolean IsSameProvider(String provider1, String provider2) {
-        if (provider1 == null) {
-            return provider2 == null;
-        }
-        return provider1.equals(provider2);
-    }
+public class TasksUtil {
 
     /**
      * Represents an asynchronous task that collects locations
