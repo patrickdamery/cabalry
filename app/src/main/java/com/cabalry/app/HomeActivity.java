@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity
         final String[] navDrawerStrings = new String[] {
                 getString(R.string.title_profile),
                 getString(R.string.title_map),
+                getString(R.string.title_devices),
                 getString(R.string.title_recordings),
                 getString(R.string.title_billing),
                 getString(R.string.title_settings),
@@ -79,13 +80,14 @@ public class HomeActivity extends AppCompatActivity
             switch (number) {
                 case 1: intent = new Intent(getApplicationContext(), ProfileActivity.class); break;
                 case 2: intent = new Intent(getApplicationContext(), UserMapActivity.class); break;
-                case 3: intent = new Intent(getApplicationContext(), RecordingsActivity.class); break;
-                case 4: intent = new Intent(getApplicationContext(), BillingActivity.class); break;
-                case 5: intent = new Intent(getApplicationContext(), SettingsActivity.class); break;
-                case 6: break; // TODO HelpActivity or something
+                case 3: intent = new Intent(getApplicationContext(), DeviceScanActivity.class); break;
+                case 4: intent = new Intent(getApplicationContext(), RecordingsActivity.class); break;
+                case 5: intent = new Intent(getApplicationContext(), BillingActivity.class); break;
+                case 6: intent = new Intent(getApplicationContext(), SettingsActivity.class); break;
+                case 7: break; // TODO HelpActivity or something
 
                 // Logout and redirect to login activity.
-                case 7:
+                case 8:
                     LogoutUser(this);
                     intent = new Intent(getApplicationContext(), LoginActivity.class);
                     break;

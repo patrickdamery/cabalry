@@ -1,6 +1,4 @@
 Features:
-    - Add GCM support
-    - Set layout and buttons
     - Add custom markers
     - Add marker ui on tap
     - Add loading screens
@@ -8,16 +6,22 @@ Features:
     - Add timer feature
     - Add silent feature
     - Add fake deactivation
-    - Add interface for bluetooth
     - Handle button interrupts gracefully
     - Handle case of no available servers for alarm, keep trying
-    - Set back action on activities
+
+Optimizations:
+    - Login visual glitch when screen is rotated
+    - Improve location accuracy
 
 In Progress:
+    - Set layout and buttons (Pretty much finished)
+    - Add interface for bluetooth (In progress, not tested)
     - Add audio stream (Added, not checked)
     - Add audio playback (Added, not checked)
+    - Add GCM support (Added, not checked)
 
 Completed:
+    - Set back action on activities
     - Change theme
     - Track and update location
     - Implement algorithm for map markers

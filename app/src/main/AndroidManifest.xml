@@ -65,6 +65,11 @@
         </activity>
 
         <activity
+            android:name=".app.DeviceScanActivity"
+            android:label="@string/title_activity_device_scan" >
+        </activity>
+
+        <activity
             android:name=".app.UserMapActivity"
             android:label="@string/title_activity_user_map" >
         </activity>
@@ -132,9 +137,8 @@
         <service android:name=".audio.AudioPlaybackService"
             android:exported="false" />
 
-        <!--
         <receiver
-            android:name=".service.GCMBroadcastReceiver"
+            android:name=".gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -143,6 +147,7 @@
             </intent-filter>
         </receiver>
 
+        <!--
         <receiver
             android:name="com.cabalry.service.SilentAlarmReceiver">
             <intent-filter>
@@ -157,12 +162,13 @@
                     <action android:name="android.net.wifi.WIFI_STATE_CHANGED"></action>
                 </action>
             </intent-filter>
-        </receiver>
+        </receiver> -->
 
-        <service android:name=".service.GCMIntentService"
+        <service android:name=".gcm.GCMIntentService"
             android:exported="false" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
+        <!--
         <service android:name=".service.LocationTracerService"
             android:exported="false" />
 
