@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import static com.cabalry.util.DB.REGISTER_URL;
-import static com.cabalry.util.PrefsUtil.GetUserID;
-import static com.cabalry.util.PrefsUtil.GetUserKey;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
  * Created by conor on 29/01/15.

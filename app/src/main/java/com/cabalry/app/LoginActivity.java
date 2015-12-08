@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.TasksUtil.*;
 
 /**
@@ -42,8 +42,8 @@ import static com.cabalry.util.TasksUtil.*;
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     enum StartupActivity { LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
-                           SETTINGS, USER_INFO }
-    StartupActivity mStartupActivity = StartupActivity.HOME;
+                           SETTINGS, USER_INFO, DEVICE_SCAN }
+    StartupActivity mStartupActivity = StartupActivity.DEVICE_SCAN;
 
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
@@ -132,15 +132,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         switch(mStartupActivity) {
             case LOGIN: break;
 
-            case HOME:      intent = new Intent(context, HomeActivity.class);     break;
-            case USER_MAP:  intent = new Intent(context, UserMapActivity.class);  break;
-            case BILLING:   intent = new Intent(context, BillingActivity.class);  break;
-            case FORGOT:    intent = new Intent(context, ForgotActivity.class);   break;
-            case PROFILE:   intent = new Intent(context, ProfileActivity.class);  break;
-            case RECORDINGS:intent = new Intent(context, RecordingsActivity.class); break;
-            case REGISTER:  intent = new Intent(context, RegisterActivity.class); break;
-            case SETTINGS:  intent = new Intent(context, SettingsActivity.class); break;
-            case USER_INFO: intent = new Intent(context, UserInfoActivity.class); break;
+            case HOME:          intent = new Intent(context, HomeActivity.class);       break;
+            case USER_MAP:      intent = new Intent(context, UserMapActivity.class);    break;
+            case BILLING:       intent = new Intent(context, BillingActivity.class);    break;
+            case FORGOT:        intent = new Intent(context, ForgotActivity.class);     break;
+            case PROFILE:       intent = new Intent(context, ProfileActivity.class);    break;
+            case RECORDINGS:    intent = new Intent(context, RecordingsActivity.class); break;
+            case REGISTER:      intent = new Intent(context, RegisterActivity.class);   break;
+            case SETTINGS:      intent = new Intent(context, SettingsActivity.class);   break;
+            case USER_INFO:     intent = new Intent(context, UserInfoActivity.class);   break;
+            case DEVICE_SCAN:   intent = new Intent(context, DeviceScanActivity.class); break;
 
             default: intent = new Intent(context, LoginActivity.class); break;
         }

@@ -3,8 +3,8 @@ package com.cabalry.app;
 import android.os.Bundle;
 
 import static com.cabalry.util.DB.RECORDINGS_URL;
-import static com.cabalry.util.PrefsUtil.GetUserID;
-import static com.cabalry.util.PrefsUtil.GetUserKey;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
  * Created by Conor Damery on 29/01/15.

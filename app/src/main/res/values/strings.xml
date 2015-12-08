@@ -51,4 +51,10 @@
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="button_scan">Scan for devices</string>
+
+    <!--  For web views -->
+    <string name="webview_loading">Loading...</string>
+
+    <string name="error_no_network">Please re-connect to the internet and login.</string>
+
 </resources>

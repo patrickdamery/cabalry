@@ -21,30 +21,38 @@ import com.cabalry.R;
 
 import java.util.Set;
 
+import static com.cabalry.util.BluetoothUtil.*;
+
 /**
  * Created by conor on 25/11/15.
  */
 public class DeviceScanActivity extends Activity {
     private static final String TAG = "DeviceScanActivity";
 
-    /**
-     * Return Intent extra
-     */
+    // Return Intent extra
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
 
-    /**
-     * Member fields
-     */
+    // Member fields
     private BluetoothAdapter mBtAdapter;
 
-    /**
-     * Newly discovered devices
-     */
+    // Newly discovered devices
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Get the local Bluetooth adapter
+        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (mBtAdapter == null) {
+            // Device does not support Bluetooth
+        }
+
+        if (!mBtAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
 
         // Setup the window
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -65,8 +73,8 @@ public class DeviceScanActivity extends Activity {
         // Initialize array adapters. One for already paired devices and
         // one for newly discovered devices
         ArrayAdapter<String> pairedDevicesArrayAdapter =
-                new ArrayAdapter<String>(this, R.layout.device_name);
-        mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
+                new ArrayAdapter<>(this, R.layout.device_name);
+        mNewDevicesArrayAdapter = new ArrayAdapter<>(this, R.layout.device_name);
 
         // Find and set up the ListView for paired devices
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
@@ -86,9 +94,6 @@ public class DeviceScanActivity extends Activity {
         filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         this.registerReceiver(mReceiver, filter);
 
-        // Get the local Bluetooth adapter
-        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
-
         // Get a set of currently paired devices
         Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
 
@@ -105,8 +110,8 @@ public class DeviceScanActivity extends Activity {
     }
 
     public void onBackPressed() {
+        // Return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-        finish();
     }
 
     @Override

@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Vector;
 
-import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.TasksUtil.*;
 
 public class UserMapActivity extends MapActivity {
@@ -55,11 +55,15 @@ public class UserMapActivity extends MapActivity {
         return new CollectUserInfoTask() {
             @Override
             protected void onPostExecute(MapUser user) {
-                if(user == null) throw new NullPointerException("CABARLY - user is null, STATE: "+getFailState());
+                if(user == null)
+                    throw new NullPointerException("CABARLY - user is null, STATE: " + getFailState());
+
                 else {
                     mUser = user; add(mUser);
                     setCameraFocus(mUser.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
                 }
+
+                mCollectUserInfoTask = null;
             }
         };
     }

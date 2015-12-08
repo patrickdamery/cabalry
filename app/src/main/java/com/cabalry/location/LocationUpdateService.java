@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.MathUtil.*;
 import static com.cabalry.util.DB.*;
 

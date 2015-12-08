@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Vector;
 
-import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.TasksUtil.*;
 
 public class AlarmMapActivity extends MapActivity {

@@ -1,15 +1,24 @@
 package com.cabalry.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.webkit.JsPromptResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cabalry.R;
+import com.cabalry.util.TasksUtil.*;
 
 /**
  * Created by conor on 29/10/15.
@@ -20,6 +29,7 @@ public abstract class WebViewActivity extends Activity {
     private WebView mWebView;
     private WebSettings mSettings;
     private ProgressDialog progressDialog;
+    private CheckNetworkTask mCheckNetworkTask;
 
     /**
      * Initializes activity components.
@@ -29,9 +39,15 @@ public abstract class WebViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cabalry_webview);
 
+        // Check if user still has connection
+        if(mCheckNetworkTask == null) {
+            mCheckNetworkTask = getCheckNetworkTask();
+            mCheckNetworkTask.execute();
+        }
+
         // Progress Dialog to show while web view is loading.
         progressDialog = new ProgressDialog(this);
-        // TODO progressDialog.setMessage(getResources().getString(R.string.webview_loading));
+        progressDialog.setMessage(getResources().getString(R.string.webview_loading));
         progressDialog.show();
 
         // Setup web view.
@@ -58,19 +74,76 @@ public abstract class WebViewActivity extends Activity {
                 return true;
             }
         });
+
+        // Set up chrome client to enable prompt
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+                builder.setMessage(message);
+
+                final EditText et = new EditText(view.getContext());
+                et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                et.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                builder.setView(et);
+                builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.confirm(et.getText().toString());
+                    }
+
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.cancel();
+                    }
+                }).setOnCancelListener(
+                        new DialogInterface.OnCancelListener() {
+                            public void onCancel(DialogInterface dialog) {
+                                result.cancel();
+                            }
+                        });
+                builder.show();
+                return true;
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        // TODO: Check if user still has connection.
+        // Check if user still has connection
+        if(mCheckNetworkTask == null) {
+            mCheckNetworkTask = getCheckNetworkTask();
+            mCheckNetworkTask.execute();
+        }
     }
 
     @Override
     public void onBackPressed() {
         // Return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    private final CheckNetworkTask getCheckNetworkTask() {
+        return new CheckNetworkTask(this) {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result) {
+                    // User has no available internet connection.
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_no_network),
+                            Toast.LENGTH_LONG).show();
+
+                    // return to login.
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                }
+
+                mCheckNetworkTask = null;
+            }
+        };
     }
 
     protected WebView getWebView() { return mWebView; }

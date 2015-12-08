@@ -17,7 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import com.cabalry.R;
 import com.cabalry.ui.NavigationDrawerFragment;
 
-import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -38,8 +38,6 @@ public class HomeActivity extends AppCompatActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        //navigation_drawer
-        //left_drawer
 
         final String[] navDrawerStrings = new String[] {
                 getString(R.string.title_profile),
@@ -162,5 +160,4 @@ public class HomeActivity extends AppCompatActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
 }

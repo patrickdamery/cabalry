@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import java.util.Vector;
 
-import static com.cabalry.util.PrefsUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * Created by conor on 18/01/15.

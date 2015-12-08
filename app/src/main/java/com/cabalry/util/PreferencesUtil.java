@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by conor on 14/10/15.
  */
-public class PrefsUtil {
+public class PreferencesUtil {
 
     public static final int TWO_MINUTES = 12000;
 
