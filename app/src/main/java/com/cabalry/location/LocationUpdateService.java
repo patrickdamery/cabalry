@@ -27,14 +27,11 @@ public class LocationUpdateService extends Service implements LocationUpdateList
     private static final int WAIT_TIME = 600000;
     private long startTime = System.currentTimeMillis();
 
-    private LocationUpdateManager mUpdateManager;
-
     private LatLng currentLocation, lastLocation;
 
     @Override
     public void onCreate() {
-        mUpdateManager = new LocationUpdateManager(this);
-        LocationUpdateManager.registerUpdateListener(this);
+        LocationUpdateManager.Instance(this).addUpdateListener(this);
 
         currentLocation = GetLocation(this);
         updateDBLocation();
@@ -58,7 +55,7 @@ public class LocationUpdateService extends Service implements LocationUpdateList
 
         } else updateDBLocation();
 
-        Log.d("TAG", "onUpdateLocation(): "+location.toString());
+        Log.d("TAG", "onUpdateLocation(): " + location.toString());
     }
 
     private void updateDBLocation() {
@@ -82,23 +79,8 @@ public class LocationUpdateService extends Service implements LocationUpdateList
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-
-        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-            if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
-            }
-            else {
-                mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS);
-            }
-
-        } else if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            mUpdateManager.setUpdateProvider(LocationUpdateManager.UpdateProvider.NETWORK);
-        }
-
-        mUpdateManager.startLocationUpdates();
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationUpdateManager.Instance(this).resetProvider(manager);
 
         // If we get killed, after returning from here, stop
         return START_NOT_STICKY;
@@ -111,5 +93,5 @@ public class LocationUpdateService extends Service implements LocationUpdateList
     }
 
     @Override
-    public void onDestroy() { mUpdateManager.stopLocationUpdates(); }
+    public void onDestroy() { LocationUpdateManager.Instance(this).dispose(); }
 }

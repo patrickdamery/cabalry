@@ -17,6 +17,8 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import static android.content.DialogInterface.*;
+
 import com.cabalry.R;
 import com.cabalry.util.TasksUtil.*;
 
@@ -47,7 +49,7 @@ public abstract class WebViewActivity extends Activity {
 
         // Progress Dialog to show while web view is loading.
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getResources().getString(R.string.webview_loading));
+        progressDialog.setMessage(getResources().getString(R.string.prompt_webview_loading));
         progressDialog.show();
 
         // Setup web view.
@@ -84,27 +86,35 @@ public abstract class WebViewActivity extends Activity {
 
                 builder.setMessage(message);
 
-                final EditText et = new EditText(view.getContext());
-                et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                et.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                final EditText editText = new EditText(view.getContext());
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-                builder.setView(et);
-                builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                builder.setView(editText);
+                builder.setPositiveButton(getString(R.string.action_enter), new OnClickListener() {
+
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        result.confirm(et.getText().toString());
+                        result.confirm(editText.getText().toString());
                     }
-
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                builder.setNegativeButton(getString(R.string.action_cancel), new OnClickListener() {
+
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         result.cancel();
                     }
-                }).setOnCancelListener(
-                        new DialogInterface.OnCancelListener() {
-                            public void onCancel(DialogInterface dialog) {
-                                result.cancel();
-                            }
-                        });
+                });
+
+                builder.setOnCancelListener(new OnCancelListener() {
+
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        result.cancel();
+                    }
+                });
+
                 builder.show();
                 return true;
             }

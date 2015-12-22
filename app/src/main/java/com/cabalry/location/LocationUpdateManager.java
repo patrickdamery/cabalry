@@ -15,6 +15,8 @@ import static com.cabalry.util.PreferencesUtil.*;
  */
 public class LocationUpdateManager implements LocationListener {
 
+    public static final int MAX_LISTENERS = 2;
+
     public enum UpdateProvider { NETWORK, GPS, GPS_NETWORK }
     private UpdateProvider mUpdateProvider = UpdateProvider.NETWORK;
 
@@ -24,9 +26,18 @@ public class LocationUpdateManager implements LocationListener {
     private long mMinTime = 0;
     private float mMinDistance = 0;
 
-    private static Vector<LocationUpdateListener> mLocationUpdateListenerVector = new Vector<>();
+    private Vector<LocationUpdateListener> mUpdateListeners = new Vector<>(MAX_LISTENERS);
 
-    public LocationUpdateManager(Context context) {
+    private static LocationUpdateManager mInstance;
+    public static LocationUpdateManager Instance(Context context) {
+        if(mInstance == null) {
+            mInstance = new LocationUpdateManager(context);
+        }
+
+        return mInstance;
+    }
+
+    private LocationUpdateManager(Context context) {
         // Acquire a reference to the system Location Manager.
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
@@ -35,8 +46,12 @@ public class LocationUpdateManager implements LocationListener {
         mUpdateProvider = updateProvider;
     }
 
-    public static void registerUpdateListener(LocationUpdateListener updateListener) {
-        mLocationUpdateListenerVector.add(updateListener);
+    public void addUpdateListener(LocationUpdateListener updateListener) {
+        mUpdateListeners.add(updateListener);
+    }
+
+    public void removeUpdateListener(LocationUpdateListener updateListener) {
+        mUpdateListeners.remove(updateListener);
     }
 
     public void startLocationUpdates() {
@@ -57,7 +72,33 @@ public class LocationUpdateManager implements LocationListener {
         }
     }
 
-    public void stopLocationUpdates() { mLocationManager.removeUpdates(this); }
+    public void stopLocationUpdates() {
+        mLocationManager.removeUpdates(this);
+    }
+
+    public void dispose() {
+        stopLocationUpdates();
+        mUpdateListeners.removeAllElements();
+    }
+
+    public void resetProvider(LocationManager manager) {;
+        stopLocationUpdates();
+
+        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+            if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
+            }
+            else {
+                setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS);
+            }
+
+        } else if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            setUpdateProvider(LocationUpdateManager.UpdateProvider.NETWORK);
+        }
+
+        startLocationUpdates();
+    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -66,9 +107,8 @@ public class LocationUpdateManager implements LocationListener {
             mCurrentBestLocation = location;
         }
 
-        if(mLocationUpdateListenerVector != null && !mLocationUpdateListenerVector.isEmpty())
-            for(LocationUpdateListener updateListener : mLocationUpdateListenerVector)
-                updateListener.onUpdateLocation(mCurrentBestLocation);
+        for(LocationUpdateListener listener : mUpdateListeners)
+            listener.onUpdateLocation(mCurrentBestLocation);
     }
 
     @Override

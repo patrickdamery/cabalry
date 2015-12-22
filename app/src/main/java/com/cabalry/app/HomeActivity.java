@@ -1,7 +1,10 @@
 package com.cabalry.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,13 +18,19 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.cabalry.R;
+import com.cabalry.location.LocationUpdateManager;
+import com.cabalry.location.LocationUpdateService;
 import com.cabalry.ui.NavigationDrawerFragment;
+import com.cabalry.util.DB;
 
 import static com.cabalry.util.PreferencesUtil.*;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private static final String TAG = "HomeActivity";
+
+    private static Intent mLocationUpdateIntent;
+    private static Intent mBluetoothIntent;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -36,18 +45,28 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         mStart = true;
 
+        if(mLocationUpdateIntent == null) {
+            // Start location update service.
+            mLocationUpdateIntent = new Intent(getApplicationContext(), LocationUpdateService.class);
+            startService(mLocationUpdateIntent);
+        }
+        else {
+            LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            LocationUpdateManager.Instance(this).resetProvider(manager);
+        }
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         final String[] navDrawerStrings = new String[] {
-                getString(R.string.title_profile),
-                getString(R.string.title_map),
-                getString(R.string.title_devices),
-                getString(R.string.title_recordings),
-                getString(R.string.title_billing),
-                getString(R.string.title_settings),
-                getString(R.string.title_help),
-                getString(R.string.title_logout) };
+                getString(R.string.title_nav_profile),
+                getString(R.string.title_nav_map),
+                getString(R.string.title_nav_devices),
+                getString(R.string.title_nav_recordings),
+                getString(R.string.title_nav_billing),
+                getString(R.string.title_nav_settings),
+                getString(R.string.title_nav_help),
+                getString(R.string.title_nav_logout) };
 
         mNavigationDrawerFragment.setNavDrawerStrings(navDrawerStrings);
 
@@ -76,13 +95,17 @@ public class HomeActivity extends AppCompatActivity
             Log.d(TAG, "onSectionAttached(): "+number);
             Intent intent = null;
             switch (number) {
-                case 1: intent = new Intent(getApplicationContext(), ProfileActivity.class); break;
-                case 2: intent = new Intent(getApplicationContext(), UserMapActivity.class); break;
-                case 3: intent = new Intent(getApplicationContext(), DeviceScanActivity.class); break;
-                case 4: intent = new Intent(getApplicationContext(), RecordingsActivity.class); break;
-                case 5: intent = new Intent(getApplicationContext(), BillingActivity.class); break;
-                case 6: intent = new Intent(getApplicationContext(), SettingsActivity.class); break;
-                case 7: break; // TODO HelpActivity or something
+
+                // Launch respective activity
+                case 1: intent = new Intent(getApplicationContext(), ProfileActivity.class);        break;
+                case 2: intent = new Intent(getApplicationContext(), UserMapActivity.class);        break;
+                case 3: intent = new Intent(getApplicationContext(), DeviceScanActivity.class);     break;
+                case 4: intent = new Intent(getApplicationContext(), RecordingsActivity.class);     break;
+                case 5: intent = new Intent(getApplicationContext(), BillingActivity.class);        break;
+                case 6: intent = new Intent(getApplicationContext(), SettingsActivity.class);       break;
+
+                // Redirect to help url
+                case 7: intent = new Intent("android.intent.action.VIEW", Uri.parse(DB.HELP_URL));  break;
 
                 // Logout and redirect to login activity.
                 case 8:

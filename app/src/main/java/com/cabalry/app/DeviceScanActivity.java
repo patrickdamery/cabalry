@@ -18,10 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cabalry.R;
+import com.cabalry.bluetooth.BluetoothProgram;
 
 import java.util.Set;
 
 import static com.cabalry.util.BluetoothUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * Created by conor on 25/11/15.
@@ -104,7 +106,7 @@ public class DeviceScanActivity extends Activity {
                 pairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             }
         } else {
-            String noDevices = getResources().getText(R.string.none_paired).toString();
+            String noDevices = getResources().getText(R.string.prompt_none_paired).toString();
             pairedDevicesArrayAdapter.add(noDevices);
         }
     }
@@ -135,7 +137,7 @@ public class DeviceScanActivity extends Activity {
 
         // Indicate scanning in the title
         setProgressBarIndeterminateVisibility(true);
-        setTitle(R.string.scanning);
+        setTitle(R.string.prompt_scanning);
 
         // Turn on sub-title for new devices
         findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
@@ -162,15 +164,19 @@ public class DeviceScanActivity extends Activity {
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
 
+            SetMacButton(PREF_BUTTON1_MAC, address, getApplicationContext());
+
             // Create the result Intent and include the MAC address
-            Intent intent = new Intent();
-            intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
+            //Intent intent = new Intent();
+            //intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 
             // Set result and finish this Activity
-            setResult(Activity.RESULT_OK, intent);
+            //setResult(Activity.RESULT_OK, intent);
 
-            //finish();
-            //startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+
+            finish();
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
     };
 
@@ -194,9 +200,9 @@ public class DeviceScanActivity extends Activity {
                 // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);
-                setTitle(R.string.select_device);
+                setTitle(R.string.action_select_device);
                 if (mNewDevicesArrayAdapter.getCount() == 0) {
-                    String noDevices = getResources().getText(R.string.none_found).toString();
+                    String noDevices = getResources().getText(R.string.prompt_none_found).toString();
                     mNewDevicesArrayAdapter.add(noDevices);
                 }
             }

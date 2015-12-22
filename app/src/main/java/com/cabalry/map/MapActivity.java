@@ -1,12 +1,16 @@
 package com.cabalry.map;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.cabalry.app.HomeActivity;
 import com.cabalry.location.LocationUpdateListener;
 import com.cabalry.location.LocationUpdateManager;
+import com.cabalry.location.LocationUpdateService;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -31,16 +35,29 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
     private final CameraListener mCameraListener = new CameraListener();
 
     public void initializeMap(SupportMapFragment mapFragment) {
-        LocationUpdateManager.registerUpdateListener(this);
+        LocationUpdateManager.Instance(this).addUpdateListener(this);
 
         // This is to call the onMapReady callback
         mapFragment.getMapAsync(this);
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationUpdateManager.Instance(this).resetProvider(manager);
+    }
+
+    @Override
     public void onBackPressed() {
         // Return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocationUpdateManager.Instance(this).removeUpdateListener(this);
     }
 
     @Override

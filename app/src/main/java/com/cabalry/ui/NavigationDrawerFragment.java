@@ -138,8 +138,8 @@ public class NavigationDrawerFragment extends Fragment {
                 getActivity(),                    /* host Activity */
                 mDrawerLayout,                    /* DrawerLayout object */
                 R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
-                R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
-                R.string.navigation_drawer_close) /* "close drawer" description for accessibility */
+                R.string.action_nav_open,  /* "open drawer" description for accessibility */
+                R.string.action_nav_close) /* "close drawer" description for accessibility */
         {
             @Override
             public void onDrawerClosed(View drawerView) {
