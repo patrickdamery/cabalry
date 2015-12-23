@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.cabalry.R;
+import com.cabalry.bluetooth.DeviceControlActivity;
 import com.cabalry.location.LocationUpdateManager;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.ui.NavigationDrawerFragment;
@@ -99,7 +100,7 @@ public class HomeActivity extends AppCompatActivity
                 // Launch respective activity
                 case 1: intent = new Intent(getApplicationContext(), ProfileActivity.class);        break;
                 case 2: intent = new Intent(getApplicationContext(), UserMapActivity.class);        break;
-                case 3: intent = new Intent(getApplicationContext(), DeviceScanActivity.class);     break;
+                case 3: intent = new Intent(getApplicationContext(), DeviceControlActivity.class);  break;
                 case 4: intent = new Intent(getApplicationContext(), RecordingsActivity.class);     break;
                 case 5: intent = new Intent(getApplicationContext(), BillingActivity.class);        break;
                 case 6: intent = new Intent(getApplicationContext(), SettingsActivity.class);       break;

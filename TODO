@@ -12,10 +12,10 @@ Features:
 Optimizations:
     - Login visual glitch when screen is rotated
     - Improve location accuracy
+    - Set layout and buttons (Polish)
 
 In Progress:
-    - Set layout and buttons (Pretty much finished)
-    - Add interface for bluetooth (In progress, not tested)
+    - Add interface for bluetooth (Implemented, in progress)
     - Add audio stream (Added, not checked)
     - Add audio playback (Added, not checked)
     - Add GCM support (Added, not checked)
@@ -31,5 +31,5 @@ Completed:
     - Add selection zoom
 
 Bugs:
-    - MapActivity.createMarker(): mMap is sometimes null
-    - HomeActivity.onSectionAttached(): (Possibly fixed)
+    - MapActivity.createMarker(): mMap is sometimes null (Fixed? Not happening ..)
+    - HomeActivity.onSectionAttached(): (Fixed? Not happening ..)

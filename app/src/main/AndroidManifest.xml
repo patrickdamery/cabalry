@@ -65,11 +65,6 @@
         </activity>
 
         <activity
-            android:name=".app.DeviceScanActivity"
-            android:label="@string/title_activity_device_scan" >
-        </activity>
-
-        <activity
             android:name=".app.UserMapActivity"
             android:label="@string/title_activity_user_map" >
         </activity>
@@ -127,6 +122,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".app.LoginActivity" />
         </activity>
+
+
+
+
+        <activity
+            android:name=".bluetooth.DeviceControlActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".bluetooth.SettingsActivity"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".bluetooth.DeviceListActivity"
+            android:label="@string/select_device" />
+
+
+
+
 
         <service android:name=".location.LocationUpdateService"
             android:exported="false" />
