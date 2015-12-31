@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.cabalry.util.BluetoothUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,8 +47,6 @@ public class DeviceConnector {
     private ConnectedThread mConnectedThread;
     private final Handler mHandler;
     private final String deviceName;
-    // ==========================================================================
-
 
     public DeviceConnector(DeviceData deviceData, Handler handler) {
         mHandler = handler;
@@ -55,8 +55,6 @@ public class DeviceConnector {
         deviceName = (deviceData.getName() == null) ? deviceData.getAddress() : deviceData.getName();
         mState = STATE_NONE;
     }
-    // ==========================================================================
-
 
     /**
      * Запрос на соединение с устойством
@@ -83,7 +81,6 @@ public class DeviceConnector {
         mConnectThread.start();
         setState(STATE_CONNECTING);
     }
-    // ==========================================================================
 
     /**
      * Завершение соединения
@@ -105,8 +102,6 @@ public class DeviceConnector {
 
         setState(STATE_NONE);
     }
-    // ==========================================================================
-
 
     /**
      * Установка внутреннего состояния устройства
@@ -118,8 +113,6 @@ public class DeviceConnector {
         mState = state;
         mHandler.obtainMessage(DeviceControlActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
     }
-    // ==========================================================================
-
 
     /**
      * Получение состояния устройства
@@ -127,8 +120,6 @@ public class DeviceConnector {
     public synchronized int getState() {
         return mState;
     }
-    // ==========================================================================
-
 
     public synchronized void connected(BluetoothSocket socket) {
         if (D) Log.d(TAG, "connected");
@@ -156,8 +147,6 @@ public class DeviceConnector {
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
     }
-    // ==========================================================================
-
 
     public void write(byte[] data) {
         ConnectedThread r;
@@ -171,8 +160,6 @@ public class DeviceConnector {
         if (data.length == 1) r.write(data[0]);
         else r.writeData(data);
     }
-    // ==========================================================================
-
 
     private void connectionFailed() {
         if (D) Log.d(TAG, "connectionFailed");
@@ -184,8 +171,6 @@ public class DeviceConnector {
         mHandler.sendMessage(msg);
         setState(STATE_NONE);
     }
-    // ==========================================================================
-
 
     private void connectionLost() {
         // Send a failure message back to the Activity
@@ -195,13 +180,10 @@ public class DeviceConnector {
         mHandler.sendMessage(msg);
         setState(STATE_NONE);
     }
-    // ==========================================================================
-
 
     /**
      * Класс потока для соединения с BT-устройством
      */
-    // ==========================================================================
     private class ConnectThread extends Thread {
         private static final String TAG = "ConnectThread";
         private static final boolean D = false;
@@ -214,7 +196,6 @@ public class DeviceConnector {
             mmDevice = device;
             mmSocket = BluetoothUtils.createRfcommSocket(mmDevice);
         }
-        // ==========================================================================
 
         /**
          * Основной рабочий метод для соединения с устройством.
@@ -253,8 +234,6 @@ public class DeviceConnector {
             // Start the connected thread
             connected(mmSocket);
         }
-        // ==========================================================================
-
 
         /**
          * Отмена соединения
@@ -272,15 +251,11 @@ public class DeviceConnector {
                 if (D) Log.e(TAG, "close() of connect socket failed", e);
             }
         }
-        // ==========================================================================
     }
-    // ==========================================================================
-
 
     /**
      * Класс потока для обмена данными с BT-устройством
      */
-    // ==========================================================================
     private class ConnectedThread extends Thread {
         private static final String TAG = "ConnectedThread";
         private static final boolean D = false;
@@ -307,7 +282,6 @@ public class DeviceConnector {
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
         }
-        // ==========================================================================
 
         /**
          * Основной рабочий метод - ждёт входящих команд от потока
@@ -337,8 +311,6 @@ public class DeviceConnector {
                 }
             }
         }
-        // ==========================================================================
-
 
         /**
          * Записать кусок данных в устройство
@@ -354,8 +326,6 @@ public class DeviceConnector {
                 if (D) Log.e(TAG, "Exception during write", e);
             }
         }
-        // ==========================================================================
-
 
         /**
          * Записать байт
@@ -373,8 +343,6 @@ public class DeviceConnector {
                 if (D) Log.e(TAG, "Exception during write", e);
             }
         }
-        // ==========================================================================
-
 
         /**
          * Отмена - закрытие сокета
@@ -386,7 +354,5 @@ public class DeviceConnector {
                 if (D) Log.e(TAG, "close() of connect socket failed", e);
             }
         }
-        // ==========================================================================
     }
-    // ==========================================================================
 }

@@ -7,29 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.cabalry.R;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public final class DeviceControlActivity extends BaseActivity {
-    private static final String DEVICE_NAME = "DEVICE_NAME";
-    private static final String LOG = "LOG";
-
-    private static final SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss.SSS");
+    private static final String TAG = "DeviceControlActivity";
 
     private static String MSG_NOT_CONNECTED;
     private static String MSG_CONNECTING;
@@ -38,19 +25,11 @@ public final class DeviceControlActivity extends BaseActivity {
     private static DeviceConnector connector;
     private static BluetoothResponseHandler mHandler;
 
-    private TextView logTextView;
-    private EditText commandEditText;
-
-    // Настройки приложения
-    private boolean hexMode, needClean;
-    private boolean show_timings, show_direction;
-    private String command_ending;
     private String deviceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //PreferenceManager.setDefaultValues(this, R.xml.settings_activity, false);
 
         if (mHandler == null) mHandler = new BluetoothResponseHandler(this);
         else mHandler.setTarget(this);
@@ -60,10 +39,11 @@ public final class DeviceControlActivity extends BaseActivity {
         MSG_CONNECTED = getString(R.string.msg_connected);
 
         setContentView(R.layout.activity_terminal);
-        if (isConnected() && (savedInstanceState != null)) {
-            setDeviceName(savedInstanceState.getString(DEVICE_NAME));
-        } else getSupportActionBar().setSubtitle(MSG_NOT_CONNECTED);
+        //if (isConnected() && (savedInstanceState != null)) {
+        //    setDeviceName(savedInstanceState.getString(DEVICE_NAME));
+        //} else getSupportActionBar().setSubtitle(MSG_NOT_CONNECTED);
 
+        /*
         this.logTextView = (TextView) findViewById(R.id.log_textview);
         this.logTextView.setMovementMethod(new ScrollingMovementMethod());
         if (savedInstanceState != null)
@@ -96,33 +76,26 @@ public final class DeviceControlActivity extends BaseActivity {
                 return false;
             }
         });
+        */
     }
-    // ==========================================================================
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        /*
         outState.putString(DEVICE_NAME, deviceName);
         if (logTextView != null) {
             final String log = logTextView.getText().toString();
             outState.putString(LOG, log);
         }
+        */
     }
-    // ============================================================================
 
-
-    /**
-     * Проверка готовности соединения
-     */
     private boolean isConnected() {
         return (connector != null) && (connector.getState() == DeviceConnector.STATE_CONNECTED);
     }
-    // ==========================================================================
 
-
-    /**
-     * Разорвать соединение
-     */
     private void stopConnection() {
         if (connector != null) {
             connector.stop();
@@ -130,39 +103,24 @@ public final class DeviceControlActivity extends BaseActivity {
             deviceName = null;
         }
     }
-    // ==========================================================================
 
-
-    /**
-     * Список устройств для подключения
-     */
     private void startDeviceListActivity() {
         stopConnection();
         Intent serverIntent = new Intent(this, DeviceListActivity.class);
         startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
     }
-    // ============================================================================
 
-
-    /**
-     * Обработка аппаратной кнопки "Поиск"
-     *
-     * @return
-     */
     @Override
     public boolean onSearchRequested() {
         if (super.isAdapterReady()) startDeviceListActivity();
         return false;
     }
-    // ==========================================================================
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.device_control_activity, menu);
         return true;
     }
-    // ============================================================================
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -178,71 +136,15 @@ public final class DeviceControlActivity extends BaseActivity {
                 }
                 return true;
 
-            case R.id.menu_clear:
-                if (logTextView != null) logTextView.setText("");
-                return true;
-
-            case R.id.menu_send:
-                if (logTextView != null) {
-                    final String msg = logTextView.getText().toString();
-                    final Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_TEXT, msg);
-                    startActivity(Intent.createChooser(intent, getString(R.string.menu_send)));
-                }
-                return true;
-
-            case R.id.menu_settings:
-                final Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    // ============================================================================
-
 
     @Override
     public void onStart() {
         super.onStart();
-
-        // hex mode
-        final String mode = Utils.getPrefence(this, getString(R.string.pref_commands_mode));
-        this.hexMode = mode.equals("HEX");
-        if (hexMode) {
-            commandEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-            commandEditText.setFilters(new InputFilter[]{new Utils.InputFilterHex()});
-        } else {
-            commandEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-            commandEditText.setFilters(new InputFilter[]{});
-        }
-
-        // Окончание строки
-        this.command_ending = getCommandEnding();
-
-        // Формат отображения лога команд
-        this.show_timings = Utils.getBooleanPrefence(this, getString(R.string.pref_log_timing));
-        this.show_direction = Utils.getBooleanPrefence(this, getString(R.string.pref_log_direction));
-        this.needClean = Utils.getBooleanPrefence(this, getString(R.string.pref_need_clean));
     }
-    // ============================================================================
-
-
-    /**
-     * Получить из настроек признак окончания команды
-     */
-    private String getCommandEnding() {
-        String result = Utils.getPrefence(this, getString(R.string.pref_commands_ending));
-        if (result.equals("\\r\\n")) result = "\r\n";
-        else if (result.equals("\\n")) result = "\n";
-        else if (result.equals("\\r")) result = "\r";
-        else result = "";
-        return result;
-    }
-    // ============================================================================
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -260,17 +162,12 @@ public final class DeviceControlActivity extends BaseActivity {
                 // When the request to enable Bluetooth returns
                 super.pendingRequestEnableBt = false;
                 if (resultCode != Activity.RESULT_OK) {
-                    Utils.log("BT not enabled");
+                    Log.i(TAG, "BT not enabled");
                 }
                 break;
         }
     }
-    // ==========================================================================
 
-
-    /**
-     * Установка соединения с устройством
-     */
     private void setupConnector(BluetoothDevice connectedDevice) {
         stopConnection();
         try {
@@ -279,15 +176,11 @@ public final class DeviceControlActivity extends BaseActivity {
             connector = new DeviceConnector(data, mHandler);
             connector.connect();
         } catch (IllegalArgumentException e) {
-            Utils.log("setupConnector failed: " + e.getMessage());
+            Log.i(TAG, "setupConnector failed: " + e.getMessage());
         }
     }
-    // ==========================================================================
 
-
-    /**
-     * Отправка команды устройству
-     */
+    /*
     public void sendCommand(View view) {
         if (commandEditText != null) {
             String commandString = commandEditText.getText().toString();
@@ -306,15 +199,10 @@ public final class DeviceControlActivity extends BaseActivity {
             }
         }
     }
-    // ==========================================================================
+    */
 
 
-    /**
-     * Добавление ответа в лог
-     *
-     * @param message  - текст для отображения
-     * @param outgoing - направление передачи
-     */
+    /*
     void appendLog(String message, boolean hexMode, boolean outgoing, boolean clean) {
 
         StringBuilder msg = new StringBuilder();
@@ -335,30 +223,53 @@ public final class DeviceControlActivity extends BaseActivity {
 
         if (clean) commandEditText.setText("");
     }
-    // =========================================================================
-
+    */
 
     void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-        getSupportActionBar().setSubtitle(deviceName);
+        //this.deviceName = deviceName;
+        //getSupportActionBar().setSubtitle(deviceName);
     }
-    // ==========================================================================
 
-    /**
-     * Обработчик приёма данных от bluetooth-потока
-     */
     private static class BluetoothResponseHandler extends Handler {
         private WeakReference<DeviceControlActivity> mActivity;
 
         public BluetoothResponseHandler(DeviceControlActivity activity) {
-            mActivity = new WeakReference<DeviceControlActivity>(activity);
+            mActivity = new WeakReference<>(activity);
         }
 
         public void setTarget(DeviceControlActivity target) {
             mActivity.clear();
-            mActivity = new WeakReference<DeviceControlActivity>(target);
+            mActivity = new WeakReference<>(target);
         }
 
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what) {
+                case MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case DeviceConnector.STATE_CONNECTED:
+                            Log.i(TAG, "Connected");
+                            break;
+                        case DeviceConnector.STATE_CONNECTING:
+                            Log.i(TAG, "Connecting");
+                            break;
+                        case DeviceConnector.STATE_NONE:
+                            Log.i(TAG, "Not connected");
+                            break;
+                    }
+                    break;
+
+                case MESSAGE_READ:
+                    Log.i(TAG, "Message: "+msg.obj);
+                    break;
+
+                case MESSAGE_DEVICE_NAME: break;
+                case MESSAGE_WRITE: break;
+                case MESSAGE_TOAST: break;
+            }
+        }
+
+        /*
         @Override
         public void handleMessage(Message msg) {
             DeviceControlActivity activity = mActivity.get();
@@ -382,6 +293,7 @@ public final class DeviceControlActivity extends BaseActivity {
                         break;
 
                     case MESSAGE_READ:
+
                         final String readMessage = (String) msg.obj;
                         if (readMessage != null) {
                             activity.appendLog(readMessage, false, false, activity.needClean);
@@ -402,6 +314,7 @@ public final class DeviceControlActivity extends BaseActivity {
                 }
             }
         }
+        */
+
     }
-    // ==========================================================================
 }

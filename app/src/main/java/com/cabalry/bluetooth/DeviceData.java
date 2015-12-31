@@ -22,7 +22,7 @@ public class DeviceData {
         if (name == null || name.isEmpty()) name = emptyName;
         deviceClass = device.getBluetoothClass().getDeviceClass();
         majorDeviceClass = device.getBluetoothClass().getMajorDeviceClass();
-        uuids = BluetoothUtils.getDeviceUuids(device);
+        //uuids = BluetoothUtils.getDeviceUuids(device);
     }
 
     public String getName() {
