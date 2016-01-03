@@ -39,7 +39,7 @@ public abstract class WebViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cabalry_webview);
+        setContentView(R.layout.activity_webview);
 
         // Check if user still has connection
         if(mCheckNetworkTask == null) {

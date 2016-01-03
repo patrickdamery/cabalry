@@ -9,9 +9,12 @@ import java.lang.reflect.Method;
 
 public class BluetoothUtils {
     private static final String TAG = "BluetoothUtils";
-    private static final boolean D = true;
 
-    public static BluetoothSocket createRfcommSocket(BluetoothDevice device) {
+    public enum BTState {
+        NOT_CONNECTED, CONNECTING, CONNECTED
+    }
+
+    public static BluetoothSocket CreateRfcommSocket(BluetoothDevice device) {
         BluetoothSocket tmp = null;
         try {
             Class class1 = device.getClass();
@@ -24,13 +27,13 @@ public class BluetoothUtils {
             tmp = (BluetoothSocket) method.invoke(device, aobj);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
-            if (D) Log.e(TAG, "createRfcommSocket() failed", e);
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-            if (D) Log.e(TAG, "createRfcommSocket() failed", e);
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            if (D) Log.e(TAG, "createRfcommSocket() failed", e);
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
         }
         return tmp;
     }

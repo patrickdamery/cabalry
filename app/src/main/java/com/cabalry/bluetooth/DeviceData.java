@@ -5,7 +5,6 @@ import android.os.ParcelUuid;
 
 import java.util.ArrayList;
 
-
 public class DeviceData {
     private String name = "";
     private String address = "";
