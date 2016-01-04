@@ -11,8 +11,8 @@ import java.net.*;
 /**
  * Created by conor on 01/02/15.
  */
-public class AudioPlaybackProgram {
-    private static final String TAG = "AudioPlaybackProgram";
+public class AudioPlayer {
+    private static final String TAG = "AudioPlayer";
 
     private static final int SAMPLE_RATE = 16000;
     private static final int LISTEN_PORT = 50010;

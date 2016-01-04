@@ -10,8 +10,8 @@ import android.util.Log;
 /**
  * Created by conor on 10/01/15.
  */
-public class AudioStreamProgram {
-    private static final String TAG = "AudioStreamProgram";
+public class AudioStreamer {
+    private static final String TAG = "AudioStreamer";
 
     private static final int PORT = 50005;
     private static final int SAMPLE_RATE = 16000;

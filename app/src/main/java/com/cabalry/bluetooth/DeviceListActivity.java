@@ -53,8 +53,8 @@ public class DeviceListActivity extends Activity {
 
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
-    private final Set<String> mNewDevicesSet = new HashSet<String>();
-    private final Set<String> mPairedDevicesSet = new HashSet<String>();
+    private final Set<String> mNewDevicesSet = new HashSet<>();
+    private final Set<String> mPairedDevicesSet = new HashSet<>();
 
     private ListView newDevicesListView;
     private Button scanButton;
@@ -76,8 +76,8 @@ public class DeviceListActivity extends Activity {
             }
         });
 
-        ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
-        mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
+        ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<>(this, R.layout.device_name);
+        mNewDevicesArrayAdapter = new ArrayAdapter<>(this, R.layout.device_name);
 
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
         pairedListView.setAdapter(pairedDevicesAdapter);
@@ -169,7 +169,7 @@ public class DeviceListActivity extends Activity {
                         newDevicesListView.setEnabled(true);
                         mNewDevicesSet.add(address);
                         String name = device.getName();
-                        if ((name == null) || name.isEmpty()) name = getString(R.string.empty_device_name);
+                        if ((name == null) || name.isEmpty()) name = getString(R.string.no_device_name);
                         mNewDevicesArrayAdapter.add(name + '\n' + device.getAddress());
                     }
                 } else {

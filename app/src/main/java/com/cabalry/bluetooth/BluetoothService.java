@@ -1,17 +1,15 @@
 package com.cabalry.bluetooth;
 
 import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.cabalry.R;
 import com.cabalry.location.LocationUpdateManager;
 
-import java.util.Set;
+import static com.cabalry.util.BluetoothUtils.*;
 
 /**
  * Created by conor on 22/12/15.
@@ -19,30 +17,60 @@ import java.util.Set;
 public class BluetoothService extends Service {
     private static final String TAG = "BluetoothService";
 
-    @Override
-    public void onCreate() {
-        Log.i(TAG, "Service created");
+    private static String NO_DEVICE;
 
-        BluetoothProgram bluetoothProgram = new BluetoothProgram(getApplicationContext(), null);
+    private static DeviceConnector mConnector;
+    private static final BluetoothListener mBTListener = new BluetoothListener() {
+        @Override
+        public void stateChange(DeviceState state) {
+            switch(state) {
+                case NOT_CONNECTED:
+                    Log.i(TAG, "State not connected");
+                    break;
 
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        // If there are paired devices
-        if (pairedDevices.size() > 0) {
-            // Loop through paired devices
-            for (BluetoothDevice device : pairedDevices) {
-                // Add the name and address to an array adapter to show in a ListView
-                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                case CONNECTING:
+                    Log.i(TAG, "State connecting");
+                    break;
+
+                case CONNECTED:
+                    Log.i(TAG, "State connected");
+                    break;
             }
         }
 
-        bluetoothProgram.connect(null, true);
+        @Override
+        public void messageRead(String msg) {
+            String[] msgs = msg.split("\\s+");
+
+            for(String m : msgs) {
+                if(m.length() > 4) {
+                    String sig = m.substring(0,3);
+                    String state = m.substring(3,4);
+                    String power = m.substring(4);
+
+                    Log.i(TAG, "Sig: "+sig);
+                    Log.i(TAG, "State: "+state);
+                    Log.i(TAG, "Power: "+power);
+                }
+            }
+        }
+
+        @Override
+        public void deviceName(String deviceName) { }
+
+        @Override
+        public void messageToast(String msg) { }
+    };
+
+    @Override
+    public void onCreate() {
+        Log.d(TAG, "Service created");
+
+        NO_DEVICE = getString(R.string.no_device_name);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationUpdateManager.Instance(this).resetProvider(manager);
 
         // If we get killed, after returning from here, stop
         return START_NOT_STICKY;
@@ -55,5 +83,41 @@ public class BluetoothService extends Service {
     }
 
     @Override
-    public void onDestroy() { LocationUpdateManager.Instance(this).dispose(); }
+    public void onDestroy() {
+        super.onDestroy();
+        stopConnection();
+
+        Log.d(TAG, "Service destroyed");
+    }
+
+    public static boolean isConnected() {
+        return (mConnector != null) && (mConnector.getState() == DeviceState.CONNECTED);
+    }
+
+    public static boolean hasConnector() {
+        return mConnector != null;
+    }
+
+    public static void stopConnection() {
+        if (mConnector != null) {
+            mConnector.stop();
+            mConnector = null;
+        }
+    }
+
+    public static void setupConnector(BluetoothDevice connectedDevice) {
+        Log.i(TAG, "Setting up connector");
+        stopConnection();
+        try {
+            String emptyName = NO_DEVICE;
+            DeviceData data = new DeviceData(connectedDevice, emptyName);
+
+            mConnector = new DeviceConnector(data, mBTListener);
+            mConnector.connect();
+
+
+        } catch (IllegalArgumentException e) {
+            Log.i(TAG, "setupConnector failed: " + e.getMessage());
+        }
+    }
 }

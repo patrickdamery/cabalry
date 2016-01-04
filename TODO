@@ -15,12 +15,12 @@ Optimizations:
     - Set layout and buttons (Polish)
 
 In Progress:
-    - Add interface for bluetooth (Implemented, in progress)
     - Add audio stream (Added, not checked)
     - Add audio playback (Added, not checked)
     - Add GCM support (Added, not checked)
 
 Completed:
+    - Add interface for bluetooth
     - Set back action on activities
     - Change theme
     - Track and update location

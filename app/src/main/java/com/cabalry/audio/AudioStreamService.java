@@ -11,16 +11,16 @@ import static com.cabalry.util.PreferencesUtil.*;
  */
 public class AudioStreamService extends Service {
 
-    private static AudioStreamProgram mAudioStreamProgram;
+    private static AudioStreamer mAudioStreamer;
 
     @Override
     public void onCreate() {
-        mAudioStreamProgram = new AudioStreamProgram();
+        mAudioStreamer = new AudioStreamer();
 
         Thread streamThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mAudioStreamProgram.startStream(GetUserIP(AudioStreamService.this));
+                mAudioStreamer.startStream(GetUserIP(AudioStreamService.this));
             }
         });
 
@@ -45,9 +45,9 @@ public class AudioStreamService extends Service {
     }
 
     public static void stopAudioStream() {
-        if(mAudioStreamProgram != null) {
-            mAudioStreamProgram.stopStream();
-            mAudioStreamProgram = null;
+        if(mAudioStreamer != null) {
+            mAudioStreamer.stopStream();
+            mAudioStreamer = null;
         }
     }
 }

@@ -26,7 +26,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cabalry.R;
-import com.cabalry.bluetooth.DeviceControlActivity;
 
 import java.util.ArrayList;
 import java.util.List;

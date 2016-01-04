@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.cabalry.R;
-import com.cabalry.bluetooth.DeviceControlActivity;
 import com.cabalry.location.LocationUpdateManager;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.ui.NavigationDrawerFragment;
@@ -31,7 +30,6 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = "HomeActivity";
 
     private static Intent mLocationUpdateIntent;
-    private static Intent mBluetoothIntent;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.

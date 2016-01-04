@@ -12,7 +12,7 @@ import static com.cabalry.util.TasksUtil.*;
  */
 public class AudioPlaybackService extends Service {
 
-    private static AudioPlaybackProgram audioPlaybackProgram;
+    private static AudioPlayer audioPlayer;
     private boolean running = false;
 
     @Override
@@ -20,7 +20,7 @@ public class AudioPlaybackService extends Service {
         if(running) return;
             running = true;
 
-        audioPlaybackProgram = new AudioPlaybackProgram();
+        audioPlayer = new AudioPlayer();
 
         UpdateListenerInfoTask updateListenerInfoTask = new UpdateListenerInfoTask();
         updateListenerInfoTask.setListenerInfo(GetUserID(this), GetUserKey(this), GetAlarmID(this), 50000);
@@ -28,7 +28,7 @@ public class AudioPlaybackService extends Service {
         Thread playbackThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                audioPlaybackProgram.startPlayback(GetUserIP(AudioPlaybackService.this), 2048);
+                audioPlayer.startPlayback(GetUserIP(AudioPlaybackService.this), 2048);
             }
         });
 
@@ -54,9 +54,9 @@ public class AudioPlaybackService extends Service {
     }
 
     public static void stopAudioPlayback() {
-        if(audioPlaybackProgram != null) {
-            audioPlaybackProgram.stopPlayback();
-            audioPlaybackProgram = null;
+        if(audioPlayer != null) {
+            audioPlayer.stopPlayback();
+            audioPlayer = null;
         }
     }
 }

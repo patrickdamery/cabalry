@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 public class BluetoothUtils {
     private static final String TAG = "BluetoothUtils";
 
-    public enum BTState {
+    public enum DeviceState {
         NOT_CONNECTED, CONNECTING, CONNECTED
     }
 

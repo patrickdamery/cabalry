@@ -67,7 +67,7 @@
 
     <string name="action_bluetooth">Devices</string>
     <string name="no_bt_support">Your device doesn\'t support bluetooth.</string>
-    <string name="empty_device_name">No Device</string>
+    <string name="no_device_name">No Device</string>
 
     <string name="bt_button">Bt button</string>
 

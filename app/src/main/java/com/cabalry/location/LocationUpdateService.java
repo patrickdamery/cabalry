@@ -93,5 +93,8 @@ public class LocationUpdateService extends Service implements LocationUpdateList
     }
 
     @Override
-    public void onDestroy() { LocationUpdateManager.Instance(this).dispose(); }
+    public void onDestroy() {
+        super.onDestroy();
+        LocationUpdateManager.Instance(this).dispose();
+    }
 }
