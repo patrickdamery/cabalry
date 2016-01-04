@@ -23,7 +23,7 @@ import com.cabalry.R;
 import com.cabalry.util.TasksUtil.*;
 
 /**
- * Created by conor on 29/10/15.
+ * WebViewActivity
  */
 public abstract class WebViewActivity extends Activity {
 
@@ -42,7 +42,7 @@ public abstract class WebViewActivity extends Activity {
         setContentView(R.layout.activity_webview);
 
         // Check if user still has connection
-        if(mCheckNetworkTask == null) {
+        if (mCheckNetworkTask == null) {
             mCheckNetworkTask = getCheckNetworkTask();
             mCheckNetworkTask.execute();
         }
@@ -126,7 +126,7 @@ public abstract class WebViewActivity extends Activity {
         super.onResume();
 
         // Check if user still has connection
-        if(mCheckNetworkTask == null) {
+        if (mCheckNetworkTask == null) {
             mCheckNetworkTask = getCheckNetworkTask();
             mCheckNetworkTask.execute();
         }
@@ -142,7 +142,7 @@ public abstract class WebViewActivity extends Activity {
         return new CheckNetworkTask(this) {
             @Override
             protected void onPostExecute(Boolean result) {
-                if(result) {
+                if (result) {
                     // User has no available internet connection.
                     Toast.makeText(getApplicationContext(), getString(R.string.error_no_network),
                             Toast.LENGTH_LONG).show();
@@ -156,7 +156,15 @@ public abstract class WebViewActivity extends Activity {
         };
     }
 
-    protected WebView getWebView() { return mWebView; }
-    protected WebSettings getSettings() { return mSettings; }
-    protected ProgressDialog getProgressDialog() { return progressDialog; }
+    protected WebView getWebView() {
+        return mWebView;
+    }
+
+    protected WebSettings getSettings() {
+        return mSettings;
+    }
+
+    protected ProgressDialog getProgressDialog() {
+        return progressDialog;
+    }
 }

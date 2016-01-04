@@ -1,4 +1,5 @@
 package com.cabalry.audio;
+
 import java.io.IOException;
 import java.net.*;
 
@@ -8,7 +9,7 @@ import android.media.MediaRecorder;
 import android.util.Log;
 
 /**
- * Created by conor on 10/01/15.
+ * AudioStreamer
  */
 public class AudioStreamer {
     private static final String TAG = "AudioStreamer";
@@ -40,16 +41,16 @@ public class AudioStreamer {
                     final InetAddress destination = InetAddress.getByName(ip);
                     Log.i(TAG, "Address retrieved");
 
-                    mRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, mMinBufferSize *10);
+                    mRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, mMinBufferSize * 10);
                     Log.i(TAG, "Recorder initialized");
                     mRecorder.startRecording();
-                    while(mStatus) {
+                    while (mStatus) {
 
                         // Reading data from MIC into mBuffer.
                         mMinBufferSize = mRecorder.read(buffer, 0, buffer.length);
 
                         // Putting mBuffer in the packet.
-                        packet = new DatagramPacket (buffer,buffer.length,destination, PORT);
+                        packet = new DatagramPacket(buffer, buffer.length, destination, PORT);
                         try {
                             //Try sending audio packet
                             socket.send(packet);
@@ -61,7 +62,7 @@ public class AudioStreamer {
                     }
                     Log.i(TAG, "Ending");
                     socket.close();
-                } catch(UnknownHostException e) {
+                } catch (UnknownHostException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();

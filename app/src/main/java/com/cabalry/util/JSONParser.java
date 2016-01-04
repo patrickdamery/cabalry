@@ -22,12 +22,10 @@ import org.json.JSONObject;
 import android.util.Log;
 
 /**
- * Created by patrick on 11/12/14.
- * Modified by conor on 13/10/15.
+ * JSONParser
  */
 
-public class JSONParser
-{
+public class JSONParser {
     private static InputStream inputStream = null;
     private static JSONObject jsonObj = null;
     private static String json = "";
@@ -41,7 +39,7 @@ public class JSONParser
         // Making HTTP request
         try {
             // Check for request method
-            if(method == "POST") {
+            if (method == "POST") {
                 // Request method inputStream POST
                 // defaultHttpClient
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -52,7 +50,7 @@ public class JSONParser
                 HttpEntity httpEntity = httpResponse.getEntity();
                 inputStream = httpEntity.getContent();
 
-            } else if(method == "GET") {
+            } else if (method == "GET") {
                 // Request method inputStream GET
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 String paramString = URLEncodedUtils.format(params, "utf-8");
@@ -64,11 +62,11 @@ public class JSONParser
                 inputStream = httpEntity.getContent();
             }
 
-        } catch(UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        } catch(ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -79,7 +77,7 @@ public class JSONParser
             StringBuilder sb = new StringBuilder();
             String line;
 
-            while((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null)
                 sb.append(line + "\n");
 
             inputStream.close();

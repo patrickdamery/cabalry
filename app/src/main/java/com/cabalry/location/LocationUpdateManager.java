@@ -11,13 +11,14 @@ import java.util.Vector;
 import static com.cabalry.util.PreferencesUtil.*;
 
 /**
- * Created by conor on 18/01/15.
+ * LocationUpdateManager
  */
 public class LocationUpdateManager implements LocationListener {
 
     public static final int MAX_LISTENERS = 2;
 
-    public enum UpdateProvider { NETWORK, GPS, GPS_NETWORK }
+    public enum UpdateProvider {NETWORK, GPS, GPS_NETWORK}
+
     private UpdateProvider mUpdateProvider = UpdateProvider.NETWORK;
 
     private LocationManager mLocationManager;
@@ -29,8 +30,9 @@ public class LocationUpdateManager implements LocationListener {
     private Vector<LocationUpdateListener> mUpdateListeners = new Vector<>(MAX_LISTENERS);
 
     private static LocationUpdateManager mInstance;
+
     public static LocationUpdateManager Instance(Context context) {
-        if(mInstance == null) {
+        if (mInstance == null) {
             mInstance = new LocationUpdateManager(context);
         }
 
@@ -56,19 +58,19 @@ public class LocationUpdateManager implements LocationListener {
 
     public void startLocationUpdates() {
 
-        switch(mUpdateProvider) {
-            case NETWORK :
+        switch (mUpdateProvider) {
+            case NETWORK:
                 mLocationManager.requestLocationUpdates(android.location.LocationManager.NETWORK_PROVIDER, mMinTime, mMinDistance, this);
-            break;
+                break;
 
-            case GPS :
+            case GPS:
                 mLocationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, mMinTime, mMinDistance, this);
-            break;
+                break;
 
-            case GPS_NETWORK :
+            case GPS_NETWORK:
                 mLocationManager.requestLocationUpdates(android.location.LocationManager.NETWORK_PROVIDER, mMinTime, mMinDistance, this);
                 mLocationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, mMinTime, mMinDistance, this);
-            break;
+                break;
         }
     }
 
@@ -81,19 +83,19 @@ public class LocationUpdateManager implements LocationListener {
         mUpdateListeners.removeAllElements();
     }
 
-    public void resetProvider(LocationManager manager) {;
+    public void resetProvider(LocationManager manager) {
+        ;
         stopLocationUpdates();
 
-        if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
-            if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            if (manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                 setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
-            }
-            else {
+            } else {
                 setUpdateProvider(LocationUpdateManager.UpdateProvider.GPS);
             }
 
-        } else if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        } else if (manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             setUpdateProvider(LocationUpdateManager.UpdateProvider.NETWORK);
         }
 
@@ -107,21 +109,27 @@ public class LocationUpdateManager implements LocationListener {
             mCurrentBestLocation = location;
         }
 
-        for(LocationUpdateListener listener : mUpdateListeners)
+        for (LocationUpdateListener listener : mUpdateListeners)
             listener.onUpdateLocation(mCurrentBestLocation);
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
     @Override
-    public void onProviderEnabled(String provider) {}
+    public void onProviderEnabled(String provider) {
+    }
+
     @Override
-    public void onProviderDisabled(String provider) {}
+    public void onProviderDisabled(String provider) {
+    }
 
     /**
      * Determines whether one Location reading is better than the current Location fix.
-     * @param location  The new Location that you want to evaluate.
-     * @param currentBestLocation  The current Location fix, to which you want to compare the new one.
+     *
+     * @param location            The new Location that you want to evaluate.
+     * @param currentBestLocation The current Location fix, to which you want to compare the new one.
      */
     public static boolean IsBetterLocation(Location location, Location currentBestLocation) {
         if (currentBestLocation == null) {
@@ -165,7 +173,9 @@ public class LocationUpdateManager implements LocationListener {
         return false;
     }
 
-    /** Checks whether two providers are the same */
+    /**
+     * Checks whether two providers are the same
+     */
     public static boolean IsSameProvider(String provider1, String provider2) {
         if (provider1 == null) {
             return provider2 == null;

@@ -18,7 +18,7 @@ import static com.cabalry.util.MathUtil.*;
 import static com.cabalry.util.DB.*;
 
 /**
- * Created by conor on 29/01/15.
+ * LocationUpdateService
  */
 public class LocationUpdateService extends Service implements LocationUpdateListener {
     private static final String TAG = "LocationUpdateService";
@@ -47,8 +47,8 @@ public class LocationUpdateService extends Service implements LocationUpdateList
         // Store location.
         StoreLocation(LocationUpdateService.this, currentLocation);
 
-        if(GetDistance(currentLocation, lastLocation) < LOCATION_THRESHOLD) {
-            if(System.currentTimeMillis() - startTime >= WAIT_TIME) {
+        if (GetDistance(currentLocation, lastLocation) < LOCATION_THRESHOLD) {
+            if (System.currentTimeMillis() - startTime >= WAIT_TIME) {
                 startTime = System.currentTimeMillis();
                 updateDBLocation();
             }

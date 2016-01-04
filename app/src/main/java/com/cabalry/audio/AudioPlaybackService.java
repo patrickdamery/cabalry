@@ -8,7 +8,7 @@ import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.TasksUtil.*;
 
 /**
- * Created by conor on 01/02/15.
+ * AudioPlaybackService
  */
 public class AudioPlaybackService extends Service {
 
@@ -17,8 +17,8 @@ public class AudioPlaybackService extends Service {
 
     @Override
     public void onCreate() {
-        if(running) return;
-            running = true;
+        if (running) return;
+        running = true;
 
         audioPlayer = new AudioPlayer();
 
@@ -54,7 +54,7 @@ public class AudioPlaybackService extends Service {
     }
 
     public static void stopAudioPlayback() {
-        if(audioPlayer != null) {
+        if (audioPlayer != null) {
             audioPlayer.stopPlayback();
             audioPlayer = null;
         }

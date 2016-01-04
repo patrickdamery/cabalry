@@ -8,8 +8,8 @@ import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
- * Created by conor on 29/01/15.
- *
+ * RegisterActivity
+ * <p/>
  * Activity which displays the user's profile info and also modify it.
  */
 public class RegisterActivity extends WebViewActivity {

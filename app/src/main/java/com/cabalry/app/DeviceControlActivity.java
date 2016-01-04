@@ -14,6 +14,9 @@ import com.cabalry.R;
 import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.bluetooth.DeviceListActivity;
 
+/**
+ * DeviceControlActivity
+ */
 public final class DeviceControlActivity extends AppCompatActivity {
     private static final String TAG = "DeviceControlActivity";
 
@@ -35,7 +38,7 @@ public final class DeviceControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setHomeButtonEnabled(false);
 
-        if(mBluetoothIntent == null) {
+        if (mBluetoothIntent == null) {
             // Start location update service.
             mBluetoothIntent = new Intent(getApplicationContext(), BluetoothService.class);
             startService(mBluetoothIntent);

@@ -9,7 +9,7 @@ import java.io.DataInputStream;
 import java.net.*;
 
 /**
- * Created by conor on 01/02/15.
+ * AudioPlayer
  */
 public class AudioPlayer {
     private static final String TAG = "AudioPlayer";
@@ -23,13 +23,13 @@ public class AudioPlayer {
     private DataInputStream mDataInputStream;
 
     public void startPlayback(String ip, int bufferSize) {
-        Log.i(TAG, "On startPlayback()");
+        Log.d(TAG, "startPlayback()");
         mIsPlaying = true;
 
         AudioTrack audioPlayer = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
 
-        if(audioPlayer.getPlayState() != AudioTrack.PLAYSTATE_PLAYING)
+        if (audioPlayer.getPlayState() != AudioTrack.PLAYSTATE_PLAYING)
             audioPlayer.play();
 
         try {
@@ -73,5 +73,7 @@ public class AudioPlayer {
 
     }
 
-    public void stopPlayback() { mIsPlaying = false;  }
+    public void stopPlayback() {
+        mIsPlaying = false;
+    }
 }

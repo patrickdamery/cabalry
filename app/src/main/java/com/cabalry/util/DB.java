@@ -8,16 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by patrick on 11/12/14.
- * Modified by conor on 13/10/15.
+ * DB
  */
 public class DB {
 
-    public static enum UserRequestType { NEARBY, ALARM }
+    public static enum UserRequestType {NEARBY, ALARM}
 
     /**
-    * Request response string keys
-    */
+     * Request response string keys
+     */
     public static final String REQ_SUCCESS = "success";
     public static final String REQ_USER_ID = "id";
     public static final String REQ_USER_KEY = "key";
@@ -57,32 +56,32 @@ public class DB {
      * Cabalry url's
      */
     public static final String CABALRY_URL = "cabalry.com";
-    public static final String GET_SETTINGS_URL = "https://"+ CABALRY_URL +"/cabalry/getSettings.php";
-    public static final String LOGIN_URL = "https://"+ CABALRY_URL +"/cabalry/login.php";
-    public static final String CHECK_BILLING_URL = "https://"+ CABALRY_URL +"/cabalry/checkBilling.php";
-    public static final String CHECK_PASS_URL = "https://"+ CABALRY_URL +"/cabalry/checkPassword.php";
-    public static final String START_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/startAlarm.php";
-    public static final String STOP_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/stopAlarm.php";
-    public static final String IGNORE_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/ignore.php";
-    public static final String ADD_TO_ALARM_URL = "https://"+ CABALRY_URL +"/cabalry/addToAlarm.php";
-    public static final String ALARM_LIST_URL = "https://"+ CABALRY_URL +"/cabalry/alarmList.php";
-    public static final String ALARM_INFO_URL = "https://"+ CABALRY_URL +"/cabalry/alarmInfo.php";
-    public static final String UPDATE_LISTENER_URL = "https://"+ CABALRY_URL +"/cabalry/updateListener.php";
-    public static final String LOCATION_URL = "https://"+ CABALRY_URL +"/cabalry/updateLocation.php";
-    public static final String GET_LOCATION_URL = "https://"+ CABALRY_URL +"/cabalry/getLocation.php";
-    public static final String GCM_URL = "https://"+ CABALRY_URL +"/cabalry/updateGCM.php";
-    public static final String NEARBY_URL = "https://"+ CABALRY_URL +"/cabalry/nearby.php";
-    public static final String USERINFO_URL = "https://"+ CABALRY_URL +"/cabalry/userInfo.php";
-    public static final String LOGOUT_URL = "https://"+ CABALRY_URL +"/cabalry/logout.php";
+    public static final String GET_SETTINGS_URL = "https://" + CABALRY_URL + "/cabalry/getSettings.php";
+    public static final String LOGIN_URL = "https://" + CABALRY_URL + "/cabalry/login.php";
+    public static final String CHECK_BILLING_URL = "https://" + CABALRY_URL + "/cabalry/checkBilling.php";
+    public static final String CHECK_PASS_URL = "https://" + CABALRY_URL + "/cabalry/checkPassword.php";
+    public static final String START_ALARM_URL = "https://" + CABALRY_URL + "/cabalry/startAlarm.php";
+    public static final String STOP_ALARM_URL = "https://" + CABALRY_URL + "/cabalry/stopAlarm.php";
+    public static final String IGNORE_ALARM_URL = "https://" + CABALRY_URL + "/cabalry/ignore.php";
+    public static final String ADD_TO_ALARM_URL = "https://" + CABALRY_URL + "/cabalry/addToAlarm.php";
+    public static final String ALARM_LIST_URL = "https://" + CABALRY_URL + "/cabalry/alarmList.php";
+    public static final String ALARM_INFO_URL = "https://" + CABALRY_URL + "/cabalry/alarmInfo.php";
+    public static final String UPDATE_LISTENER_URL = "https://" + CABALRY_URL + "/cabalry/updateListener.php";
+    public static final String LOCATION_URL = "https://" + CABALRY_URL + "/cabalry/updateLocation.php";
+    public static final String GET_LOCATION_URL = "https://" + CABALRY_URL + "/cabalry/getLocation.php";
+    public static final String GCM_URL = "https://" + CABALRY_URL + "/cabalry/updateGCM.php";
+    public static final String NEARBY_URL = "https://" + CABALRY_URL + "/cabalry/nearby.php";
+    public static final String USERINFO_URL = "https://" + CABALRY_URL + "/cabalry/userInfo.php";
+    public static final String LOGOUT_URL = "https://" + CABALRY_URL + "/cabalry/logout.php";
 
-    public static final String REGISTER_URL = "https://"+ CABALRY_URL +"/register.php";
-    public static final String FORGOT_URL = "https://"+ CABALRY_URL +"/forgot.php";
-    public static final String BILLING_URL = "https://"+ CABALRY_URL +"/billing.php";
-    public static final String PROFILE_URL = "https://"+ CABALRY_URL +"/profile.php";
-    public static final String RECORDINGS_URL = "https://"+ CABALRY_URL +"/recordings.php";
-    public static final String SETTINGS_URL = "https://"+ CABALRY_URL +"/settings.php";
-    public static final String HELP_URL = "https://"+ CABALRY_URL +"#support";
-    public static final String VIEWUSER_URL = "https://"+ CABALRY_URL +"/viewUser.php";
+    public static final String REGISTER_URL = "https://" + CABALRY_URL + "/register.php";
+    public static final String FORGOT_URL = "https://" + CABALRY_URL + "/forgot.php";
+    public static final String BILLING_URL = "https://" + CABALRY_URL + "/billing.php";
+    public static final String PROFILE_URL = "https://" + CABALRY_URL + "/profile.php";
+    public static final String RECORDINGS_URL = "https://" + CABALRY_URL + "/recordings.php";
+    public static final String SETTINGS_URL = "https://" + CABALRY_URL + "/settings.php";
+    public static final String HELP_URL = "https://" + CABALRY_URL + "#support";
+    public static final String VIEWUSER_URL = "https://" + CABALRY_URL + "/viewUser.php";
 
     /**
      * Requests a login to the server and returns the state result
@@ -90,9 +89,9 @@ public class DB {
      * @param username of user
      * @param password of user
      * @return JSON object that contains:
-     *          success : returns true if successfully logged in
-     *          id : returns integer id for user
-     *          key : returns authorization key for user
+     * success : returns true if successfully logged in
+     * id : returns integer id for user
+     * key : returns authorization key for user
      */
     public static JSONObject RequestLogin(final String username, final String password) {
 
@@ -107,10 +106,10 @@ public class DB {
     /**
      * Requests a logout to the server and returns the state result
      *
-     * @param id of user
+     * @param id  of user
      * @param key of user
      * @return JSON object that contains:
-     *          success : returns true if successfully logged out
+     * success : returns true if successfully logged out
      */
     public static JSONObject RequestLogout(final int id, final String key) {
 
@@ -125,10 +124,10 @@ public class DB {
     /**
      * Function that returns billing state of user
      *
-     * @param id of user
+     * @param id  of user
      * @param key of user
      * @return JSON object that contains:
-     *          success : returns true if billing inputStream ok, false otherwise
+     * success : returns true if billing inputStream ok, false otherwise
      */
     public static JSONObject CheckBilling(final int id, final String key) {
 
@@ -143,11 +142,11 @@ public class DB {
     /**
      * Function checks password for user
      *
-     * @param id of user
-     * @param key of user
+     * @param id       of user
+     * @param key      of user
      * @param password of user
      * @return JSON object that contains:
-     *          success : returns true if password inputStream correct
+     * success : returns true if password inputStream correct
      */
     public static JSONObject CheckPassword(final int id, final String key, final String password) {
 
@@ -163,12 +162,12 @@ public class DB {
     /**
      * Function that updates user's location
      *
-     * @param latitude of user
+     * @param latitude  of user
      * @param longitude of user
-     * @param id of user
-     * @param key of user
+     * @param id        of user
+     * @param key       of user
      * @return JSON object that contains:
-     *          success : returns true if successfully updated location
+     * success : returns true if successfully updated location
      */
     public static JSONObject UpdateUserLocation(final double latitude, final double longitude, final int id, final String key) {
 
@@ -186,12 +185,12 @@ public class DB {
      * Function that gets user's location
      *
      * @param userId id of user we want to get location of
-     * @param id of user
-     * @param key of user
+     * @param id     of user
+     * @param key    of user
      * @return JSON object that contains:
-     *          success : returns true if found location
-     *          lat : latitude of user
-     *          lon : longitude of user
+     * success : returns true if found location
+     * lat : latitude of user
+     * lon : longitude of user
      */
     public static JSONObject GetUserLocation(final int userId, final int id, final String key) {
 
@@ -208,10 +207,10 @@ public class DB {
      * Function that updates user's GCM key
      *
      * @param gcm key generated by user
-     * @param id of user
+     * @param id  of user
      * @param key of user
      * @return JSON object that contains:
-     *          success : returns true if successfully updated gcm key
+     * success : returns true if successfully updated gcm key
      */
     public static JSONObject UpdateUserGCM(final String gcm, final int id, final String key) {
 
@@ -227,11 +226,11 @@ public class DB {
     /**
      * Function that returns nearby Cabalry user's locations
      *
-     * @param id of user
+     * @param id  of user
      * @param key of user
      * @return JSON object that contains:
-     *          success : returns true if users were located
-     *          location : Array that contains id, name, car, latitude and longitude of each user.
+     * success : returns true if users were located
+     * location : Array that contains id, name, car, latitude and longitude of each user.
      */
     public static JSONObject GetNearby(final int id, final String key) {
 
@@ -247,13 +246,13 @@ public class DB {
      * Function that return information for specified user id
      *
      * @param userId of user we are getting information from
-     * @param id of user
-     * @param key of user
+     * @param id     of user
+     * @param key    of user
      * @return JSON Object that contains:
-     *          success : returns true if information inputStream found
-     *          name : name of user
-     *			make : make of car
-     *			color : color of car
+     * success : returns true if information inputStream found
+     * name : name of user
+     * make : make of car
+     * color : color of car
      */
     public static JSONObject GetUserInfo(final int userId, final int id, final String key) {
 
@@ -269,11 +268,11 @@ public class DB {
     /**
      * Function that starts an alarm
      *
-     * @param id of user
+     * @param id  of user
      * @param key of user
      * @return JSON object that contains:
-     *          success : returns true if alarm was successfully created
-     *          alarmId : id of alarm created
+     * success : returns true if alarm was successfully created
+     * alarmId : id of alarm created
      */
     public static JSONObject StartAlarm(final int id, final String key) {
 
@@ -289,12 +288,12 @@ public class DB {
      * Function that returns locations of users that where contacted by alarm
      *
      * @param alarmId of alarm we want information from
-     * @param id of user
-     * @param key of user
+     * @param id      of user
+     * @param key     of user
      * @return JSON object that contains:
-     *          success : returns true if information inputStream found
-     *          state : state of alarm
-     *			sent : JSON array of locations of user's that were alerted
+     * success : returns true if information inputStream found
+     * state : state of alarm
+     * sent : JSON array of locations of user's that were alerted
      */
     public static JSONObject GetAlarmNearby(final int alarmId, final int id, final String key) {
 
@@ -311,10 +310,10 @@ public class DB {
      * Function that removes user from alarm
      *
      * @param alarmId of alarm we want to be removed from
-     * @param id of user
-     * @param key of user
+     * @param id      of user
+     * @param key     of user
      * @return JSON object that contains:
-     *          success : returns true if removed successfully
+     * success : returns true if removed successfully
      */
     public static JSONObject IgnoreAlarm(final int alarmId, final int id, final String key) {
 
@@ -329,11 +328,12 @@ public class DB {
 
     /***
      * Function that adds user to alarm
+     *
      * @param alarmId of alarm we want to be removed from
-     * @param id of user
-     * @param key of user
+     * @param id      of user
+     * @param key     of user
      * @return JSON object that contains:
-     *          success : returns true if removed? successfully
+     * success : returns true if removed? successfully
      */
     public static JSONObject AddToAlarm(final int alarmId, final int id, final String key) {
 
@@ -349,15 +349,15 @@ public class DB {
     /***
      * Function that returns user's settings
      *
-     * @param id of user
+     * @param id  of user
      * @param key of user
      * @return JSON object that contains:
-     *          success : returns true if information inputStream found
-     *          timer : time set by user
-     *          fake : fake password of user
-     *          silent : returns true if enabled
-     *          quantity : quantity we should contact in case of alarm
-     *			range : range to be used for nearby function
+     * success : returns true if information inputStream found
+     * timer : time set by user
+     * fake : fake password of user
+     * silent : returns true if enabled
+     * quantity : quantity we should contact in case of alarm
+     * range : range to be used for nearby function
      */
     public static JSONObject GetUserSettings(final int id, final String key) {
 
@@ -373,15 +373,15 @@ public class DB {
      * Function that returns alarm info
      *
      * @param alarmId of alarm we want information from
-     * @param id of user
-     * @param key of user
+     * @param id      of user
+     * @param key     of user
      * @return JSON object that contains:
-     *          success : returns true if information inputStream found
-     *          start : time alarm was raised
-     *          ip : of server streaming audio
-     *          state : of alarm
-     *          id : of user who raised alarm
-     *			sent : JSON array of locations of user's that were alerted
+     * success : returns true if information inputStream found
+     * start : time alarm was raised
+     * ip : of server streaming audio
+     * state : of alarm
+     * id : of user who raised alarm
+     * sent : JSON array of locations of user's that were alerted
      */
     public static JSONObject GetAlarmInfo(final int alarmId, final int id, final String key) {
 
@@ -398,11 +398,11 @@ public class DB {
      * Function that allows you to update listener information
      *
      * @param alarmId of alarm in question
-     * @param id of user
-     * @param key of user
-     * @param port opened by user
+     * @param id      of user
+     * @param key     of user
+     * @param port    opened by user
      * @return JSON object that contains:
-     *          success : returns true if update inputStream successful
+     * success : returns true if update inputStream successful
      */
     public static JSONObject UpdateListenerInfo(final int alarmId, final int id, final String key, final int port) {
 
@@ -420,10 +420,10 @@ public class DB {
      * Function that stops an active alarm
      *
      * @param alarmId of alarm we want to stop
-     * @param id of user
-     * @param key of user
+     * @param id      of user
+     * @param key     of user
      * @return JSON object that contains:
-     *          success : returns true if alarm was succesfully stopped
+     * success : returns true if alarm was succesfully stopped
      */
     public static JSONObject StopAlarm(final int alarmId, final int id, final String key) {
 
@@ -452,13 +452,16 @@ public class DB {
         private final String method;
 
         public RequestObject(List<NameValuePair> params, final String url) {
-            this.params = params; this.url = url;
+            this.params = params;
+            this.url = url;
             method = "POST";
         }
 
         @SuppressWarnings("unused")
         public RequestObject(List<NameValuePair> params, final String url, final String method) {
-            this.params = params; this.url = url; this.method = method;
+            this.params = params;
+            this.url = url;
+            this.method = method;
         }
     }
 }

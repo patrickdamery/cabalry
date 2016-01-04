@@ -14,7 +14,7 @@ import com.cabalry.app.AlarmMapActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 /**
- * Created by conor on 27/01/15.
+ * GCMIntentService
  */
 public class GCMIntentService extends IntentService {
     private static final String TAG = "GCMIntentService";

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by conor on 14/10/15.
+ * PreferencesUtil
  */
 public class PreferencesUtil {
 

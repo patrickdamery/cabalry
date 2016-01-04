@@ -25,6 +25,9 @@ import com.cabalry.util.DB;
 
 import static com.cabalry.util.PreferencesUtil.*;
 
+/**
+ * HomeActivity
+ */
 public class HomeActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private static final String TAG = "HomeActivity";
@@ -44,12 +47,11 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         mStart = true;
 
-        if(mLocationUpdateIntent == null) {
+        if (mLocationUpdateIntent == null) {
             // Start location update service.
             mLocationUpdateIntent = new Intent(getApplicationContext(), LocationUpdateService.class);
             startService(mLocationUpdateIntent);
-        }
-        else {
+        } else {
             LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             LocationUpdateManager.Instance(this).resetProvider(manager);
         }
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        final String[] navDrawerStrings = new String[] {
+        final String[] navDrawerStrings = new String[]{
                 getString(R.string.title_nav_profile),
                 getString(R.string.title_nav_map),
                 getString(R.string.title_nav_devices),
@@ -65,7 +67,7 @@ public class HomeActivity extends AppCompatActivity
                 getString(R.string.title_nav_billing),
                 getString(R.string.title_nav_settings),
                 getString(R.string.title_nav_help),
-                getString(R.string.title_nav_logout) };
+                getString(R.string.title_nav_logout)};
 
         mNavigationDrawerFragment.setNavDrawerStrings(navDrawerStrings);
 
@@ -90,21 +92,35 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void onSectionAttached(int number) {
-        if(!mStart) {
-            Log.d(TAG, "onSectionAttached(): "+number);
+        if (!mStart) {
+            Log.d(TAG, "onSectionAttached(): " + number);
             Intent intent = null;
             switch (number) {
 
                 // Launch respective activity
-                case 1: intent = new Intent(getApplicationContext(), ProfileActivity.class);        break;
-                case 2: intent = new Intent(getApplicationContext(), UserMapActivity.class);        break;
-                case 3: intent = new Intent(getApplicationContext(), DeviceControlActivity.class);  break;
-                case 4: intent = new Intent(getApplicationContext(), RecordingsActivity.class);     break;
-                case 5: intent = new Intent(getApplicationContext(), BillingActivity.class);        break;
-                case 6: intent = new Intent(getApplicationContext(), SettingsActivity.class);       break;
+                case 1:
+                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    break;
+                case 2:
+                    intent = new Intent(getApplicationContext(), UserMapActivity.class);
+                    break;
+                case 3:
+                    intent = new Intent(getApplicationContext(), DeviceControlActivity.class);
+                    break;
+                case 4:
+                    intent = new Intent(getApplicationContext(), RecordingsActivity.class);
+                    break;
+                case 5:
+                    intent = new Intent(getApplicationContext(), BillingActivity.class);
+                    break;
+                case 6:
+                    intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                    break;
 
                 // Redirect to help url
-                case 7: intent = new Intent("android.intent.action.VIEW", Uri.parse(DB.HELP_URL));  break;
+                case 7:
+                    intent = new Intent("android.intent.action.VIEW", Uri.parse(DB.HELP_URL));
+                    break;
 
                 // Logout and redirect to login activity.
                 case 8:
@@ -113,12 +129,11 @@ public class HomeActivity extends AppCompatActivity
                     break;
             }
 
-            if(intent != null) {
+            if (intent != null) {
                 startActivity(intent);
                 finish();
             }
-        }
-        else mStart = false;
+        } else mStart = false;
     }
 
     @Override
@@ -167,7 +182,8 @@ public class HomeActivity extends AppCompatActivity
             return fragment;
         }
 
-        public PlaceholderFragment() { }
+        public PlaceholderFragment() {
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

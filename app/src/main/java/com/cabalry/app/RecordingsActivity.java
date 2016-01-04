@@ -7,8 +7,8 @@ import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
- * Created by Conor Damery on 29/01/15.
- *
+ * RecordingsActivity
+ * <p/>
  * Activity which displays a list of user's alarm recordings.
  */
 public class RecordingsActivity extends WebViewActivity {

@@ -7,7 +7,7 @@ import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
- * Created by Conor Damery on 29/01/15.
+ * UserInfoActivity
  */
 public class UserInfoActivity extends WebViewActivity {
 

@@ -7,12 +7,11 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.cabalry.R;
-import com.cabalry.location.LocationUpdateManager;
 
 import static com.cabalry.util.BluetoothUtils.*;
 
 /**
- * Created by conor on 22/12/15.
+ * BluetoothService
  */
 public class BluetoothService extends Service {
     private static final String TAG = "BluetoothService";
@@ -23,7 +22,7 @@ public class BluetoothService extends Service {
     private static final BluetoothListener mBTListener = new BluetoothListener() {
         @Override
         public void stateChange(DeviceState state) {
-            switch(state) {
+            switch (state) {
                 case NOT_CONNECTED:
                     Log.i(TAG, "State not connected");
                     break;
@@ -42,24 +41,26 @@ public class BluetoothService extends Service {
         public void messageRead(String msg) {
             String[] msgs = msg.split("\\s+");
 
-            for(String m : msgs) {
-                if(m.length() > 4) {
-                    String sig = m.substring(0,3);
-                    String state = m.substring(3,4);
+            for (String m : msgs) {
+                if (m.length() > 4) {
+                    String sig = m.substring(0, 3);
+                    String state = m.substring(3, 4);
                     String power = m.substring(4);
 
-                    Log.i(TAG, "Sig: "+sig);
-                    Log.i(TAG, "State: "+state);
-                    Log.i(TAG, "Power: "+power);
+                    Log.i(TAG, "Sig: " + sig);
+                    Log.i(TAG, "State: " + state);
+                    Log.i(TAG, "Power: " + power);
                 }
             }
         }
 
         @Override
-        public void deviceName(String deviceName) { }
+        public void deviceName(String deviceName) {
+        }
 
         @Override
-        public void messageToast(String msg) { }
+        public void messageToast(String msg) {
+        }
     };
 
     @Override
@@ -109,12 +110,8 @@ public class BluetoothService extends Service {
         Log.i(TAG, "Setting up connector");
         stopConnection();
         try {
-            String emptyName = NO_DEVICE;
-            DeviceData data = new DeviceData(connectedDevice, emptyName);
-
-            mConnector = new DeviceConnector(data, mBTListener);
+            mConnector = new DeviceConnector(connectedDevice, mBTListener);
             mConnector.connect();
-
 
         } catch (IllegalArgumentException e) {
             Log.i(TAG, "setupConnector failed: " + e.getMessage());

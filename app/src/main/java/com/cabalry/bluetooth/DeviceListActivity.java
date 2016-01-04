@@ -169,7 +169,8 @@ public class DeviceListActivity extends Activity {
                         newDevicesListView.setEnabled(true);
                         mNewDevicesSet.add(address);
                         String name = device.getName();
-                        if ((name == null) || name.isEmpty()) name = getString(R.string.no_device_name);
+                        if ((name == null) || name.isEmpty())
+                            name = getString(R.string.no_device_name);
                         mNewDevicesArrayAdapter.add(name + '\n' + device.getAddress());
                     }
                 } else {

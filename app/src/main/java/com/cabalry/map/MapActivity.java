@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentActivity;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.location.LocationUpdateListener;
 import com.cabalry.location.LocationUpdateManager;
-import com.cabalry.location.LocationUpdateService;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -18,7 +17,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 /**
- * Created by conor on 11/01/15.
+ * MapActivity
  */
 public abstract class MapActivity extends FragmentActivity implements OnMapReadyCallback, LocationUpdateListener {
 
@@ -96,7 +95,9 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
     @Override
     public abstract void onUpdateLocation(Location location);
 
-    public Marker getMarker(int id) { return mMarkerMap.get(id); }
+    public Marker getMarker(int id) {
+        return mMarkerMap.get(id);
+    }
 
     public void add(final MapUser user) {
         mMarkerMap.put(user.getID(), createMarker(user));
@@ -128,10 +129,10 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
     }
 
     public void setCameraFocus(Vector<LatLng> targets, int transTime) {
-        if(targets.isEmpty()) return;
+        if (targets.isEmpty()) return;
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for(LatLng latLng : targets)
+        for (LatLng latLng : targets)
             builder.include(latLng);
 
         LatLngBounds bounds = builder.build();
@@ -145,7 +146,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
      * new users with the current list users and map markers.
      */
     public void updateUsers(final Vector<MapUser> newList) {
-        if(newList == null)
+        if (newList == null)
             throw new NullPointerException("newList can't be null!");
 
         Vector<MapUser> removeList = new Vector<>();
@@ -153,16 +154,16 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         /**
          * First pass compare and update
          */
-        for(int i = 0; i < mUsers.size(); i++) {
+        for (int i = 0; i < mUsers.size(); i++) {
             MapUser oldUsr = mUsers.get(i);
             boolean exit = false;
             int index = 0; // Only used if exit is true
 
-            for(int j = 0; j < newList.size() && !exit; j++) {
+            for (int j = 0; j < newList.size() && !exit; j++) {
                 MapUser newUsr = newList.get(j);
 
                 // Compare id's
-                if(oldUsr.getID() == newUsr.getID()) {
+                if (oldUsr.getID() == newUsr.getID()) {
                     update(oldUsr, newUsr); // ID already exists, update
 
                     exit = true;
@@ -171,7 +172,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
             }
 
             // Check output
-            if(exit)
+            if (exit)
                 newList.remove(index); // Updated, remove from new
             else
                 removeList.add(oldUsr); // Outdated, queue for remove
@@ -180,7 +181,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         /**
          * Second pass remove
          */
-        for(int i = 0; i < removeList.size(); i++) {
+        for (int i = 0; i < removeList.size(); i++) {
             MapUser remove = removeList.get(i);
             mUsers.remove(remove);
             remove(remove);
@@ -189,7 +190,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         /**
          * Third pass add
          */
-        for(int i = 0; i < newList.size(); i++) {
+        for (int i = 0; i < newList.size(); i++) {
             MapUser add = newList.get(i);
             mUsers.add(add);
             add(add);
@@ -217,7 +218,7 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
     /**
      * Class implementation for camera animation callbacks
      */
-    private class CameraListener implements GoogleMap.CancelableCallback, GoogleMap.OnCameraChangeListener  {
+    private class CameraListener implements GoogleMap.CancelableCallback, GoogleMap.OnCameraChangeListener {
 
         @Override
         public void onFinish() {

@@ -5,12 +5,15 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import static com.cabalry.util.BluetoothUtils.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.cabalry.util.BluetoothUtils.*;
+
+/**
+ * DeviceConnector
+ */
 public class DeviceConnector {
     private static final String TAG = "DeviceConnector";
 
@@ -21,13 +24,15 @@ public class DeviceConnector {
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
     private final BluetoothListener mBTListener;
-    private final String mDeviceName;
+    private final BluetoothDevice mDevice;
 
-    public DeviceConnector(DeviceData deviceData, BluetoothListener btListener) {
+    public DeviceConnector(BluetoothDevice device, BluetoothListener btListener) {
         mBTListener = btListener;
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-        mConnectedDevice = mBTAdapter.getRemoteDevice(deviceData.getAddress());
-        mDeviceName = (deviceData.getName() == null) ? deviceData.getAddress() : deviceData.getName();
+
+        mDevice = device;
+        mConnectedDevice = mBTAdapter.getRemoteDevice(mDevice.getAddress());
+
         mState = DeviceState.NOT_CONNECTED;
     }
 
@@ -98,7 +103,8 @@ public class DeviceConnector {
         setState(DeviceState.CONNECTED);
 
         // Callback to listener device name method
-        mBTListener.deviceName(mDeviceName);
+        String deviceName = (mDevice.getName() == null) ? mDevice.getAddress() : mDevice.getName();
+        mBTListener.deviceName(deviceName);
 
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket);

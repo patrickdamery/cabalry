@@ -8,8 +8,8 @@ import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
- * Created by conor on 29/01/15.
- *
+ * ForgotActivity
+ * <p/>
  * Activity which prompts forgot password screen.
  */
 public class ForgotActivity extends WebViewActivity {

@@ -7,8 +7,8 @@ import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
- * Created by Conor Damery on 29/01/15.
- *
+ * BillingActivity
+ * <p/>
  * Activity which displays the user's billing info and also modify it.
  */
 public class BillingActivity extends WebViewActivity {

@@ -20,7 +20,7 @@ import java.util.Vector;
 import static com.cabalry.util.DB.*;
 
 /**
- * Created by conor on 24/11/15.
+ * TasksUtil
  */
 public class TasksUtil {
 
@@ -38,21 +38,28 @@ public class TasksUtil {
         private String failState;
 
         public void setCollectInfo(int id, String key) {
-            mID = id; mKey = key;
+            mID = id;
+            mKey = key;
             mType = UserRequestType.NEARBY;
         }
 
         public void setCollectInfo(int id, String key, int alarmID) {
-            mID = id; mKey = key; mAlarmID = alarmID;
+            mID = id;
+            mKey = key;
+            mAlarmID = alarmID;
             mType = UserRequestType.ALARM;
         }
 
         @SuppressWarnings("unused")
         public void setCollectInfo(int id, String key, UserRequestType type) {
-            mID = id; mKey = key; mType = type;
+            mID = id;
+            mKey = key;
+            mType = type;
         }
 
-        public String getFailState() { return failState; }
+        public String getFailState() {
+            return failState;
+        }
 
         @Override
         protected Vector<MapUser> doInBackground(Void... params) {
@@ -63,22 +70,28 @@ public class TasksUtil {
 
             try {
                 // Get correct result
-                switch(mType) {
-                    case NEARBY : result = GetNearby(mID, mKey); break;
-                    case ALARM  : result = GetAlarmNearby(mAlarmID, mID, mKey); break;
-                    default     : result = GetNearby(mID, mKey); break;
+                switch (mType) {
+                    case NEARBY:
+                        result = GetNearby(mID, mKey);
+                        break;
+                    case ALARM:
+                        result = GetAlarmNearby(mAlarmID, mID, mKey);
+                        break;
+                    default:
+                        result = GetNearby(mID, mKey);
+                        break;
                 }
 
                 try {
                     // Check if request was successful
                     success = result.getBoolean(REQ_SUCCESS);
-                    if(success) {
+                    if (success) {
                         users = new Vector<>();
 
                         // Get locations array
                         JSONArray locations = result.getJSONArray(REQ_LOCATION);
 
-                        for(int i = 0; i < locations.length(); i++) {
+                        for (int i = 0; i < locations.length(); i++) {
                             JSONObject location = locations.getJSONObject(i);
 
                             int id = location.getInt(REQ_USER_ID);
@@ -121,10 +134,14 @@ public class TasksUtil {
         private String failState;
 
         public void set(int userID, int id, String key) {
-            mUserID = userID; mID = id; mKey = key;
+            mUserID = userID;
+            mID = id;
+            mKey = key;
         }
 
-        public String getFailState() { return failState; }
+        public String getFailState() {
+            return failState;
+        }
 
         @Override
         protected MapUser doInBackground(Void... params) {
@@ -139,7 +156,7 @@ public class TasksUtil {
                 try {
                     // Check if request was successful
                     success = result.getBoolean(REQ_SUCCESS);
-                    if(success) {
+                    if (success) {
                         String name = result.getString(REQ_USER_NAME);
                         String car = result.getString(REQ_USER_CAR);
                         String color = result.getString(REQ_USER_COLOR);
@@ -183,8 +200,13 @@ public class TasksUtil {
             mPassword = password;
         }
 
-        public int getID() { return mID; }
-        public String getKey() { return mKey; }
+        public int getID() {
+            return mID;
+        }
+
+        public String getKey() {
+            return mKey;
+        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -232,7 +254,8 @@ public class TasksUtil {
         private int mPort;
 
         public void setListenerInfo(int id, String key, int alarmID, int port) {
-            mID = id; mKey = key;
+            mID = id;
+            mKey = key;
             mAlarmID = alarmID;
             mPort = port;
         }
@@ -247,7 +270,7 @@ public class TasksUtil {
                 try {
                     success = result.getBoolean(REQ_SUCCESS);
 
-                    if(!success) {
+                    if (!success) {
                         Log.e(TAG, "Could not update listener info!");
                     }
 
@@ -262,10 +285,12 @@ public class TasksUtil {
         }
 
         @Override
-        protected void onPostExecute(final Void result) {}
+        protected void onPostExecute(final Void result) {
+        }
 
         @Override
-        protected void onCancelled() {}
+        protected void onCancelled() {
+        }
     }
 
     /**
@@ -317,6 +342,7 @@ public class TasksUtil {
         protected abstract void onPostExecute(final Boolean result);
 
         @Override
-        protected void onCancelled() {}
+        protected void onCancelled() {
+        }
     }
 }

@@ -3,7 +3,7 @@ package com.cabalry.map;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by conor on 14/10/15.
+ * MapUser
  */
 public class MapUser {
 
@@ -12,7 +12,8 @@ public class MapUser {
     private final String mCar;
     private final String mColor;
 
-    public enum UserType { USER, NEARBY, ALARM }
+    public enum UserType {USER, NEARBY, ALARM}
+
     private UserType mType;
     private double mLat;
     private double mLng;
@@ -38,12 +39,31 @@ public class MapUser {
         mLng = lng;
     }
 
-    public LatLng getPosition() { return new LatLng(mLat, mLng); }
-    public double getLat() { return mLat; }
-    public double getLng() { return mLng; }
+    public LatLng getPosition() {
+        return new LatLng(mLat, mLng);
+    }
 
-    public int getID() { return mID; }
-    public String getName() { return mName; }
-    public String getCar() { return mCar; }
-    public String getColor() { return mColor; }
+    public double getLat() {
+        return mLat;
+    }
+
+    public double getLng() {
+        return mLng;
+    }
+
+    public int getID() {
+        return mID;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public String getCar() {
+        return mCar;
+    }
+
+    public String getColor() {
+        return mColor;
+    }
 }

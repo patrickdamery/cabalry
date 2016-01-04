@@ -35,14 +35,17 @@ import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.TasksUtil.*;
 
 /**
+ * LoginActivity
+ * <p/>
  * Login screen for Cabalry app.
- *
- * Created by conor on 06/10/15.
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
-    enum StartupActivity { LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
-                           SETTINGS, USER_INFO, DEVICE_CONTROL }
+    enum StartupActivity {
+        LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
+        SETTINGS, USER_INFO, DEVICE_CONTROL
+    }
+
     StartupActivity mStartupActivity = StartupActivity.DEVICE_CONTROL;
 
     // Regex for email validation
@@ -92,7 +95,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if(IsUserLogin(this)) {
+        if (IsUserLogin(this)) {
             gotoStartup(); // Redirects to mStartupActivity
         }
 
@@ -112,7 +115,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         Button mLogInButton = (Button) findViewById(R.id.login_button);
         mLogInButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) { attemptLogin(); }
+            public void onClick(View view) {
+                attemptLogin();
+            }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
@@ -129,28 +134,53 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         Intent intent = null;
         final Context context = getApplicationContext();
 
-        switch(mStartupActivity) {
-            case LOGIN: break;
+        switch (mStartupActivity) {
+            case LOGIN:
+                break;
 
-            case HOME:          intent = new Intent(context, HomeActivity.class);           break;
-            case USER_MAP:      intent = new Intent(context, UserMapActivity.class);        break;
-            case BILLING:       intent = new Intent(context, BillingActivity.class);        break;
-            case FORGOT:        intent = new Intent(context, ForgotActivity.class);         break;
-            case PROFILE:       intent = new Intent(context, ProfileActivity.class);        break;
-            case RECORDINGS:    intent = new Intent(context, RecordingsActivity.class);     break;
-            case REGISTER:      intent = new Intent(context, RegisterActivity.class);       break;
-            case SETTINGS:      intent = new Intent(context, SettingsActivity.class);       break;
-            case USER_INFO:     intent = new Intent(context, UserInfoActivity.class);       break;
-            case DEVICE_CONTROL:intent = new Intent(context, DeviceControlActivity.class);  break;
+            case HOME:
+                intent = new Intent(context, HomeActivity.class);
+                break;
+            case USER_MAP:
+                intent = new Intent(context, UserMapActivity.class);
+                break;
+            case BILLING:
+                intent = new Intent(context, BillingActivity.class);
+                break;
+            case FORGOT:
+                intent = new Intent(context, ForgotActivity.class);
+                break;
+            case PROFILE:
+                intent = new Intent(context, ProfileActivity.class);
+                break;
+            case RECORDINGS:
+                intent = new Intent(context, RecordingsActivity.class);
+                break;
+            case REGISTER:
+                intent = new Intent(context, RegisterActivity.class);
+                break;
+            case SETTINGS:
+                intent = new Intent(context, SettingsActivity.class);
+                break;
+            case USER_INFO:
+                intent = new Intent(context, UserInfoActivity.class);
+                break;
+            case DEVICE_CONTROL:
+                intent = new Intent(context, DeviceControlActivity.class);
+                break;
 
-            default: intent = new Intent(context, LoginActivity.class); break;
+            default:
+                intent = new Intent(context, LoginActivity.class);
+                break;
         }
 
-        if(intent != null)
+        if (intent != null)
             startActivity(intent);
     }
 
-    private void populateAutoComplete() { getLoaderManager().initLoader(0, null, this); }
+    private void populateAutoComplete() {
+        getLoaderManager().initLoader(0, null, this);
+    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -174,13 +204,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         View focusView = null;
 
         // Check for a valid user
-        if(TextUtils.isEmpty(user)) {
+        if (TextUtils.isEmpty(user)) {
             mUserView.setError(getString(R.string.error_field_required));
             focusView = mUserView;
             cancel = true;
 
-        } else if(!isValidUser(user)) {
-            if(!isValidEmail(user)) {
+        } else if (!isValidUser(user)) {
+            if (!isValidEmail(user)) {
                 mUserView.setError(getString(R.string.error_invalid_email));
                 focusView = mUserView;
                 cancel = true;
@@ -188,12 +218,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         // Check for a valid password
-        if(TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
 
-        } else if(!isValidPassword(password)) {
+        } else if (!isValidPassword(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -270,7 +300,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                 // Select only email addresses.
                 ContactsContract.Contacts.Data.MIMETYPE + " = ?",
-                new String[] { ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE },
+                new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE},
 
                 // Show primary email addresses first. Note that there won't be
                 // a primary email address if the user hasn't specified one.
@@ -290,7 +320,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) { }
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {
