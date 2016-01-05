@@ -20,24 +20,23 @@ public class DeviceConnector {
     private DeviceState mState;
 
     private final BluetoothAdapter mBTAdapter;
-    private final BluetoothDevice mConnectedDevice;
-    private ConnectThread mConnectThread;
-    private ConnectedThread mConnectedThread;
     private final BluetoothListener mBTListener;
     private final BluetoothDevice mDevice;
+
+    private ConnectThread mConnectThread;
+    private ConnectedThread mConnectedThread;
 
     public DeviceConnector(BluetoothDevice device, BluetoothListener btListener) {
         mBTListener = btListener;
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
 
         mDevice = device;
-        mConnectedDevice = mBTAdapter.getRemoteDevice(mDevice.getAddress());
 
         mState = DeviceState.NOT_CONNECTED;
     }
 
     public synchronized void connect() {
-        Log.d(TAG, "Connect to : " + mConnectedDevice);
+        Log.d(TAG, "Connect to : " + mDevice);
 
         if (mState == DeviceState.CONNECTING) {
             if (mConnectThread != null) {
@@ -54,7 +53,7 @@ public class DeviceConnector {
         }
 
         // Start the thread to connect with the given device
-        mConnectThread = new ConnectThread(mConnectedDevice);
+        mConnectThread = new ConnectThread(mDevice);
         mConnectThread.start();
         setState(DeviceState.CONNECTING);
     }
@@ -79,7 +78,7 @@ public class DeviceConnector {
 
     private synchronized void setState(DeviceState state) {
         mState = state;
-        mBTListener.stateChange(state);
+        mBTListener.onStateChange(state);
     }
 
     public synchronized DeviceState getState() {
@@ -104,7 +103,7 @@ public class DeviceConnector {
 
         // Callback to listener device name method
         String deviceName = (mDevice.getName() == null) ? mDevice.getAddress() : mDevice.getName();
-        mBTListener.deviceName(deviceName);
+        mBTListener.onDeviceName(deviceName);
 
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket);
@@ -128,13 +127,13 @@ public class DeviceConnector {
         Log.d(TAG, "connectionFailed");
 
         // Send a failure message back to the Activity
-        mBTListener.messageToast("Connection Failed");
+        mBTListener.onMessageToast("Connection Failed");
         setState(DeviceState.NOT_CONNECTED);
     }
 
     private void connectionLost() {
         // Send a failure message back to the Activity
-        mBTListener.messageToast("Connection Lost");
+        mBTListener.onMessageToast("Connection Lost");
         setState(DeviceState.NOT_CONNECTED);
     }
 
@@ -199,6 +198,20 @@ public class DeviceConnector {
         }
     }
 
+    private void updateDeviceStatus(String msg) {
+        String[] msgs = msg.split("\\s+");
+
+        for (String m : msgs) {
+            if (m.length() > 4) {
+                String sig = m.substring(0, 3);
+                String state = m.substring(3, 4);
+                String charge = m.substring(4);
+
+                mBTListener.onStatusUpdate(sig, state, charge);
+            }
+        }
+    }
+
     private class ConnectedThread extends Thread {
         private static final String TAG = "ConnectedThread";
 
@@ -237,7 +250,7 @@ public class DeviceConnector {
                     readMessage.append(readed);
 
                     if (readed.contains("\n")) {
-                        mBTListener.messageRead(readMessage.toString());
+                        updateDeviceStatus(readMessage.toString());
                         readMessage.setLength(0);
                     }
 
@@ -257,7 +270,7 @@ public class DeviceConnector {
 
                 // Callback to message read
                 String msg = new String(chunk, "UTF-8");
-                mBTListener.messageRead(msg);
+                updateDeviceStatus(msg);
 
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);
@@ -273,7 +286,7 @@ public class DeviceConnector {
 
                 // Callback to message read
                 String msg = new String(buffer, "UTF-8");
-                mBTListener.messageRead(msg);
+                updateDeviceStatus(msg);
 
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);

@@ -13,21 +13,19 @@ import java.lang.reflect.Method;
 public class BluetoothUtils {
     private static final String TAG = "BluetoothUtils";
 
+    public static final String DEVICE_STATUS_SIGNATURE = "sig";
+
     public enum DeviceState {
         NOT_CONNECTED, CONNECTING, CONNECTED
     }
 
     public static BluetoothSocket CreateRfcommSocket(BluetoothDevice device) {
         BluetoothSocket tmp = null;
-        try {
-            Class class1 = device.getClass();
-            Class aclass[] = new Class[1];
-            aclass[0] = Integer.TYPE;
-            Method method = class1.getMethod("createRfcommSocket", aclass);
-            Object aobj[] = new Object[1];
-            aobj[0] = Integer.valueOf(1);
 
-            tmp = (BluetoothSocket) method.invoke(device, aobj);
+        try {
+            Method createRfcommSocket = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
+            tmp = (BluetoothSocket) createRfcommSocket.invoke(device, 1);
+
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
             Log.e(TAG, "CreateRfcommSocket() failed", e);

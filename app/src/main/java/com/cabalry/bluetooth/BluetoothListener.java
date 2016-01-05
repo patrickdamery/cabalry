@@ -7,11 +7,11 @@ import static com.cabalry.util.BluetoothUtils.*;
  */
 public interface BluetoothListener {
 
-    void stateChange(DeviceState state);
+    void onStateChange(DeviceState state);
 
-    void messageRead(String msg);
+    void onStatusUpdate(String sig, String state, String charge);
 
-    void deviceName(String deviceName);
+    void onDeviceName(String deviceName);
 
-    void messageToast(String msg);
+    void onMessageToast(String msg);
 }

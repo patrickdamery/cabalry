@@ -33,3 +33,4 @@ Completed:
 Bugs:
     - MapActivity.createMarker(): mMap is sometimes null (Fixed? Not happening ..)
     - HomeActivity.onSectionAttached(): (Fixed? Not happening ..)
+    - DeviceControlActivity: BT button not working on second try

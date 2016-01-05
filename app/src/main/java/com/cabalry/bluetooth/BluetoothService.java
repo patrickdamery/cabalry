@@ -1,12 +1,18 @@
 package com.cabalry.bluetooth;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 
-import com.cabalry.R;
+import java.util.ArrayList;
 
 import static com.cabalry.util.BluetoothUtils.*;
 
@@ -16,58 +22,96 @@ import static com.cabalry.util.BluetoothUtils.*;
 public class BluetoothService extends Service {
     private static final String TAG = "BluetoothService";
 
-    private static String NO_DEVICE;
+    public static final int MSG_REGISTER_CLIENT = 1;
+    public static final int MSG_UNREGISTER_CLIENT = 2;
+    public static final int MSG_STATE_CHANGE = 3;
+    public static final int MSG_STATUS_UPDATE = 4;
 
     private static DeviceConnector mConnector;
     private static final BluetoothListener mBTListener = new BluetoothListener() {
         @Override
-        public void stateChange(DeviceState state) {
-            switch (state) {
-                case NOT_CONNECTED:
-                    Log.i(TAG, "State not connected");
-                    break;
-
-                case CONNECTING:
-                    Log.i(TAG, "State connecting");
-                    break;
-
-                case CONNECTED:
-                    Log.i(TAG, "State connected");
-                    break;
-            }
+        public void onStateChange(DeviceState state) {
+            Bundle data = new Bundle();
+            data.putSerializable("state", state);
+            sendMessageToActivity(MSG_STATE_CHANGE, data);
         }
 
         @Override
-        public void messageRead(String msg) {
-            String[] msgs = msg.split("\\s+");
-
-            for (String m : msgs) {
-                if (m.length() > 4) {
-                    String sig = m.substring(0, 3);
-                    String state = m.substring(3, 4);
-                    String power = m.substring(4);
-
-                    Log.i(TAG, "Sig: " + sig);
-                    Log.i(TAG, "State: " + state);
-                    Log.i(TAG, "Power: " + power);
-                }
-            }
+        public void onStatusUpdate(String sig, String status, String charge) {
+            Bundle data = new Bundle();
+            data.putString("sig", sig);
+            data.putString("status", status);
+            data.putString("charge", charge);
+            sendMessageToActivity(MSG_STATUS_UPDATE, data);
         }
 
         @Override
-        public void deviceName(String deviceName) {
+        public void onDeviceName(String deviceName) {
         }
 
         @Override
-        public void messageToast(String msg) {
+        public void onMessageToast(String msg) {
         }
     };
+
+    private NotificationManager mNotificationManager;
+    private static boolean isRunning = false;
+
+    private static ArrayList<Messenger> mClients = new ArrayList<>(); // Keeps track of all current registered clients.
+    final Messenger mMessenger = new Messenger(new IncomingHandler()); // Target we publish for clients to send messages to IncomingHandler.
+
+    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_REGISTER_CLIENT:
+                    mClients.add(msg.replyTo);
+                    break;
+                case MSG_UNREGISTER_CLIENT:
+                    mClients.remove(msg.replyTo);
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    private static void sendMessageToActivity(int msgIndex, Bundle data) {
+        for (int i = mClients.size() - 1; i >= 0; i--) {
+            try {
+                Message msg = Message.obtain(null, msgIndex);
+                msg.setData(data);
+                mClients.get(i).send(msg);
+
+            } catch (RemoteException e) {
+                // The client is dead. Remove it from the list; we are going through the list from back to front so this is safe to do inside the loop.
+                mClients.remove(i);
+            }
+        }
+    }
 
     @Override
     public void onCreate() {
         Log.d(TAG, "Service created");
 
-        NO_DEVICE = getString(R.string.no_device_name);
+        showNotification();
+        isRunning = true;
+    }
+
+    private void showNotification() {
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // In this sample, we'll use the same text for the ticker and the expanded notification
+        //CharSequence text = getText(R.string.service_started);
+        // Set the icon, scrolling text and timestamp
+        //Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
+        // The PendingIntent to launch our activity if the user selects this notification
+        //PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, DeviceControlActivity.class), 0);
+        // Set the info for the views that show in the notification panel.
+        //notification.setLatestEventInfo(this, getText(R.string.service_label), text, contentIntent);
+        // Send the notification.
+        // We use a layout id because it is a unique number.  We use it later to cancel.
+        //nm.notify(R.string.service_started, notification);
     }
 
     @Override
@@ -79,16 +123,22 @@ public class BluetoothService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // We don't provide binding, so return null
-        return null;
+        return mMessenger.getBinder();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "Service destroyed");
+
         stopConnection();
 
-        Log.d(TAG, "Service destroyed");
+        //nm.cancel(R.string.service_started); // Cancel the persistent notification.
+        isRunning = false;
+    }
+
+    public static boolean isRunning() {
+        return isRunning;
     }
 
     public static boolean isConnected() {
