@@ -129,7 +129,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".bluetooth.DeviceListActivity"
+            android:name=".app.DeviceListActivity"
             android:label="@string/select_device" />
 
         <service android:name=".bluetooth.BluetoothService"

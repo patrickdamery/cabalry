@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.MathUtil.*;
-import static com.cabalry.util.DB.*;
+import static com.cabalry.db.DataBase.*;
 
 /**
  * LocationUpdateService

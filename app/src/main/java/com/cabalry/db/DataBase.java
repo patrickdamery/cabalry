@@ -1,4 +1,4 @@
-package com.cabalry.util;
+package com.cabalry.db;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DB
+ * DataBase
  */
-public class DB {
+public class DataBase {
 
     public static enum UserRequestType {NEARBY, ALARM}
 
@@ -439,7 +439,7 @@ public class DB {
     private static JSONObject sendRequest(final RequestObject request) {
 
         // return JSON object
-        return new JSONParser().makeHttpRequest(request.url, request.method, request.params);
+        return new JsonParser().makeHttpRequest(request.url, request.method, request.params);
     }
 
     /**

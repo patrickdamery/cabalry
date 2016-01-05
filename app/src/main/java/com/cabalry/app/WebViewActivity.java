@@ -49,7 +49,7 @@ public abstract class WebViewActivity extends Activity {
 
         // Progress Dialog to show while web view is loading.
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getResources().getString(R.string.prompt_webview_loading));
+        progressDialog.setMessage(getResources().getString(R.string.msg_webview_loading));
         progressDialog.show();
 
         // Setup web view.

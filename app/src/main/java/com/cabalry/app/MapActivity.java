@@ -1,4 +1,4 @@
-package com.cabalry.map;
+package com.cabalry.app;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.location.LocationUpdateListener;
 import com.cabalry.location.LocationUpdateManager;
+import com.cabalry.map.MapUser;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 

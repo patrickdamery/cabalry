@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.cabalry.R;
 import com.cabalry.bluetooth.BluetoothService;
-import com.cabalry.bluetooth.DeviceListActivity;
-import com.cabalry.util.BindableActivity;
-import static com.cabalry.util.BluetoothUtils.*;
+import com.cabalry.base.BindableActivity;
+
+import static com.cabalry.util.BluetoothUtil.*;
+import static com.cabalry.util.MessageUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * DeviceControlActivity
@@ -38,7 +40,7 @@ public final class DeviceControlActivity extends BindableActivity {
 
     private TextView mDeviceStateText, mDeviceChargeText;
 
-    private class IncomingHandler extends Handler {
+    private class MessengerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             Bundle data = msg.getData();
@@ -46,29 +48,33 @@ public final class DeviceControlActivity extends BindableActivity {
                 throw new NullPointerException("data is null");
 
             switch (msg.what) {
-                case BluetoothService.MSG_STATE_CHANGE:
-                    DeviceState state = (DeviceState) data.getSerializable("state");
+                case MSG_DEVICE_STATE:
+                    int state = data.getInt("state");
                     switch (state) {
-                        case NOT_CONNECTED:
-                            mDeviceStateText.setText("Not Connected");
+                        case STATE_NOT_CONNECTED:
+                            mDeviceChargeText.setText(" - %");
+                            mDeviceStateText.setText(getString(R.string.msg_not_connected));
                             break;
 
-                        case CONNECTING:
-                            mDeviceStateText.setText("Connecting");
+                        case STATE_CONNECTING:
+                            mDeviceChargeText.setText(" - %");
+                            mDeviceStateText.setText(getString(R.string.msg_connecting));
                             break;
 
-                        case CONNECTED:
-                            mDeviceStateText.setText("Connected");
+                        case STATE_CONNECTED:
+                            int charge = GetDeviceCharge(getApplicationContext());
+                            mDeviceChargeText.setText(" " + charge + "%");
+                            mDeviceStateText.setText(getString(R.string.msg_connected));
                             break;
                     }
                     break;
 
-                case BluetoothService.MSG_STATUS_UPDATE:
-                    String sig = (String) data.get("sig");
-                    String status = (String) data.get("status");
-                    String charge = (String) data.get("charge");
+                case MSG_DEVICE_STATUS:
+                    //String sig = (String) data.get("sig");
+                    //String status = (String) data.get("status");
+                    int charge = (int) data.get("charge");
 
-                    mDeviceChargeText.setText(charge);
+                    mDeviceChargeText.setText(" " + charge + "%");
                     break;
 
                 default:
@@ -106,8 +112,8 @@ public final class DeviceControlActivity extends BindableActivity {
     @Override
     public void onStart() {
         super.onStart();
-        bindToService(BluetoothService.class, new IncomingHandler(),
-                BluetoothService.MSG_REGISTER_CLIENT, BluetoothService.MSG_UNREGISTER_CLIENT);
+        bindToService(BluetoothService.class, new MessengerHandler(),
+                MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
 
         if (btAdapter != null) {
             if (!btAdapter.isEnabled() && !pendingRequestEnableBt) {
@@ -147,6 +153,15 @@ public final class DeviceControlActivity extends BindableActivity {
         if (state != null) {
             mDeviceStateText.setText(state.getString("deviceState"));
             mDeviceChargeText.setText(state.getString("deviceCharge"));
+        } else {
+            if (BluetoothService.isConnected()) {
+                int charge = GetDeviceCharge(getApplicationContext());
+                mDeviceChargeText.setText(" " + charge + "%");
+                mDeviceStateText.setText(getString(R.string.msg_connected));
+            } else {
+                mDeviceChargeText.setText(" - %");
+                mDeviceStateText.setText(getString(R.string.msg_not_connected));
+            }
         }
     }
 
@@ -173,7 +188,6 @@ public final class DeviceControlActivity extends BindableActivity {
     }
 
     private void startDeviceListActivity() {
-        sendMessageToService(BluetoothService.MSG_STATUS_UPDATE);
         Intent serverIntent = new Intent(this, DeviceListActivity.class);
         startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
     }
@@ -194,7 +208,7 @@ public final class DeviceControlActivity extends BindableActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     String address = data.getStringExtra(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
                     BluetoothDevice device = btAdapter.getRemoteDevice(address);
-                    if (isAdapterReady() && !BluetoothService.hasConnector())
+                    if (isAdapterReady())
                         BluetoothService.setupConnector(device);
                 }
                 break;
@@ -208,15 +222,19 @@ public final class DeviceControlActivity extends BindableActivity {
         }
     }
 
-    public void bluetoothButtonCallback(View view) {
+    public void deviceConnectCallback(View view) {
         if (isAdapterReady()) {
             if (BluetoothService.isConnected())
                 BluetoothService.stopConnection();
-            else
-                startDeviceListActivity();
+            startDeviceListActivity();
         } else {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+    }
+
+    public void deviceDisconnectCallback(View view) {
+        if (BluetoothService.isConnected())
+            BluetoothService.stopConnection();
     }
 }

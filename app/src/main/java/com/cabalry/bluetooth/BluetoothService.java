@@ -1,48 +1,70 @@
 package com.cabalry.bluetooth;
 
+import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.Service;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.util.Log;
 
-import java.util.ArrayList;
+import com.cabalry.R;
+import com.cabalry.app.DeviceControlActivity;
+import com.cabalry.base.BindableService;
 
-import static com.cabalry.util.BluetoothUtils.*;
+import static com.cabalry.util.BluetoothUtil.*;
+import static com.cabalry.util.MessageUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * BluetoothService
  */
-public class BluetoothService extends Service {
+public class BluetoothService extends BindableService {
     private static final String TAG = "BluetoothService";
 
-    public static final int MSG_REGISTER_CLIENT = 1;
-    public static final int MSG_UNREGISTER_CLIENT = 2;
-    public static final int MSG_STATE_CHANGE = 3;
-    public static final int MSG_STATUS_UPDATE = 4;
+    private static int mPrevChargeStatus;
 
+    private static NotificationManager mNotificationManager;
     private static DeviceConnector mConnector;
-    private static final BluetoothListener mBTListener = new BluetoothListener() {
+    private static ServiceBluetoothListener mListener;
+
+    private static class ServiceBluetoothListener implements BluetoothListener {
+
+        private final Context mContext;
+
+        public ServiceBluetoothListener(Context context) {
+            mContext = context;
+        }
+
         @Override
-        public void onStateChange(DeviceState state) {
+        public void onStateChange(int state) {
             Bundle data = new Bundle();
-            data.putSerializable("state", state);
-            sendMessageToActivity(MSG_STATE_CHANGE, data);
+            data.putInt("state", state);
+
+            sendMessageToActivity(MSG_DEVICE_STATE, data);
         }
 
         @Override
         public void onStatusUpdate(String sig, String status, String charge) {
+            int chargeVal = Integer.parseInt(charge);
+            if (mPrevChargeStatus - chargeVal < 10)
+                mPrevChargeStatus = chargeVal;
+
+            if (status.equals("A")) {
+                Log.i(TAG, "Alarm");
+                alertAlarm(mContext);
+            }
+
             Bundle data = new Bundle();
             data.putString("sig", sig);
             data.putString("status", status);
-            data.putString("charge", charge);
-            sendMessageToActivity(MSG_STATUS_UPDATE, data);
+            data.putInt("charge", mPrevChargeStatus);
+
+            SetDeviceCharge(mContext, mPrevChargeStatus);
+            sendMessageToActivity(MSG_DEVICE_STATUS, data);
         }
 
         @Override
@@ -52,115 +74,78 @@ public class BluetoothService extends Service {
         @Override
         public void onMessageToast(String msg) {
         }
-    };
+    }
 
-    private NotificationManager mNotificationManager;
-    private static boolean isRunning = false;
-
-    private static ArrayList<Messenger> mClients = new ArrayList<>(); // Keeps track of all current registered clients.
-    final Messenger mMessenger = new Messenger(new IncomingHandler()); // Target we publish for clients to send messages to IncomingHandler.
-
-    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+    // Handler of incoming messages from clients.
+    class MessengerHandler extends BaseMessengerHandler {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MSG_REGISTER_CLIENT:
-                    mClients.add(msg.replyTo);
-                    break;
-                case MSG_UNREGISTER_CLIENT:
-                    mClients.remove(msg.replyTo);
-                    break;
-
                 default:
                     super.handleMessage(msg);
             }
         }
     }
 
-    private static void sendMessageToActivity(int msgIndex, Bundle data) {
-        for (int i = mClients.size() - 1; i >= 0; i--) {
-            try {
-                Message msg = Message.obtain(null, msgIndex);
-                msg.setData(data);
-                mClients.get(i).send(msg);
+    private static void alertAlarm(Context context) {
+        Intent intent = new Intent(context, DeviceControlActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
 
-            } catch (RemoteException e) {
-                // The client is dead. Remove it from the list; we are going through the list from back to front so this is safe to do inside the loop.
-                mClients.remove(i);
-            }
-        }
+        Notification n = new Notification.Builder(context)
+                .setContentTitle("Alert")
+                .setContentText("Panic button pressed")
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true).build();
+
+        mNotificationManager.notify(0, n);
     }
 
-    @Override
-    public void onCreate() {
-        Log.d(TAG, "Service created");
+    private void alertLowBattery() {
 
-        showNotification();
-        isRunning = true;
     }
 
-    private void showNotification() {
-        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // In this sample, we'll use the same text for the ticker and the expanded notification
-        //CharSequence text = getText(R.string.service_started);
-        // Set the icon, scrolling text and timestamp
-        //Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
-        // The PendingIntent to launch our activity if the user selects this notification
-        //PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, DeviceControlActivity.class), 0);
-        // Set the info for the views that show in the notification panel.
-        //notification.setLatestEventInfo(this, getText(R.string.service_label), text, contentIntent);
-        // Send the notification.
-        // We use a layout id because it is a unique number.  We use it later to cancel.
-        //nm.notify(R.string.service_started, notification);
+    private void alertDeviceDisconnected() {
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mListener = new ServiceBluetoothListener(getApplicationContext());
 
         // If we get killed, after returning from here, stop
         return START_NOT_STICKY;
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        return mMessenger.getBinder();
+    protected Handler getMessengerHandler() {
+        return new MessengerHandler();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "Service destroyed");
 
         stopConnection();
-
-        //nm.cancel(R.string.service_started); // Cancel the persistent notification.
-        isRunning = false;
     }
 
-    public static boolean isRunning() {
-        return isRunning;
+    public synchronized static boolean isConnected() {
+        return (mConnector != null) && (mConnector.getState() == STATE_CONNECTED);
     }
 
-    public static boolean isConnected() {
-        return (mConnector != null) && (mConnector.getState() == DeviceState.CONNECTED);
-    }
-
-    public static boolean hasConnector() {
-        return mConnector != null;
-    }
-
-    public static void stopConnection() {
+    public synchronized static void stopConnection() {
         if (mConnector != null) {
             mConnector.stop();
             mConnector = null;
         }
     }
 
-    public static void setupConnector(BluetoothDevice connectedDevice) {
+    public synchronized static void setupConnector(BluetoothDevice connectedDevice) {
         Log.i(TAG, "Setting up connector");
         stopConnection();
         try {
-            mConnector = new DeviceConnector(connectedDevice, mBTListener);
+            mConnector = new DeviceConnector(connectedDevice, mListener);
             mConnector.connect();
 
         } catch (IllegalArgumentException e) {

@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
-import static com.cabalry.util.DB.*;
+import static com.cabalry.db.DataBase.*;
 
 /**
  * TasksUtil

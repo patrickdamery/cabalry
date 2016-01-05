@@ -1,9 +1,10 @@
-package com.cabalry.util;
+package com.cabalry.base;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -15,7 +16,7 @@ import android.util.Log;
 /**
  * BindableActivity
  */
-public class BindableActivity extends AppCompatActivity {
+public abstract class BindableActivity extends AppCompatActivity {
     private static final String TAG = "BindableActivity";
 
     private Messenger mService = null;
@@ -73,30 +74,16 @@ public class BindableActivity extends AppCompatActivity {
         }
     }
 
-    protected void sendMessageToService(int msgIndex, String msg) {
+    protected void sendMessageToService(int msgIndex, Bundle data) {
         if (msgIndex != mRegisterClientMsg && msgIndex != mUnregisterClientMsg) {
             if (mIsBound) {
                 if (mService != null) {
                     try {
-                        Message m = Message.obtain(null, msgIndex, msg);
-                        m.replyTo = mMessenger;
-                        mService.send(m);
-                    } catch (RemoteException e) {
-                        Log.e(TAG, "Could not send message");
-                    }
-                }
-            }
-        }
-    }
+                        Message msg = Message.obtain(null, msgIndex);
+                        msg.setData(data);
+                        msg.replyTo = mMessenger;
+                        mService.send(msg);
 
-    protected void sendMessageToService(int msgIndex) {
-        if (msgIndex != mRegisterClientMsg && msgIndex != mUnregisterClientMsg) {
-            if (mIsBound) {
-                if (mService != null) {
-                    try {
-                        Message m = Message.obtain(null, msgIndex);
-                        m.replyTo = mMessenger;
-                        mService.send(m);
                     } catch (RemoteException e) {
                         Log.e(TAG, "Could not send message");
                     }

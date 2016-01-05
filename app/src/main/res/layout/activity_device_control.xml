@@ -44,10 +44,16 @@ android:layout_height="fill_parent" >
     android:padding="5dip" >
 
     <Button
-        android:id="@+id/bt_button"
+        android:id="@+id/connect_button"
+        android:layout_column="0"
+        android:onClick="deviceConnectCallback"
+        android:text="@string/action_connect" />
+
+    <Button
+        android:id="@+id/disconnect_button"
         android:layout_column="1"
-        android:onClick="bluetoothButtonCallback"
-        android:text="@string/bt_button" />
+        android:onClick="deviceDisconnectCallback"
+        android:text="@string/action_disconnect" />
 </TableRow>
 
 </TableLayout>

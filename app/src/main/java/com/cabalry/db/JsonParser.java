@@ -1,4 +1,4 @@
-package com.cabalry.util;
+package com.cabalry.db;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,10 +22,10 @@ import org.json.JSONObject;
 import android.util.Log;
 
 /**
- * JSONParser
+ * JsonParser
  */
 
-public class JSONParser {
+public class JsonParser {
     private static InputStream inputStream = null;
     private static JSONObject jsonObj = null;
     private static String json = "";

@@ -8,16 +8,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * BluetoothUtils
+ * BluetoothUtil
  */
-public class BluetoothUtils {
-    private static final String TAG = "BluetoothUtils";
+public class BluetoothUtil {
+    private static final String TAG = "BluetoothUtil";
 
-    public static final String DEVICE_STATUS_SIGNATURE = "sig";
-
-    public enum DeviceState {
-        NOT_CONNECTED, CONNECTING, CONNECTED
-    }
+    public static final int STATE_NOT_CONNECTED = 1;
+    public static final int STATE_CONNECTING = 2;
+    public static final int STATE_CONNECTED = 3;
 
     public static BluetoothSocket CreateRfcommSocket(BluetoothDevice device) {
         BluetoothSocket tmp = null;

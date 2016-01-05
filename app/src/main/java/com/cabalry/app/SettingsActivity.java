@@ -2,7 +2,7 @@ package com.cabalry.app;
 
 import android.os.Bundle;
 
-import static com.cabalry.util.DB.SETTINGS_URL;
+import static com.cabalry.db.DataBase.SETTINGS_URL;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 

@@ -21,7 +21,7 @@ import com.cabalry.R;
 import com.cabalry.location.LocationUpdateManager;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.ui.NavigationDrawerFragment;
-import com.cabalry.util.DB;
+import com.cabalry.db.DataBase;
 
 import static com.cabalry.util.PreferencesUtil.*;
 
@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity
 
                 // Redirect to help url
                 case 7:
-                    intent = new Intent("android.intent.action.VIEW", Uri.parse(DB.HELP_URL));
+                    intent = new Intent("android.intent.action.VIEW", Uri.parse(DataBase.HELP_URL));
                     break;
 
                 // Logout and redirect to login activity.

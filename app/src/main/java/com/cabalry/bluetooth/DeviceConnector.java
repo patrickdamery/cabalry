@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.cabalry.util.BluetoothUtils.*;
+import static com.cabalry.util.BluetoothUtil.*;
 
 /**
  * DeviceConnector
@@ -17,7 +17,7 @@ import static com.cabalry.util.BluetoothUtils.*;
 public class DeviceConnector {
     private static final String TAG = "DeviceConnector";
 
-    private DeviceState mState;
+    private int mState;
 
     private final BluetoothAdapter mBTAdapter;
     private final BluetoothListener mBTListener;
@@ -32,13 +32,13 @@ public class DeviceConnector {
 
         mDevice = device;
 
-        mState = DeviceState.NOT_CONNECTED;
+        mState = STATE_NOT_CONNECTED;
     }
 
     public synchronized void connect() {
         Log.d(TAG, "Connect to : " + mDevice);
 
-        if (mState == DeviceState.CONNECTING) {
+        if (mState == STATE_CONNECTING) {
             if (mConnectThread != null) {
                 Log.d(TAG, "cancel mConnectThread");
                 mConnectThread.cancel();
@@ -55,7 +55,7 @@ public class DeviceConnector {
         // Start the thread to connect with the given device
         mConnectThread = new ConnectThread(mDevice);
         mConnectThread.start();
-        setState(DeviceState.CONNECTING);
+        setState(STATE_CONNECTING);
     }
 
     public synchronized void stop() {
@@ -73,15 +73,15 @@ public class DeviceConnector {
             mConnectedThread = null;
         }
 
-        setState(DeviceState.NOT_CONNECTED);
+        setState(STATE_NOT_CONNECTED);
     }
 
-    private synchronized void setState(DeviceState state) {
+    private synchronized void setState(int state) {
         mState = state;
         mBTListener.onStateChange(state);
     }
 
-    public synchronized DeviceState getState() {
+    public synchronized int getState() {
         return mState;
     }
 
@@ -99,7 +99,7 @@ public class DeviceConnector {
             mConnectedThread = null;
         }
 
-        setState(DeviceState.CONNECTED);
+        setState(STATE_CONNECTED);
 
         // Callback to listener device name method
         String deviceName = (mDevice.getName() == null) ? mDevice.getAddress() : mDevice.getName();
@@ -114,7 +114,7 @@ public class DeviceConnector {
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
         synchronized (this) {
-            if (mState != DeviceState.CONNECTED) return;
+            if (mState != STATE_CONNECTED) return;
             r = mConnectedThread;
         }
 
@@ -128,13 +128,13 @@ public class DeviceConnector {
 
         // Send a failure message back to the Activity
         mBTListener.onMessageToast("Connection Failed");
-        setState(DeviceState.NOT_CONNECTED);
+        setState(STATE_NOT_CONNECTED);
     }
 
     private void connectionLost() {
         // Send a failure message back to the Activity
         mBTListener.onMessageToast("Connection Lost");
-        setState(DeviceState.NOT_CONNECTED);
+        setState(STATE_NOT_CONNECTED);
     }
 
     private class ConnectThread extends Thread {

@@ -46,14 +46,14 @@
     <!--  DeviceListActivity -->
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
-    <string name="prompt_scanning">Scanning for devices...</string>
-    <string name="prompt_none_paired">No devices have been paired</string>
-    <string name="prompt_none_found">No devices found</string>
+    <string name="msg_scanning">Scanning for devices...</string>
+    <string name="msg_none_paired">No devices have been paired</string>
+    <string name="msg_none_found">No devices found</string>
     <string name="action_select_device">Select a device to connect</string>
     <string name="action_scan">Scan for devices</string>
 
     <!--  For web views -->
-    <string name="prompt_webview_loading">Loading...</string>
+    <string name="msg_webview_loading">Loading...</string>
 
     <string name="error_no_network">Please re-connect to the internet and log in</string>
 
@@ -61,8 +61,8 @@
     <string name="action_cancel">Scan for devices</string>
 
     <!--  For bluetooth -->
-    <string name="device_state">Device Status: </string>
-    <string name="device_charge">Device Charge: </string>
+    <string name="device_state">Device Status :</string>
+    <string name="device_charge">Device Charge :</string>
 
     <string name="msg_not_connected">Not Connected</string>
     <string name="msg_connecting">Connecting …</string>
@@ -72,7 +72,8 @@
     <string name="no_bt_support">Your device doesn\'t support bluetooth.</string>
     <string name="no_device_name">No Device</string>
 
-    <string name="bt_button">Bt button</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_disconnect">Disconnect</string>
 
     <string name="select_device">Select device</string>
     <string name="search_message">Search for devices…</string>

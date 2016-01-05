@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import static com.cabalry.util.BluetoothUtil.*;
+
 /**
  * PreferencesUtil
  */
@@ -20,8 +22,7 @@ public class PreferencesUtil {
     public static final String PREF_ALARM_ID = "ALARMID";
     public static final String PREF_LATITUDE = "LAT";
     public static final String PREF_LONGITUDE = "LNG";
-
-    public static final String PREF_BUTTON1_MAC = "BTN1";
+    public static final String PREF_DEVICE_CHARGE = "DEV_CHARGE";
 
     public static final String PREF_FAKE_PASS = "FAKE";
     public static final String PREF_TIMER = "TIMER";
@@ -29,6 +30,16 @@ public class PreferencesUtil {
     public static final String PREF_SILENT = "SILENT";
     public static final String PREF_ALERT_COUNT = "ALERT_COUNT";
     public static final String PREF_ALARM_RANGE = "ALERT_RANGE";
+
+    public static int GetDeviceCharge(Context context) {
+        return GetSharedPrefs(context).getInt(PREF_DEVICE_CHARGE, 0);
+    }
+
+    public static void SetDeviceCharge(Context context, int charge) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putInt(PREF_DEVICE_CHARGE, charge);
+        editor.commit();
+    }
 
     public static int GetUserID(Context context) {
         return GetSharedPrefs(context).getInt(PREF_USER_ID, 0);
@@ -44,14 +55,6 @@ public class PreferencesUtil {
 
     public static String GetUserIP(Context context) {
         return GetSharedPrefs(context).getString(PREF_USER_IP, "");
-    }
-
-    public static String GetMacButton(String button, Context context) {
-        return GetSharedPrefs(context).getString(button, "");
-    }
-
-    public static void SetMacButton(String button, String mac, Context context) {
-        GetSharedPrefs(context).edit().putString(button, mac);
     }
 
     public static boolean IsUserLogin(Context context) {

@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.cabalry.R;
 import com.cabalry.location.LocationUpdateService;
-import com.cabalry.map.MapActivity;
 import com.cabalry.map.MapUser;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;

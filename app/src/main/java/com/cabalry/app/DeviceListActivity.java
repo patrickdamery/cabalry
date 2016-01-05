@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cabalry.bluetooth;
+package com.cabalry.app;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
