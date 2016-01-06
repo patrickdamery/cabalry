@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cabalry.R;
+import com.cabalry.bluetooth.BluetoothListener;
 import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.base.BindableActivity;
 
@@ -23,14 +25,14 @@ import static com.cabalry.util.PreferencesUtil.*;
 /**
  * DeviceControlActivity
  */
-public final class DeviceControlActivity extends BindableActivity {
+public final class DeviceControlActivity extends BindableActivity implements BluetoothListener {
     private static final String TAG = "DeviceControlActivity";
 
     // Intent request codes
     static final int REQUEST_CONNECT_DEVICE = 1;
     static final int REQUEST_ENABLE_BT = 2;
 
-    private BluetoothAdapter btAdapter;
+    private BluetoothAdapter mBTAdapter;
 
     private static final String SAVED_PENDING_REQUEST_ENABLE_BT = "PENDING_REQUEST_ENABLE_BT";
     // Do not resend request to enable Bluetooth
@@ -50,31 +52,14 @@ public final class DeviceControlActivity extends BindableActivity {
             switch (msg.what) {
                 case MSG_DEVICE_STATE:
                     int state = data.getInt("state");
-                    switch (state) {
-                        case STATE_NOT_CONNECTED:
-                            mDeviceChargeText.setText(" - %");
-                            mDeviceStateText.setText(getString(R.string.msg_not_connected));
-                            break;
-
-                        case STATE_CONNECTING:
-                            mDeviceChargeText.setText(" - %");
-                            mDeviceStateText.setText(getString(R.string.msg_connecting));
-                            break;
-
-                        case STATE_CONNECTED:
-                            int charge = GetDeviceCharge(getApplicationContext());
-                            mDeviceChargeText.setText(" " + charge + "%");
-                            mDeviceStateText.setText(getString(R.string.msg_connected));
-                            break;
-                    }
+                    onStateChange(state);
                     break;
 
                 case MSG_DEVICE_STATUS:
-                    //String sig = (String) data.get("sig");
-                    //String status = (String) data.get("status");
-                    int charge = (int) data.get("charge");
-
-                    mDeviceChargeText.setText(" " + charge + "%");
+                    String sig = (String) data.get("sig");
+                    String status = (String) data.get("status");
+                    String charge = (String) data.get("charge");
+                    onStatusUpdate(sig, status, charge);
                     break;
 
                 default:
@@ -88,15 +73,16 @@ public final class DeviceControlActivity extends BindableActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setHomeButtonEnabled(false);
 
-        if (!BluetoothService.isRunning())
+        if (!BluetoothService.isRunning()) {
             startService(new Intent(this, BluetoothService.class));
+        }
 
         if (savedInstanceState != null) {
             pendingRequestEnableBt = savedInstanceState.getBoolean(SAVED_PENDING_REQUEST_ENABLE_BT);
         }
 
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (btAdapter == null) {
+        mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBTAdapter == null) {
             final String no_bluetooth = getString(R.string.no_bt_support);
             showAlertDialog(no_bluetooth);
             Log.e(TAG, no_bluetooth);
@@ -115,8 +101,8 @@ public final class DeviceControlActivity extends BindableActivity {
         bindToService(BluetoothService.class, new MessengerHandler(),
                 MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
 
-        if (btAdapter != null) {
-            if (!btAdapter.isEnabled() && !pendingRequestEnableBt) {
+        if (mBTAdapter != null) {
+            if (!mBTAdapter.isEnabled() && !pendingRequestEnableBt) {
                 pendingRequestEnableBt = true;
                 Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
@@ -153,16 +139,48 @@ public final class DeviceControlActivity extends BindableActivity {
         if (state != null) {
             mDeviceStateText.setText(state.getString("deviceState"));
             mDeviceChargeText.setText(state.getString("deviceCharge"));
-        } else {
-            if (BluetoothService.isConnected()) {
+        }
+
+        onStateChange(BluetoothService.getState());
+    }
+
+    @Override
+    public void onStateChange(int state) {
+        switch (state) {
+            case STATE_NOT_CONNECTED:
+                mDeviceChargeText.setText(" - %");
+                mDeviceStateText.setText(getString(R.string.msg_not_connected));
+                break;
+
+            case STATE_CONNECTING:
+                mDeviceChargeText.setText(" - %");
+                mDeviceStateText.setText(getString(R.string.msg_connecting));
+                break;
+
+            case STATE_CONNECTED:
                 int charge = GetDeviceCharge(getApplicationContext());
                 mDeviceChargeText.setText(" " + charge + "%");
                 mDeviceStateText.setText(getString(R.string.msg_connected));
-            } else {
+                break;
+
+            case STATE_CONNECTION_FAILED:
                 mDeviceChargeText.setText(" - %");
                 mDeviceStateText.setText(getString(R.string.msg_not_connected));
-            }
+                break;
         }
+    }
+
+    @Override
+    public void onStatusUpdate(String sig, String status, String charge) {
+        mDeviceChargeText.setText(" " + charge + "%");
+    }
+
+    @Override
+    public void onDeviceName(String deviceName) {
+    }
+
+    @Override
+    public void onMessageToast(String msg) {
     }
 
     @Override
@@ -176,7 +194,7 @@ public final class DeviceControlActivity extends BindableActivity {
     }
 
     boolean isAdapterReady() {
-        return (btAdapter != null) && (btAdapter.isEnabled());
+        return (mBTAdapter != null) && (mBTAdapter.isEnabled());
     }
 
     void showAlertDialog(String message) {
@@ -207,9 +225,11 @@ public final class DeviceControlActivity extends BindableActivity {
                 // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
                     String address = data.getStringExtra(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-                    BluetoothDevice device = btAdapter.getRemoteDevice(address);
-                    if (isAdapterReady())
+                    BluetoothDevice device = mBTAdapter.getRemoteDevice(address);
+                    if (isAdapterReady()) {
+                        SetCachedAddress(getApplicationContext(), address);
                         BluetoothService.setupConnector(device);
+                    }
                 }
                 break;
             case REQUEST_ENABLE_BT:
@@ -224,8 +244,7 @@ public final class DeviceControlActivity extends BindableActivity {
 
     public void deviceConnectCallback(View view) {
         if (isAdapterReady()) {
-            if (BluetoothService.isConnected())
-                BluetoothService.stopConnection();
+            sendMessageToService(MSG_BLUETOOTH_CONNECT, null);
             startDeviceListActivity();
         } else {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -234,7 +253,9 @@ public final class DeviceControlActivity extends BindableActivity {
     }
 
     public void deviceDisconnectCallback(View view) {
+        SetCachedAddress(getApplicationContext(), null);
         if (BluetoothService.isConnected())
             BluetoothService.stopConnection();
+        BluetoothService.clearCachedAddress();
     }
 }

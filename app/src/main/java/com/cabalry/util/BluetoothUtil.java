@@ -16,6 +16,8 @@ public class BluetoothUtil {
     public static final int STATE_NOT_CONNECTED = 1;
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;
+    public static final int STATE_DISCONNECTED = 4;
+    public static final int STATE_CONNECTION_FAILED = 5;
 
     public static BluetoothSocket CreateRfcommSocket(BluetoothDevice device) {
         BluetoothSocket tmp = null;

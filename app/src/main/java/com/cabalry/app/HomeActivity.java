@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.cabalry.R;
+import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.location.LocationUpdateManager;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.ui.NavigationDrawerFragment;
@@ -46,6 +47,10 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mStart = true;
+
+        if (!BluetoothService.isRunning()) {
+            startService(new Intent(this, BluetoothService.class));
+        }
 
         if (mLocationUpdateIntent == null) {
             // Start location update service.

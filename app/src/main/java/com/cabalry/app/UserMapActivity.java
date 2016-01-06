@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 
 import com.cabalry.R;
+import com.cabalry.base.MapActivity;
 import com.cabalry.map.MapUser;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;

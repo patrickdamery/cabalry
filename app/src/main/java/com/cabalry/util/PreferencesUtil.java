@@ -23,6 +23,7 @@ public class PreferencesUtil {
     public static final String PREF_LATITUDE = "LAT";
     public static final String PREF_LONGITUDE = "LNG";
     public static final String PREF_DEVICE_CHARGE = "DEV_CHARGE";
+    public static final String PREF_CACHED_ADDRESS = "CACHED_ADDRESS";
 
     public static final String PREF_FAKE_PASS = "FAKE";
     public static final String PREF_TIMER = "TIMER";
@@ -38,6 +39,16 @@ public class PreferencesUtil {
     public static void SetDeviceCharge(Context context, int charge) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putInt(PREF_DEVICE_CHARGE, charge);
+        editor.commit();
+    }
+
+    public static String GetCachedAddress(Context context) {
+        return GetSharedPrefs(context).getString(PREF_CACHED_ADDRESS, null);
+    }
+
+    public static void SetCachedAddress(Context context, String address) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putString(PREF_CACHED_ADDRESS, address);
         editor.commit();
     }
 

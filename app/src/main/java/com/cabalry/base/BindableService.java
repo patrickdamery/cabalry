@@ -27,7 +27,7 @@ public abstract class BindableService extends Service {
     // Target we publish for clients to send messages to IncomingHandler.
     private Messenger mMessenger;
 
-    public class BaseMessengerHandler extends Handler {
+    public static class BaseMessengerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

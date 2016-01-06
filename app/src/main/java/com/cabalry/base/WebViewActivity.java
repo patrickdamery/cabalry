@@ -1,4 +1,4 @@
-package com.cabalry.app;
+package com.cabalry.base;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +20,8 @@ import android.widget.Toast;
 import static android.content.DialogInterface.*;
 
 import com.cabalry.R;
+import com.cabalry.app.HomeActivity;
+import com.cabalry.app.LoginActivity;
 import com.cabalry.util.TasksUtil.*;
 
 /**

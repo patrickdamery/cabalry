@@ -46,17 +46,18 @@ public abstract class BindableActivity extends AppCompatActivity {
     };
 
     protected void bindToService(Class serviceClass, Handler messengerHandler, int registerMsg, int unregisterMsg) {
-        Log.d(TAG, "Binding ..");
+        Log.i(TAG, "Binding ..");
         mMessenger = new Messenger(messengerHandler);
         mRegisterClientMsg = registerMsg;
         mUnregisterClientMsg = unregisterMsg;
 
         bindService(new Intent(this, serviceClass), mConnection, Context.BIND_AUTO_CREATE);
         mIsBound = true;
+        Log.i(TAG, "Bounded");
     }
 
     protected void unbindFromService() {
-        Log.d(TAG, "Unbinding ..");
+        Log.i(TAG, "Unbinding ..");
         if (mIsBound) {
             // If we have received the service, and hence registered with it, then now is the time to unregister.
             if (mService != null) {
@@ -71,6 +72,7 @@ public abstract class BindableActivity extends AppCompatActivity {
             // Detach our existing connection.
             unbindService(mConnection);
             mIsBound = false;
+            Log.i(TAG, "Unbounded");
         }
     }
 

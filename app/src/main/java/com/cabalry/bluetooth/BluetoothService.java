@@ -3,6 +3,7 @@ package com.cabalry.bluetooth;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.util.Log;
 import com.cabalry.R;
 import com.cabalry.app.DeviceControlActivity;
 import com.cabalry.base.BindableService;
+import com.cabalry.util.MovingAverage;
 
 import static com.cabalry.util.BluetoothUtil.*;
 import static com.cabalry.util.MessageUtil.*;
@@ -25,22 +27,94 @@ import static com.cabalry.util.PreferencesUtil.*;
 public class BluetoothService extends BindableService {
     private static final String TAG = "BluetoothService";
 
-    private static int mPrevChargeStatus;
+    private static final int LOW_BATTERY_THRESHOLD = 5; // Considering every percentile is an hour
+    private static final int RECONNECT_MAX_TRIES = 2;
+    private static final int CHARGE_SAMPLE_SIZE = 3;
 
     private static NotificationManager mNotificationManager;
     private static DeviceConnector mConnector;
-    private static ServiceBluetoothListener mListener;
+    private static ServiceBluetoothListener mBTListener;
+    private static String mCachedDeviceAddress = null;
+    private static int mReconnectCount = 0;
+    private static boolean mDeviceDisconnected = false;
+
+    private static DeviceListener mDeviceListener = new DeviceListener() {
+        @Override
+        public void onDeviceButtonPressed(Context context) {
+            // TODO handle alarm
+        }
+
+        @Override
+        public void onDeviceLowBattery(Context context) {
+            Intent intent = new Intent(context, DeviceControlActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
+
+            Notification n = new Notification.Builder(context)
+                    .setContentTitle("Low Battery!")
+                    .setContentText("Please charge your device")
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(true).build();
+
+            mNotificationManager.notify(0, n);
+        }
+
+        @Override
+        public void onDeviceDisconnected(Context context) {
+            if (mReconnectCount < RECONNECT_MAX_TRIES) {
+                attemptReconnect(mCachedDeviceAddress);
+            }
+
+            Intent intent = new Intent(context, DeviceControlActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
+
+            Notification n = new Notification.Builder(context)
+                    .setContentTitle("Device Disconnected!")
+                    .setContentText("Please reconnect your device")
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(true).build();
+
+            mNotificationManager.notify(0, n);
+        }
+    };
 
     private static class ServiceBluetoothListener implements BluetoothListener {
 
         private final Context mContext;
+        private int mPrevChargeSample;
+        private MovingAverage mMovingAverage;
 
         public ServiceBluetoothListener(Context context) {
             mContext = context;
+            mMovingAverage = new MovingAverage(CHARGE_SAMPLE_SIZE);
+
+            int cachedCharge = GetDeviceCharge(context);
+            if (cachedCharge != 0) {
+                handleDeviceCharge(cachedCharge);
+            }
         }
 
         @Override
         public void onStateChange(int state) {
+            switch (state) {
+                case STATE_CONNECTED:
+                    mDeviceDisconnected = false;
+                    mReconnectCount = 0;
+                    break;
+
+                case STATE_DISCONNECTED:
+                    Log.i(TAG, "Device disconnected");
+                    mDeviceDisconnected = true;
+                    mDeviceListener.onDeviceDisconnected(mContext);
+                    break;
+
+                case STATE_CONNECTION_FAILED:
+                    if (mDeviceDisconnected)
+                        mDeviceListener.onDeviceDisconnected(mContext);
+                    break;
+            }
+
             Bundle data = new Bundle();
             data.putInt("state", state);
 
@@ -49,22 +123,35 @@ public class BluetoothService extends BindableService {
 
         @Override
         public void onStatusUpdate(String sig, String status, String charge) {
-            int chargeVal = Integer.parseInt(charge);
-            if (mPrevChargeStatus - chargeVal < 10)
-                mPrevChargeStatus = chargeVal;
+            mPrevChargeSample = handleDeviceCharge(Integer.parseInt(charge));
+            if (mPrevChargeSample <= LOW_BATTERY_THRESHOLD) {
+                Log.i(TAG, "Button low battery");
+                mDeviceListener.onDeviceLowBattery(mContext);
+            }
 
             if (status.equals("A")) {
-                Log.i(TAG, "Alarm");
-                alertAlarm(mContext);
+                Log.i(TAG, "Button pressed");
+                mDeviceListener.onDeviceButtonPressed(mContext);
             }
 
             Bundle data = new Bundle();
             data.putString("sig", sig);
             data.putString("status", status);
-            data.putInt("charge", mPrevChargeStatus);
+            data.putString("charge", mPrevChargeSample + "");
 
-            SetDeviceCharge(mContext, mPrevChargeStatus);
+            SetDeviceCharge(mContext, mPrevChargeSample);
             sendMessageToActivity(MSG_DEVICE_STATUS, data);
+        }
+
+        private int handleDeviceCharge(int charge) {
+            int chargeAverage = charge;
+
+            if (chargeAverage - mPrevChargeSample < -20) {
+                chargeAverage = mPrevChargeSample;
+            }
+
+            mMovingAverage.addSample(chargeAverage);
+            return mMovingAverage.getCurrentAverage();
         }
 
         @Override
@@ -77,42 +164,31 @@ public class BluetoothService extends BindableService {
     }
 
     // Handler of incoming messages from clients.
-    class MessengerHandler extends BaseMessengerHandler {
+    public static class MessengerHandler extends BaseMessengerHandler {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case MSG_BLUETOOTH_CONNECT:
+                    mDeviceDisconnected = false;
+                    mReconnectCount = 0;
+                    break;
+
                 default:
                     super.handleMessage(msg);
             }
         }
     }
 
-    private static void alertAlarm(Context context) {
-        Intent intent = new Intent(context, DeviceControlActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
-
-        Notification n = new Notification.Builder(context)
-                .setContentTitle("Alert")
-                .setContentText("Panic button pressed")
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentIntent(pIntent)
-                .setAutoCancel(true).build();
-
-        mNotificationManager.notify(0, n);
-    }
-
-    private void alertLowBattery() {
-
-    }
-
-    private void alertDeviceDisconnected() {
-
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mListener = new ServiceBluetoothListener(getApplicationContext());
+        mBTListener = new ServiceBluetoothListener(getApplicationContext());
+
+        String cachedAddress = GetCachedAddress(getApplicationContext());
+        if (cachedAddress != null) {
+            mDeviceDisconnected = true;
+            attemptReconnect(cachedAddress);
+        }
 
         // If we get killed, after returning from here, stop
         return START_NOT_STICKY;
@@ -126,15 +202,32 @@ public class BluetoothService extends BindableService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         stopConnection();
+    }
+
+    private static void attemptReconnect(String address) {
+        mReconnectCount++;
+        if (address != null) {
+            BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
+            setupConnector(device);
+        }
+    }
+
+    public static void clearCachedAddress() {
+        mCachedDeviceAddress = null;
     }
 
     public synchronized static boolean isConnected() {
         return (mConnector != null) && (mConnector.getState() == STATE_CONNECTED);
     }
 
+    public synchronized static int getState() {
+        return mConnector == null ? STATE_NOT_CONNECTED : mConnector.getState();
+    }
+
     public synchronized static void stopConnection() {
+        mReconnectCount = 0;
+
         if (mConnector != null) {
             mConnector.stop();
             mConnector = null;
@@ -143,13 +236,18 @@ public class BluetoothService extends BindableService {
 
     public synchronized static void setupConnector(BluetoothDevice connectedDevice) {
         Log.i(TAG, "Setting up connector");
-        stopConnection();
-        try {
-            mConnector = new DeviceConnector(connectedDevice, mListener);
-            mConnector.connect();
+        if (!isConnected() || !mCachedDeviceAddress.equals(connectedDevice.getAddress())) {
+            if (isConnected())
+                stopConnection();
+            try {
+                mConnector = new DeviceConnector(connectedDevice, mBTListener);
+                mConnector.connect();
 
-        } catch (IllegalArgumentException e) {
-            Log.i(TAG, "setupConnector failed: " + e.getMessage());
+                mCachedDeviceAddress = connectedDevice.getAddress();
+
+            } catch (IllegalArgumentException e) {
+                Log.i(TAG, "setupConnector failed: " + e.getMessage());
+            }
         }
     }
 }
