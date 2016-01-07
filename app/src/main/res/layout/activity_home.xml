@@ -36,6 +36,7 @@
                     android:layout_marginLeft="40dp"
                     android:background="@drawable/toggle"
                     android:textSize="0dp" />
+
             <Button
                 android:id="@+id/bAlarm"
                 android:layout_width="74dp"
@@ -47,6 +48,7 @@
                 android:textSize="0dp" />
 
         </RelativeLayout>
+
     </FrameLayout>
 
     <!-- As the main content view, the view below consumes the entire

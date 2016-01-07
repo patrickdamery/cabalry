@@ -1,12 +1,12 @@
 package com.cabalry.base;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.webkit.JsPromptResult;
@@ -22,23 +22,25 @@ import static android.content.DialogInterface.*;
 import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.app.LoginActivity;
+import com.cabalry.ui.LoadingDialogFragment;
 import com.cabalry.util.TasksUtil.*;
 
 /**
  * WebViewActivity
  */
-public abstract class WebViewActivity extends Activity {
+public abstract class WebViewActivity extends FragmentActivity {
 
     // Web view components.
     private WebView mWebView;
     private WebSettings mSettings;
-    private ProgressDialog progressDialog;
+    private LoadingDialogFragment mLoadingDialog;
     private CheckNetworkTask mCheckNetworkTask;
 
     /**
      * Initializes activity components.
      */
     @Override
+    @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
@@ -50,9 +52,8 @@ public abstract class WebViewActivity extends Activity {
         }
 
         // Progress Dialog to show while web view is loading.
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getResources().getString(R.string.msg_webview_loading));
-        progressDialog.show();
+        mLoadingDialog = new LoadingDialogFragment();
+        mLoadingDialog.show(getSupportFragmentManager(), "");
 
         // Setup web view.
         mWebView = (WebView) findViewById(R.id.web_cabalry);
@@ -63,7 +64,7 @@ public abstract class WebViewActivity extends Activity {
         mWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 // Once the page has finished loading dismiss progress dialog.
-                progressDialog.dismiss();
+                mLoadingDialog.dismiss();
             }
 
             @Override
@@ -94,7 +95,6 @@ public abstract class WebViewActivity extends Activity {
 
                 builder.setView(editText);
                 builder.setPositiveButton(getString(R.string.action_enter), new OnClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         result.confirm(editText.getText().toString());
@@ -102,7 +102,6 @@ public abstract class WebViewActivity extends Activity {
                 });
 
                 builder.setNegativeButton(getString(R.string.action_cancel), new OnClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         result.cancel();
@@ -110,7 +109,6 @@ public abstract class WebViewActivity extends Activity {
                 });
 
                 builder.setOnCancelListener(new OnCancelListener() {
-
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         result.cancel();
@@ -140,7 +138,7 @@ public abstract class WebViewActivity extends Activity {
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }
 
-    private final CheckNetworkTask getCheckNetworkTask() {
+    private CheckNetworkTask getCheckNetworkTask() {
         return new CheckNetworkTask(this) {
             @Override
             protected void onPostExecute(Boolean result) {
@@ -164,9 +162,5 @@ public abstract class WebViewActivity extends Activity {
 
     protected WebSettings getSettings() {
         return mSettings;
-    }
-
-    protected ProgressDialog getProgressDialog() {
-        return progressDialog;
     }
 }

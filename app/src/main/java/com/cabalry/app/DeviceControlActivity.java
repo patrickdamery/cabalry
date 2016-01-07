@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,36 +41,9 @@ public final class DeviceControlActivity extends BindableActivity implements Blu
 
     private TextView mDeviceStateText, mDeviceChargeText;
 
-    private class MessengerHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle data = msg.getData();
-            if (data == null)
-                throw new NullPointerException("data is null");
-
-            switch (msg.what) {
-                case MSG_DEVICE_STATE:
-                    int state = data.getInt("state");
-                    onStateChange(state);
-                    break;
-
-                case MSG_DEVICE_STATUS:
-                    String sig = (String) data.get("sig");
-                    String status = (String) data.get("status");
-                    String charge = (String) data.get("charge");
-                    onStatusUpdate(sig, status, charge);
-                    break;
-
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setHomeButtonEnabled(false);
 
         if (!BluetoothService.isRunning()) {
             startService(new Intent(this, BluetoothService.class));
@@ -98,7 +70,7 @@ public final class DeviceControlActivity extends BindableActivity implements Blu
     @Override
     public void onStart() {
         super.onStart();
-        bindToService(BluetoothService.class, new MessengerHandler(),
+        bindToService(BluetoothService.class, new MessengerHandler(this),
                 MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
 
         if (mBTAdapter != null) {
@@ -108,16 +80,6 @@ public final class DeviceControlActivity extends BindableActivity implements Blu
                 startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
             }
         }
-    }
-
-    @Override
-    public synchronized void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public synchronized void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -189,25 +151,8 @@ public final class DeviceControlActivity extends BindableActivity implements Blu
         try {
             unbindFromService();
         } catch (Throwable t) {
-            Log.e("MainActivity", "Failed to unbind from the service", t);
+            Log.e(TAG, "Failed to unbind from the service", t);
         }
-    }
-
-    boolean isAdapterReady() {
-        return (mBTAdapter != null) && (mBTAdapter.isEnabled());
-    }
-
-    void showAlertDialog(String message) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(getString(R.string.title_app_name));
-        alertDialogBuilder.setMessage(message);
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void startDeviceListActivity() {
-        Intent serverIntent = new Intent(this, DeviceListActivity.class);
-        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
     }
 
     @Override
@@ -242,6 +187,23 @@ public final class DeviceControlActivity extends BindableActivity implements Blu
         }
     }
 
+    boolean isAdapterReady() {
+        return (mBTAdapter != null) && (mBTAdapter.isEnabled());
+    }
+
+    void showAlertDialog(String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getString(R.string.title_app_name));
+        alertDialogBuilder.setMessage(message);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void startDeviceListActivity() {
+        Intent serverIntent = new Intent(this, DeviceListActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+    }
+
     public void deviceConnectCallback(View view) {
         if (isAdapterReady()) {
             sendMessageToService(MSG_BLUETOOTH_CONNECT, null);
@@ -257,5 +219,41 @@ public final class DeviceControlActivity extends BindableActivity implements Blu
         if (BluetoothService.isConnected())
             BluetoothService.stopConnection();
         BluetoothService.clearCachedAddress();
+    }
+
+    /**
+     * MessengerHandler
+     */
+    private static class MessengerHandler extends Handler {
+
+        final BluetoothListener mBTListener;
+
+        public MessengerHandler(BluetoothListener btListener) {
+            mBTListener = btListener;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data == null)
+                throw new NullPointerException("data is null");
+
+            switch (msg.what) {
+                case MSG_DEVICE_STATE:
+                    int state = data.getInt("state");
+                    mBTListener.onStateChange(state);
+                    break;
+
+                case MSG_DEVICE_STATUS:
+                    String sig = (String) data.get("sig");
+                    String status = (String) data.get("status");
+                    String charge = (String) data.get("charge");
+                    mBTListener.onStatusUpdate(sig, status, charge);
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 }

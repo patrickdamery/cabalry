@@ -1,6 +1,5 @@
 package com.cabalry.base;
 
-import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +7,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -16,10 +16,8 @@ import static com.cabalry.util.MessageUtil.*;
 /**
  * BindableService
  */
-public abstract class BindableService extends Service {
+public abstract class BindableService extends RunnableService {
     private static final String TAG = "BluetoothService";
-
-    private static boolean isRunning = false;
 
     // Keeps track of all current registered clients
     private static ArrayList<Messenger> mClients = new ArrayList<>();
@@ -45,19 +43,8 @@ public abstract class BindableService extends Service {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        isRunning = true;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isRunning = false;
-    }
-
-    @Override
     public IBinder onBind(Intent intent) {
+        Log.d(TAG, "onBind");
         if (mMessenger == null) {
             Handler messengerHandler = getMessengerHandler();
             if (messengerHandler == null)
@@ -84,9 +71,5 @@ public abstract class BindableService extends Service {
                 mClients.remove(i);
             }
         }
-    }
-
-    public static boolean isRunning() {
-        return isRunning;
     }
 }

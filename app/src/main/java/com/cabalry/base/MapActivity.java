@@ -11,6 +11,7 @@ import com.cabalry.app.HomeActivity;
 import com.cabalry.location.LocationUpdateListener;
 import com.cabalry.location.LocationUpdateManager;
 import com.cabalry.map.MapUser;
+import com.cabalry.ui.LoadingDialogFragment;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -23,8 +24,9 @@ import java.util.Vector;
 public abstract class MapActivity extends FragmentActivity implements OnMapReadyCallback, LocationUpdateListener {
 
     public static final int MAP_PADDING = 128;
-    public static final int CAM_MIN_ZOOM = 17;
-    public static final int CAM_MAX_ZOOM = 15;
+
+    private SupportMapFragment mMapFragment;
+    private LoadingDialogFragment mLoadingDialog;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -38,7 +40,9 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         LocationUpdateManager.Instance(this).addUpdateListener(this);
 
         // This is to call the onMapReady callback
-        mapFragment.getMapAsync(this);
+        mMapFragment = mapFragment;
+        mMapFragment.getMapAsync(this);
+        
     }
 
     @Override
@@ -46,6 +50,10 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationUpdateManager.Instance(this).resetProvider(manager);
+
+        // Progress Dialog to show while web view is loading.
+        mLoadingDialog = new LoadingDialogFragment();
+        mLoadingDialog.show(getSupportFragmentManager(), "");
     }
 
     @Override
@@ -223,6 +231,11 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
 
         @Override
         public void onFinish() {
+            if (mLoadingDialog != null) {
+                mMapFragment.setUserVisibleHint(true);
+                mLoadingDialog.dismiss();
+                mLoadingDialog = null;
+            }
         }
 
         @Override

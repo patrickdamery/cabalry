@@ -27,7 +27,7 @@ import static com.cabalry.util.PreferencesUtil.*;
 public class BluetoothService extends BindableService {
     private static final String TAG = "BluetoothService";
 
-    private static final int LOW_BATTERY_THRESHOLD = 5; // Considering every percentile is an hour
+    private static final int LOW_BATTERY_THRESHOLD = 5; // 1 = 1 hour
     private static final int RECONNECT_MAX_TRIES = 2;
     private static final int CHARGE_SAMPLE_SIZE = 3;
 
@@ -38,10 +38,22 @@ public class BluetoothService extends BindableService {
     private static int mReconnectCount = 0;
     private static boolean mDeviceDisconnected = false;
 
-    private static DeviceListener mDeviceListener = new DeviceListener() {
+    private static final DeviceListener mDeviceListener = new DeviceListener() {
         @Override
         public void onDeviceButtonPressed(Context context) {
             // TODO handle alarm
+
+            Intent intent = new Intent(context, DeviceControlActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
+
+            Notification n = new Notification.Builder(context)
+                    .setContentTitle("Alarm activated!")
+                    .setContentText("Button pressed")
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(true).build();
+
+            mNotificationManager.notify(0, n);
         }
 
         @Override
