@@ -6,13 +6,11 @@ Features:
     - Add timer feature
     - Add silent feature
     - Add fake deactivation
-    - Handle button interrupts gracefully
     - Handle case of no available servers for alarm, keep trying
 
 Optimizations:
     - Login visual glitch when screen is rotated
     - Improve location accuracy
-    - Set layout and buttons (Polish)
 
 In Progress:
     - Add audio stream (Added, not checked)
@@ -20,6 +18,7 @@ In Progress:
     - Add GCM support (Added, not checked)
 
 Completed:
+    - Handle button interrupts gracefully
     - Add interface for bluetooth
     - Set back action on activities
     - Change theme

@@ -12,7 +12,7 @@ public class MapUser {
     private final String mCar;
     private final String mColor;
 
-    public enum UserType {USER, NEARBY, ALARM}
+    public enum UserType {USER, NEARBY, ALERT, ALERTED}
 
     private UserType mType;
     private double mLat;
@@ -43,14 +43,6 @@ public class MapUser {
         return new LatLng(mLat, mLng);
     }
 
-    public double getLat() {
-        return mLat;
-    }
-
-    public double getLng() {
-        return mLng;
-    }
-
     public int getID() {
         return mID;
     }
@@ -65,5 +57,9 @@ public class MapUser {
 
     public String getColor() {
         return mColor;
+    }
+
+    public UserType getType() {
+        return mType;
     }
 }

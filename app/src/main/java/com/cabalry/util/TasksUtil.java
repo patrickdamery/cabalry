@@ -38,19 +38,14 @@ public class TasksUtil {
         private String failState;
 
         public void setCollectInfo(int id, String key) {
-            mID = id;
-            mKey = key;
-            mType = UserRequestType.NEARBY;
+            setCollectInfo(id, key, UserRequestType.NEARBY);
         }
 
         public void setCollectInfo(int id, String key, int alarmID) {
-            mID = id;
-            mKey = key;
+            setCollectInfo(id, key, UserRequestType.ALARM);
             mAlarmID = alarmID;
-            mType = UserRequestType.ALARM;
         }
 
-        @SuppressWarnings("unused")
         public void setCollectInfo(int id, String key, UserRequestType type) {
             mID = id;
             mKey = key;
@@ -101,8 +96,13 @@ public class TasksUtil {
                             double lat = location.getDouble(REQ_LATITUDE);
                             double lng = location.getDouble(REQ_LONGITUDE);
 
+                            MapUser.UserType type = MapUser.UserType.NEARBY;
+                            if (mType == UserRequestType.ALARM) {
+                                type = MapUser.UserType.ALERTED;
+                            }
+
                             // Add location to list
-                            users.add(new MapUser(id, name, car, color, lat, lng, null));
+                            users.add(new MapUser(id, name, car, color, lat, lng, type));
                         }
                     } else {
                         failState = result.getString(REQ_FAIL_STATE);

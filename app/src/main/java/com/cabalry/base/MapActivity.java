@@ -2,16 +2,20 @@ package com.cabalry.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.location.LocationUpdateListener;
 import com.cabalry.location.LocationUpdateManager;
 import com.cabalry.map.MapUser;
-import com.cabalry.ui.LoadingDialogFragment;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -27,7 +31,6 @@ public abstract class MapActivity extends FragmentActivity
     public static final int MAP_PADDING = 128;
 
     private SupportMapFragment mMapFragment;
-    private LoadingDialogFragment mLoadingDialog;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -50,10 +53,6 @@ public abstract class MapActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationUpdateManager.Instance(this).resetProvider(manager);
-
-        // Progress Dialog to show while web view is loading.
-        mLoadingDialog = new LoadingDialogFragment();
-        mLoadingDialog.show(getSupportFragmentManager(), "");
     }
 
     @Override
@@ -98,7 +97,9 @@ public abstract class MapActivity extends FragmentActivity
 
         return mMap.addMarker(new MarkerOptions()
                 .position(position)
-                .title(title));
+                        .title(title)
+                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(user.getType())))
+        );
     }
 
     @Override
@@ -114,7 +115,9 @@ public abstract class MapActivity extends FragmentActivity
 
     public void update(final MapUser oldUsr, final MapUser newUsr) {
         oldUsr.updatePosition(newUsr.getPosition());
-        mMarkerMap.get(oldUsr.getID()).setPosition(newUsr.getPosition());
+        Marker marker = mMarkerMap.get(oldUsr.getID());
+        marker.setPosition(newUsr.getPosition());
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(newUsr.getType())));
     }
 
     public void update(final MapUser oldUsr, final LatLng position) {
@@ -124,6 +127,32 @@ public abstract class MapActivity extends FragmentActivity
 
     public void remove(final MapUser user) {
         mMarkerMap.remove(user.getID()).remove();
+    }
+
+    private Bitmap getMarkerIcon(MapUser.UserType type) {
+        //int icon = 0;
+        //icon = R.drawable.m_user;
+
+        String iconName = null;
+        switch (type) {
+            case USER:
+                iconName = "m_user";
+                break;
+            case NEARBY:
+                iconName = "m_nearby";
+                break;
+            case ALERT:
+                iconName = "m_alert";
+                break;
+            case ALERTED:
+                iconName = "m_alerted";
+                break;
+        }
+
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(iconName, "drawable", getPackageName()));
+        icon = Bitmap.createScaledBitmap(icon, (int) (icon.getWidth() * 1.5), (int) (icon.getHeight() * 1.5), false);
+
+        return icon;
     }
 
     public void setCameraFocus(LatLng target, float zoom, float bearing, int transTime) {
@@ -231,11 +260,6 @@ public abstract class MapActivity extends FragmentActivity
 
         @Override
         public void onFinish() {
-            if (mLoadingDialog != null) {
-                mMapFragment.setUserVisibleHint(true);
-                mLoadingDialog.dismiss();
-                mLoadingDialog = null;
-            }
         }
 
         @Override

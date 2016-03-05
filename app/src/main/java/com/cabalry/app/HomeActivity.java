@@ -1,87 +1,116 @@
 package com.cabalry.app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.cabalry.R;
 import com.cabalry.bluetooth.BluetoothService;
-import com.cabalry.location.LocationUpdateManager;
-import com.cabalry.location.LocationUpdateService;
-import com.cabalry.ui.NavigationDrawerFragment;
 import com.cabalry.db.DataBase;
+import com.cabalry.util.PreferencesUtil;
 
 import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * HomeActivity
  */
-public class HomeActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
 
-    private static Intent mLocationUpdateIntent;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    private boolean mStart = true;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    private String[] mActivityTitles;
+    private int[] mActivityIcons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mStart = true;
 
         if (!BluetoothService.isRunning()) {
             startService(new Intent(this, BluetoothService.class));
         }
 
-        if (mLocationUpdateIntent == null) {
-            // Start location update service.
-            mLocationUpdateIntent = new Intent(getApplicationContext(), LocationUpdateService.class);
-            startService(mLocationUpdateIntent);
-        } else {
-            LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            LocationUpdateManager.Instance(this).resetProvider(manager);
+        mTitle = mDrawerTitle = getTitle();
+        mActivityTitles = getResources().getStringArray(R.array.nav_drawer_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        // Set a custom shadow that overlays the main content when the drawer opens
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mActivityTitles) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                Context context = getApplicationContext();
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+
+                ImageView item_icon = (ImageView) convertView.findViewById(R.id.item_icon);
+                TextView item_text = (TextView) convertView.findViewById(R.id.item_text);
+
+                item_icon.setImageResource(R.drawable.ic_drawer);
+                item_text.setText(mActivityTitles[position]);
+                return convertView;
+            }
+        });
+
+        // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
+
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the sliding drawer and the action bar app icon
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description for accessibility */
+                R.string.drawer_close  /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+                getSupportActionBar().setTitle(mTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        // Open drawer for the first use of app
+        if (!PreferencesUtil.IsDrawerLearned(this)) {
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+            PreferencesUtil.SetDrawerLearned(this, true);
         }
-
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        final String[] navDrawerStrings = new String[]
-                {
-                        getString(R.string.title_nav_profile),
-                        getString(R.string.title_nav_map),
-                        getString(R.string.title_nav_devices),
-                        getString(R.string.title_nav_recordings),
-                        getString(R.string.title_nav_billing),
-                        getString(R.string.title_nav_settings),
-                        getString(R.string.title_nav_help),
-                        getString(R.string.title_nav_logout)
-                };
-
-        mNavigationDrawerFragment.setNavDrawerStrings(navDrawerStrings);
-
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     @Override
@@ -90,119 +119,113 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // Update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT))
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                else
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
-    public void onSectionAttached(int number) {
-        if (!mStart) {
-            Log.d(TAG, "onSectionAttached(): " + number);
-            Intent intent = null;
-            switch (number) {
-
-                // Launch respective activity
-                case 1:
-                    intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    break;
-                case 2:
-                    intent = new Intent(getApplicationContext(), UserMapActivity.class);
-                    break;
-                case 3:
-                    intent = new Intent(getApplicationContext(), DeviceControlActivity.class);
-                    break;
-                case 4:
-                    intent = new Intent(getApplicationContext(), RecordingsActivity.class);
-                    break;
-                case 5:
-                    intent = new Intent(getApplicationContext(), BillingActivity.class);
-                    break;
-                case 6:
-                    intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                    break;
-
-                // Redirect to help url
-                case 7:
-                    intent = new Intent("android.intent.action.VIEW", Uri.parse(DataBase.HELP_URL));
-                    break;
-
-                // Logout and redirect to login activity.
-                case 8:
-                    LogoutUser(this);
-                    intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    break;
-            }
-
-            if (intent != null) {
-                startActivity(intent);
-                finish();
-            }
-        } else mStart = false;
-    }
-
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-
-            // TODO look into this
-            //getMenuInflater().inflate(R.menu.main, menu);
-
-            return true;
-        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+    */
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    /*
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    */
+
+    public void onSelectItem(int number) {
+        Log.d(TAG, "onSelectItem(): " + number);
+        Intent intent = null;
+        switch (number) {
+
+            // Launch respective activity
+            case 0:
+                intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                break;
+            case 1:
+                intent = new Intent(getApplicationContext(), UserMapActivity.class);
+                break;
+            case 2:
+                intent = new Intent(getApplicationContext(), DeviceControlActivity.class);
+                break;
+            case 3:
+                intent = new Intent(getApplicationContext(), RecordingsActivity.class);
+                break;
+            case 4:
+                intent = new Intent(getApplicationContext(), BillingActivity.class);
+                break;
+            case 5:
+                intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                break;
+
+            // Redirect to help url
+            case 6:
+                intent = new Intent("android.intent.action.VIEW", Uri.parse(DataBase.HELP_URL));
+                break;
+
+            // Logout and redirect to login activity.
+            case 7:
+                LogoutUser(this);
+                intent = new Intent(getApplicationContext(), LoginActivity.class);
+                break;
+        }
+
+        if (intent != null) {
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            onSelectItem(position);
+        }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
      */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "SEC_NUM";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_home, container, false);
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((HomeActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
 }

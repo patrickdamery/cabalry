@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import static com.cabalry.util.BluetoothUtil.*;
-
 /**
  * PreferencesUtil
  */
@@ -24,6 +22,7 @@ public class PreferencesUtil {
     public static final String PREF_LONGITUDE = "LNG";
     public static final String PREF_DEVICE_CHARGE = "DEV_CHARGE";
     public static final String PREF_CACHED_ADDRESS = "CACHED_ADDRESS";
+    public static final String PREF_DRAWER_LEARNED = "NAVDR_LEARNED";
 
     public static final String PREF_FAKE_PASS = "FAKE";
     public static final String PREF_TIMER = "TIMER";
@@ -52,6 +51,12 @@ public class PreferencesUtil {
         editor.commit();
     }
 
+    public static void SetDrawerLearned(Context context, boolean learned) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putBoolean(PREF_DRAWER_LEARNED, learned);
+        editor.commit();
+    }
+
     public static int GetUserID(Context context) {
         return GetSharedPrefs(context).getInt(PREF_USER_ID, 0);
     }
@@ -70,6 +75,10 @@ public class PreferencesUtil {
 
     public static boolean IsUserLogin(Context context) {
         return GetSharedPrefs(context).getBoolean(PREF_USER_LOGIN, false);
+    }
+
+    public static boolean IsDrawerLearned(Context context) {
+        return GetSharedPrefs(context).getBoolean(PREF_DRAWER_LEARNED, false);
     }
 
     public static void LoginUser(Context context, int id, String key) {

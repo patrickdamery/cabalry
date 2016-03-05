@@ -39,10 +39,10 @@ public class UserMapActivity extends MapActivity {
             @Override
             protected void onPostExecute(Vector<MapUser> users) {
                 if (users != null) {
+                    Log.i(TAG, "CollectUsersTask - users size: " + users.size());
+
                     Vector<LatLng> targets = new Vector<>();
                     targets.add(mUser.getPosition());
-
-                    Log.i(TAG, "CollectUsersTask - users size: " + users.size());
 
                     for (MapUser user : users)
                         targets.add(user.getPosition());
@@ -50,6 +50,8 @@ public class UserMapActivity extends MapActivity {
                     setCameraFocus(targets, TRANS_TIME);
 
                     updateUsers(users);
+                } else {
+                    Log.i(TAG, "CollectUsersTask - users is null! fail state: " + getFailState());
                 }
 
                 mCollectUsersTask = null;

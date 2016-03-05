@@ -22,7 +22,6 @@ import static android.content.DialogInterface.*;
 import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.app.LoginActivity;
-import com.cabalry.ui.LoadingDialogFragment;
 import com.cabalry.util.TasksUtil.*;
 
 /**
@@ -33,7 +32,6 @@ public abstract class WebViewActivity extends FragmentActivity {
     // Web view components.
     private WebView mWebView;
     private WebSettings mSettings;
-    private LoadingDialogFragment mLoadingDialog;
     private CheckNetworkTask mCheckNetworkTask;
 
     /**
@@ -51,10 +49,6 @@ public abstract class WebViewActivity extends FragmentActivity {
             mCheckNetworkTask.execute();
         }
 
-        // Progress Dialog to show while web view is loading.
-        mLoadingDialog = new LoadingDialogFragment();
-        mLoadingDialog.show(getSupportFragmentManager(), "");
-
         // Setup web view.
         mWebView = (WebView) findViewById(R.id.web_cabalry);
         mSettings = mWebView.getSettings();
@@ -64,7 +58,6 @@ public abstract class WebViewActivity extends FragmentActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 // Once the page has finished loading dismiss progress dialog.
-                mLoadingDialog.dismiss();
             }
 
             @Override
