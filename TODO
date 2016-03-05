@@ -8,10 +8,6 @@ Features:
     - Add fake deactivation
     - Handle case of no available servers for alarm, keep trying
 
-Optimizations:
-    - Login visual glitch when screen is rotated
-    - Improve location accuracy
-
 In Progress:
     - Add audio stream (Added, not checked)
     - Add audio playback (Added, not checked)
@@ -30,5 +26,3 @@ Completed:
     - Add selection zoom
 
 Bugs:
-    - MapActivity.createMarker(): mMap is sometimes null (Fixed? Not happening ..)
-    - HomeActivity.onSectionAttached(): (Fixed? Not happening ..)

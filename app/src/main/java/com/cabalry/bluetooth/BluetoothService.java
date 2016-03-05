@@ -176,7 +176,7 @@ public class BluetoothService extends BindableService {
     }
 
     // Handler of incoming messages from clients.
-    public static class MessengerHandler extends BaseMessengerHandler {
+    private class MessengerHandler extends BaseMessengerHandler {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

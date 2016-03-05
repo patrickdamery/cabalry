@@ -24,7 +24,8 @@ import static com.cabalry.util.PreferencesUtil.*;
 /**
  * DeviceControlActivity
  */
-public final class DeviceControlActivity extends BindableActivity implements BluetoothListener {
+public final class DeviceControlActivity extends BindableActivity
+        implements BluetoothListener {
     private static final String TAG = "DeviceControlActivity";
 
     // Intent request codes
@@ -224,7 +225,7 @@ public final class DeviceControlActivity extends BindableActivity implements Blu
     /**
      * MessengerHandler
      */
-    private static class MessengerHandler extends Handler {
+    private class MessengerHandler extends Handler {
 
         final BluetoothListener mBTListener;
 

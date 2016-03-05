@@ -8,7 +8,7 @@ import com.cabalry.R;
 import com.cabalry.base.MapActivity;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.map.MapUser;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Vector;
@@ -24,7 +24,7 @@ public class AlarmMapActivity extends MapActivity {
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;
 
-    private SupportMapFragment mMapFragment;
+    private MapFragment mMapFragment;
 
     private CollectUsersTask mCollectUsersTask;
     private CollectUserInfoTask mCollectUserInfoTask;
@@ -91,7 +91,7 @@ public class AlarmMapActivity extends MapActivity {
         // Do a null check to confirm that we have not already instantiated the fragment
         if (mMapFragment == null) {
             // Try to obtain the map from the SupportMapFragment
-            mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
             initializeMap(mMapFragment);
         }
 
@@ -101,17 +101,14 @@ public class AlarmMapActivity extends MapActivity {
     }
 
     @Override
-    public void onUpdateLocation(Location location) {
-        LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
-
+    public void onUpdateLocation(LatLng location) {
         if (mUser != null) {
-            update(mUser, userPosition);
+            update(mUser, location);
 
             if (mNearbyToggle)
                 collectNearbyUsers();
             else
-                setCameraFocus(userPosition, CAMERA_ZOOM, 0, TRANS_TIME);
-
+                setCameraFocus(location, CAMERA_ZOOM, 0, TRANS_TIME);
         }
     }
 

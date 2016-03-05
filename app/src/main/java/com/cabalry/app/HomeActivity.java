@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.cabalry.R;
 import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.db.DataBase;
+import com.cabalry.location.LocationUpdateService;
 import com.cabalry.util.PreferencesUtil;
 
 import static com.cabalry.util.PreferencesUtil.*;
@@ -50,6 +51,10 @@ public class HomeActivity extends AppCompatActivity {
 
         if (!BluetoothService.isRunning()) {
             startService(new Intent(this, BluetoothService.class));
+        }
+
+        if (!LocationUpdateService.isRunning()) {
+            startService(new Intent(this, LocationUpdateService.class));
         }
 
         mTitle = mDrawerTitle = getTitle();

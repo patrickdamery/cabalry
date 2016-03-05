@@ -7,7 +7,7 @@ import android.util.Log;
 import com.cabalry.R;
 import com.cabalry.base.MapActivity;
 import com.cabalry.map.MapUser;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Vector;
@@ -25,7 +25,7 @@ public class UserMapActivity extends MapActivity {
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;
 
-    private SupportMapFragment mMapFragment;
+    private MapFragment mMapFragment;
 
     private CollectUsersTask mCollectUsersTask;
     private CollectUserInfoTask mCollectUserInfoTask;
@@ -33,6 +33,66 @@ public class UserMapActivity extends MapActivity {
     private boolean mNearbyToggle = true;
 
     private MapUser mUser;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_map);
+        initialize();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initialize();
+    }
+
+    private void initialize() {
+
+        // Do a null check to confirm that we have not already instantiated the fragment
+        if (mMapFragment == null) {
+            // Try to obtain the map from the SupportMapFragment
+            mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+            initializeMap(mMapFragment);
+        }
+
+        collectUserInfo();
+        if (mNearbyToggle)
+            collectNearbyUsers();
+    }
+
+    @Override
+    public void onUpdateLocation(LatLng location) {
+        if (mUser != null) {
+            update(mUser, location);
+
+            if (mNearbyToggle)
+                collectNearbyUsers();
+            else
+                setCameraFocus(location, CAMERA_ZOOM, 0, TRANS_TIME);
+        }
+
+        Log.i(TAG, "onUpdateLocation location: " + location.toString());
+    }
+
+    private void collectNearbyUsers() {
+        if (mCollectUsersTask == null) {
+
+            mCollectUsersTask = getCollectUsersTask();
+            mCollectUsersTask.setCollectInfo(GetUserID(this), GetUserKey(this));
+            mCollectUsersTask.execute();
+        }
+    }
+
+    private void collectUserInfo() {
+        if (mCollectUserInfoTask == null) {
+            mCollectUserInfoTask = getCollectUserInfoTask();
+
+            int id = GetUserID(this);
+            mCollectUserInfoTask.set(id, id, GetUserKey(this));
+            mCollectUserInfoTask.execute();
+        }
+    }
 
     private final CollectUsersTask getCollectUsersTask() {
         return new CollectUsersTask() {
@@ -75,66 +135,5 @@ public class UserMapActivity extends MapActivity {
                 mCollectUserInfoTask = null;
             }
         };
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_map);
-        initialize();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        initialize();
-    }
-
-    private void initialize() {
-
-        // Do a null check to confirm that we have not already instantiated the fragment
-        if (mMapFragment == null) {
-            // Try to obtain the map from the SupportMapFragment
-            mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-            initializeMap(mMapFragment);
-        }
-
-        collectUserInfo();
-        if (mNearbyToggle)
-            collectNearbyUsers();
-    }
-
-    @Override
-    public void onUpdateLocation(Location location) {
-        LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
-
-        if (mUser != null) {
-            update(mUser, userPosition);
-
-            if (mNearbyToggle)
-                collectNearbyUsers();
-            else
-                setCameraFocus(userPosition, CAMERA_ZOOM, 0, TRANS_TIME);
-
-        }
-    }
-
-    private void collectNearbyUsers() {
-        if (mCollectUsersTask == null) {
-
-            mCollectUsersTask = getCollectUsersTask();
-            mCollectUsersTask.setCollectInfo(GetUserID(this), GetUserKey(this));
-            mCollectUsersTask.execute();
-        }
-    }
-
-    private void collectUserInfo() {
-        if (mCollectUserInfoTask == null) {
-            mCollectUserInfoTask = getCollectUserInfoTask();
-
-            int id = GetUserID(this);
-            mCollectUserInfoTask.set(id, id, GetUserKey(this));
-            mCollectUserInfoTask.execute();
-        }
     }
 }

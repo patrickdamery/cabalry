@@ -2,19 +2,18 @@ package com.cabalry.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.LevelListDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.location.LocationUpdateListener;
-import com.cabalry.location.LocationUpdateManager;
+import com.cabalry.location.LocationUpdateService;
 import com.cabalry.map.MapUser;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -22,15 +21,18 @@ import com.google.android.gms.maps.model.*;
 import java.util.HashMap;
 import java.util.Vector;
 
+import static com.cabalry.util.MessageUtil.*;
+
 /**
  * MapActivity
  */
-public abstract class MapActivity extends FragmentActivity
-        implements OnMapReadyCallback, LocationUpdateListener {
+public abstract class MapActivity extends BindableActivity
+        implements OnMapReadyCallback {
+    public static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
 
-    private SupportMapFragment mMapFragment;
+    private MapFragment mMapFragment;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -40,8 +42,11 @@ public abstract class MapActivity extends FragmentActivity
     private final MarkerListener mMarkerListener = new MarkerListener();
     private final CameraListener mCameraListener = new CameraListener();
 
-    public void initializeMap(SupportMapFragment mapFragment) {
-        LocationUpdateManager.Instance(this).addUpdateListener(this);
+    public abstract void onUpdateLocation(LatLng location);
+
+    public void initializeMap(MapFragment mapFragment) {
+        if (mapFragment == null)
+            throw new NullPointerException("mapFragment is null!");
 
         // This is to call the onMapReady callback
         mMapFragment = mapFragment;
@@ -51,8 +56,13 @@ public abstract class MapActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationUpdateManager.Instance(this).resetProvider(manager);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindToService(LocationUpdateService.class, new MessengerHandler(),
+                MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
     }
 
     @Override
@@ -64,7 +74,11 @@ public abstract class MapActivity extends FragmentActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocationUpdateManager.Instance(this).removeUpdateListener(this);
+        try {
+            unbindFromService();
+        } catch (Throwable t) {
+            Log.e(TAG, "Failed to unbind from the service", t);
+        }
     }
 
     @Override
@@ -101,9 +115,6 @@ public abstract class MapActivity extends FragmentActivity
                         .icon(BitmapDescriptorFactory.fromResource(getMarkerIcon(user.getType())))
         );
     }
-
-    @Override
-    public abstract void onUpdateLocation(Location location);
 
     public Marker getMarker(int id) {
         return mMarkerMap.get(id);
@@ -172,6 +183,30 @@ public abstract class MapActivity extends FragmentActivity
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, MAP_PADDING);
 
         mMap.animateCamera(cameraUpdate, transTime, mCameraListener);
+    }
+
+    /**
+     * MessengerHandler
+     */
+    private class MessengerHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data == null)
+                throw new NullPointerException("data is null");
+
+            switch (msg.what) {
+                case MSG_LOCATION_UPDATE:
+                    double lat = data.getDouble("lat");
+                    double lng = data.getDouble("lng");
+                    onUpdateLocation(new LatLng(lat, lng));
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 
     /**

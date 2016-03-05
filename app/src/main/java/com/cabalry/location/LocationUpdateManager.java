@@ -31,15 +31,7 @@ public class LocationUpdateManager implements LocationListener {
 
     private static LocationUpdateManager mInstance;
 
-    public static LocationUpdateManager Instance(Context context) {
-        if (mInstance == null) {
-            mInstance = new LocationUpdateManager(context);
-        }
-
-        return mInstance;
-    }
-
-    private LocationUpdateManager(Context context) {
+    public LocationUpdateManager(Context context) {
         // Acquire a reference to the system Location Manager.
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
