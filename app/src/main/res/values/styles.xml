@@ -1,63 +1,36 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="Theme.Cabalry" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_cabalry</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Cabalry</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Cabalry</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Cabalry</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Cabalry</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Cabalry</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_cabalry</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_cabalry</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Cabalry</item>
-        
-                <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Cabalry.Widget</item>
-    </style>
-    
-    <style name="ActionBar.Solid.Cabalry" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_solid_cabalry</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_cabalry</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_cabalry</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Cabalry</item>
+        <item name="android:windowBackground">@color/cab_bg</item>
+        <item name="android:textColorPrimary">@color/cab_text</item>
+        <item name="android:textColorSecondary">@color/cab_text</item>
+
+        <item name="actionBarStyle">@style/Widget.Cabalry.ActionBar</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Cabalry.ActionBar</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.Cabalry.PopupMenu</item>
     </style>
 
-    <style name="ActionBar.Transparent.Cabalry" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_cabalry</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Cabalry</item>
+    <style name="Widget.Cabalry.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/cab_red</item>
+        <item name="elevation">8dp</item>
     </style>
 
-    <style name="PopupMenu.Cabalry" parent="@android:style/Widget.Holo.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_cabalry</item>	
+    <style name="ThemeOverlay.Cabalry.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- title text color -->
+        <item name="android:textColorPrimary">@color/cab_ab_title</item>
+        <!-- subtitle text color -->
+        <item name="android:textColorSecondary">@color/cab_ab_subtitle</item>
+        <!-- action menu item text color -->
+        <item name="actionMenuTextColor">@color/cab_text</item>
+        <!-- action menu item icon color - only applies to appcompat-v7 icons :( -->
+        <item name="colorControlNormal">?android:textColorPrimary</item>
     </style>
 
-    <style name="DropDownListView.Cabalry" parent="@android:style/Widget.Holo.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_cabalry</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Cabalry" parent="@android:style/Widget.Holo.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_cabalry</item>
-    </style>
-
-    <style name="DropDownNav.Cabalry" parent="@android:style/Widget.Holo.Spinner">
-        <item name="android:background">@drawable/spinner_background_ab_cabalry</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_cabalry</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_cabalry</item>
-    </style>
-    
-    <style name="ProgressBar.Cabalry" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_cabalry</item>
-    </style>
-    
-    <style name="ActionButton.CloseMode.Cabalry" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_cabalry</item>
-    </style>
-
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Cabalry.Widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Cabalry</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Cabalry</item>
+    <style name="ThemeOverlay.Cabalry.PopupMenu" parent="ThemeOverlay.AppCompat.Dark">
+        <!-- popup menu background - NEVER "android:background" !!! in themes -->
+        <item name="android:colorBackground">@color/cab_pm_bg</item>
+        <!-- popup menu item text color -->
+        <item name="android:textColorPrimary">@color/cab_pm_text</item>
     </style>
 
 </resources>

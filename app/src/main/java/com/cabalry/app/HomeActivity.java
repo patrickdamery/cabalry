@@ -64,15 +64,17 @@ public class HomeActivity extends AppCompatActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        final String[] navDrawerStrings = new String[]{
-                getString(R.string.title_nav_profile),
-                getString(R.string.title_nav_map),
-                getString(R.string.title_nav_devices),
-                getString(R.string.title_nav_recordings),
-                getString(R.string.title_nav_billing),
-                getString(R.string.title_nav_settings),
-                getString(R.string.title_nav_help),
-                getString(R.string.title_nav_logout)};
+        final String[] navDrawerStrings = new String[]
+                {
+                        getString(R.string.title_nav_profile),
+                        getString(R.string.title_nav_map),
+                        getString(R.string.title_nav_devices),
+                        getString(R.string.title_nav_recordings),
+                        getString(R.string.title_nav_billing),
+                        getString(R.string.title_nav_settings),
+                        getString(R.string.title_nav_help),
+                        getString(R.string.title_nav_logout)
+                };
 
         mNavigationDrawerFragment.setNavDrawerStrings(navDrawerStrings);
 

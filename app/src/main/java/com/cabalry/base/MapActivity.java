@@ -21,7 +21,8 @@ import java.util.Vector;
 /**
  * MapActivity
  */
-public abstract class MapActivity extends FragmentActivity implements OnMapReadyCallback, LocationUpdateListener {
+public abstract class MapActivity extends FragmentActivity
+        implements OnMapReadyCallback, LocationUpdateListener {
 
     public static final int MAP_PADDING = 128;
 
@@ -42,7 +43,6 @@ public abstract class MapActivity extends FragmentActivity implements OnMapReady
         // This is to call the onMapReady callback
         mMapFragment = mapFragment;
         mMapFragment.getMapAsync(this);
-        
     }
 
     @Override

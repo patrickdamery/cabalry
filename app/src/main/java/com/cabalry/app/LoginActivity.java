@@ -46,7 +46,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         SETTINGS, USER_INFO, DEVICE_CONTROL
     }
 
-    StartupActivity mStartupActivity = StartupActivity.DEVICE_CONTROL;
+    StartupActivity mStartupActivity = StartupActivity.HOME;
 
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =

@@ -2,6 +2,7 @@ package com.cabalry.app;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cabalry.R;
 import com.cabalry.base.MapActivity;
@@ -18,6 +19,8 @@ import static com.cabalry.util.TasksUtil.*;
  * UserMapActivity
  */
 public class UserMapActivity extends MapActivity {
+
+    public static final String TAG = "UserMapActivity";
 
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;
@@ -38,6 +41,8 @@ public class UserMapActivity extends MapActivity {
                 if (users != null) {
                     Vector<LatLng> targets = new Vector<>();
                     targets.add(mUser.getPosition());
+
+                    Log.i(TAG, "CollectUsersTask - users size: " + users.size());
 
                     for (MapUser user : users)
                         targets.add(user.getPosition());

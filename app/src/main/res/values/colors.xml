@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="cab_red" type="color">#FF6A1010</item>
+    <item name="cab_bg" type="color">#FFF8F8F8</item>
+
+    <item name="cab_ab_title" type="color">#FFFFFFFF</item>
+    <item name="cab_ab_subtitle" type="color">#FFA8A8A8</item>
+
+    <item name="cab_pm_bg" type="color">#FFFFFFFF</item>
+    <item name="cab_pm_text" type="color">#FF505050</item>
+
+    <item name="cab_text" type="color">#FF202020</item>
+
+    <integer-array name="androidcolors">
+        <item>@color/cab_red</item>
+        <item>@color/cab_bg</item>
+        <item>@color/cab_ab_title</item>
+    </integer-array>
+
+</resources>

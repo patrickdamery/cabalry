@@ -104,6 +104,8 @@ public class DeviceConnector {
         String deviceName = (mDevice.getName() == null) ? mDevice.getAddress() : mDevice.getName();
         mBTListener.onDeviceName(deviceName);
 
+        Log.i(TAG, "Connected to: " + mDevice.getAddress());
+
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
