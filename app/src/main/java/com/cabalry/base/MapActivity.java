@@ -98,7 +98,7 @@ public abstract class MapActivity extends FragmentActivity
         return mMap.addMarker(new MarkerOptions()
                 .position(position)
                         .title(title)
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(user.getType())))
+                        .icon(BitmapDescriptorFactory.fromResource(getMarkerIcon(user.getType())))
         );
     }
 
@@ -117,7 +117,7 @@ public abstract class MapActivity extends FragmentActivity
         oldUsr.updatePosition(newUsr.getPosition());
         Marker marker = mMarkerMap.get(oldUsr.getID());
         marker.setPosition(newUsr.getPosition());
-        marker.setIcon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(newUsr.getType())));
+        marker.setIcon(BitmapDescriptorFactory.fromResource(getMarkerIcon(newUsr.getType())));
     }
 
     public void update(final MapUser oldUsr, final LatLng position) {
@@ -129,28 +129,23 @@ public abstract class MapActivity extends FragmentActivity
         mMarkerMap.remove(user.getID()).remove();
     }
 
-    private Bitmap getMarkerIcon(MapUser.UserType type) {
-        //int icon = 0;
-        //icon = R.drawable.m_user;
+    private int getMarkerIcon(MapUser.UserType type) {
 
-        String iconName = null;
+        int icon = 0;
         switch (type) {
             case USER:
-                iconName = "m_user";
+                icon = R.drawable.ic_user;
                 break;
             case NEARBY:
-                iconName = "m_nearby";
+                icon = R.drawable.ic_nearby;
                 break;
             case ALERT:
-                iconName = "m_alert";
+                icon = R.drawable.ic_alert;
                 break;
             case ALERTED:
-                iconName = "m_alerted";
+                icon = R.drawable.ic_alerted;
                 break;
         }
-
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(iconName, "drawable", getPackageName()));
-        icon = Bitmap.createScaledBitmap(icon, (int) (icon.getWidth() * 1.5), (int) (icon.getHeight() * 1.5), false);
 
         return icon;
     }

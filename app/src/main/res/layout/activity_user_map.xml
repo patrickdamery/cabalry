@@ -37,7 +37,7 @@
             android:layout_height="50dp"
             android:text=""
             android:textSize="0sp"
-            android:background="@drawable/b_restore"
+            android:background="@drawable/btn_restore"
             android:id="@+id/bLastAlarm"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
@@ -48,7 +48,7 @@
             android:text=""
             android:textSize="0sp"
             android:id="@+id/bAlarm"
-            android:background="@drawable/b_alarm"
+            android:background="@drawable/btn_map_alarm"
             android:layout_alignBottom="@+id/bNearby"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"

@@ -82,7 +82,7 @@ public class GCMIntentService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.m_alert)
+                        .setSmallIcon(R.drawable.ic_alert)
                         .setContentTitle("Cabalry Alarm")
                         .setAutoCancel(true)
                         .setStyle(new NotificationCompat.BigTextStyle()

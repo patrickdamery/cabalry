@@ -57,6 +57,16 @@ public class HomeActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
+        mActivityIcons = new int[8];
+        mActivityIcons[0] = R.drawable.ic_profile;
+        mActivityIcons[1] = R.drawable.ic_map;
+        mActivityIcons[2] = R.drawable.ic_drawer;
+        mActivityIcons[3] = R.drawable.ic_recordings;
+        mActivityIcons[4] = R.drawable.ic_billing;
+        mActivityIcons[5] = R.drawable.ic_settings;
+        mActivityIcons[6] = R.drawable.ic_help;
+        mActivityIcons[7] = R.drawable.ic_logout;
+
         // Set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
@@ -71,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
                 ImageView item_icon = (ImageView) convertView.findViewById(R.id.item_icon);
                 TextView item_text = (TextView) convertView.findViewById(R.id.item_text);
 
-                item_icon.setImageResource(R.drawable.ic_drawer);
+                item_icon.setImageResource(mActivityIcons[position]);
                 item_text.setText(mActivityTitles[position]);
                 return convertView;
             }
