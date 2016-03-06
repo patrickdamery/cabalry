@@ -61,12 +61,12 @@
 
         <activity
             android:name=".app.HomeActivity"
-            android:label="@string/title_app_name" >
+            android:label="@string/title_activity_home">
         </activity>
 
         <activity
             android:name=".app.UserMapActivity"
-            android:label="@string/title_activity_user_map" >
+            android:label="@string/title_activity_usermap">
         </activity>
 
         <activity
@@ -125,7 +125,7 @@
 
         <activity
             android:name=".app.DeviceControlActivity"
-            android:label="@string/title_app_name"
+            android:label="@string/title_activity_devices"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

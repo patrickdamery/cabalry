@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
@@ -148,25 +149,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    */
 
     /* Called whenever we call invalidateOptionsMenu() */
-    /*
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-    */
 
     public void onSelectItem(int number) {
         Log.d(TAG, "onSelectItem(): " + number);

@@ -1,8 +1,10 @@
 package com.cabalry.app;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.cabalry.R;
 import com.cabalry.base.MapActivity;
@@ -38,6 +40,10 @@ public class UserMapActivity extends MapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_map);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         initialize();
     }
 
@@ -45,6 +51,16 @@ public class UserMapActivity extends MapActivity {
     protected void onResume() {
         super.onResume();
         initialize();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                break;
+        }
+        return true;
     }
 
     private void initialize() {

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import static com.cabalry.util.MessageUtil.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * MapActivity
@@ -79,6 +80,8 @@ public abstract class MapActivity extends BindableActivity
         } catch (Throwable t) {
             Log.e(TAG, "Failed to unbind from the service", t);
         }
+
+        SaveMapState(this, mMap.getCameraPosition());
     }
 
     @Override
@@ -90,6 +93,8 @@ public abstract class MapActivity extends BindableActivity
         mMap.setOnCameraChangeListener(mCameraListener);
 
         loadGoogleMapSettings();
+
+        setCameraFocus(GetMapState(this), 1);
     }
 
     public void loadGoogleMapSettings() {
@@ -159,6 +164,11 @@ public abstract class MapActivity extends BindableActivity
         }
 
         return icon;
+    }
+
+    public void setCameraFocus(CameraPosition cameraPosition, int transTime) {
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
+                transTime, mCameraListener);
     }
 
     public void setCameraFocus(LatLng target, float zoom, float bearing, int transTime) {

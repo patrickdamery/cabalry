@@ -12,60 +12,134 @@ import java.net.*;
  * AudioPlayer
  */
 public class AudioPlayer {
-    private static final String TAG = "AudioPlayer";
+    public static final String TAG = "AudioPlayer";
 
-    private static final int SAMPLE_RATE = 16000;
-    private static final int LISTEN_PORT = 50010;
+    private boolean isPlaying = false;
+    private final int SAMPLE_RATE = 16000;
+    private final int serverPort = 50010;
+    private final int tcpServerPort = 50000;
+    private InetAddress ip;
+    private DatagramSocket audioSocket;
+    private DatagramPacket audioPacket;
+    private byte[] data = new byte[1024];
 
-    private boolean mIsPlaying = false;
-    private InetAddress mIP;
-    private Socket mClient;
-    private DataInputStream mDataInputStream;
+    public void startPlayback(String userip) {
 
-    public void startPlayback(String ip, int bufferSize) {
-        Log.d(TAG, "startPlayback()");
-        mIsPlaying = true;
+        isPlaying = true;
 
+        Log.i(TAG, "Starting Service");
         AudioTrack audioPlayer = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
-                AudioFormat.ENCODING_PCM_16BIT, bufferSize, AudioTrack.MODE_STREAM);
+                AudioFormat.ENCODING_PCM_16BIT, 2048, AudioTrack.MODE_STREAM);
 
         if (audioPlayer.getPlayState() != AudioTrack.PLAYSTATE_PLAYING)
             audioPlayer.play();
 
         try {
-            // Define mBuffer
-            byte[] buffer = new byte[bufferSize];
 
-            // Define mIP address to connect to
-            mIP = InetAddress.getByName(ip);
+            // Define ip address to connect to.
+            ip = InetAddress.getByName(userip);
+
+            // Define UDP try counter.
+            int udpCount = 3;
             do {
-                try {
-                    Log.i(TAG, "Attempting to connect to server ...");
+                do {
+                    try {
+                        // Prepare Datagram Socket to receive audio.
+                        audioSocket = new DatagramSocket();
 
+                        // Send Server our Port number.
+                        String port = Integer.toString(audioSocket.getLocalPort());
+                        data = port.getBytes();
+                        audioPacket = new DatagramPacket(data, data.length, ip, serverPort);
+                        audioSocket.send(audioPacket);
+
+                        // Wait for response.
+                        audioSocket.setSoTimeout(6000);
+                        audioPacket = new DatagramPacket(data, data.length);
+                        boolean portDefined = false;
+                        int dedicatedPort = 0;
+                        while (!portDefined) {
+
+                            audioSocket.receive(audioPacket);
+                            Log.i(TAG, "Received packet.");
+
+                            // Extract data received.
+                            String received = new String(audioPacket.getData());
+                            received = received.trim();
+
+                            // Check if it is a test.
+                            if (received.equalsIgnoreCase("TEST")) {
+                                String response = "Good";
+                                data = response.getBytes();
+                                audioPacket = new DatagramPacket(data, data.length);
+                                audioSocket.send(audioPacket);
+                            } else {
+
+                                // Save the port and exit loop.
+                                dedicatedPort = Integer.parseInt(received);
+                                portDefined = true;
+                            }
+                            Log.i(TAG, "Port " + dedicatedPort);
+                        }
+
+                        // Send six different packets to server's dedicated port to ensure we punch a hole through a NAT.
+                        Log.i(TAG, "Attempting to punch hole through NAT.");
+                        for (int x = 0; x < 6; x++) {
+                            audioPacket = new DatagramPacket(data, data.length, ip, dedicatedPort);
+                            audioSocket.send(audioPacket);
+                        }
+
+                        // Prepare audio Packet to start receiving audio.
+                        byte[] keepAlive = new byte[10];
+                        DatagramPacket keepAlivePacket = new DatagramPacket(keepAlive, keepAlive.length, ip, dedicatedPort);
+                        byte[] receiveData = new byte[2048];
+                        audioPacket = new DatagramPacket(receiveData, receiveData.length);
+
+                        do {
+                            // Receive audio.
+                            audioSocket.receive(audioPacket);
+
+                            // Send back audio to keep alive UDP connection.
+                            audioSocket.send(keepAlivePacket);
+                            Log.i(TAG, "Receiving Audio.");
+
+                            // Write audio to speakers.
+                            audioPlayer.write(receiveData, 0, receiveData.length);
+                        } while (isPlaying);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                        Log.e(TAG, "Failed connection trying again.");
+                        udpCount--;
+                    }
+                } while (udpCount > 0 && isPlaying);
+
+                do {
+                    Log.e(TAG, "UDP Failed, attempting with TCP.");
                     // Setup socket to connect to server.
-                    mClient = new Socket(mIP, LISTEN_PORT);
-                    mClient.setSoTimeout(15000);
+                    Socket client = new Socket(ip, tcpServerPort);
+                    client.setSoTimeout(15000);
 
-                    // Define data input stream
+                    // Define data input stream.
                     Log.i(TAG, "Get DataInput Stream from server");
-                    mDataInputStream = new DataInputStream(mClient.getInputStream());
+                    DataInputStream dis = new DataInputStream(client.getInputStream());
 
+                    long t = System.currentTimeMillis();
+                    long end = t + 60000;
                     do {
-                        // Get data from input stream
-                        Log.i(TAG, "Getting Data ...");
-                        mDataInputStream.readFully(buffer);
+                        // Get data from input stream.
+                        byte[] receiveData = new byte[2048];
+                        Log.i(TAG, "Getting Data");
+                        dis.readFully(receiveData);
 
-                        // Write audio to speakers
-                        audioPlayer.write(buffer, 0, buffer.length);
-                    } while (mIsPlaying);
+                        // Write audio to speakers.
+                        audioPlayer.write(receiveData, 0, receiveData.length);
+                    } while (System.currentTimeMillis() < end);
 
-                    // Close all connections
-                    mDataInputStream.close();
-                    mClient.close();
-                } catch (ConnectException ce) {
-                    Log.e(TAG, "Failed connection trying again");
-                }
-            } while (mIsPlaying);
+                    // Close all connections.
+                    dis.close();
+                    client.close();
+                } while (isPlaying);
+            } while (isPlaying);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,6 +148,6 @@ public class AudioPlayer {
     }
 
     public void stopPlayback() {
-        mIsPlaying = false;
+        isPlaying = false;
     }
 }

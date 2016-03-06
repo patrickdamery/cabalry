@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.view.MenuItem;
 import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -27,7 +29,7 @@ import com.cabalry.util.TasksUtil.*;
 /**
  * WebViewActivity
  */
-public abstract class WebViewActivity extends FragmentActivity {
+public abstract class WebViewActivity extends AppCompatActivity {
 
     // Web view components.
     private WebView mWebView;
@@ -72,6 +74,9 @@ public abstract class WebViewActivity extends FragmentActivity {
                 return true;
             }
         });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         // Set up chrome client to enable prompt
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -129,6 +134,16 @@ public abstract class WebViewActivity extends FragmentActivity {
     public void onBackPressed() {
         // Return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                break;
+        }
+        return true;
     }
 
     private CheckNetworkTask getCheckNetworkTask() {

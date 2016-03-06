@@ -11,12 +11,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 /**
  * BindableActivity
  */
-public abstract class BindableActivity extends Activity {
+public abstract class BindableActivity extends AppCompatActivity {
     private static final String TAG = "BindableActivity";
 
     private Messenger mService = null;

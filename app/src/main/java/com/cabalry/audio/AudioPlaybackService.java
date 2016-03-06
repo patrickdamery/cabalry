@@ -1,8 +1,9 @@
 package com.cabalry.audio;
 
-import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+
+import com.cabalry.base.RunnableService;
 
 import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.TasksUtil.*;
@@ -10,29 +11,22 @@ import static com.cabalry.util.TasksUtil.*;
 /**
  * AudioPlaybackService
  */
-public class AudioPlaybackService extends Service {
+public class AudioPlaybackService extends RunnableService {
 
     private static AudioPlayer audioPlayer;
-    private boolean running = false;
+    private static Thread playbackThread;
 
     @Override
     public void onCreate() {
-        if (running) return;
-        running = true;
-
+        super.onCreate();
         audioPlayer = new AudioPlayer();
 
-        UpdateListenerInfoTask updateListenerInfoTask = new UpdateListenerInfoTask();
-        updateListenerInfoTask.setListenerInfo(GetUserID(this), GetUserKey(this), GetAlarmID(this), 50000);
-
-        Thread playbackThread = new Thread(new Runnable() {
+        playbackThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                audioPlayer.startPlayback(GetUserIP(AudioPlaybackService.this), 2048);
+                audioPlayer.startPlayback(GetUserIP(AudioPlaybackService.this));
             }
         });
-
-        playbackThread.start();
     }
 
     @Override
@@ -49,14 +43,27 @@ public class AudioPlaybackService extends Service {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         stopAudioPlayback();
-        running = false;
+    }
+
+    public static void startAudioPlayer(int userID, String key, int alarmID) {
+        if (isRunning()) {
+            UpdateListenerInfoTask updateListenerInfoTask = new UpdateListenerInfoTask();
+            updateListenerInfoTask.setListenerInfo(userID, key, alarmID, 50000);
+
+            playbackThread.start();
+        }
     }
 
     public static void stopAudioPlayback() {
-        if (audioPlayer != null) {
-            audioPlayer.stopPlayback();
-            audioPlayer = null;
+        if (isRunning()) {
+            if (audioPlayer != null) {
+                audioPlayer.stopPlayback();
+                audioPlayer = null;
+            }
+
+            playbackThread.interrupt();
         }
     }
 }

@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cabalry.R;
 import com.cabalry.bluetooth.BluetoothListener;
@@ -61,6 +63,9 @@ public final class DeviceControlActivity extends BindableActivity
             Log.e(TAG, no_bluetooth);
         }
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         setContentView(R.layout.activity_device_control);
         mDeviceStateText = (TextView) findViewById(R.id.deviceStateText);
         mDeviceChargeText = (TextView) findViewById(R.id.deviceChargeText);
@@ -87,6 +92,16 @@ public final class DeviceControlActivity extends BindableActivity
     public void onBackPressed() {
         // Return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                break;
+        }
+        return true;
     }
 
     @Override

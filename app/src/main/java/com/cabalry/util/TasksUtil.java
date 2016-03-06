@@ -263,7 +263,7 @@ public class TasksUtil {
         @Override
         protected Void doInBackground(Void... voids) {
             JSONObject result;
-            boolean success = false;
+            boolean success;
 
             try {
                 result = UpdateListenerInfo(mAlarmID, mID, mKey, mPort);

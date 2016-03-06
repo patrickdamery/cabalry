@@ -2,7 +2,9 @@ package com.cabalry.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Camera;
 
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -23,6 +25,11 @@ public class PreferencesUtil {
     public static final String PREF_DEVICE_CHARGE = "DEV_CHARGE";
     public static final String PREF_CACHED_ADDRESS = "CACHED_ADDRESS";
     public static final String PREF_DRAWER_LEARNED = "NAVDR_LEARNED";
+
+    public static final String PREF_MAP_LATITUDE = "MLAT";
+    public static final String PREF_MAP_LONGITUDE = "MLNG";
+    public static final String PREF_MAP_ZOOM = "MZOOM";
+    public static final String PREF_MAP_BEARING = "MBEARING";
 
     public static final String PREF_FAKE_PASS = "FAKE";
     public static final String PREF_TIMER = "TIMER";
@@ -79,6 +86,31 @@ public class PreferencesUtil {
 
     public static boolean IsDrawerLearned(Context context) {
         return GetSharedPrefs(context).getBoolean(PREF_DRAWER_LEARNED, false);
+    }
+
+    public static void SaveMapState(Context context, CameraPosition cameraPosition) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putFloat(PREF_MAP_LATITUDE, (float) cameraPosition.target.latitude);
+        editor.putFloat(PREF_MAP_LONGITUDE, (float) cameraPosition.target.longitude);
+        editor.putFloat(PREF_MAP_ZOOM, cameraPosition.zoom);
+        editor.putFloat(PREF_MAP_ZOOM, cameraPosition.bearing);
+        editor.commit();
+    }
+
+    public static CameraPosition GetMapState(Context context) {
+        SharedPreferences preferences = GetSharedPrefs(context);
+
+        LatLng target = new LatLng(
+                preferences.getFloat(PREF_MAP_LATITUDE, preferences.getFloat(PREF_LATITUDE, 0)),
+                preferences.getFloat(PREF_MAP_LONGITUDE, preferences.getFloat(PREF_LONGITUDE, 0)));
+        float zoom = preferences.getFloat(PREF_MAP_ZOOM, 17);
+        float bearing = preferences.getFloat(PREF_MAP_BEARING, 0);
+
+        return CameraPosition.builder()
+                .target(target)
+                .zoom(zoom)
+                .bearing(bearing)
+                .build();
     }
 
     public static void LoginUser(Context context, int id, String key) {

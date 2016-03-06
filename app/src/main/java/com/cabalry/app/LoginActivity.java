@@ -99,6 +99,21 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             gotoStartup(); // Redirects to mStartupActivity
         }
 
+        TextView register = (TextView) findViewById(R.id.register);
+        TextView forgot = (TextView) findViewById(R.id.forgot);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchRegister();
+            }
+        });
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchForgot();
+            }
+        });
+
         // Set up the login form.
         mUserView = (AutoCompleteTextView) findViewById(R.id.user);
         populateAutoComplete();
@@ -176,6 +191,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         if (intent != null)
             startActivity(intent);
+    }
+
+    private void launchRegister() {
+        Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
+        startActivity(register);
+    }
+
+    private void launchForgot() {
+        Intent forgot = new Intent(getApplicationContext(), ForgotActivity.class);
+        startActivity(forgot);
     }
 
     private void populateAutoComplete() {
