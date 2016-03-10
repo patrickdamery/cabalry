@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.cabalry.R;
+import com.cabalry.audio.AudioPlaybackService;
+import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.MapActivity;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.base.MapUser;
@@ -38,23 +41,33 @@ public class AlarmMapActivity extends MapActivity {
     private boolean mNearbyToggle = true;
 
     private MapUser mUser;
+    private int mPassFailedCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_map);
+
+        if (!LocationUpdateService.isRunning()) {
+            startService(new Intent(this, LocationUpdateService.class));
+        }
+
         initialize();
 
+        // noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
 
-        // Start location update service.
-        if (!LocationUpdateService.isRunning()) {
-            Intent intent = new Intent(getApplicationContext(), LocationUpdateService.class);
-            startService(intent);
-        }
+        final boolean selfActivated = GetAlarmID(this) == GetUserID(this);
 
-        final boolean selfActivated = true;
+        if (selfActivated) {
+            // Start audio stream service
+            startService(new Intent(getApplicationContext(), AudioStreamService.class));
+
+        } else {
+            // Start audio playback service
+            startService(new Intent(getApplicationContext(), AudioPlaybackService.class));
+        }
 
         Button bCancel = (Button) findViewById(R.id.bCancel);
         bCancel.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +83,7 @@ public class AlarmMapActivity extends MapActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    //ignoreAlarm();
+                                    ignoreAlarm();
                                     break;
                             }
                         }
@@ -123,6 +136,24 @@ public class AlarmMapActivity extends MapActivity {
         }
     }
 
+    private void ignoreAlarm() {
+
+        if (AudioPlaybackService.isRunning()) {
+            AudioPlaybackService.stopAudioPlayback();
+            stopService(new Intent(this, AudioPlaybackService.class));
+        }
+
+        if (AudioStreamService.isRunning()) {
+            AudioStreamService.stopAudioStream();
+            stopService(new Intent(this, AudioStreamService.class));
+        }
+
+        SetAlarmID(getApplicationContext(), 0);
+
+        // return to home
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
     private void promptPassword() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -139,12 +170,40 @@ public class AlarmMapActivity extends MapActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         final String value = input.getText().toString();
-                        new CheckPasswordTask(getApplicationContext(), value) {
-                            @Override
-                            protected void onPostExecute(Boolean result) {
+
+                        if (value.isEmpty()) {
+                            mPassFailedCount++;
+                            if (mPassFailedCount > 3) {
+                                // Fake stop alarm.
+                                Log.i(TAG, "Alarm fake stopped");
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                             }
-                        }.execute();
+
+                        } else if (value.equals(GetFakePassword(getApplicationContext()))) {
+                            // Fake stop alarm.
+                            Log.i(TAG, "Alarm fake stopped");
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+                        } else {
+
+                            new CheckPasswordTask(getApplicationContext(), value) {
+                                @Override
+                                protected void onPostExecute(Boolean result) {
+                                    if (result) {
+                                        Log.i(TAG, "Alarm stopped");
+                                        stopAlarm();
+
+                                    } else {
+                                        mPassFailedCount++;
+                                        if (mPassFailedCount > 3) {
+                                            // Fake stop alarm.
+                                            Log.i(TAG, "Alarm fake stopped");
+                                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        }
+                                    }
+                                }
+                            }.execute();
+                        }
                     }
                 });
 
@@ -157,11 +216,27 @@ public class AlarmMapActivity extends MapActivity {
         alert.show();
     }
 
+    private void stopAlarm() {
+        new StopAlarmTask(getApplicationContext()).execute();
+
+        if (AudioPlaybackService.isRunning())
+            AudioPlaybackService.stopAudioPlayback();
+
+        if (AudioStreamService.isRunning())
+            AudioStreamService.stopAudioStream();
+
+        stopService(new Intent(this, AudioStreamService.class));
+        stopService(new Intent(this, AudioPlaybackService.class));
+
+        // return to home.
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
     private void collectNearbyUsers() {
         if (mCollectUsersTask == null) {
 
             mCollectUsersTask = getCollectUsersTask();
-            mCollectUsersTask.setCollectInfo(GetUserID(this), GetUserKey(this));
+            mCollectUsersTask.setCollectInfo(GetUserID(this), GetUserKey(this), GetAlarmID(this));
             mCollectUsersTask.execute();
         }
     }
@@ -176,7 +251,7 @@ public class AlarmMapActivity extends MapActivity {
         }
     }
 
-    private final CollectUsersTask getCollectUsersTask() {
+    private CollectUsersTask getCollectUsersTask() {
         return new CollectUsersTask() {
             @Override
             protected void onPostExecute(Vector<MapUser> users) {
@@ -197,7 +272,7 @@ public class AlarmMapActivity extends MapActivity {
         };
     }
 
-    private final CollectUserInfoTask getCollectUserInfoTask() {
+    private CollectUserInfoTask getCollectUserInfoTask() {
         return new CollectUserInfoTask() {
             @Override
             protected void onPostExecute(MapUser user) {

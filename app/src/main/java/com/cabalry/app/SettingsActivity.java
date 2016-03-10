@@ -3,8 +3,9 @@ package com.cabalry.app;
 import android.os.Bundle;
 
 import com.cabalry.base.WebViewActivity;
+import com.cabalry.util.TasksUtil;
 
-import static com.cabalry.net.DataBase.SETTINGS_URL;
+import static com.cabalry.net.CabalryServer.SETTINGS_URL;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
@@ -24,5 +25,11 @@ public class SettingsActivity extends WebViewActivity {
 
         // Load Url.
         getWebView().loadUrl(SETTINGS_URL + "?id=" + GetUserID(this) + "&auth_key=" + GetUserKey(this));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        new TasksUtil.SaveSettingsTask(getApplicationContext()).execute();
     }
 }

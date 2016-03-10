@@ -1,11 +1,13 @@
 package com.cabalry.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.cabalry.R;
 import com.cabalry.base.MapActivity;
 import com.cabalry.base.MapUser;
+import com.cabalry.location.LocationUpdateService;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -18,8 +20,7 @@ import static com.cabalry.util.TasksUtil.*;
  * UserMapActivity
  */
 public class UserMapActivity extends MapActivity {
-
-    public static final String TAG = "UserMapActivity";
+    private static final String TAG = "UserMapActivity";
 
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;
@@ -37,6 +38,10 @@ public class UserMapActivity extends MapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_map);
+
+        if (!LocationUpdateService.isRunning()) {
+            startService(new Intent(this, LocationUpdateService.class));
+        }
 
         initialize();
     }

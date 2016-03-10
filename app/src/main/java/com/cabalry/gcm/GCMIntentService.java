@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.util.Log;
 import com.cabalry.R;
 import com.cabalry.app.AlarmMapActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * GCMIntentService
@@ -60,14 +63,13 @@ public class GCMIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                // TODO: Implement alarm action
-                //int alarmID = Integer.parseInt(extras.getString(GlobalKeys.ALARM_ID));
-                //Preferences.initialize(getApplicationContext());
-                //Preferences.setAlarmId(alarmID);
-                //startService(new Intent(getApplicationContext(), AlarmSoundService.class));
+                int alarmID = Integer.parseInt(extras.getString(PREF_ALARM_ID));
+                SetAlarmID(getApplicationContext(), alarmID);
+                MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.fx_alarm);
+                mediaPlayer.start();
 
                 // Post notification of received message.
-                //sendNotification(alarmID);
+                sendNotification(alarmID);
             }
         }
 

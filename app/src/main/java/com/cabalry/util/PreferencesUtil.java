@@ -3,6 +3,7 @@ package com.cabalry.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Camera;
+import android.os.Bundle;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,6 +26,9 @@ public class PreferencesUtil {
     public static final String PREF_DEVICE_CHARGE = "DEV_CHARGE";
     public static final String PREF_CACHED_ADDRESS = "CACHED_ADDRESS";
     public static final String PREF_DRAWER_LEARNED = "NAVDR_LEARNED";
+
+    public static final String PREF_REG_ID = "REGID";
+    public static final String PREF_APP_VERSION = "APPV";
 
     public static final String PREF_MAP_LATITUDE = "MLAT";
     public static final String PREF_MAP_LONGITUDE = "MLNG";
@@ -55,6 +59,30 @@ public class PreferencesUtil {
     public static void SetCachedAddress(Context context, String address) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putString(PREF_CACHED_ADDRESS, address);
+        editor.commit();
+    }
+
+    public static String GetRegistrationID(Context context) {
+        return GetSharedPrefs(context).getString(PREF_REG_ID, "");
+    }
+
+    public static void SetRegistrationID(Context context, String regid) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putString(PREF_REG_ID, regid);
+        editor.commit();
+    }
+
+    public static String GetFakePassword(Context context) {
+        return GetSharedPrefs(context).getString(PREF_FAKE_PASS, "");
+    }
+
+    public static int GetAppVersion(Context context) {
+        return GetSharedPrefs(context).getInt(PREF_APP_VERSION, 0);
+    }
+
+    public static void SetAppVersion(Context context, int appVersion) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putInt(PREF_APP_VERSION, appVersion);
         editor.commit();
     }
 
@@ -96,6 +124,16 @@ public class PreferencesUtil {
 
     public static boolean IsSilent(Context context) {
         return GetSharedPrefs(context).getBoolean(PREF_SILENT, false);
+    }
+
+    public static void SaveSettings(Context context, Bundle settings) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putString(PREF_FAKE_PASS, settings.getString(PREF_FAKE_PASS));
+        editor.putInt(PREF_TIMER, settings.getInt(PREF_TIMER));
+        editor.putInt(PREF_ALERT_COUNT, settings.getInt(PREF_ALERT_COUNT));
+        editor.putInt(PREF_ALARM_RANGE, settings.getInt(PREF_ALARM_RANGE));
+        editor.putBoolean(PREF_SILENT, settings.getBoolean(PREF_SILENT));
+        editor.commit();
     }
 
     public static void SaveMapState(Context context, CameraPosition cameraPosition) {

@@ -33,7 +33,7 @@ public class LocationUpdateService extends BindableService implements LocationUp
         super.onCreate();
 
         mLocationUpdateManager = new LocationUpdateManager(this);
-        mLocationUpdateManager.addUpdateListener(this);
+        mLocationUpdateManager.setUpdateListener(this);
 
         currentLocation = GetLocation(this);
         new UpdateLocationTask(getApplicationContext(), currentLocation).execute();

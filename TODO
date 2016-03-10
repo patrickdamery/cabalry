@@ -2,6 +2,7 @@ To Do:
     - Prompt gps
     - update camera position on loc update
     - Logout properly
+    - set min update time location update
     - Finish login screen
     - Add custom markers
     - Add marker ui on tap

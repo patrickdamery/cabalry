@@ -4,10 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.cabalry.base.MapUser;
-import com.cabalry.net.DataBase;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
-import static com.cabalry.net.DataBase.*;
+import static com.cabalry.net.CabalryServer.*;
 import static com.cabalry.util.PreferencesUtil.*;
 
 /**
@@ -246,14 +246,13 @@ public class TasksUtil {
     }
 
     /**
-     * Represents an asynchronous task that activates an alarm.
+     * Represents an asynchronous logout task.
      */
-    public static abstract class ActivateAlarmTask extends AsyncTask<Void, Void, Integer> {
-        private static final String TAG = "ActivateAlarmTask";
+    public static class UserLogoutTask extends AsyncTask<Void, Void, Boolean> {
 
         private Context mContext;
 
-        public ActivateAlarmTask(Context context) {
+        public UserLogoutTask(Context context) {
             if (context == null)
                 throw new NullPointerException("context can't be null!");
 
@@ -261,16 +260,57 @@ public class TasksUtil {
         }
 
         @Override
-        protected Integer doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... params) {
+            JSONObject result;
+            boolean success = false;
 
-            JSONObject result = DataBase.StartAlarm(GetUserID(mContext), GetUserKey(mContext));
+            try {
+                result = RequestLogout(GetUserID(mContext), GetUserKey(mContext));
+                try {
+                    success = result.getBoolean(REQ_SUCCESS);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+        }
+    }
+
+    /**
+     * Represents an asynchronous task that starts an alarm.
+     */
+    public static abstract class StartAlarmTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "StartAlarmTask";
+
+        private Context mContext;
+
+        public StartAlarmTask(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            JSONObject result = StartAlarm(GetUserID(mContext), GetUserKey(mContext));
 
             try {
                 if (result.getBoolean(REQ_SUCCESS)) {
 
                     int alarmID = result.getInt(REQ_ALARM_ID);
                     SetAlarmID(mContext, alarmID);
-                    return alarmID;
+                    return true;
 
                 }
             } catch (JSONException e) {
@@ -280,11 +320,49 @@ public class TasksUtil {
             SetAlarmID(mContext, 0);
             Log.e(TAG, "Could not start alarm!");
 
-            return 0;
+            return false;
         }
 
         @Override
-        protected abstract void onPostExecute(Integer result);
+        protected abstract void onPostExecute(Boolean result);
+    }
+
+    /**
+     * Represents an asynchronous task that stops an alarm.
+     */
+    public static class StopAlarmTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "StopAlarmTask";
+
+        private Context mContext;
+
+        public StopAlarmTask(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            JSONObject result = StopAlarm(GetAlarmID(mContext), GetUserID(mContext), GetUserKey(mContext));
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (!result)
+                Log.e(TAG, "Unable to stop alarm on server!");
+        }
     }
 
     /**
@@ -419,7 +497,6 @@ public class TasksUtil {
      * Represents an asynchronous task that validates the user password.
      */
     public static abstract class CheckPasswordTask extends AsyncTask<Void, Void, Boolean> {
-        private static final String TAG = "CheckPasswordTask";
 
         Context mContext;
         String mPassword;
@@ -498,6 +575,42 @@ public class TasksUtil {
 
         @Override
         protected void onCancelled() {
+        }
+    }
+
+    public static class SaveSettingsTask extends AsyncTask<Void, Void, Void> {
+        private static final String TAG = "SaveSettingsTask";
+
+        Context mContext;
+
+        public SaveSettingsTask(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            JSONObject result = GetUserSettings(GetUserID(mContext), GetUserKey(mContext));
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+
+                    Bundle settings = new Bundle();
+                    settings.putString(PREF_FAKE_PASS, result.getString(REQ_FAKE_PASS));
+                    settings.putInt(PREF_TIMER, result.getInt(REQ_TIMER));
+                    settings.putInt(PREF_ALERT_COUNT, result.getInt(REQ_ALERT_COUNT));
+                    settings.putInt(PREF_ALARM_RANGE, result.getInt(REQ_RANGE));
+                    settings.putBoolean(PREF_SILENT, result.getBoolean(REQ_SILENT));
+
+                    SaveSettings(mContext, settings);
+                } else {
+                    Log.e(TAG, "Error while getting settings!");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 }

@@ -1,15 +1,16 @@
 package com.cabalry.audio;
 
-import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+
+import com.cabalry.base.RunnableService;
 
 import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * Created by conor on 01/02/15.
  */
-public class AudioStreamService extends Service {
+public class AudioStreamService extends RunnableService {
 
     private static AudioStreamer mAudioStreamer;
 

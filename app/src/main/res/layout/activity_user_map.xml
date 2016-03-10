@@ -23,14 +23,16 @@
         android:id="@+id/relativeLayout">
 
     <ToggleButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:textOn=""
-            android:textOff=""
-            android:textSize="0sp"
-            android:background="@drawable/nearby_selector"
-            android:id="@+id/bNearby"
-            android:layout_alignParentBottom="true" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:textOn=""
+        android:textOff=""
+        android:textSize="0sp"
+        android:background="@drawable/nearby_selector"
+        android:id="@+id/bNearby"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 
         <Button
             android:layout_width="50dp"
@@ -52,7 +54,9 @@
             android:layout_alignBottom="@+id/bNearby"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
 
     </RelativeLayout>
 

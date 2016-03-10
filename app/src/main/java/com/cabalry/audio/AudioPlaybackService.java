@@ -58,12 +58,11 @@ public class AudioPlaybackService extends RunnableService {
 
     public static void stopAudioPlayback() {
         if (isRunning()) {
-            if (audioPlayer != null) {
+            if (audioPlayer != null)
                 audioPlayer.stopPlayback();
-                audioPlayer = null;
-            }
 
-            playbackThread.interrupt();
+            if (playbackThread != null)
+                playbackThread.interrupt();
         }
     }
 }

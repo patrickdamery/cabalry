@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DataBase
+ * CabalryServer
  */
-public class DataBase {
+public class CabalryServer {
 
-    public static enum UserRequestType {NEARBY, ALARM}
+    public enum UserRequestType {NEARBY, ALARM}
 
     /**
      * Request response string keys
@@ -25,13 +25,14 @@ public class DataBase {
     public static final String REQ_USER_COLOR = "color";
     public static final String REQ_LATITUDE = "lat";
     public static final String REQ_LONGITUDE = "lon";
-    public static final String REQ_LOGIN = "login";
-    public static final String REQ_USER_IP = "ip";
     public static final String REQ_ALARM_ID = "alarmId";
     public static final String REQ_LOCATION = "location";
-    public static final String REQ_SENT = "sent";
-    public static final String REQ_START = "start";
-    public static final String REQ_PORT = "port";
+
+    public static final String REQ_FAKE_PASS = "fake";
+    public static final String REQ_TIMER = "timer";
+    public static final String REQ_SILENT = "silent";
+    public static final String REQ_ALERT_COUNT = "quantity";
+    public static final String REQ_RANGE = "range";
 
     public static final String REQ_FAIL_STATE = "failstate";
     public static final String KEY_FAIL = "keyfail";
@@ -46,10 +47,8 @@ public class DataBase {
     public static final String FINISHED_ALARM = "finished";
     public static final String LOST_ALARM = "lost";
 
-    // ?
+    // GCM stuff
     public static final String SENDER_ID = "200578369108";
-    public static final String PROPERTY_REG_ID = "regId";
-    public static final String PROPERTY_APP_VERSION = "0.7.5";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     /**
@@ -212,7 +211,7 @@ public class DataBase {
      * @return JSON object that contains:
      * success : returns true if successfully updated gcm key
      */
-    public static JSONObject UpdateUserGCM(final String gcm, final int id, final String key) {
+    public static JSONObject UpdateGCM(final String gcm, final int id, final String key) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();

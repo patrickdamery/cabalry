@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.cabalry.base.WebViewActivity;
 
-import static com.cabalry.net.DataBase.REGISTER_URL;
+import static com.cabalry.net.CabalryServer.REGISTER_URL;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 

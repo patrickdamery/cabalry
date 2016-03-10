@@ -15,8 +15,6 @@ import static com.cabalry.util.PreferencesUtil.*;
  */
 public class LocationUpdateManager implements LocationListener {
 
-    public static final int MAX_LISTENERS = 2;
-
     public enum UpdateProvider {NETWORK, GPS, GPS_NETWORK}
 
     private UpdateProvider mUpdateProvider = UpdateProvider.NETWORK;
@@ -27,7 +25,7 @@ public class LocationUpdateManager implements LocationListener {
     private long mMinTime = 0;
     private float mMinDistance = 0;
 
-    private Vector<LocationUpdateListener> mUpdateListeners = new Vector<>(MAX_LISTENERS);
+    private LocationUpdateListener mUpdateListener;
 
     private static LocationUpdateManager mInstance;
 
@@ -40,12 +38,8 @@ public class LocationUpdateManager implements LocationListener {
         mUpdateProvider = updateProvider;
     }
 
-    public void addUpdateListener(LocationUpdateListener updateListener) {
-        mUpdateListeners.add(updateListener);
-    }
-
-    public void removeUpdateListener(LocationUpdateListener updateListener) {
-        mUpdateListeners.remove(updateListener);
+    public void setUpdateListener(LocationUpdateListener updateListener) {
+        mUpdateListener = updateListener;
     }
 
     public void startLocationUpdates() {
@@ -72,7 +66,7 @@ public class LocationUpdateManager implements LocationListener {
 
     public void dispose() {
         stopLocationUpdates();
-        mUpdateListeners.removeAllElements();
+        mUpdateListener = null;
     }
 
     public void resetProvider(LocationManager manager) {
@@ -101,8 +95,7 @@ public class LocationUpdateManager implements LocationListener {
             mCurrentBestLocation = location;
         }
 
-        for (LocationUpdateListener listener : mUpdateListeners)
-            listener.onUpdateLocation(mCurrentBestLocation);
+        mUpdateListener.onUpdateLocation(mCurrentBestLocation);
     }
 
     @Override
