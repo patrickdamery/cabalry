@@ -10,13 +10,10 @@ import android.util.Log;
 import com.cabalry.base.BindableService;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.MathUtil.*;
 import static com.cabalry.util.MessageUtil.*;
-import static com.cabalry.db.DataBase.*;
+import static com.cabalry.util.TasksUtil.*;
 
 /**
  * LocationUpdateService
@@ -33,11 +30,13 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
     @Override
     public void onCreate() {
+        super.onCreate();
+
         mLocationUpdateManager = new LocationUpdateManager(this);
         mLocationUpdateManager.addUpdateListener(this);
 
         currentLocation = GetLocation(this);
-        updateDBLocation();
+        new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
     }
 
     @Override
@@ -57,31 +56,12 @@ public class LocationUpdateService extends BindableService implements LocationUp
         if (GetDistance(currentLocation, lastLocation) < LOCATION_THRESHOLD) {
             if (System.currentTimeMillis() - startTime >= WAIT_TIME) {
                 startTime = System.currentTimeMillis();
-                updateDBLocation();
+                new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
             }
 
-        } else updateDBLocation();
+        } else new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
 
         Log.d(TAG, "onUpdateLocation(): " + location.toString());
-    }
-
-    private void updateDBLocation() {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            public Void doInBackground(Void... voids) {
-
-                JSONObject result = UpdateUserLocation(currentLocation.latitude, currentLocation.longitude,
-                        GetUserID(LocationUpdateService.this), GetUserKey(LocationUpdateService.this));
-
-                try {
-                    result.getBoolean(REQ_SUCCESS);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-        }.execute();
     }
 
     @Override

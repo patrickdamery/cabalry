@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.cabalry.base.WebViewActivity;
 
-import static com.cabalry.db.DataBase.RECORDINGS_URL;
+import static com.cabalry.net.DataBase.RECORDINGS_URL;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 

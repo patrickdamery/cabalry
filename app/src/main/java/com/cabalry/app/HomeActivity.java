@@ -18,13 +18,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cabalry.R;
 import com.cabalry.bluetooth.BluetoothService;
-import com.cabalry.db.DataBase;
+import com.cabalry.net.DataBase;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.util.PreferencesUtil;
 
@@ -127,6 +128,21 @@ public class HomeActivity extends AppCompatActivity {
             mDrawerLayout.openDrawer(Gravity.LEFT);
             PreferencesUtil.SetDrawerLearned(this, true);
         }
+
+        Button bAlarm = (Button) findViewById(R.id.bAlarm);
+        bAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchAlarm();
+            }
+        });
+    }
+
+    private void launchAlarm() {
+        //ActivateAlarmTask activateAlarmTask = new ActivateAlarmTask(getApplicationContext());
+        //activateAlarmTask.execute();
+
+        startActivity(new Intent(this, AlarmMapActivity.class));
     }
 
     @Override
@@ -192,7 +208,7 @@ public class HomeActivity extends AppCompatActivity {
 
             // Logout and redirect to login activity.
             case 7:
-                LogoutUser(this);
+                logout();
                 intent = new Intent(getApplicationContext(), LoginActivity.class);
                 break;
         }
@@ -200,6 +216,17 @@ public class HomeActivity extends AppCompatActivity {
         if (intent != null) {
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void logout() {
+        LogoutUser(this);
+        if (!BluetoothService.isRunning()) {
+            stopService(new Intent(this, BluetoothService.class));
+        }
+
+        if (!LocationUpdateService.isRunning()) {
+            stopService(new Intent(this, LocationUpdateService.class));
         }
     }
 

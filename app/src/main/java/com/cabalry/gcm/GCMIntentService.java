@@ -28,6 +28,11 @@ public class GCMIntentService extends IntentService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
@@ -97,4 +102,5 @@ public class GCMIntentService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
     }
+
 }

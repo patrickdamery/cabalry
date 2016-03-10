@@ -6,7 +6,9 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.cabalry.map.MapUser;
+import com.cabalry.base.MapUser;
+import com.cabalry.net.DataBase;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +19,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
-import static com.cabalry.db.DataBase.*;
+import static com.cabalry.net.DataBase.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * TasksUtil
@@ -243,6 +246,125 @@ public class TasksUtil {
     }
 
     /**
+     * Represents an asynchronous task that activates an alarm.
+     */
+    public static abstract class ActivateAlarmTask extends AsyncTask<Void, Void, Integer> {
+        private static final String TAG = "ActivateAlarmTask";
+
+        private Context mContext;
+
+        public ActivateAlarmTask(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            JSONObject result = DataBase.StartAlarm(GetUserID(mContext), GetUserKey(mContext));
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+
+                    int alarmID = result.getInt(REQ_ALARM_ID);
+                    SetAlarmID(mContext, alarmID);
+                    return alarmID;
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            SetAlarmID(mContext, 0);
+            Log.e(TAG, "Could not start alarm!");
+
+            return 0;
+        }
+
+        @Override
+        protected abstract void onPostExecute(Integer result);
+    }
+
+    /**
+     * Represents an asynchronous task to check billing state.
+     */
+    public static abstract class CheckBillingTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "CheckBillingTask";
+
+        private Context mContext;
+
+        public CheckBillingTask(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            JSONObject result = CheckBilling(GetUserID(mContext), GetUserKey(mContext));
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS))
+                    return true;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected abstract void onPostExecute(Boolean result);/* {
+            if(!result) {
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.error_billing),
+                        Toast.LENGTH_LONG).show();
+            } else {
+                mContext.startService(new Intent(mContext, StartAlarmService.class));
+            }
+        }*/
+    }
+
+    /**
+     * Represents an asynchronous task which updates the user location on the data base.
+     */
+    public static class UpdateLocationTask extends AsyncTask<Void, Void, Void> {
+        private static final String TAG = "UpdateLocationTask";
+
+        Context mContext;
+        LatLng mLocation;
+
+        public UpdateLocationTask(Context context, LatLng location) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+            mLocation = location;
+        }
+
+        @Override
+        public Void doInBackground(Void... voids) {
+            if (mLocation != null) {
+                JSONObject result = UpdateUserLocation(mLocation.latitude, mLocation.longitude,
+                        GetUserID(mContext), GetUserKey(mContext));
+
+                try {
+                    result.getBoolean(REQ_SUCCESS);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e(TAG, "Can't update, location is null!");
+            }
+
+            return null;
+        }
+    }
+
+    /**
      * Represents an asynchronous
      */
     public static class UpdateListenerInfoTask extends AsyncTask<Void, Void, Void> {
@@ -294,7 +416,40 @@ public class TasksUtil {
     }
 
     /**
-     * Represents an asynchronous
+     * Represents an asynchronous task that validates the user password.
+     */
+    public static abstract class CheckPasswordTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "CheckPasswordTask";
+
+        Context mContext;
+        String mPassword;
+
+        public CheckPasswordTask(Context context, String password) {
+            mContext = context;
+            mPassword = password;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            JSONObject result = CheckPassword(GetUserID(mContext), GetUserKey(mContext), mPassword);
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected abstract void onPostExecute(Boolean result);
+    }
+
+    /**
+     * Represents an asynchronous task that checks if internet connection is available.
      */
     public static abstract class CheckNetworkTask extends AsyncTask<Void, Void, Boolean> {
         private static final String TAG = "CheckNetworkTask";

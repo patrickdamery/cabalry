@@ -70,6 +70,10 @@
         </activity>
 
         <activity
+            android:name=".app.AlarmMapActivity"
+            android:label="@string/title_activity_alarm"></activity>
+
+        <activity
             android:name=".app.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".app.HomeActivity" >
@@ -144,6 +148,10 @@
         <service android:name=".audio.AudioPlaybackService"
             android:exported="false" />
 
+        <service
+            android:name=".alarm.StartAlarmService"
+            android:exported="false" />
+
         <receiver
             android:name=".gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -154,42 +162,39 @@
             </intent-filter>
         </receiver>
 
-        <!--
-        <receiver
-            android:name="com.cabalry.service.SilentAlarmReceiver">
+        <receiver android:name="com.cabalry.alarm.SilentAlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.VOLUME_CHANGED_ACTION" />
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name="com.cabalry.service.NetworkStateReceiver">
+        <receiver android:name="com.cabalry.net.NetworkStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE">
                     <action android:name="android.net.wifi.WIFI_STATE_CHANGED"></action>
                 </action>
             </intent-filter>
-        </receiver> -->
+        </receiver>
 
         <service android:name=".gcm.GCMIntentService"
             android:exported="false" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
-        <!--
-        <service android:name=".service.LocationTracerService"
+        <service
+            android:name=".location.LocationUpdateService"
             android:exported="false" />
 
-        <service android:name=".service.AlarmTimerService"
+        <service
+            android:name=".alarm.AlarmTimerService"
             android:exported="false" />
 
-        <service android:name=".service.AlarmService"
+        <service
+            android:name=".alarm.StartAlarmService"
             android:exported="false" />
 
-        <service android:name=".service.SilentAlarmService"
+        <service
+            android:name=".alarm.SilentAlarmService"
             android:exported="false" />
-
-        <service android:name=".service.AlarmSoundService"
-            android:exported="false" /> -->
 
     </application>
 

@@ -12,6 +12,7 @@
     <string name="title_activity_billing">Billing</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_activity_alarm">Alarm</string>
     
     <!-- Strings for navigation drawer -->
     <string-array name="nav_drawer_array">
@@ -34,12 +35,12 @@
     <string name="action_settings">Settings</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Username or Email</string>
-    <string name="prompt_password">Password</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
     <string name="action_login">Log in</string>
     <string name="action_login_short">Login</string>
 
-    <string name="action_forgot">Forgot</string>
+    <string name="action_forgot">Forgot Username/Password</string>
     <string name="action_register">Register</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
@@ -63,6 +64,17 @@
 
     <string name="action_enter">Scan for devices</string>
     <string name="action_cancel">Scan for devices</string>
+
+    <!--  For alarm -->
+    <string name="prompt_ignore">Are you sure you want to ignore alarm?</string>
+    <string name="error_billing">Cannot start alarm please check your billing</string>
+
+    <string name="prompt_yes">Yes</string>
+    <string name="prompt_no">No</string>
+    <string name="prompt_ok">Ok</string>
+    <string name="prompt_cancel">Cancel</string>
+
+    <string name="prompt_password">Please enter your password</string>
 
     <!--  For bluetooth -->
     <string name="device_state">Device Status :</string>

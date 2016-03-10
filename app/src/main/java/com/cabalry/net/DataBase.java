@@ -1,4 +1,4 @@
-package com.cabalry.db;
+package com.cabalry.net;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

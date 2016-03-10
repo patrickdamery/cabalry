@@ -2,10 +2,11 @@ package com.cabalry.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.cabalry.base.WebViewActivity;
 
-import static com.cabalry.db.DataBase.REGISTER_URL;
+import static com.cabalry.net.DataBase.REGISTER_URL;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
@@ -32,5 +33,15 @@ public class RegisterActivity extends WebViewActivity {
         // Return to login
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+        }
+        return true;
     }
 }

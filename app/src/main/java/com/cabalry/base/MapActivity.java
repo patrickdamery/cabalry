@@ -1,20 +1,16 @@
 package com.cabalry.base;
 
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
-import com.cabalry.location.LocationUpdateListener;
+import com.cabalry.app.UserInfoActivity;
 import com.cabalry.location.LocationUpdateService;
-import com.cabalry.map.MapUser;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -45,6 +41,26 @@ public abstract class MapActivity extends BindableActivity
 
     public abstract void onUpdateLocation(LatLng location);
 
+    public void onInfoWindowClick(Marker marker) {
+        Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
+        userInfo.putExtra("id", getUser(marker).getID());
+        startActivity(userInfo);
+    }
+
+    public boolean onMarkerClick(Marker marker) {
+        marker.showInfoWindow();
+        return true;
+    }
+
+    public void onCameraFinish() {
+    }
+
+    public void onCameraCancel() {
+    }
+
+    public void onCameraChange(CameraPosition cameraPosition) {
+    }
+
     public void initializeMap(MapFragment mapFragment) {
         if (mapFragment == null)
             throw new NullPointerException("mapFragment is null!");
@@ -57,6 +73,9 @@ public abstract class MapActivity extends BindableActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
@@ -70,6 +89,18 @@ public abstract class MapActivity extends BindableActivity
     public void onBackPressed() {
         // Return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // Return to home
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -123,6 +154,10 @@ public abstract class MapActivity extends BindableActivity
 
     public Marker getMarker(int id) {
         return mMarkerMap.get(id);
+    }
+
+    public MapUser getUser(Marker marker) {
+        return null;
     }
 
     public void add(final MapUser user) {
@@ -283,13 +318,12 @@ public abstract class MapActivity extends BindableActivity
 
         @Override
         public void onInfoWindowClick(Marker marker) {
-
+            MapActivity.this.onInfoWindowClick(marker);
         }
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-
-            return false;
+            return MapActivity.this.onMarkerClick(marker);
         }
     }
 
@@ -300,14 +334,17 @@ public abstract class MapActivity extends BindableActivity
 
         @Override
         public void onFinish() {
+            MapActivity.this.onCameraFinish();
         }
 
         @Override
         public void onCancel() {
+            MapActivity.this.onCameraCancel();
         }
 
         @Override
         public void onCameraChange(CameraPosition cameraPosition) {
+            MapActivity.this.onCameraChange(cameraPosition);
         }
     }
 }

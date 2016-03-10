@@ -48,7 +48,7 @@
                 android:singleLine="true"
                 android:lines="1"
                 android:ellipsize="end"
-                android:hint="@string/prompt_email"
+                android:hint="@string/hint_username"
                 android:layout_gravity="center_horizontal"/>
 
             <EditText
@@ -63,7 +63,7 @@
                 android:singleLine="true"
                 android:lines="1"
                 android:ellipsize="end"
-                android:hint="@string/prompt_password"
+                android:hint="@string/hint_password"
                 android:layout_gravity="center_horizontal"
                 android:inputType="textPassword"/>
 

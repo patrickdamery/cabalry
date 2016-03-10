@@ -1,4 +1,4 @@
-package com.cabalry.map;
+package com.cabalry.base;
 
 import com.google.android.gms.maps.model.LatLng;
 

@@ -1,4 +1,6 @@
 To Do:
+    - Prompt gps
+    - update camera position on loc update
     - Logout properly
     - Finish login screen
     - Add custom markers

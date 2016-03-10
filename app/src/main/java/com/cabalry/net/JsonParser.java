@@ -1,4 +1,4 @@
-package com.cabalry.db;
+package com.cabalry.net;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -76,6 +76,12 @@ public class PreferencesUtil {
         return GetSharedPrefs(context).getInt(PREF_ALARM_ID, 0);
     }
 
+    public static void SetAlarmID(Context context, int alarmid) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putInt(PREF_ALARM_ID, alarmid);
+        editor.commit();
+    }
+
     public static String GetUserIP(Context context) {
         return GetSharedPrefs(context).getString(PREF_USER_IP, "");
     }
@@ -86,6 +92,10 @@ public class PreferencesUtil {
 
     public static boolean IsDrawerLearned(Context context) {
         return GetSharedPrefs(context).getBoolean(PREF_DRAWER_LEARNED, false);
+    }
+
+    public static boolean IsSilent(Context context) {
+        return GetSharedPrefs(context).getBoolean(PREF_SILENT, false);
     }
 
     public static void SaveMapState(Context context, CameraPosition cameraPosition) {

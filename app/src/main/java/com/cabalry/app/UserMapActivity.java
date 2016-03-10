@@ -1,14 +1,11 @@
 package com.cabalry.app;
 
-import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 
 import com.cabalry.R;
 import com.cabalry.base.MapActivity;
-import com.cabalry.map.MapUser;
+import com.cabalry.base.MapUser;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -41,9 +38,6 @@ public class UserMapActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_map);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         initialize();
     }
 
@@ -51,16 +45,6 @@ public class UserMapActivity extends MapActivity {
     protected void onResume() {
         super.onResume();
         initialize();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                break;
-        }
-        return true;
     }
 
     private void initialize() {
@@ -81,6 +65,7 @@ public class UserMapActivity extends MapActivity {
     public void onUpdateLocation(LatLng location) {
         if (mUser != null) {
             update(mUser, location);
+            mUser.updatePosition(location);
 
             if (mNearbyToggle)
                 collectNearbyUsers();
@@ -128,6 +113,7 @@ public class UserMapActivity extends MapActivity {
                     updateUsers(users);
                 } else {
                     Log.i(TAG, "CollectUsersTask - users is null! fail state: " + getFailState());
+                    setCameraFocus(mUser.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
                 }
 
                 mCollectUsersTask = null;
