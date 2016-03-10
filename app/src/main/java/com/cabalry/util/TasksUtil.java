@@ -309,7 +309,10 @@ public class TasksUtil {
                 if (result.getBoolean(REQ_SUCCESS)) {
 
                     int alarmID = result.getInt(REQ_ALARM_ID);
+                    int alarmUserID = result.getInt(REQ_ALARM_USERID);
+
                     SetAlarmID(mContext, alarmID);
+                    SetAlarmUserID(mContext, alarmUserID);
                     return true;
 
                 }
@@ -578,6 +581,9 @@ public class TasksUtil {
         }
     }
 
+    /**
+     * Represents an asynchronous task that saves user settings to preferences.
+     */
     public static class SaveSettingsTask extends AsyncTask<Void, Void, Void> {
         private static final String TAG = "SaveSettingsTask";
 

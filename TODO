@@ -1,24 +1,24 @@
 To Do:
     - Prompt gps
-    - update camera position on loc update
     - Logout properly
     - set min update time location update
-    - Finish login screen
-    - Add custom markers
-    - Add marker ui on tap
     - Add loading screens
     - Add modular alarm activation
     - Add timer feature
     - Add silent feature
-    - Add fake deactivation
     - Handle case of no available servers for alarm, keep trying
 
 In Progress:
     - Add audio stream (Added, not checked)
     - Add audio playback (Added, not checked)
-    - Add GCM support (Added, not checked)
 
 Completed:
+    - update camera position on loc update
+    - Finish login screen
+    - Add fake deactivation
+    - Add GCM support
+    - Add custom markers
+    - Add marker ui on tap
     - Handle button interrupts gracefully
     - Add interface for bluetooth
     - Set back action on activities

@@ -15,6 +15,7 @@ import com.cabalry.app.AlarmMapActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.net.CabalryServer.*;
 
 /**
  * GCMIntentService
@@ -63,7 +64,7 @@ public class GCMIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                int alarmID = Integer.parseInt(extras.getString(PREF_ALARM_ID));
+                int alarmID = Integer.parseInt(extras.getString(ALARM_ID));
                 SetAlarmID(getApplicationContext(), alarmID);
                 MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.fx_alarm);
                 mediaPlayer.start();

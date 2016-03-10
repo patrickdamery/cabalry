@@ -21,6 +21,7 @@ public class PreferencesUtil {
     public static final String PREF_USER_LOGIN = "LOGIN";
     public static final String PREF_USER_IP = "IP";
     public static final String PREF_ALARM_ID = "ALARMID";
+    public static final String PREF_ALARM_USERID = "ALARM_USERID";
     public static final String PREF_LATITUDE = "LAT";
     public static final String PREF_LONGITUDE = "LNG";
     public static final String PREF_DEVICE_CHARGE = "DEV_CHARGE";
@@ -107,6 +108,16 @@ public class PreferencesUtil {
     public static void SetAlarmID(Context context, int alarmid) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putInt(PREF_ALARM_ID, alarmid);
+        editor.commit();
+    }
+
+    public static int GetAlarmUserID(Context context) {
+        return GetSharedPrefs(context).getInt(PREF_ALARM_USERID, 0);
+    }
+
+    public static void SetAlarmUserID(Context context, int userid) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putInt(PREF_ALARM_USERID, userid);
         editor.commit();
     }
 

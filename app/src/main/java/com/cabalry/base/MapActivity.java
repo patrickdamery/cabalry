@@ -43,7 +43,7 @@ public abstract class MapActivity extends BindableActivity
 
     public void onInfoWindowClick(Marker marker) {
         Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
-        userInfo.putExtra("id", getUser(marker).getID());
+        userInfo.putExtra("id", getUserID(marker));
         startActivity(userInfo);
     }
 
@@ -146,7 +146,7 @@ public abstract class MapActivity extends BindableActivity
         String title = user.getName() + " " + user.getColor() + " " + user.getCar();
 
         return mMap.addMarker(new MarkerOptions()
-                .position(position)
+                        .position(position)
                         .title(title)
                         .icon(BitmapDescriptorFactory.fromResource(getMarkerIcon(user.getType())))
         );
@@ -156,7 +156,26 @@ public abstract class MapActivity extends BindableActivity
         return mMarkerMap.get(id);
     }
 
+    public int getUserID(Marker marker) {
+        for (HashMap.Entry<Integer, Marker> entry : mMarkerMap.entrySet()) {
+            if (entry.getValue().getId().equals(marker.getId())) {
+                return entry.getKey();
+            }
+        }
+
+        return 0;
+    }
+
     public MapUser getUser(Marker marker) {
+        for (HashMap.Entry<Integer, Marker> entry : mMarkerMap.entrySet()) {
+            if (entry.getValue().getId().equals(marker.getId())) {
+                for (MapUser user : mUsers) {
+
+                    if (user.getID() == entry.getKey())
+                        return user;
+                }
+            }
+        }
         return null;
     }
 

@@ -164,20 +164,20 @@ public class HomeActivity extends AppCompatActivity {
 
         // Register GCM.
         if (!registerGCM()) {
-            Toast.makeText(getApplicationContext(), "No valid Google Play Services APK found.",
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_no_gplay),
                     Toast.LENGTH_LONG).show();
         }
     }
 
     private void launchAlarm() {
-        /*new StartAlarmTask(getApplicationContext()) {
+        new StartAlarmTask(getApplicationContext()) {
             @Override
             protected void onPostExecute(Boolean result) {
-                if(result)
+                if (result) {
                     startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+                }
             }
-        }.execute();*/
-        startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+        }.execute();
     }
 
     @Override

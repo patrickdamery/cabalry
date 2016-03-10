@@ -58,7 +58,7 @@ public class AlarmMapActivity extends MapActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
 
-        final boolean selfActivated = GetAlarmID(this) == GetUserID(this);
+        final boolean selfActivated = GetAlarmUserID(this) == GetUserID(this);
 
         if (selfActivated) {
             // Start audio stream service

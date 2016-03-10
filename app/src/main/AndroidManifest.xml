@@ -112,6 +112,14 @@
         </activity>
 
         <activity
+            android:name=".app.UserInfoActivity"
+            android:label="@string/title_activity_userinfo">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.HomeActivity" />
+        </activity>
+
+        <activity
             android:name=".app.RegisterActivity"
             android:label="@string/title_activity_register"
             android:parentActivityName=".app.LoginActivity" >
