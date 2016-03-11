@@ -65,7 +65,13 @@ public class GCMIntentService extends IntentService {
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
                 int alarmID = Integer.parseInt(extras.getString(ALARM_ID));
+                int userID = Integer.parseInt(extras.getString(ALARM_USERID));
+
+                Log.i(TAG, "alarmid: " + alarmID + ", userid: " + userID);
+
                 SetAlarmID(getApplicationContext(), alarmID);
+                SetAlarmUserID(getApplicationContext(), userID);
+
                 MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.fx_alarm);
                 mediaPlayer.start();
 
@@ -91,11 +97,11 @@ public class GCMIntentService extends IntentService {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_alert)
-                        .setContentTitle("Cabalry Alarm")
+                        .setContentTitle(getResources().getString(R.string.prompt_alarm_title))
                         .setAutoCancel(true)
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("An alarm has been triggered! AlarmID : " + alarmID))
-                        .setContentText("An alarm has been triggered! AlarmID : " + alarmID);
+                                .bigText(getResources().getString(R.string.prompt_alarm) + alarmID))
+                        .setContentText(getResources().getString(R.string.prompt_alarm) + alarmID);
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

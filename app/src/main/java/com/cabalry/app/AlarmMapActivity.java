@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cabalry.R;
 import com.cabalry.audio.AudioPlaybackService;
@@ -19,6 +20,7 @@ import com.cabalry.location.LocationUpdateService;
 import com.cabalry.base.MapUser;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.Vector;
 
@@ -106,6 +108,14 @@ public class AlarmMapActivity extends MapActivity {
     }
 
     @Override
+    public void onInfoWindowClick(Marker marker) {
+        Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
+        userInfo.putExtra("id", getUserID(marker));
+        userInfo.putExtra("parent", "alarm");
+        startActivity(userInfo);
+    }
+
+    @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
@@ -177,6 +187,10 @@ public class AlarmMapActivity extends MapActivity {
                                 // Fake stop alarm.
                                 Log.i(TAG, "Alarm fake stopped");
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            } else {
+                                promptPassword();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_password),
+                                        Toast.LENGTH_LONG).show();
                             }
 
                         } else if (value.equals(GetFakePassword(getApplicationContext()))) {
@@ -199,6 +213,10 @@ public class AlarmMapActivity extends MapActivity {
                                             // Fake stop alarm.
                                             Log.i(TAG, "Alarm fake stopped");
                                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        } else {
+                                            promptPassword();
+                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_password),
+                                                    Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 }

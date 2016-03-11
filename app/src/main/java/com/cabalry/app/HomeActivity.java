@@ -2,16 +2,21 @@ package com.cabalry.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -167,6 +173,35 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_no_gplay),
                     Toast.LENGTH_LONG).show();
         }
+
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !GetGPSChecked(this)) {
+            alertNoGpsEnabled();
+            SetGPSChecked(this, true);
+        }
+    }
+
+    private void alertNoGpsEnabled() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getResources().getString(R.string.prompt_no_gps))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.prompt_yes),
+                        new DialogInterface.OnClickListener() {
+                            @SuppressWarnings("unused")
+                            public void onClick(DialogInterface dialog, int id) {
+                                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            }
+                        })
+                .setNegativeButton(getResources().getString(R.string.prompt_no),
+                        new DialogInterface.OnClickListener() {
+                            @SuppressWarnings("unused")
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void launchAlarm() {
@@ -178,6 +213,47 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }.execute();
+    }
+
+    private void promptPassword() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setMessage(getResources().getString(R.string.prompt_password));
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+        alert.setView(input);
+
+        alert.setPositiveButton(getResources().getString(R.string.prompt_ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        final String value = input.getText().toString();
+
+                        new CheckPasswordTask(getApplicationContext(), value) {
+                            @Override
+                            protected void onPostExecute(Boolean result) {
+                                if (result) {
+                                    logout();
+                                } else {
+                                    promptPassword();
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_password),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }.execute();
+                    }
+                });
+
+        alert.setNegativeButton(getResources().getString(R.string.prompt_cancel),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+        alert.show();
     }
 
     @Override
@@ -243,8 +319,12 @@ public class HomeActivity extends AppCompatActivity {
 
             // Logout and redirect to login activity.
             case 7:
-                logout();
-                intent = new Intent(getApplicationContext(), LoginActivity.class);
+                if (GetAlarmUserID(this) == GetUserID(this)) {
+                    promptPassword();
+                } else {
+                    logout();
+                    intent = new Intent(getApplicationContext(), LoginActivity.class);
+                }
                 break;
         }
 
@@ -256,6 +336,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void logout() {
         new UserLogoutTask(getApplicationContext()).execute();
+        if (GetAlarmUserID(this) == GetUserID(this)) {
+            new StopAlarmTask(getApplicationContext()).execute();
+        }
 
         if (GetAlarmID(getApplicationContext()) != 0)
             new StopAlarmTask(getApplicationContext()).execute();
@@ -282,6 +365,9 @@ public class HomeActivity extends AppCompatActivity {
             stopService(new Intent(this, AudioStreamService.class));
         }
 
+        SetAlarmUserID(this, 0);
+        SetGPSChecked(this, false);
+        SetDrawerLearned(this, false);
         LogoutUser(this);
     }
 

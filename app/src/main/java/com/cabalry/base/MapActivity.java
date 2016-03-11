@@ -28,6 +28,7 @@ public abstract class MapActivity extends BindableActivity
     public static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
+    private static boolean isRunning = false;
 
     private MapFragment mMapFragment;
 
@@ -76,6 +77,8 @@ public abstract class MapActivity extends BindableActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        isRunning = true;
     }
 
     @Override
@@ -113,6 +116,7 @@ public abstract class MapActivity extends BindableActivity
         }
 
         SaveMapState(this, mMap.getCameraPosition());
+        isRunning = false;
     }
 
     @Override
@@ -249,6 +253,10 @@ public abstract class MapActivity extends BindableActivity
         mMap.animateCamera(cameraUpdate, transTime, mCameraListener);
     }
 
+    public static boolean isRunning() {
+        return isRunning;
+    }
+
     /**
      * MessengerHandler
      */
@@ -262,9 +270,11 @@ public abstract class MapActivity extends BindableActivity
 
             switch (msg.what) {
                 case MSG_LOCATION_UPDATE:
-                    double lat = data.getDouble("lat");
-                    double lng = data.getDouble("lng");
-                    onUpdateLocation(new LatLng(lat, lng));
+                    if (isRunning) {
+                        double lat = data.getDouble("lat");
+                        double lng = data.getDouble("lng");
+                        onUpdateLocation(new LatLng(lat, lng));
+                    }
                     break;
 
                 default:

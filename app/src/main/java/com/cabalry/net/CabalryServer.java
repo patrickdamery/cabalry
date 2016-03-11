@@ -26,9 +26,10 @@ public class CabalryServer {
     public static final String REQ_LATITUDE = "lat";
     public static final String REQ_LONGITUDE = "lon";
     public static final String REQ_ALARM_ID = "alarmId";
-    public static final String REQ_ALARM_USERID = "alarmUserId";
     public static final String REQ_LOCATION = "location";
+    public static final String REQ_ALARM_LOCATION = "sent";
     public static final String ALARM_ID = "alarmId";
+    public static final String ALARM_USERID = "userId";
 
     public static final String REQ_FAKE_PASS = "fake";
     public static final String REQ_TIMER = "timer";

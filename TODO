@@ -1,9 +1,7 @@
 To Do:
-    - Prompt gps
-    - Logout properly
+    - ignore alarm on server
     - set min update time location update
     - Add loading screens
-    - Add modular alarm activation
     - Add timer feature
     - Add silent feature
     - Handle case of no available servers for alarm, keep trying
@@ -13,8 +11,10 @@ In Progress:
     - Add audio playback (Added, not checked)
 
 Completed:
-    - update camera position on loc update
+    - Logout properly
     - Finish login screen
+    - Prompt gps
+    - update camera position on loc update
     - Add fake deactivation
     - Add GCM support
     - Add custom markers
@@ -31,3 +31,7 @@ Completed:
     - Add selection zoom
 
 Bugs:
+    - user info doesn't work
+
+Notes:
+    - Should we prompt the user for logging out in case an alarm is still ongoing?

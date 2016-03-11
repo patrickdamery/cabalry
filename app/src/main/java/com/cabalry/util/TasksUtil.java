@@ -87,7 +87,18 @@ public class TasksUtil {
                         users = new Vector<>();
 
                         // Get locations array
-                        JSONArray locations = result.getJSONArray(REQ_LOCATION);
+                        JSONArray locations;
+                        switch (mType) {
+                            case NEARBY:
+                                locations = result.getJSONArray(REQ_LOCATION);
+                                break;
+                            case ALARM:
+                                locations = result.getJSONArray(REQ_ALARM_LOCATION);
+                                break;
+                            default:
+                                locations = result.getJSONArray(REQ_LOCATION);
+                                break;
+                        }
 
                         for (int i = 0; i < locations.length(); i++) {
                             JSONObject location = locations.getJSONObject(i);
@@ -309,10 +320,9 @@ public class TasksUtil {
                 if (result.getBoolean(REQ_SUCCESS)) {
 
                     int alarmID = result.getInt(REQ_ALARM_ID);
-                    int alarmUserID = result.getInt(REQ_ALARM_USERID);
 
                     SetAlarmID(mContext, alarmID);
-                    SetAlarmUserID(mContext, alarmUserID);
+                    SetAlarmUserID(mContext, alarmID);
                     return true;
 
                 }

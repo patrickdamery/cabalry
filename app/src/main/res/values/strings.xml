@@ -64,6 +64,9 @@
     <string name="msg_webview_loading">Loading...</string>
 
     <string name="error_no_network">Please re-connect to the internet and log in</string>
+    <string name="prompt_no_gps">This app cannot function properly without GPS, do you want to enable it?</string>
+    <string name="error_wrong_password">Wrong password please try again</string>
+
 
     <string name="action_enter">Scan for devices</string>
     <string name="action_cancel">Scan for devices</string>
@@ -78,6 +81,8 @@
     <string name="prompt_cancel">Cancel</string>
 
     <string name="prompt_password">Please enter your password</string>
+    <string name="prompt_alarm_title">Cabalry Alarm</string>
+    <string name="prompt_alarm">An alarm has been triggered! ID = </string>
 
     <!--  For bluetooth -->
     <string name="device_state">Device Status :</string>

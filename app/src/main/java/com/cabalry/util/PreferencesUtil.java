@@ -27,6 +27,7 @@ public class PreferencesUtil {
     public static final String PREF_DEVICE_CHARGE = "DEV_CHARGE";
     public static final String PREF_CACHED_ADDRESS = "CACHED_ADDRESS";
     public static final String PREF_DRAWER_LEARNED = "NAVDR_LEARNED";
+    public static final String PREF_GPS_CHECK = "GPS_CHECK";
 
     public static final String PREF_REG_ID = "REGID";
     public static final String PREF_APP_VERSION = "APPV";
@@ -90,6 +91,16 @@ public class PreferencesUtil {
     public static void SetDrawerLearned(Context context, boolean learned) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putBoolean(PREF_DRAWER_LEARNED, learned);
+        editor.commit();
+    }
+
+    public static boolean GetGPSChecked(Context context) {
+        return GetSharedPrefs(context).getBoolean(PREF_GPS_CHECK, false);
+    }
+
+    public static void SetGPSChecked(Context context, boolean checked) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putBoolean(PREF_GPS_CHECK, checked);
         editor.commit();
     }
 
