@@ -73,22 +73,6 @@ public class LocationUpdateService extends BindableService implements LocationUp
         return START_NOT_STICKY;
     }
 
-    // Handler of incoming messages from clients.
-    private class MessengerHandler extends BindableService.BaseMessengerHandler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-    }
-
-    @Override
-    protected Handler getMessengerHandler() {
-        return new MessengerHandler();
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

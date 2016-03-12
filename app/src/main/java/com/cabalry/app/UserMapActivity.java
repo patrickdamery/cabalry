@@ -114,8 +114,15 @@ public class UserMapActivity extends MapActivity {
 
             if (mNearbyToggle)
                 collectNearbyUsers();
-            else
+            else {
+                if (mCollectUsersTask != null)
+                    mCollectUsersTask.cancel(true);
+
+                updateUser(mUser);
                 setCameraFocus(location, CAMERA_ZOOM, 0, TRANS_TIME);
+            }
+        } else {
+            collectUserInfo();
         }
 
         Log.i(TAG, "onUpdateLocation location: " + location.toString());
@@ -140,7 +147,7 @@ public class UserMapActivity extends MapActivity {
         }
     }
 
-    private final CollectUsersTask getCollectUsersTask() {
+    private CollectUsersTask getCollectUsersTask() {
         return new CollectUsersTask() {
             @Override
             protected void onPostExecute(Vector<MapUser> users) {
@@ -156,6 +163,7 @@ public class UserMapActivity extends MapActivity {
                     setCameraFocus(targets, TRANS_TIME);
 
                     updateUsers(users);
+                    Log.i(TAG, "CollectUsersTask - updated");
                 } else {
                     Log.i(TAG, "CollectUsersTask - users is null! fail state: " + getFailState());
                     setCameraFocus(mUser.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
@@ -166,7 +174,7 @@ public class UserMapActivity extends MapActivity {
         };
     }
 
-    private final CollectUserInfoTask getCollectUserInfoTask() {
+    private CollectUserInfoTask getCollectUserInfoTask() {
         return new CollectUserInfoTask() {
             @Override
             protected void onPostExecute(MapUser user) {
@@ -175,8 +183,8 @@ public class UserMapActivity extends MapActivity {
 
                 else {
                     mUser = user;
-                    add(mUser);
-                    setCameraFocus(mUser.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
+                    add(user);
+                    setCameraFocus(user.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
                 }
 
                 mCollectUserInfoTask = null;

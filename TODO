@@ -4,6 +4,7 @@ To Do:
     - Add loading screens
     - Add timer feature
     - Add silent feature
+    - fix help activity back action
     - Handle case of no available servers for alarm, keep trying
 
 In Progress:

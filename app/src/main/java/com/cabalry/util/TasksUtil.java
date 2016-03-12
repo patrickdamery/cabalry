@@ -330,6 +330,8 @@ public class TasksUtil {
                 e.printStackTrace();
             }
 
+            // TODO Handle case of no available servers for alarm, keep trying
+
             SetAlarmID(mContext, 0);
             Log.e(TAG, "Could not start alarm!");
 

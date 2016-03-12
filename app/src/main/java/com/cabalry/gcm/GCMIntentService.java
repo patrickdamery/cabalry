@@ -68,6 +68,8 @@ public class GCMIntentService extends IntentService {
                 int userID = Integer.parseInt(extras.getString(ALARM_USERID));
 
                 Log.i(TAG, "alarmid: " + alarmID + ", userid: " + userID);
+                if (alarmID == 0)
+                    throw new NullPointerException("here");
 
                 SetAlarmID(getApplicationContext(), alarmID);
                 SetAlarmUserID(getApplicationContext(), userID);

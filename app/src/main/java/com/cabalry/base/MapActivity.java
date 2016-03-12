@@ -28,7 +28,8 @@ public abstract class MapActivity extends BindableActivity
     public static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
-    private static boolean isRunning = false;
+    private boolean isRunning = false;
+    private boolean isUpdating = false;
 
     private MapFragment mMapFragment;
 
@@ -253,10 +254,6 @@ public abstract class MapActivity extends BindableActivity
         mMap.animateCamera(cameraUpdate, transTime, mCameraListener);
     }
 
-    public static boolean isRunning() {
-        return isRunning;
-    }
-
     /**
      * MessengerHandler
      */
@@ -288,8 +285,11 @@ public abstract class MapActivity extends BindableActivity
      * new users with the current list users and map markers.
      */
     public void updateUsers(final Vector<MapUser> newList) {
+        if (isUpdating) return;
         if (newList == null)
             throw new NullPointerException("newList can't be null!");
+
+        isUpdating = true;
 
         Vector<MapUser> removeList = new Vector<>();
 
@@ -337,6 +337,23 @@ public abstract class MapActivity extends BindableActivity
             mUsers.add(add);
             add(add);
         }
+
+        isUpdating = false;
+    }
+
+    public void updateUser(final MapUser user) {
+        if (isUpdating) return;
+        if (user == null)
+            throw new NullPointerException("user can't be null!");
+
+        isUpdating = true;
+
+        mMap.clear();
+        mUsers.clear();
+
+        add(user);
+
+        isUpdating = false;
     }
 
     /**
