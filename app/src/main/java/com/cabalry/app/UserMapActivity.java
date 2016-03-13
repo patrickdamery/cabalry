@@ -132,7 +132,6 @@ public class UserMapActivity extends MapActivity {
         if (mCollectUsersTask == null) {
 
             mCollectUsersTask = getCollectUsersTask();
-            mCollectUsersTask.setCollectInfo(GetUserID(this), GetUserKey(this));
             mCollectUsersTask.execute();
         }
     }
@@ -148,7 +147,7 @@ public class UserMapActivity extends MapActivity {
     }
 
     private CollectUsersTask getCollectUsersTask() {
-        return new CollectUsersTask() {
+        return new CollectUsersTask(getApplicationContext()) {
             @Override
             protected void onPostExecute(Vector<MapUser> users) {
                 if (users != null) {

@@ -1,6 +1,5 @@
 To Do:
-    - ignore alarm on server
-    - logout when alarm is active not working
+    - camera focus not working when nearby enabled
     - Add loading screens
     - Add timer feature
     - Add silent feature
@@ -12,6 +11,8 @@ In Progress:
     - Add audio playback (Added, not checked)
 
 Completed:
+    - logout when alarm is active not working
+    - ignore alarm on server
     - set min update time location update
     - Logout properly
     - Finish login screen
@@ -31,9 +32,9 @@ Completed:
     - Add webview activities
     - Set map settings
     - Add selection zoom
+    - user info doesn't work
+    - Should we prompt the user for logging out in case an alarm is still ongoing?
 
 Bugs:
-    - user info doesn't work
 
 Notes:
-    - Should we prompt the user for logging out in case an alarm is still ongoing?

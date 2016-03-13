@@ -18,6 +18,7 @@ import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.MapActivity;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.base.MapUser;
+import com.cabalry.net.CabalryServer;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -40,8 +41,6 @@ public class AlarmMapActivity extends MapActivity {
     private CollectUsersTask mCollectUsersTask;
     private CollectUserInfoTask mCollectUserInfoTask;
 
-    private boolean mNearbyToggle = true;
-
     private MapUser mUser;
     private int mPassFailedCount;
 
@@ -62,14 +61,22 @@ public class AlarmMapActivity extends MapActivity {
 
         final boolean selfActivated = GetAlarmUserID(this) == GetUserID(this);
 
-        if (selfActivated) {
-            // Start audio stream service
-            startService(new Intent(getApplicationContext(), AudioStreamService.class));
+        new GetAlarmInfoTask(getApplicationContext()) {
+            @Override
+            protected void onPostExecute(Boolean result) {
 
-        } else {
-            // Start audio playback service
-            startService(new Intent(getApplicationContext(), AudioPlaybackService.class));
-        }
+                SetAlarmIP(getApplicationContext(), getIP());
+
+                if (selfActivated) {
+                    // Start audio stream service
+                    startService(new Intent(getApplicationContext(), AudioStreamService.class));
+
+                } else {
+                    // Start audio playback service
+                    startService(new Intent(getApplicationContext(), AudioPlaybackService.class));
+                }
+            }
+        }.execute();
 
         Button bCancel = (Button) findViewById(R.id.bCancel);
         bCancel.setOnClickListener(new View.OnClickListener() {
@@ -130,39 +137,15 @@ public class AlarmMapActivity extends MapActivity {
         }
 
         collectUserInfo();
-        if (mNearbyToggle)
-            collectNearbyUsers();
+        collectNearbyUsers();
     }
 
     @Override
     public void onUpdateLocation(LatLng location) {
         if (mUser != null) {
             update(mUser, location);
-
-            if (mNearbyToggle)
-                collectNearbyUsers();
-            else
-                setCameraFocus(location, CAMERA_ZOOM, 0, TRANS_TIME);
+            collectNearbyUsers();
         }
-    }
-
-    private void ignoreAlarm() {
-
-        if (AudioPlaybackService.isRunning()) {
-            AudioPlaybackService.stopAudioPlayback();
-            stopService(new Intent(this, AudioPlaybackService.class));
-        }
-
-        if (AudioStreamService.isRunning()) {
-            AudioStreamService.stopAudioStream();
-            stopService(new Intent(this, AudioStreamService.class));
-        }
-
-        SetAlarmID(this, 0);
-        SetAlarmUserID(this, 0);
-
-        // return to home
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }
 
     private void promptPassword() {
@@ -254,11 +237,31 @@ public class AlarmMapActivity extends MapActivity {
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }
 
+    private void ignoreAlarm() {
+        new IgnoreAlarmTask(getApplicationContext()).execute();
+
+        if (AudioPlaybackService.isRunning()) {
+            AudioPlaybackService.stopAudioPlayback();
+            stopService(new Intent(this, AudioPlaybackService.class));
+        }
+
+        if (AudioStreamService.isRunning()) {
+            AudioStreamService.stopAudioStream();
+            stopService(new Intent(this, AudioStreamService.class));
+        }
+
+        SetAlarmID(this, 0);
+        SetAlarmUserID(this, 0);
+
+        // return to home
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
     private void collectNearbyUsers() {
         if (mCollectUsersTask == null) {
 
             mCollectUsersTask = getCollectUsersTask();
-            mCollectUsersTask.setCollectInfo(GetUserID(this), GetUserKey(this), GetAlarmID(this));
+            mCollectUsersTask.setType(CabalryServer.UserRequestType.ALARM);
             mCollectUsersTask.execute();
         }
     }
@@ -274,7 +277,7 @@ public class AlarmMapActivity extends MapActivity {
     }
 
     private CollectUsersTask getCollectUsersTask() {
-        return new CollectUsersTask() {
+        return new CollectUsersTask(getApplicationContext()) {
             @Override
             protected void onPostExecute(Vector<MapUser> users) {
                 if (users != null) {

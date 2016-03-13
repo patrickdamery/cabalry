@@ -2,7 +2,6 @@ package com.cabalry.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Camera;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.model.CameraPosition;
@@ -19,7 +18,7 @@ public class PreferencesUtil {
     public static final String PREF_USER_ID = "ID";
     public static final String PREF_USER_KEY = "KEY";
     public static final String PREF_USER_LOGIN = "LOGIN";
-    public static final String PREF_USER_IP = "IP";
+    public static final String PREF_ALARM_IP = "IP";
     public static final String PREF_ALARM_ID = "ALARMID";
     public static final String PREF_ALARM_USERID = "ALARM_USERID";
     public static final String PREF_LATITUDE = "LAT";
@@ -132,8 +131,14 @@ public class PreferencesUtil {
         editor.commit();
     }
 
-    public static String GetUserIP(Context context) {
-        return GetSharedPrefs(context).getString(PREF_USER_IP, "");
+    public static String GetAlarmIP(Context context) {
+        return GetSharedPrefs(context).getString(PREF_ALARM_IP, "");
+    }
+
+    public static void SetAlarmIP(Context context, String ip) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putString(PREF_ALARM_IP, ip);
+        editor.commit();
     }
 
     public static boolean IsUserLogin(Context context) {

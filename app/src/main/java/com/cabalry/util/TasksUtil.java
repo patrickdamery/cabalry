@@ -32,26 +32,17 @@ public class TasksUtil {
      * of nearby cabalry members
      */
     public static abstract class CollectUsersTask extends AsyncTask<Void, Void, Vector<MapUser>> {
+        private static final String TAG = "CollectUsersTask";
 
-        private int mID;
-        private String mKey;
+        private Context mContext;
         private UserRequestType mType;
-        private int mAlarmID;
-
         private String failState;
 
-        public void setCollectInfo(int id, String key) {
-            setCollectInfo(id, key, UserRequestType.NEARBY);
+        public CollectUsersTask(Context context) {
+            mContext = context;
         }
 
-        public void setCollectInfo(int id, String key, int alarmID) {
-            setCollectInfo(id, key, UserRequestType.ALARM);
-            mAlarmID = alarmID;
-        }
-
-        public void setCollectInfo(int id, String key, UserRequestType type) {
-            mID = id;
-            mKey = key;
+        public void setType(UserRequestType type) {
             mType = type;
         }
 
@@ -63,68 +54,71 @@ public class TasksUtil {
         protected Vector<MapUser> doInBackground(Void... params) {
             Vector<MapUser> users = null;
 
-            JSONObject result;
-            boolean success;
+            boolean success = false;
 
             try {
-                // Get correct result
-                switch (mType) {
-                    case NEARBY:
-                        result = GetNearby(mID, mKey);
-                        break;
-                    case ALARM:
-                        result = GetAlarmNearby(mAlarmID, mID, mKey);
-                        break;
-                    default:
-                        result = GetNearby(mID, mKey);
-                        break;
-                }
+                JSONObject result;
+                JSONArray locations = null;
 
-                try {
-                    // Check if request was successful
-                    success = result.getBoolean(REQ_SUCCESS);
-                    if (success) {
-                        users = new Vector<>();
-
-                        // Get locations array
-                        JSONArray locations;
-                        switch (mType) {
-                            case NEARBY:
-                                locations = result.getJSONArray(REQ_LOCATION);
-                                break;
-                            case ALARM:
-                                locations = result.getJSONArray(REQ_ALARM_LOCATION);
-                                break;
-                            default:
-                                locations = result.getJSONArray(REQ_LOCATION);
-                                break;
+                if (mType == UserRequestType.ALARM) {
+                    result = GetAlarmNearby(GetAlarmID(mContext), GetUserID(mContext), GetUserKey(mContext));
+                    try {
+                        // Check if request was successful
+                        success = result.getBoolean(REQ_SUCCESS);
+                        if (success) {
+                            // Check if request was successful
+                            locations = result.getJSONArray(REQ_ALARM_LOCATION);
                         }
 
-                        for (int i = 0; i < locations.length(); i++) {
-                            JSONObject location = locations.getJSONObject(i);
-
-                            int id = location.getInt(REQ_USER_ID);
-                            String name = location.getString(REQ_USER_NAME);
-                            String car = location.getString(REQ_USER_CAR);
-                            String color = location.getString(REQ_USER_COLOR);
-                            double lat = location.getDouble(REQ_LATITUDE);
-                            double lng = location.getDouble(REQ_LONGITUDE);
-
-                            MapUser.UserType type = MapUser.UserType.NEARBY;
-                            if (mType == UserRequestType.ALARM) {
-                                type = MapUser.UserType.ALERTED;
-                            }
-
-                            // Add location to list
-                            users.add(new MapUser(id, name, car, color, lat, lng, type));
-                        }
-                    } else {
-                        failState = result.getString(REQ_FAIL_STATE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    result = GetNearby(GetUserID(mContext), GetUserKey(mContext));
+                    try {
+                        // Check if request was successful
+                        success = result.getBoolean(REQ_SUCCESS);
+                        if (success) {
+                            // Check if request was successful
+                            locations = result.getJSONArray(REQ_LOCATION);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+                if (success) {
+                    users = new Vector<>();
+
+                    for (int i = 0; i < locations.length(); i++) {
+                        JSONObject location = locations.getJSONObject(i);
+
+                        int id = location.getInt(REQ_USER_ID);
+                        String name = location.getString(REQ_USER_NAME);
+                        String car = location.getString(REQ_USER_CAR);
+                        String color = location.getString(REQ_USER_COLOR);
+                        double lat = location.getDouble(REQ_LATITUDE);
+                        double lng = location.getDouble(REQ_LONGITUDE);
+
+                        MapUser.UserType type = MapUser.UserType.NEARBY;
+                        if (mType == UserRequestType.ALARM) {
+                            if (GetAlarmUserID(mContext) == id)
+                                type = MapUser.UserType.ALERT;
+                            else
+                                type = MapUser.UserType.ALERTED;
+                        }
+
+                        // Add location to list
+                        users.add(new MapUser(id, name, car, color, lat, lng, type));
+
+                        Log.i(TAG, "added user, id: " + id + ", name: " + name);
+                    }
+                } else {
+                    failState = result.getString(REQ_FAIL_STATE);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -341,6 +335,44 @@ public class TasksUtil {
     }
 
     /**
+     * Represents an asynchronous task that ignores an alarm.
+     */
+    public static class IgnoreAlarmTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "StopAlarmTask";
+
+        private Context mContext;
+
+        public IgnoreAlarmTask(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            JSONObject result = IgnoreAlarm(GetAlarmID(mContext), GetUserID(mContext), GetUserKey(mContext));
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (!result)
+                Log.e(TAG, "Unable to ignore alarm on server!");
+        }
+    }
+
+    /**
      * Represents an asynchronous task that stops an alarm.
      */
     public static class StopAlarmTask extends AsyncTask<Void, Void, Boolean> {
@@ -376,6 +408,64 @@ public class TasksUtil {
             if (!result)
                 Log.e(TAG, "Unable to stop alarm on server!");
         }
+    }
+
+    public static abstract class GetAlarmInfoTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "StopAlarmTask";
+
+        private Context mContext;
+        private int mID;
+        private String mIP;
+        private String mState;
+        private String mStart;
+
+        public int getID() {
+            return mID;
+        }
+
+        public String getIP() {
+            return mIP;
+        }
+
+        public String getState() {
+            return mState;
+        }
+
+        public String getStart() {
+            return mStart;
+        }
+
+        public GetAlarmInfoTask(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            JSONObject result = GetAlarmInfo(GetAlarmID(mContext), GetUserID(mContext), GetUserKey(mContext));
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+
+                    mStart = result.getString(REQ_ALARM_START);
+                    mIP = result.getString(REQ_ALARM_IP);
+                    mState = result.getString(REQ_ALARM_IP);
+                    mID = result.getInt(REQ_ID);
+
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected abstract void onPostExecute(Boolean result);
     }
 
     /**

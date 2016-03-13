@@ -21,7 +21,7 @@ public class AudioStreamService extends RunnableService {
         Thread streamThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mAudioStreamer.startStream(GetUserIP(AudioStreamService.this));
+                mAudioStreamer.startStream(GetAlarmIP(AudioStreamService.this));
             }
         });
 
