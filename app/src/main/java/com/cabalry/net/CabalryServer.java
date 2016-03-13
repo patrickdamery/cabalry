@@ -61,6 +61,7 @@ public class CabalryServer {
     public static final String GET_SETTINGS_URL = "https://" + CABALRY_URL + "/cabalry/getSettings.php";
     public static final String LOGIN_URL = "https://" + CABALRY_URL + "/cabalry/login.php";
     public static final String CHECK_BILLING_URL = "https://" + CABALRY_URL + "/cabalry/checkBilling.php";
+    public static final String CHECK_BUTTON_URL = "https://" + CABALRY_URL + "/cabalry/checkButton.php";
     public static final String CHECK_PASS_URL = "https://" + CABALRY_URL + "/cabalry/checkPassword.php";
     public static final String START_ALARM_URL = "https://" + CABALRY_URL + "/cabalry/startAlarm.php";
     public static final String STOP_ALARM_URL = "https://" + CABALRY_URL + "/cabalry/stopAlarm.php";
@@ -159,6 +160,26 @@ public class CabalryServer {
         params.add(new BasicNameValuePair("password", password));
 
         return sendRequest(new RequestObject(params, CHECK_PASS_URL));
+    }
+
+    /**
+     * Function checks mac address of button
+     *
+     * @param id  of user
+     * @param key of user
+     * @param mac of button
+     * @return JSON object that contains:
+     * success : returns true if password inputStream correct
+     */
+    public static JSONObject CheckButton(final int id, final String key, final String mac) {
+
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+        params.add(new BasicNameValuePair("mac", mac));
+
+        return sendRequest(new RequestObject(params, CHECK_BUTTON_URL));
     }
 
     /**

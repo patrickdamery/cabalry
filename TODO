@@ -1,6 +1,7 @@
 To Do:
     - ignore alarm on server
     - set min update time location update
+    - logout when alarm is active not working
     - Add loading screens
     - Add timer feature
     - Add silent feature

@@ -27,6 +27,8 @@ public class GCMIntentService extends IntentService {
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder builder;
 
+    private static MediaPlayer mMediaPlayer;
+
     public GCMIntentService() {
         super("GcmIntentService");
     }
@@ -34,6 +36,9 @@ public class GCMIntentService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (mMediaPlayer == null)
+            mMediaPlayer = MediaPlayer.create(this, R.raw.fx_alarm);
     }
 
     @Override
@@ -64,21 +69,37 @@ public class GCMIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                int alarmID = Integer.parseInt(extras.getString(ALARM_ID));
-                int userID = Integer.parseInt(extras.getString(ALARM_USERID));
+                String action = extras.getString("action");
 
-                Log.i(TAG, "alarmid: " + alarmID + ", userid: " + userID);
-                if (alarmID == 0)
-                    throw new NullPointerException("here");
+                // TODO remove following debug code
+                if (action == null || (action != null && !action.isEmpty())) {
+                    action = "start";
+                }
+                // --
 
-                SetAlarmID(getApplicationContext(), alarmID);
-                SetAlarmUserID(getApplicationContext(), userID);
+                if (action != null && !action.isEmpty()) {
+                    if (action.equals("start")) {
 
-                MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.fx_alarm);
-                mediaPlayer.start();
+                        int alarmID = Integer.parseInt(extras.getString(ALARM_ID));
+                        int userID = Integer.parseInt(extras.getString(ALARM_USERID));
 
-                // Post notification of received message.
-                sendNotification(alarmID);
+                        SetAlarmID(getApplicationContext(), alarmID);
+                        SetAlarmUserID(getApplicationContext(), userID);
+
+                        if (mMediaPlayer == null)
+                            mMediaPlayer = MediaPlayer.create(this, R.raw.fx_alarm);
+
+                        if (mMediaPlayer.isPlaying())
+                            mMediaPlayer.stop();
+                        mMediaPlayer.start();
+
+                        // Post notification of received message.
+                        sendNotification(alarmID);
+
+                    } else if (action.equals("stop")) {
+
+                    }
+                }
             }
         }
 

@@ -79,6 +79,10 @@ public abstract class MapActivity extends BindableActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        if (!LocationUpdateService.isRunning()) {
+            startService(new Intent(this, LocationUpdateService.class));
+        }
+
         isRunning = true;
     }
 
