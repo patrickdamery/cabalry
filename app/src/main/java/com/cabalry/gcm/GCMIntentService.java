@@ -69,16 +69,10 @@ public class GCMIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                String action = extras.getString("action");
-
-                // TODO remove following debug code
-                if (action == null || (action != null && !action.isEmpty())) {
-                    action = "start";
-                }
-                // --
+                String action = extras.getString(ALARM_GCM_ACTION);
 
                 if (action != null && !action.isEmpty()) {
-                    if (action.equals("start")) {
+                    if (action.equals(ALARM_ACTION_START)) {
 
                         int alarmID = Integer.parseInt(extras.getString(ALARM_ID));
                         int userID = Integer.parseInt(extras.getString(ALARM_USERID));
@@ -96,9 +90,12 @@ public class GCMIntentService extends IntentService {
                         // Post notification of received message.
                         sendNotification(alarmID);
 
-                    } else if (action.equals("stop")) {
+                    } else if (action.equals(ALARM_ACTION_STOP)) {
 
                     }
+
+                } else {
+                    Log.e(TAG, "gcm action could not be parsed!");
                 }
             }
         }

@@ -335,40 +335,52 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        new UserLogoutTask(getApplicationContext()).execute();
         if (GetAlarmUserID(this) == GetUserID(this)) {
             new StopAlarmTask(getApplicationContext()).execute();
         }
 
-        if (GetAlarmID(getApplicationContext()) != 0)
-            new StopAlarmTask(getApplicationContext()).execute();
+        new UserLogoutTask(getApplicationContext()) {
+            @Override
+            protected void onPostExecute(final Boolean success) {
+                if (success) {
+                    Context context = getApplicationContext();
 
-        if (!BluetoothService.isRunning())
-            stopService(new Intent(this, BluetoothService.class));
+                    if (!BluetoothService.isRunning())
+                        stopService(new Intent(context, BluetoothService.class));
 
-        if (!LocationUpdateService.isRunning())
-            stopService(new Intent(this, LocationUpdateService.class));
+                    if (!LocationUpdateService.isRunning())
+                        stopService(new Intent(context, LocationUpdateService.class));
 
-        //if (!AlarmTimerService.isRunning())
-        stopService(new Intent(this, AlarmTimerService.class));
+                    //if (!AlarmTimerService.isRunning())
+                    stopService(new Intent(context, AlarmTimerService.class));
 
-        //if (!SilentAlarmService.isRunning())
-        stopService(new Intent(this, SilentAlarmService.class));
+                    //if (!SilentAlarmService.isRunning())
+                    stopService(new Intent(context, SilentAlarmService.class));
 
-        if (AudioPlaybackService.isRunning()) {
-            AudioPlaybackService.stopAudioPlayback();
-            stopService(new Intent(this, AudioPlaybackService.class));
-        }
+                    if (AudioPlaybackService.isRunning()) {
+                        AudioPlaybackService.stopAudioPlayback();
+                        stopService(new Intent(context, AudioPlaybackService.class));
+                    }
 
-        if (AudioStreamService.isRunning()) {
-            AudioStreamService.stopAudioStream();
-            stopService(new Intent(this, AudioStreamService.class));
-        }
+                    if (AudioStreamService.isRunning()) {
+                        AudioStreamService.stopAudioStream();
+                        stopService(new Intent(context, AudioStreamService.class));
+                    }
 
-        SetAlarmUserID(this, 0);
-        SetGPSChecked(this, false);
-        SetDrawerLearned(this, false);
-        LogoutUser(this);
+                    SetAlarmID(context, 0);
+                    SetAlarmUserID(context, 0);
+                    SetGPSChecked(context, false);
+                    SetDrawerLearned(context, false);
+                    LogoutUser(context);
+
+                    startActivity(new Intent(context, LoginActivity.class));
+
+                } else {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_logout),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

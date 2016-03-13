@@ -28,8 +28,12 @@ public class CabalryServer {
     public static final String REQ_ALARM_ID = "alarmId";
     public static final String REQ_LOCATION = "location";
     public static final String REQ_ALARM_LOCATION = "sent";
+
     public static final String ALARM_ID = "alarmId";
     public static final String ALARM_USERID = "userId";
+    public static final String ALARM_GCM_ACTION = "action";
+    public static final String ALARM_ACTION_START = "start";
+    public static final String ALARM_ACTION_STOP = "stop";
 
     public static final String REQ_FAKE_PASS = "fake";
     public static final String REQ_TIMER = "timer";

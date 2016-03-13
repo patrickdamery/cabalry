@@ -7,9 +7,8 @@ import android.view.MenuItem;
 
 import com.cabalry.base.WebViewActivity;
 
-import static com.cabalry.net.CabalryServer.USERINFO_URL;
-import static com.cabalry.util.PreferencesUtil.GetUserID;
-import static com.cabalry.util.PreferencesUtil.GetUserKey;
+import static com.cabalry.net.CabalryServer.*;
+import static com.cabalry.util.PreferencesUtil.*;
 
 /**
  * UserInfoActivity
@@ -30,16 +29,12 @@ public class UserInfoActivity extends WebViewActivity {
         mParent = getIntent().getExtras().getString("parent");
 
         // Load Url.
-        getWebView().loadUrl(USERINFO_URL + "?id=" + GetUserID(this) + "&auth_key=" + GetUserKey(this) + "&userId=" + id);
-        Log.i(TAG, "onCreate - " + USERINFO_URL + "?id=" + GetUserID(this) + "&auth_key=" + GetUserKey(this) + "&userId=" + id);
+        getWebView().loadUrl(VIEWUSER_URL + "?id=" + GetUserID(this) + "&auth_key=" + GetUserKey(this) + "&userId=" + id);
     }
 
     @Override
     public void onBackPressed() {
-        if (mParent == null) {
-            startActivity(new Intent(this, HomeActivity.class));
-
-        } else {
+        if (mParent != null) {
             switch (mParent) {
                 case "map":
                     startActivity(new Intent(this, UserMapActivity.class));
@@ -50,12 +45,13 @@ public class UserInfoActivity extends WebViewActivity {
 
                     break;
                 default:
-                    startActivity(new Intent(this, HomeActivity.class));
+                    super.onBackPressed();
                     break;
             }
-        }
 
-        super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

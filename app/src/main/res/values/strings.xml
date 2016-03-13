@@ -50,6 +50,7 @@
     <string name="error_invalid_password">Password must be at least 6 characters long</string>
     <string name="error_incorrect_login">An error has occurred please check your login info</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_logout">An error occurred when logging out, please try again</string>
 
     <!--  DeviceListActivity -->
     <string name="title_paired_devices">Paired Devices</string>

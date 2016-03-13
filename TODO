@@ -1,6 +1,5 @@
 To Do:
     - ignore alarm on server
-    - set min update time location update
     - logout when alarm is active not working
     - Add loading screens
     - Add timer feature
@@ -13,6 +12,7 @@ In Progress:
     - Add audio playback (Added, not checked)
 
 Completed:
+    - set min update time location update
     - Logout properly
     - Finish login screen
     - Prompt gps

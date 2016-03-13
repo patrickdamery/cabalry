@@ -45,11 +45,7 @@ public abstract class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
 
-        // Check if user still has connection
-        if (mCheckNetworkTask == null) {
-            mCheckNetworkTask = getCheckNetworkTask();
-            mCheckNetworkTask.execute();
-        }
+        // TODO Check if user still has connection
 
         // Setup web view.
         mWebView = (WebView) findViewById(R.id.web_cabalry);
@@ -92,14 +88,14 @@ public abstract class WebViewActivity extends AppCompatActivity {
                 editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
                 builder.setView(editText);
-                builder.setPositiveButton(getString(R.string.action_enter), new OnClickListener() {
+                builder.setPositiveButton(getString(R.string.prompt_ok), new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         result.confirm(editText.getText().toString());
                     }
                 });
 
-                builder.setNegativeButton(getString(R.string.action_cancel), new OnClickListener() {
+                builder.setNegativeButton(getString(R.string.prompt_cancel), new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         result.cancel();
@@ -123,11 +119,7 @@ public abstract class WebViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // Check if user still has connection
-        if (mCheckNetworkTask == null) {
-            mCheckNetworkTask = getCheckNetworkTask();
-            mCheckNetworkTask.execute();
-        }
+        // TODO Check if user still has connection
     }
 
     @Override
@@ -144,24 +136,6 @@ public abstract class WebViewActivity extends AppCompatActivity {
                 break;
         }
         return true;
-    }
-
-    private CheckNetworkTask getCheckNetworkTask() {
-        return new CheckNetworkTask(this) {
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (result) {
-                    // User has no available internet connection.
-                    Toast.makeText(getApplicationContext(), getString(R.string.error_no_network),
-                            Toast.LENGTH_LONG).show();
-
-                    // return to login.
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                }
-
-                mCheckNetworkTask = null;
-            }
-        };
     }
 
     protected WebView getWebView() {

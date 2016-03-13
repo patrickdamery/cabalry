@@ -158,7 +158,8 @@ public class AlarmMapActivity extends MapActivity {
             stopService(new Intent(this, AudioStreamService.class));
         }
 
-        SetAlarmID(getApplicationContext(), 0);
+        SetAlarmID(this, 0);
+        SetAlarmUserID(this, 0);
 
         // return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -245,6 +246,9 @@ public class AlarmMapActivity extends MapActivity {
 
         stopService(new Intent(this, AudioStreamService.class));
         stopService(new Intent(this, AudioPlaybackService.class));
+
+        SetAlarmID(this, 0);
+        SetAlarmUserID(this, 0);
 
         // return to home.
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));

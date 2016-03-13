@@ -259,7 +259,7 @@ public class TasksUtil {
     /**
      * Represents an asynchronous logout task.
      */
-    public static class UserLogoutTask extends AsyncTask<Void, Void, Boolean> {
+    public static abstract class UserLogoutTask extends AsyncTask<Void, Void, Boolean> {
 
         private Context mContext;
 
@@ -291,9 +291,7 @@ public class TasksUtil {
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
-
-        }
+        protected abstract void onPostExecute(final Boolean success);
     }
 
     /**
@@ -322,7 +320,7 @@ public class TasksUtil {
                     int alarmID = result.getInt(REQ_ALARM_ID);
 
                     SetAlarmID(mContext, alarmID);
-                    SetAlarmUserID(mContext, alarmID);
+                    SetAlarmUserID(mContext, GetUserID(mContext));
                     return true;
 
                 }
