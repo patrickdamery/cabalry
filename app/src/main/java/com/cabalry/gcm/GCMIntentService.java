@@ -94,8 +94,6 @@ public class GCMIntentService extends IntentService {
 
                     }
 
-                } else {
-                    Log.e(TAG, "gcm action could not be parsed!");
                 }
             }
         }

@@ -52,6 +52,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
 import static com.cabalry.util.TasksUtil.*;
 import static com.cabalry.net.CabalryServer.*;
 
@@ -371,6 +372,7 @@ public class HomeActivity extends AppCompatActivity {
                     SetAlarmUserID(context, 0);
                     SetGPSChecked(context, false);
                     SetDrawerLearned(context, false);
+                    SetRegistrationID(context, "");
                     LogoutUser(context);
 
                     startActivity(new Intent(context, LoginActivity.class));
