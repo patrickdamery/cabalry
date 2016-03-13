@@ -53,7 +53,11 @@ public class LocationUpdateService extends BindableService implements LocationUp
         // Store location.
         StoreLocation(LocationUpdateService.this, currentLocation);
 
-        if (GetDistance(currentLocation, lastLocation) < LOCATION_THRESHOLD) {
+        if (System.currentTimeMillis() - startTime >= WAIT_TIME) {
+            startTime = System.currentTimeMillis();
+            new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
+
+        } else if (GetDistance(currentLocation, lastLocation) < LOCATION_THRESHOLD) {
             if (System.currentTimeMillis() - startTime >= WAIT_TIME) {
                 startTime = System.currentTimeMillis();
                 new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
