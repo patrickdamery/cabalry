@@ -295,12 +295,14 @@ public class TasksUtil {
         private static final String TAG = "StartAlarmTask";
 
         private Context mContext;
+        private int count;
 
         public StartAlarmTask(Context context) {
             if (context == null)
                 throw new NullPointerException("context can't be null!");
 
             mContext = context;
+            count = 0;
         }
 
         @Override
@@ -341,12 +343,14 @@ public class TasksUtil {
         private static final String TAG = "StopAlarmTask";
 
         private Context mContext;
+        private int count;
 
         public IgnoreAlarmTask(Context context) {
             if (context == null)
                 throw new NullPointerException("context can't be null!");
 
             mContext = context;
+            count = 0;
         }
 
         @Override
@@ -367,8 +371,13 @@ public class TasksUtil {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if (!result)
-                Log.e(TAG, "Unable to ignore alarm on server!");
+            if (!result) {
+                count++;
+                if (count > 3)
+                    Log.e(TAG, "Unable to ignore alarm on server!");
+                else
+                    new IgnoreAlarmTask(mContext).execute();
+            }
         }
     }
 
@@ -379,12 +388,14 @@ public class TasksUtil {
         private static final String TAG = "StopAlarmTask";
 
         private Context mContext;
+        private int count;
 
         public StopAlarmTask(Context context) {
             if (context == null)
                 throw new NullPointerException("context can't be null!");
 
             mContext = context;
+            count = 0;
         }
 
         @Override
@@ -405,8 +416,13 @@ public class TasksUtil {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if (!result)
-                Log.e(TAG, "Unable to stop alarm on server!");
+            if (!result) {
+                count++;
+                if (count > 3)
+                    Log.e(TAG, "Unable to stop alarm on server!");
+                else
+                    new StopAlarmTask(mContext).execute();
+            }
         }
     }
 

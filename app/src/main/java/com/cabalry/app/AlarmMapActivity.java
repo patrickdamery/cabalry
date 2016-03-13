@@ -65,15 +65,20 @@ public class AlarmMapActivity extends MapActivity {
             @Override
             protected void onPostExecute(Boolean result) {
 
-                SetAlarmIP(getApplicationContext(), getIP());
+                if (result) {
+                    SetAlarmIP(getApplicationContext(), getIP());
 
-                if (selfActivated) {
-                    // Start audio stream service
-                    startService(new Intent(getApplicationContext(), AudioStreamService.class));
+                    if (selfActivated) {
+                        // Start audio stream service
+                        startService(new Intent(getApplicationContext(), AudioStreamService.class));
+
+                    } else {
+                        // Start audio playback service
+                        startService(new Intent(getApplicationContext(), AudioPlaybackService.class));
+                    }
 
                 } else {
-                    // Start audio playback service
-                    startService(new Intent(getApplicationContext(), AudioPlaybackService.class));
+                    Log.i(TAG, "ERROR is here");
                 }
             }
         }.execute();

@@ -27,6 +27,12 @@ public class AudioPlaybackService extends RunnableService {
                 audioPlayer.startPlayback(GetAlarmIP(AudioPlaybackService.this));
             }
         });
+
+        UpdateListenerInfoTask updateListenerInfoTask = new UpdateListenerInfoTask();
+        updateListenerInfoTask.setListenerInfo(GetUserID(this), GetUserKey(this), GetAlarmID(this), 50000);
+        updateListenerInfoTask.execute();
+
+        playbackThread.start();
     }
 
     @Override
@@ -45,15 +51,6 @@ public class AudioPlaybackService extends RunnableService {
     public void onDestroy() {
         super.onDestroy();
         stopAudioPlayback();
-    }
-
-    public static void startAudioPlayer(int userID, String key, int alarmID) {
-        if (isRunning()) {
-            UpdateListenerInfoTask updateListenerInfoTask = new UpdateListenerInfoTask();
-            updateListenerInfoTask.setListenerInfo(userID, key, alarmID, 50000);
-
-            playbackThread.start();
-        }
     }
 
     public static void stopAudioPlayback() {

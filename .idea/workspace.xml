@@ -13,13 +13,8 @@
     <list default="true" id="2178105a-2d00-49d7-b3c1-5a78cb978a4d" name="Default" comment="alarm updates">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/AlarmMapActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/AlarmMapActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlaybackService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlaybackService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioStreamService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioStreamService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/net/CabalryServer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/net/CabalryServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/gcm/GCMIntentService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/gcm/GCMIntentService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/util/PreferencesUtil.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/util/PreferencesUtil.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO" afterPath="$PROJECT_DIR$/TODO" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/util/TasksUtil.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/util/TasksUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/UserMapActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/UserMapActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cabalry.iws" />
@@ -61,11 +56,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TODO" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TODO" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TODO">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.09944751">
+              <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -74,87 +69,15 @@
       <file leaf-file-name="AlarmMapActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/app/AlarmMapActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="67" column="61" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
+            <state vertical-scroll-proportion="-0.64285713">
+              <caret line="61" column="32" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3495#3543#0" expanded="true" />
-                <element signature="e#3592#3637#0" expanded="true" />
-                <element signature="e#3707#3751#0" expanded="true" />
-                <element signature="e#4299#4300#0" expanded="true" />
-                <element signature="e#4335#4336#0" expanded="true" />
-                <element signature="e#5079#5129#0" expanded="true" />
-                <element signature="e#5477#5521#0" expanded="true" />
-                <element signature="e#6268#6323#0" expanded="true" />
-                <element signature="e#7765#7820#0" expanded="true" />
-                <element signature="e#8157#8205#0" expanded="true" />
-                <element signature="e#10956#11416#0" expanded="true" />
-                <element signature="e#11415#11416#0" expanded="true" />
+                <element signature="e#2757#4006#0" expanded="true" />
+                <element signature="e#4005#4006#0" expanded="true" />
+                <element signature="e#4453#4454#0" expanded="true" />
+                <element signature="e#4489#4490#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AudioStreamService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioStreamService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="70" selection-start-line="23" selection-start-column="70" selection-end-line="23" selection-end-column="70" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TasksUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/util/TasksUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="424" column="0" selection-start-line="424" selection-start-column="0" selection-end-line="424" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="class#CollectUsersTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#CollectUserInfoTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#UserLoginTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#UserLogoutTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#StartAlarmTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#IgnoreAlarmTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="e#12536#12537#0" expanded="true" />
-                <element signature="e#12570#12571#0" expanded="true" />
-                <element signature="e#12603#12604#0" expanded="true" />
-                <element signature="e#12637#12638#0" expanded="true" />
-                <element signature="e#12673#12674#0" expanded="true" />
-                <element signature="e#12710#12711#0" expanded="true" />
-                <element signature="e#12746#12747#0" expanded="true" />
-                <element signature="e#12783#12784#0" expanded="true" />
-                <element signature="class#CheckBillingTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#UpdateLocationTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#UpdateListenerInfoTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#CheckPasswordTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#CheckNetworkTask#0;class#TasksUtil#0" expanded="false" />
-                <element signature="class#SaveSettingsTask#0;class#TasksUtil#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CabalryServer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/net/CabalryServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="33" column="45" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PreferencesUtil.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/util/PreferencesUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44751382">
-              <caret line="18" column="53" selection-start-line="18" selection-start-column="53" selection-end-line="18" selection-end-column="53" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -1907,7 +1830,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/alarm/AlarmTimerService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioStreamService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/SettingsActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlaybackService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_user_map.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_alarm_map.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
@@ -1920,13 +1842,14 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/location/LocationUpdateService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/gcm/GCMIntentService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/HomeActivity.java" />
-        <option value="$PROJECT_DIR$/TODO" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/UserMapActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioStreamer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/net/CabalryServer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/util/PreferencesUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlaybackService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/util/TasksUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/app/AlarmMapActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/cabalry/util/PreferencesUtil.java" />
+        <option value="$PROJECT_DIR$/TODO" />
       </list>
     </option>
   </component>
@@ -2465,7 +2388,7 @@
     <property name="recentsLimit" value="5" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="3a28820" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="LC59WYA00348" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
     <property name="FullScreen" value="false" />
@@ -2936,7 +2859,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457891347892</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="alarm updates">
+      <created>1457906128546</created>
+      <option name="number" value="00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1457906128546</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -3043,7 +2972,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="21" />
+      <option name="time" value="23" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3370,14 +3299,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TODO">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/base/MapUser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3314917">
@@ -3415,22 +3336,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9005525">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlaybackService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29834256">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/net/CabalryServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3439,26 +3344,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/util/TasksUtil.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/util/PreferencesUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="424" column="0" selection-start-line="424" selection-start-column="0" selection-end-line="424" selection-end-column="0" />
+          <caret line="18" column="53" selection-start-line="18" selection-start-column="53" selection-end-line="18" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioPlaybackService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#551#727#0" expanded="true" />
+            <element signature="e#726#727#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioStreamService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/util/TasksUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.049723756">
+          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+          <folding>
             <element signature="class#CollectUsersTask#0;class#TasksUtil#0" expanded="false" />
             <element signature="class#CollectUserInfoTask#0;class#TasksUtil#0" expanded="false" />
             <element signature="class#UserLoginTask#0;class#TasksUtil#0" expanded="false" />
             <element signature="class#UserLogoutTask#0;class#TasksUtil#0" expanded="false" />
             <element signature="class#StartAlarmTask#0;class#TasksUtil#0" expanded="false" />
             <element signature="class#IgnoreAlarmTask#0;class#TasksUtil#0" expanded="false" />
-            <element signature="e#12536#12537#0" expanded="true" />
-            <element signature="e#12570#12571#0" expanded="true" />
-            <element signature="e#12603#12604#0" expanded="true" />
-            <element signature="e#12637#12638#0" expanded="true" />
-            <element signature="e#12673#12674#0" expanded="true" />
-            <element signature="e#12710#12711#0" expanded="true" />
-            <element signature="e#12746#12747#0" expanded="true" />
-            <element signature="e#12783#12784#0" expanded="true" />
+            <element signature="class#StopAlarmTask#0;class#TasksUtil#0" expanded="false" />
+            <element signature="class#GetAlarmInfoTask#0;class#TasksUtil#0" expanded="false" />
+            <element signature="e#13077#13078#0" expanded="true" />
+            <element signature="e#13111#13112#0" expanded="true" />
+            <element signature="e#13147#13148#0" expanded="true" />
+            <element signature="e#13184#13185#0" expanded="true" />
+            <element signature="e#13220#13221#0" expanded="true" />
+            <element signature="e#13257#13258#0" expanded="true" />
             <element signature="class#CheckBillingTask#0;class#TasksUtil#0" expanded="false" />
             <element signature="class#UpdateLocationTask#0;class#TasksUtil#0" expanded="false" />
             <element signature="class#UpdateListenerInfoTask#0;class#TasksUtil#0" expanded="false" />
@@ -3471,40 +3415,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/app/AlarmMapActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="61" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
+        <state vertical-scroll-proportion="-0.64285713">
+          <caret line="61" column="32" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3495#3543#0" expanded="true" />
-            <element signature="e#3592#3637#0" expanded="true" />
-            <element signature="e#3707#3751#0" expanded="true" />
-            <element signature="e#4299#4300#0" expanded="true" />
-            <element signature="e#4335#4336#0" expanded="true" />
-            <element signature="e#5079#5129#0" expanded="true" />
-            <element signature="e#5477#5521#0" expanded="true" />
-            <element signature="e#6268#6323#0" expanded="true" />
-            <element signature="e#7765#7820#0" expanded="true" />
-            <element signature="e#8157#8205#0" expanded="true" />
-            <element signature="e#10956#11416#0" expanded="true" />
-            <element signature="e#11415#11416#0" expanded="true" />
+            <element signature="e#2757#4006#0" expanded="true" />
+            <element signature="e#4005#4006#0" expanded="true" />
+            <element signature="e#4453#4454#0" expanded="true" />
+            <element signature="e#4489#4490#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/audio/AudioStreamService.java">
+    <entry file="file://$PROJECT_DIR$/TODO">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="70" selection-start-line="23" selection-start-column="70" selection-end-line="23" selection-end-column="70" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cabalry/util/PreferencesUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44751382">
-          <caret line="18" column="53" selection-start-line="18" selection-start-column="53" selection-end-line="18" selection-end-column="53" />
+        <state vertical-scroll-proportion="0.09944751">
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
           <folding />
         </state>
       </provider>
