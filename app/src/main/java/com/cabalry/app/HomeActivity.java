@@ -208,7 +208,7 @@ public class HomeActivity extends AppCompatActivity {
     private void launchAlarm() {
         new StartAlarmTask(getApplicationContext()) {
             @Override
-            protected void onPostExecute(Boolean result) {
+            protected void onResult(Boolean result) {
                 if (result) {
                     startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
                 }
@@ -342,7 +342,7 @@ public class HomeActivity extends AppCompatActivity {
 
         new UserLogoutTask(getApplicationContext()) {
             @Override
-            protected void onPostExecute(final Boolean success) {
+            protected void onResult(final Boolean success) {
                 if (success) {
                     Context context = getApplicationContext();
 

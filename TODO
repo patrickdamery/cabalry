@@ -1,17 +1,18 @@
 To Do:
-    - try again for tasks
     - camera focus not working when nearby enabled
     - Add loading screens
     - Add timer feature
     - Add silent feature
     - fix help activity back action
-    - Handle case of no available servers for alarm, keep trying
+    - NullPointerException on locations in CollectUsersTask
 
 In Progress:
-    - Add audio stream (Added, not checked)
-    - Add audio playback (Added, not checked)
 
 Completed:
+    - Handle case of no available servers for alarm, keep trying
+    - try again for tasks
+    - Add audio stream (Added, not checked)
+    - Add audio playback (Added, not checked)
     - logout when alarm is active not working
     - ignore alarm on server
     - set min update time location update

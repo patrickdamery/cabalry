@@ -70,7 +70,7 @@ public class UserMapActivity extends MapActivity {
     private void launchAlarm() {
         new StartAlarmTask(getApplicationContext()) {
             @Override
-            protected void onPostExecute(Boolean result) {
+            protected void onResult(Boolean result) {
                 if (result) {
                     startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
                 }

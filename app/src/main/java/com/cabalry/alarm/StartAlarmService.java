@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.cabalry.app.AlarmMapActivity;
+import com.cabalry.util.TasksUtil;
 
 /**
  * StartAlarmService
@@ -34,9 +35,15 @@ public class StartAlarmService extends Service {
     }
 
     private void launchAlarm() {
-        // Start alarm activity.
-        Intent alarm = new Intent(getApplicationContext(), AlarmMapActivity.class);
-        alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(alarm);
+        new TasksUtil.StartAlarmTask(getApplicationContext()) {
+            @Override
+            protected void onResult(Boolean result) {
+                if (result) {
+                    Intent alarm = new Intent(getApplicationContext(), AlarmMapActivity.class);
+                    alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(alarm);
+                }
+            }
+        }.execute();
     }
 }

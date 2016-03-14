@@ -196,6 +196,7 @@ public class TasksUtil {
      * the user.
      */
     public static abstract class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "UserLoginTask";
 
         private String mUser;
         private String mPassword;
@@ -245,15 +246,16 @@ public class TasksUtil {
 
         @Override
         protected abstract void onPostExecute(final Boolean success);
-
-        @Override
-        protected abstract void onCancelled();
     }
 
     /**
      * Represents an asynchronous logout task.
      */
     public static abstract class UserLogoutTask extends AsyncTask<Void, Void, Boolean> {
+        private static final String TAG = "UserLogoutTask";
+
+        private static int count = 0;
+        private UserLogoutTask instance;
 
         private Context mContext;
 
@@ -262,6 +264,7 @@ public class TasksUtil {
                 throw new NullPointerException("context can't be null!");
 
             mContext = context;
+            instance = this;
         }
 
         @Override
@@ -285,7 +288,29 @@ public class TasksUtil {
         }
 
         @Override
-        protected abstract void onPostExecute(final Boolean success);
+        protected void onPostExecute(Boolean result) {
+            if (!result) {
+                count++;
+                if (count >= 3) {
+                    Log.e(TAG, "Unable to logout on server!");
+                    count = 0;
+                    onResult(result);
+
+                } else {
+                    new UserLogoutTask(mContext) {
+                        @Override
+                        protected void onResult(Boolean result) {
+                            instance.onResult(result);
+                        }
+                    }.execute();
+                }
+
+            } else {
+                onResult(result);
+            }
+        }
+
+        protected abstract void onResult(Boolean result);
     }
 
     /**
@@ -294,15 +319,17 @@ public class TasksUtil {
     public static abstract class StartAlarmTask extends AsyncTask<Void, Void, Boolean> {
         private static final String TAG = "StartAlarmTask";
 
+        private static int count = 0;
+        private StartAlarmTask instance;
+
         private Context mContext;
-        private int count;
 
         public StartAlarmTask(Context context) {
             if (context == null)
                 throw new NullPointerException("context can't be null!");
 
             mContext = context;
-            count = 0;
+            instance = this;
         }
 
         @Override
@@ -324,8 +351,6 @@ public class TasksUtil {
                 e.printStackTrace();
             }
 
-            // TODO Handle case of no available servers for alarm, keep trying
-
             SetAlarmID(mContext, 0);
             Log.e(TAG, "Could not start alarm!");
 
@@ -333,7 +358,29 @@ public class TasksUtil {
         }
 
         @Override
-        protected abstract void onPostExecute(Boolean result);
+        protected void onPostExecute(Boolean result) {
+            if (!result) {
+                count++;
+                if (count >= 3) {
+                    Log.e(TAG, "Unable to start alarm on server!");
+                    count = 0;
+                    onResult(result);
+
+                } else {
+                    new StartAlarmTask(mContext) {
+                        @Override
+                        protected void onResult(Boolean result) {
+                            instance.onResult(result);
+                        }
+                    }.execute();
+                }
+
+            } else {
+                onResult(result);
+            }
+        }
+
+        protected abstract void onResult(Boolean result);
     }
 
     /**
@@ -426,6 +473,9 @@ public class TasksUtil {
         }
     }
 
+    /**
+     * Represents an asynchronous task that returns alarm info
+     */
     public static abstract class GetAlarmInfoTask extends AsyncTask<Void, Void, Boolean> {
         private static final String TAG = "StopAlarmTask";
 
