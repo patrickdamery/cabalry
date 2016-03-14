@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.cabalry.R;
 import com.cabalry.alarm.AlarmTimerService;
@@ -166,6 +167,23 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 launchAlarm();
+            }
+        });
+
+        final ToggleButton bTimer = (ToggleButton) findViewById(R.id.toggleTimer);
+        if (GetTimerEnabled(getApplicationContext())) {
+            bTimer.setChecked(true);
+        }
+
+        bTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bTimer.isChecked()) {
+                    startService(new Intent(getApplicationContext(), AlarmTimerService.class));
+
+                } else {
+                    stopService(new Intent(getApplicationContext(), AlarmTimerService.class));
+                }
             }
         });
 

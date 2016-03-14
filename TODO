@@ -1,12 +1,16 @@
 To Do:
-    - camera focus not working when nearby enabled
     - Add loading screens
-    - Add timer feature
-    - Add silent feature
+    - Check network status
+    -
+
+Bugs:
+    - camera focus not working when nearby enabled
     - fix help activity back action
     - NullPointerException on locations in CollectUsersTask
 
 In Progress:
+    - Add timer feature
+    - Add silent feature
 
 Completed:
     - Handle case of no available servers for alarm, keep trying
@@ -36,7 +40,3 @@ Completed:
     - Add selection zoom
     - user info doesn't work
     - Should we prompt the user for logging out in case an alarm is still ongoing?
-
-Bugs:
-
-Notes:

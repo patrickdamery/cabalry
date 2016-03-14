@@ -146,6 +146,10 @@
             android:name=".app.DeviceListActivity"
             android:label="@string/select_device" />
 
+        <activity
+            android:name=".app.TimerCheckActivity"
+            android:label="@string/title_activity_timer" />
+
         <service android:name=".bluetooth.BluetoothService"
             android:exported="false" />
 

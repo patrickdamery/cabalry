@@ -14,6 +14,7 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_alarm">Alarm</string>
+    <string name="title_activity_timer">Timer</string>
     
     <!-- Strings for navigation drawer -->
     <string-array name="nav_drawer_array">

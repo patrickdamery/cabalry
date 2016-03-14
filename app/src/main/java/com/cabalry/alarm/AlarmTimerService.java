@@ -8,6 +8,8 @@ import com.cabalry.app.TimerCheckActivity;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.cabalry.util.PreferencesUtil.*;
+
 /**
  * AlarmTimerService
  */
@@ -22,12 +24,12 @@ public class AlarmTimerService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        int timerTime = 0;//GetTimerTime(getApplicationContext()) * 1000;
+        int timerTime = GetTimerTime(getApplicationContext()) * 1000;
 
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                //SetTimerEnabled(getApplicationContext(), false);
+                SetTimerEnabled(getApplicationContext(), false);
 
                 Intent timer = new Intent(getApplicationContext(), TimerCheckActivity.class);
                 timer.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -42,7 +44,15 @@ public class AlarmTimerService extends IntentService {
         timer.schedule(timerTask, timerTime);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopTimer();
+    }
+
     public static void stopTimer() {
-        timerTask.cancel();
+        if (timerTask != null) {
+            timerTask.cancel();
+        }
     }
 }

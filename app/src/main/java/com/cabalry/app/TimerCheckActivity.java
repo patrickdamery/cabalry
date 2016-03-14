@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cabalry.alarm.AlarmTimerService;
+import com.cabalry.alarm.StartAlarmService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,7 +30,8 @@ public class TimerCheckActivity extends Activity {
             @Override
             public void run() {
                 alert.cancel();
-                //launchAlarm();
+                // Start alarm.
+                startService(new Intent(getApplicationContext(), StartAlarmService.class));
             }
         };
 

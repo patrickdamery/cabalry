@@ -53,6 +53,20 @@ public class PreferencesUtil {
         editor.commit();
     }
 
+    public static int GetTimerTime(Context context) {
+        return GetSharedPrefs(context).getInt(PREF_TIMER, 0);
+    }
+
+    public static boolean GetTimerEnabled(Context context) {
+        return GetSharedPrefs(context).getBoolean(PREF_TIMER_ENABLED, false);
+    }
+
+    public static void SetTimerEnabled(Context context, boolean enabled) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putBoolean(PREF_TIMER_ENABLED, enabled);
+        editor.commit();
+    }
+
     public static String GetCachedAddress(Context context) {
         return GetSharedPrefs(context).getString(PREF_CACHED_ADDRESS, null);
     }
