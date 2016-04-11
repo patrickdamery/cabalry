@@ -1,6 +1,7 @@
 package com.cabalry.app;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cabalry.base.WebViewActivity;
 import com.cabalry.util.TasksUtil;
@@ -30,6 +31,7 @@ public class SettingsActivity extends WebViewActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i("SettingsActivity", "HERE");
         new TasksUtil.SaveSettingsTask(getApplicationContext()).execute();
     }
 }

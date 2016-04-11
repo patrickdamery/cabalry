@@ -28,6 +28,17 @@
         <item>Logout</item>
     </string-array>
 
+    <string-array name="nav_drawer_ic_array">
+        <item>@drawable/ic_profile</item>
+        <item>@drawable/ic_map</item>
+        <item>@drawable/ic_drawer</item>
+        <item>@drawable/ic_recordings</item>
+        <item>@drawable/ic_billing</item>
+        <item>@drawable/ic_settings</item>
+        <item>@drawable/ic_help</item>
+        <item>@drawable/ic_logout</item>
+    </string-array>
+
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
 
@@ -65,7 +76,7 @@
     <!--  For web views -->
     <string name="msg_webview_loading">Loading...</string>
 
-    <string name="error_no_network">Please re-connect to the internet and log in</string>
+    <string name="error_no_network">Please re-connect to the internet.</string>
     <string name="prompt_no_gps">This app cannot function properly without GPS, do you want to enable it?</string>
     <string name="error_wrong_password">Wrong password please try again</string>
 

@@ -599,7 +599,15 @@ public class TasksUtil {
                         GetUserID(mContext), GetUserKey(mContext));
 
                 try {
-                    result.getBoolean(REQ_SUCCESS);
+                    if(result != null) {
+                        if(!result.getBoolean(REQ_SUCCESS)) {
+                            Log.e(TAG, "Can't update, there's a problem connecting to server!");
+                        }
+                    } else {
+                        Log.e(TAG, "Can't update, there's a problem connecting to server!");
+                    }
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -736,7 +744,7 @@ public class TasksUtil {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            return !hasActiveInternetConnection(mContext);
+            return hasActiveInternetConnection(mContext);
         }
 
         @Override
@@ -763,6 +771,7 @@ public class TasksUtil {
         protected Void doInBackground(Void... voids) {
 
             JSONObject result = GetUserSettings(GetUserID(mContext), GetUserKey(mContext));
+            Log.i(TAG, "HERE");
 
             try {
                 if (result.getBoolean(REQ_SUCCESS)) {
@@ -773,6 +782,8 @@ public class TasksUtil {
                     settings.putInt(PREF_ALERT_COUNT, result.getInt(REQ_ALERT_COUNT));
                     settings.putInt(PREF_ALARM_RANGE, result.getInt(REQ_RANGE));
                     settings.putBoolean(PREF_SILENT, result.getBoolean(REQ_SILENT));
+
+                    Log.i(TAG, "Saving settings: "+settings.toString());
 
                     SaveSettings(mContext, settings);
                 } else {
@@ -785,4 +796,5 @@ public class TasksUtil {
             return null;
         }
     }
+
 }

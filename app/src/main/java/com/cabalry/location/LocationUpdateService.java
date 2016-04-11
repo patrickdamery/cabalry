@@ -6,7 +6,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.*;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.cabalry.R;
 import com.cabalry.base.BindableService;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -36,7 +38,7 @@ public class LocationUpdateService extends BindableService implements LocationUp
         mLocationUpdateManager.setUpdateListener(this);
 
         currentLocation = GetLocation(this);
-        new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
+        updateLocation();
     }
 
     @Override
@@ -55,15 +57,15 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
         if (System.currentTimeMillis() - startTime >= WAIT_TIME) {
             startTime = System.currentTimeMillis();
-            new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
+            updateLocation();
 
         } else if (GetDistance(currentLocation, lastLocation) < LOCATION_THRESHOLD) {
             if (System.currentTimeMillis() - startTime >= WAIT_TIME) {
                 startTime = System.currentTimeMillis();
-                new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
+                updateLocation();
             }
 
-        } else new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
+        } else updateLocation();
 
         Log.d(TAG, "onUpdateLocation(): " + location.toString());
     }
@@ -81,5 +83,22 @@ public class LocationUpdateService extends BindableService implements LocationUp
     public void onDestroy() {
         super.onDestroy();
         mLocationUpdateManager.dispose();
+    }
+
+    private void updateLocation() {
+        new CheckNetworkTask(getApplicationContext()) {
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result) {
+                    new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
+
+                } else {
+                    // handle no network
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 }

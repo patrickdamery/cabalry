@@ -12,14 +12,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cabalry.R;
 import com.cabalry.bluetooth.BluetoothListener;
 import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.base.BindableActivity;
+import com.cabalry.bluetooth.DeviceConnector;
 
-import static com.cabalry.util.BluetoothUtil.*;
 import static com.cabalry.util.MessageUtil.*;
 import static com.cabalry.util.PreferencesUtil.*;
 
@@ -125,23 +124,23 @@ public final class DeviceControlActivity extends BindableActivity
     @Override
     public void onStateChange(int state) {
         switch (state) {
-            case STATE_NOT_CONNECTED:
+            case DeviceConnector.STATE_NOT_CONNECTED:
                 mDeviceChargeText.setText(" - %");
                 mDeviceStateText.setText(getString(R.string.msg_not_connected));
                 break;
 
-            case STATE_CONNECTING:
+            case DeviceConnector.STATE_CONNECTING:
                 mDeviceChargeText.setText(" - %");
                 mDeviceStateText.setText(getString(R.string.msg_connecting));
                 break;
 
-            case STATE_CONNECTED:
+            case DeviceConnector.STATE_CONNECTED:
                 int charge = GetDeviceCharge(getApplicationContext());
                 mDeviceChargeText.setText(" " + charge + "%");
                 mDeviceStateText.setText(getString(R.string.msg_connected));
                 break;
 
-            case STATE_CONNECTION_FAILED:
+            case DeviceConnector.STATE_CONNECTION_FAILED:
                 mDeviceChargeText.setText(" - %");
                 mDeviceStateText.setText(getString(R.string.msg_not_connected));
                 break;

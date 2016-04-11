@@ -17,7 +17,6 @@ import com.cabalry.app.DeviceControlActivity;
 import com.cabalry.base.BindableService;
 import com.cabalry.util.MovingAverage;
 
-import static com.cabalry.util.BluetoothUtil.*;
 import static com.cabalry.util.MessageUtil.*;
 import static com.cabalry.util.PreferencesUtil.*;
 
@@ -94,7 +93,7 @@ public class BluetoothService extends BindableService {
     private static class ServiceBluetoothListener implements BluetoothListener {
 
         private final Context mContext;
-        private int mPrevChargeSample;
+        private double mPrevChargeSample;
         private MovingAverage mMovingAverage;
 
         public ServiceBluetoothListener(Context context) {
@@ -110,18 +109,18 @@ public class BluetoothService extends BindableService {
         @Override
         public void onStateChange(int state) {
             switch (state) {
-                case STATE_CONNECTED:
+                case DeviceConnector.STATE_CONNECTED:
                     mDeviceDisconnected = false;
                     mReconnectCount = 0;
                     break;
 
-                case STATE_DISCONNECTED:
+                case DeviceConnector.STATE_DISCONNECTED:
                     Log.i(TAG, "Device disconnected");
                     mDeviceDisconnected = true;
                     mDeviceListener.onDeviceDisconnected(mContext);
                     break;
 
-                case STATE_CONNECTION_FAILED:
+                case DeviceConnector.STATE_CONNECTION_FAILED:
                     if (mDeviceDisconnected)
                         mDeviceListener.onDeviceDisconnected(mContext);
                     break;
@@ -151,12 +150,12 @@ public class BluetoothService extends BindableService {
             data.putString("status", status);
             data.putString("charge", mPrevChargeSample + "");
 
-            SetDeviceCharge(mContext, mPrevChargeSample);
+            SetDeviceCharge(mContext, (int)mPrevChargeSample);
             sendMessageToActivity(MSG_DEVICE_STATUS, data);
         }
 
-        private int handleDeviceCharge(int charge) {
-            int chargeAverage = charge;
+        private double handleDeviceCharge(double charge) {
+            double chargeAverage = charge;
 
             if (chargeAverage - mPrevChargeSample < -20) {
                 chargeAverage = mPrevChargeSample;
@@ -230,11 +229,11 @@ public class BluetoothService extends BindableService {
     }
 
     public synchronized static boolean isConnected() {
-        return (mConnector != null) && (mConnector.getState() == STATE_CONNECTED);
+        return (mConnector != null) && (mConnector.getState() == DeviceConnector.STATE_CONNECTED);
     }
 
     public synchronized static int getState() {
-        return mConnector == null ? STATE_NOT_CONNECTED : mConnector.getState();
+        return mConnector == null ? DeviceConnector.STATE_NOT_CONNECTED : mConnector.getState();
     }
 
     public synchronized static void stopConnection() {

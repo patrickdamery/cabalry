@@ -7,14 +7,20 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import static com.cabalry.util.BluetoothUtil.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * DeviceConnector
  */
 public class DeviceConnector {
     private static final String TAG = "DeviceConnector";
+
+    public static final int STATE_NOT_CONNECTED = 1;
+    public static final int STATE_CONNECTING = 2;
+    public static final int STATE_CONNECTED = 3;
+    public static final int STATE_DISCONNECTED = 4;
+    public static final int STATE_CONNECTION_FAILED = 5;
 
     private int mState;
 
@@ -198,6 +204,26 @@ public class DeviceConnector {
                 mBTListener.onStatusUpdate(sig, state, charge);
             }
         }
+    }
+
+    public static BluetoothSocket CreateRfcommSocket(BluetoothDevice device) {
+        BluetoothSocket tmp = null;
+
+        try {
+            Method createRfcommSocket = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
+            tmp = (BluetoothSocket) createRfcommSocket.invoke(device, 1);
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
+        }
+        return tmp;
     }
 
     private class ConnectedThread extends Thread {

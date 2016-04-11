@@ -15,6 +15,6 @@ public class MessageUtil {
     public static final int MSG_BLUETOOTH_CONNECT = 5;
 
     // Location update service
-    public static final int MSG_LOCATION_UPDATE = 3;
+    public static final int MSG_LOCATION_UPDATE = 6;
 
 }

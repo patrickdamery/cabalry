@@ -1,22 +1,29 @@
 To Do:
     - Add loading screens
-    - Check network status
-    -
-
-Bugs:
-    - camera focus not working when nearby enabled
-    - fix help activity back action
-    - NullPointerException on locations in CollectUsersTask
+    - update settings
+    - handle logout when no internet
+    - handle case when user accepts alarm while listening to one
+    - handle case when user accepts alarm while his is activated
+    - Handle case when alarm is active and app is closed
+    - Take photos and upload
+    - Update graphics
+    - Add sms support num: +353 861 800 845
 
 In Progress:
     - Add timer feature
     - Add silent feature
+    - Check network status
+
+Bugs:
 
 Completed:
+    - fix help activity back action
+    - camera focus not working when nearby enabled ?
+    - NullPointerException on locations in CollectUsersTask ?
     - Handle case of no available servers for alarm, keep trying
     - try again for tasks
-    - Add audio stream (Added, not checked)
-    - Add audio playback (Added, not checked)
+    - Add audio stream
+    - Add audio playback
     - logout when alarm is active not working
     - ignore alarm on server
     - set min update time location update
@@ -39,4 +46,4 @@ Completed:
     - Set map settings
     - Add selection zoom
     - user info doesn't work
-    - Should we prompt the user for logging out in case an alarm is still ongoing?
+    - Should we prompt the user for logging out in case an alarm is still ongoing

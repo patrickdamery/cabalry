@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -43,6 +44,7 @@ import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.net.CabalryServer;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.util.PreferencesUtil;
+import com.cabalry.util.TasksUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -74,12 +76,23 @@ public class HomeActivity extends AppCompatActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mActivityTitles;
-    private int[] mActivityIcons;
+    private TypedArray mActivityIcons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        new TasksUtil.CheckNetworkTask(getApplicationContext()) {
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(!result) {
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
 
         if (!BluetoothService.isRunning()) {
             startService(new Intent(this, BluetoothService.class));
@@ -91,18 +104,9 @@ public class HomeActivity extends AppCompatActivity {
 
         mTitle = mDrawerTitle = getTitle();
         mActivityTitles = getResources().getStringArray(R.array.nav_drawer_array);
+        mActivityIcons = getResources().obtainTypedArray(R.array.nav_drawer_ic_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        mActivityIcons = new int[8];
-        mActivityIcons[0] = R.drawable.ic_profile;
-        mActivityIcons[1] = R.drawable.ic_map;
-        mActivityIcons[2] = R.drawable.ic_drawer;
-        mActivityIcons[3] = R.drawable.ic_recordings;
-        mActivityIcons[4] = R.drawable.ic_billing;
-        mActivityIcons[5] = R.drawable.ic_settings;
-        mActivityIcons[6] = R.drawable.ic_help;
-        mActivityIcons[7] = R.drawable.ic_logout;
 
         // Set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -119,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
                 ImageView item_icon = (ImageView) convertView.findViewById(R.id.item_icon);
                 TextView item_text = (TextView) convertView.findViewById(R.id.item_text);
 
-                item_icon.setImageResource(mActivityIcons[position]);
+                item_icon.setImageResource(mActivityIcons.getResourceId(position, -1));
                 item_text.setText(mActivityTitles[position]);
                 return convertView;
             }
@@ -334,6 +338,7 @@ public class HomeActivity extends AppCompatActivity {
             // Redirect to help url
             case 6:
                 intent = new Intent("android.intent.action.VIEW", Uri.parse(CabalryServer.HELP_URL));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
 
             // Logout and redirect to login activity.
@@ -405,8 +410,24 @@ public class HomeActivity extends AppCompatActivity {
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            onSelectItem(position);
+        public void onItemClick(AdapterView parent, View view, final int position, long id) {
+            new CheckNetworkTask(getApplicationContext()) {
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        onSelectItem(position);
+
+                    } else if(position == 7) { // logout is the exception
+                        onSelectItem(position);
+
+                    } else {
+                        // handle no network
+                        Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            }.execute();
         }
     }
 
