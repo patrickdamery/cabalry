@@ -46,7 +46,7 @@ public class AudioStreamService extends RunnableService {
     }
 
     public static void stopAudioStream() {
-        if(mAudioStreamer != null) {
+        if (mAudioStreamer != null) {
             mAudioStreamer.stopStream();
             mAudioStreamer = null;
         }

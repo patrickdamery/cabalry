@@ -3,11 +3,11 @@ package com.cabalry.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,21 +15,31 @@ import android.widget.TextView;
 
 import com.cabalry.R;
 import com.cabalry.base.CabalryActivity;
+import com.cabalry.util.TasksUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.cabalry.net.CabalryServer.REQ_USER_NAME;
+import static com.cabalry.util.PreferencesUtil.GetHistory;
+import static com.cabalry.util.PreferencesUtil.SaveHistory;
 
 public class AlarmHistoryActivity extends CabalryActivity.Compat {
+    private static final String TAG = "AlarmHistoryActivity";
+
+    public static Set<String> historySet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_history);
 
-        final ListView listview = (ListView) findViewById(R.id.listview);
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2" };
+        if (historySet == null)
+            historySet = GetHistory(getApplicationContext());
 
-        final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
-        listview.setAdapter(adapter);
+        updateListView();
 
         /*
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,6 +61,44 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
 
         });
         */
+    }
+
+    public static void addHistoryEntry(final Context context, final int userID, final int alarmID) {
+        final SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        if (historySet == null) {
+            historySet = new HashSet<>();
+        }
+
+        new TasksUtil.GetUserInfoTask(context, userID) {
+            @Override
+            protected void onPostExecute(Bundle result) {
+                if (result != null) {
+                    String str = result.getString(REQ_USER_NAME) + "~" + alarmID + "~" + f.format(new Date());
+                    historySet.add(str);
+
+                } else {
+
+                }
+            }
+        }.execute();
+
+        SaveHistory(context, historySet);
+    }
+
+    private void updateListView() {
+
+        if (historySet != null) {
+            Log.i(TAG, "historySet size: " + AlarmHistoryActivity.historySet.size());
+
+            String[] values = historySet.toArray(new String[historySet.size()]);
+            final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
+
+            final ListView listview = (ListView) findViewById(R.id.listview);
+            listview.setAdapter(adapter);
+
+        } else {
+            // TODO Handle when history set is empty
+        }
     }
 
     @Override
@@ -84,15 +132,21 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.history_list_item, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.label);
-            ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-            textView.setText(values[position]);
+            TextView label = (TextView) rowView.findViewById(R.id.label);
+            TextView description = (TextView) rowView.findViewById(R.id.description);
+            ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
 
-            // change the icon for Windows and iPhone
-            //String s = values[position];
-            //if (s.startsWith("iPhone"));
+            String[] result = values[position].split("~");
 
-            imageView.setImageResource(R.drawable.ic_launcher);
+            if (result.length == 3) {
+                label.setText(result[0] + " - Alarm ID: " + result[1]);
+                description.setText(result[2]);
+
+            } else {
+                label.setText(values[position]);
+            }
+
+            icon.setImageResource(R.drawable.ic_launcher);
 
             return rowView;
         }

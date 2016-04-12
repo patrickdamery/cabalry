@@ -90,7 +90,7 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(result) {
+                if (result) {
                     new UpdateLocationTask(getApplicationContext(), currentLocation).execute();
 
                 } else {

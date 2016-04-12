@@ -12,7 +12,7 @@ import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
  * ForgotActivity
- * <p/>
+ * <p>
  * Activity which prompts forgot password screen.
  */
 public class ForgotActivity extends WebViewActivity {

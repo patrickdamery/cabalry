@@ -55,6 +55,9 @@ public class UserMapActivity extends MapActivity {
             public void onClick(View view) {
                 mNearbyToggle = bNearby.isChecked();
                 onUpdateLocation(mUser.getPosition());
+
+                if (mNearbyToggle)
+                    progressBar.show();
             }
         });
 
@@ -135,7 +138,7 @@ public class UserMapActivity extends MapActivity {
 
                 @Override
                 protected void onPostExecute(Boolean result) {
-                    if(result) {
+                    if (result) {
                         mCollectUsersTask = getCollectUsersTask();
                         mCollectUsersTask.execute();
 
@@ -153,7 +156,7 @@ public class UserMapActivity extends MapActivity {
 
                 @Override
                 protected void onPostExecute(Boolean result) {
-                    if(result) {
+                    if (result) {
                         mCollectUserInfoTask = getCollectUserInfoTask();
 
                         int id = GetUserID(getApplicationContext());
@@ -172,6 +175,8 @@ public class UserMapActivity extends MapActivity {
         return new CollectUsersTask(getApplicationContext()) {
             @Override
             protected void onPostExecute(Vector<MapUser> users) {
+                progressBar.dismiss();
+
                 if (users != null) {
                     Log.i(TAG, "CollectUsersTask - users size: " + users.size());
 

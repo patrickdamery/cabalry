@@ -150,7 +150,7 @@ public class BluetoothService extends BindableService {
             data.putString("status", status);
             data.putString("charge", mPrevChargeSample + "");
 
-            SetDeviceCharge(mContext, (int)mPrevChargeSample);
+            SetDeviceCharge(mContext, (int) mPrevChargeSample);
             sendMessageToActivity(MSG_DEVICE_STATUS, data);
         }
 

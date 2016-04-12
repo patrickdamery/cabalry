@@ -1,19 +1,23 @@
 To Do:
-    - Improve alarm check activity, don't ask with words and give option to stop timer
-    - Add multiple button support
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
     - Handle case when alarm is active and app is closed
-    - Take photos and upload, handle case when in sms mode
     - Improve graphics
+    - Add multiple button support
+    - Take photos and upload
+    - handle alarm case when in sms mode
     - Add sms support num: +353 861 800 845
+    - give option to stop timer
+    - Improve alarm check activity, don't ask with words
 
 In Progress:
-    - Add alarm history
+    - Fix reverse order of alarm history
 
 Bugs:
 
 Completed:
+    - Add alarm history
+    - Handle when history set is empty
     - Add loading screens
     - handle logout when no internet
     - Check network status

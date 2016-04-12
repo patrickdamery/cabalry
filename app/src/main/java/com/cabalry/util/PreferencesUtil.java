@@ -8,6 +8,13 @@ import android.util.Log;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * PreferencesUtil
  */
@@ -29,6 +36,7 @@ public class PreferencesUtil {
     public static final String PREF_CACHED_ADDRESS = "CACHED_ADDRESS";
     public static final String PREF_DRAWER_LEARNED = "NAVDR_LEARNED";
     public static final String PREF_GPS_CHECK = "GPS_CHECK";
+    public static final String PREF_HISTORY = "HISTORY";
 
     public static final String PREF_REG_ID = "REGID";
     public static final String PREF_APP_VERSION = "APPV";
@@ -186,7 +194,27 @@ public class PreferencesUtil {
         editor.putFloat(PREF_MAP_LONGITUDE, (float) cameraPosition.target.longitude);
         editor.putFloat(PREF_MAP_ZOOM, cameraPosition.zoom);
         editor.putFloat(PREF_MAP_ZOOM, cameraPosition.bearing);
+
         editor.commit();
+    }
+
+    public static synchronized void SaveHistory(Context context, Set<String> historySet) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putStringSet(GetUserID(context) + PREF_HISTORY, historySet);
+        editor.commit();
+    }
+
+    public static synchronized Set<String> GetHistory(Context context) {
+        SharedPreferences preferences = GetSharedPrefs(context);
+        Set<String> set = preferences.getStringSet(GetUserID(context) + PREF_HISTORY, null);
+        if (set == null) return null;
+
+        List list = new ArrayList(set);
+        Collections.sort(list, Collections.reverseOrder());
+
+        //Log.i(TAG, list.get(0).toString());
+
+        return new HashSet(list);
     }
 
     public static synchronized CameraPosition GetMapState(Context context) {

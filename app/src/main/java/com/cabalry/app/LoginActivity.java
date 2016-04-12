@@ -40,7 +40,7 @@ import static com.cabalry.util.TasksUtil.*;
 
 /**
  * LoginActivity
- * <p/>
+ * <p>
  * Login screen for Cabalry app.
  */
 public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cursor> {
@@ -73,7 +73,7 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
             @Override
             protected void onPostExecute(final Boolean success) {
                 showProgress(false);
-                Log.i(TAG, "Success: "+success);
+                Log.i(TAG, "Success: " + success);
 
                 if (success) {
                     LoginUser(LoginActivity.this, getID(), getKey());
@@ -224,7 +224,7 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(result) {
+                if (result) {
                     Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
                     startActivity(register);
 
@@ -241,7 +241,7 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(result) {
+                if (result) {
                     Intent forgot = new Intent(getApplicationContext(), ForgotActivity.class);
                     startActivity(forgot);
 
@@ -311,7 +311,7 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
             new CheckNetworkTask(getApplicationContext()) {
                 @Override
                 protected void onPostExecute(Boolean result) {
-                    if(result) {
+                    if (result) {
                         // Show a progress spinner, and perform the user login attempt
                         showProgress(true);
 

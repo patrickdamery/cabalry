@@ -10,7 +10,7 @@ import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
  * BillingActivity
- * <p/>
+ * <p>
  * Activity which displays the user's billing info and also modify it.
  */
 public class BillingActivity extends WebViewActivity {

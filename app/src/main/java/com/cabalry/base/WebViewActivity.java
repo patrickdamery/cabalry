@@ -135,7 +135,7 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
             @Override
             protected void onPostExecute(Boolean result) {
 
-                if(!result) { // no internet return to home
+                if (!result) { // no internet return to home
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
             }

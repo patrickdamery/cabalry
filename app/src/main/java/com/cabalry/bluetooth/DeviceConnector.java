@@ -210,7 +210,7 @@ public class DeviceConnector {
         BluetoothSocket tmp = null;
 
         try {
-            Method createRfcommSocket = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
+            Method createRfcommSocket = device.getClass().getMethod("createRfcommSocket", int.class);
             tmp = (BluetoothSocket) createRfcommSocket.invoke(device, 1);
 
         } catch (NoSuchMethodException e) {

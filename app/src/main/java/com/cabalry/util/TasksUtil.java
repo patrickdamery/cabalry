@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cabalry.app.AlarmHistoryActivity;
 import com.cabalry.base.MapUser;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -226,7 +227,7 @@ public class TasksUtil {
                 result = RequestLogin(mUser, mPassword);
                 try {
                     success = result.getBoolean(REQ_SUCCESS);
-                    Log.i(TAG, "Success: "+success);
+                    Log.i(TAG, "Success: " + success);
 
                     if (success) {
 
@@ -314,6 +315,8 @@ public class TasksUtil {
         protected abstract void onResult(Boolean result);
     }
 
+    private static boolean startAlarmRequested = false;
+
     /**
      * Represents an asynchronous task that starts an alarm.
      */
@@ -334,6 +337,16 @@ public class TasksUtil {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (startAlarmRequested) {
+                this.cancel(true);
+            }
+
+            startAlarmRequested = true;
+        }
+
+        @Override
         protected Boolean doInBackground(Void... voids) {
 
             JSONObject result = StartAlarm(GetUserID(mContext), GetUserKey(mContext));
@@ -345,8 +358,10 @@ public class TasksUtil {
 
                     SetAlarmID(mContext, alarmID);
                     SetAlarmUserID(mContext, GetUserID(mContext));
-                    return true;
 
+                    AlarmHistoryActivity.addHistoryEntry(mContext, GetUserID(mContext), alarmID);
+
+                    return true;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -363,6 +378,8 @@ public class TasksUtil {
             if (!result) {
                 count++;
                 if (count >= 3) {
+                    startAlarmRequested = false;
+
                     Log.e(TAG, "Unable to start alarm on server!");
                     count = 0;
                     onResult(result);
@@ -377,6 +394,7 @@ public class TasksUtil {
                 }
 
             } else {
+                startAlarmRequested = false;
                 onResult(result);
             }
         }
@@ -593,8 +611,8 @@ public class TasksUtil {
                         GetUserID(mContext), GetUserKey(mContext));
 
                 try {
-                    if(result != null) {
-                        if(!result.getBoolean(REQ_SUCCESS)) {
+                    if (result != null) {
+                        if (!result.getBoolean(REQ_SUCCESS)) {
                             Log.e(TAG, "Can't update, there's a problem connecting to server!");
                         }
                     } else {
@@ -777,7 +795,7 @@ public class TasksUtil {
                     settings.putInt(PREF_ALARM_RANGE, result.getInt(REQ_RANGE));
                     settings.putBoolean(PREF_SILENT, result.getBoolean(REQ_SILENT));
 
-                    Log.i(TAG, "Saving settings: "+settings.toString());
+                    Log.i(TAG, "Saving settings: " + settings.toString());
 
                     SaveSettings(mContext, settings);
                 } else {
@@ -791,4 +809,42 @@ public class TasksUtil {
         }
     }
 
+    /**
+     * Represents an asynchronous task that returns a user's info.
+     */
+    public static abstract class GetUserInfoTask extends AsyncTask<Void, Void, Bundle> {
+        private static final String TAG = "GetUserInfoTask";
+
+        Context mContext;
+        int mUserID;
+
+        public GetUserInfoTask(Context context, int userID) {
+            mContext = context;
+            mUserID = userID;
+        }
+
+        @Override
+        protected Bundle doInBackground(Void... voids) {
+
+            JSONObject result = GetUserInfo(GetUserID(mContext), mUserID, GetUserKey(mContext));
+            Bundle info = null;
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+                    info = new Bundle();
+
+                    info.putString(REQ_USER_NAME, result.getString(REQ_USER_NAME));
+                } else {
+                    Log.e(TAG, "Error while getting settings!");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return info;
+        }
+
+        @Override
+        protected abstract void onPostExecute(Bundle result);
+    }
 }

@@ -43,10 +43,12 @@ public class CabalryApp extends Application {
     public class LifecycleHandler implements ActivityLifecycleCallbacks {
 
         @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) { }
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        }
 
         @Override
-        public void onActivityDestroyed(Activity activity) { }
+        public void onActivityDestroyed(Activity activity) {
+        }
 
         @Override
         public void onActivityResumed(Activity activity) {

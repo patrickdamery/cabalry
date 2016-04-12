@@ -33,7 +33,7 @@ public abstract class MapActivity extends BindableActivity
     private boolean isRunning = false;
     private boolean isUpdating = false;
 
-    ProgressDialog progressBar;
+    protected ProgressDialog progressBar;
 
     private MapFragment mMapFragment;
 
@@ -111,7 +111,7 @@ public abstract class MapActivity extends BindableActivity
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(!result) {
+                if (!result) {
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
             }
@@ -200,9 +200,9 @@ public abstract class MapActivity extends BindableActivity
         String title = user.getName() + " " + user.getColor() + " " + user.getCar();
 
         return mMap.addMarker(new MarkerOptions()
-                        .position(position)
-                        .title(title)
-                        .icon(BitmapDescriptorFactory.fromResource(getMarkerIcon(user.getType())))
+                .position(position)
+                .title(title)
+                .icon(BitmapDescriptorFactory.fromResource(getMarkerIcon(user.getType())))
         );
     }
 

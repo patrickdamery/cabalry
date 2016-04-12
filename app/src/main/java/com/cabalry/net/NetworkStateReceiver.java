@@ -23,9 +23,9 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 
         Log.d(TAG, "Network changed");
 
-        if(checkNetworkTask == null) {
-            if(CabalryApp.isActivityVisible() || CabalryApp.isApplicationInForeground() || CabalryApp.isApplicationVisible()) {
-                if(!LoginActivity.active && !HomeActivity.active) {
+        if (checkNetworkTask == null) {
+            if (CabalryApp.isActivityVisible() || CabalryApp.isApplicationInForeground() || CabalryApp.isApplicationVisible()) {
+                if (!LoginActivity.active && !HomeActivity.active) {
                     Log.d(TAG, "performing network check");
                     performNetworkCheck(context);
                 }
@@ -38,7 +38,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(!result && !HomeActivity.active) { // no internet, redirect to home
+                if (!result && !HomeActivity.active) { // no internet, redirect to home
                     Intent intent = new Intent(context, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

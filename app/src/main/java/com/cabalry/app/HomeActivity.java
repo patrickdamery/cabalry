@@ -56,7 +56,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
@@ -93,7 +98,7 @@ public class HomeActivity extends CabalryActivity.Compat {
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(!result) {
+                if (!result) {
                     Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
                             Toast.LENGTH_LONG).show();
                 }
@@ -106,6 +111,10 @@ public class HomeActivity extends CabalryActivity.Compat {
 
         if (!LocationUpdateService.isRunning()) {
             startService(new Intent(this, LocationUpdateService.class));
+        }
+
+        if (AlarmHistoryActivity.historySet == null) {
+            AlarmHistoryActivity.historySet = GetHistory(getApplicationContext());
         }
 
         mTitle = mDrawerTitle = getTitle();
@@ -254,7 +263,7 @@ public class HomeActivity extends CabalryActivity.Compat {
         new CheckBillingTask(getApplicationContext()) {
             @Override
             protected void onPostExecute(Boolean result) {
-                if(!result) {
+                if (!result) {
                     Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_billing),
                             Toast.LENGTH_LONG).show();
 
@@ -420,6 +429,8 @@ public class HomeActivity extends CabalryActivity.Compat {
                                 SetRegistrationID(context, "");
                                 LogoutUser(context);
 
+                                AlarmHistoryActivity.historySet = null;
+
                                 startActivity(new Intent(context, LoginActivity.class));
 
                             } else {
@@ -439,6 +450,8 @@ public class HomeActivity extends CabalryActivity.Compat {
                     SetDrawerLearned(context, false);
                     SetRegistrationID(context, "");
                     LogoutUser(context);
+
+                    AlarmHistoryActivity.historySet = null;
 
                     startActivity(new Intent(context, LoginActivity.class));
                 }
@@ -474,7 +487,7 @@ public class HomeActivity extends CabalryActivity.Compat {
         @Override
         public void onItemClick(AdapterView parent, View view, final int position, long id) {
 
-            if(position == 8) { // logout is the exception
+            if (position == 8) { // logout is the exception
                 onSelectItem(position);
 
             } else {

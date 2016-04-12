@@ -70,7 +70,6 @@ public class LocationUpdateManager implements LocationListener {
     }
 
     public void resetProvider(LocationManager manager) {
-        ;
         stopLocationUpdates();
 
         if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
