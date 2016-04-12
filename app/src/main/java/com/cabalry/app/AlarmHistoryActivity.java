@@ -3,18 +3,18 @@ package com.cabalry.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.cabalry.R;
 import com.cabalry.base.CabalryActivity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class AlarmHistoryActivity extends CabalryActivity.Compat {
 
@@ -26,18 +26,12 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
         final ListView listview = (ListView) findViewById(R.id.listview);
         String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
                 "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
+                "Linux", "OS/2" };
 
-        final ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
+        final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
         listview.setAdapter(adapter);
 
+        /*
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -56,6 +50,7 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
             }
 
         });
+        */
     }
 
     @Override
@@ -74,28 +69,32 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
         return true;
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<String> {
+    public class HistoryArrayAdapter extends ArrayAdapter<String> {
+        private final Context context;
+        private final String[] values;
 
-        HashMap<String, Integer> mIdMap = new HashMap<>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
+        public HistoryArrayAdapter(Context context, String[] values) {
+            super(context, -1, values);
+            this.context = context;
+            this.values = values;
         }
 
         @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.history_list_item, parent, false);
+            TextView textView = (TextView) rowView.findViewById(R.id.label);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+            textView.setText(values[position]);
 
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
+            // change the icon for Windows and iPhone
+            //String s = values[position];
+            //if (s.startsWith("iPhone"));
 
+            imageView.setImageResource(R.drawable.ic_launcher);
+
+            return rowView;
+        }
     }
 }

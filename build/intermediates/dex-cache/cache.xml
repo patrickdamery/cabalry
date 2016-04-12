@@ -1,12 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
-
-    <item
-        jar="/Users/conor-mac/Documents/Git/cabalry/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="21.1.2"
-        sha1="a013e1814a70ef7ae3af2d7e3aec7ffbadac1dff">
-        <dex dex="/Users/conor-mac/Documents/Git/cabalry/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_87e7340268e849010e41071b9c346210fce7966c.jar" />
-    </item>
-
-</items>
+<items version="2" />

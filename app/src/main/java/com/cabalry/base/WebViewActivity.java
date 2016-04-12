@@ -2,12 +2,12 @@ package com.cabalry.base;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
@@ -17,13 +17,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import static android.content.DialogInterface.*;
 
 import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
-import com.cabalry.app.LoginActivity;
 import com.cabalry.util.TasksUtil.*;
 
 /**
@@ -35,6 +33,8 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
     private WebView mWebView;
     private WebSettings mSettings;
 
+    ProgressDialog progressBar;
+
     /**
      * Initializes activity components.
      */
@@ -43,6 +43,19 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
+
+        // prepare for a progress bar dialog
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(false);
+        progressBar.setMessage(getResources().getString(R.string.msg_loading));
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        // Get the Drawable custom_progressbar
+        //Drawable customDrawable = getResources().getDrawable(R.drawable.cabalry_progressbar);
+
+        // set the drawable as progress drawable
+        //progressBar.setProgressDrawable(customDrawable);
+        progressBar.show();
 
         // Setup web view.
         mWebView = (WebView) findViewById(R.id.web_cabalry);
@@ -53,6 +66,7 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
         mWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 // Once the page has finished loading dismiss progress dialog.
+                progressBar.dismiss();
             }
 
             @Override

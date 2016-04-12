@@ -1,5 +1,6 @@
 package com.cabalry.base;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +33,8 @@ public abstract class MapActivity extends BindableActivity
     private boolean isRunning = false;
     private boolean isUpdating = false;
 
+    ProgressDialog progressBar;
+
     private MapFragment mMapFragment;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -56,6 +59,7 @@ public abstract class MapActivity extends BindableActivity
     }
 
     public void onCameraFinish() {
+        progressBar.dismiss();
     }
 
     public void onCameraCancel() {
@@ -76,6 +80,19 @@ public abstract class MapActivity extends BindableActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // prepare for a progress bar dialog
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(false);
+        progressBar.setMessage(getResources().getString(R.string.msg_loading));
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        // Get the Drawable custom_progressbar
+        //Drawable customDrawable = getResources().getDrawable(R.drawable.cabalry_progressbar);
+
+        // set the drawable as progress drawable
+        //progressBar.setProgressDrawable(customDrawable);
+        progressBar.show();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -162,7 +179,7 @@ public abstract class MapActivity extends BindableActivity
 
         loadGoogleMapSettings();
 
-        setCameraFocus(GetMapState(this), 1);
+        //setCameraFocus(GetMapState(this), 1);
     }
 
     public void loadGoogleMapSettings() {

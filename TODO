@@ -1,7 +1,5 @@
 To Do:
     - Improve alarm check activity, don't ask with words and give option to stop timer
-    - Add loading screens
-    - Add alarm history
     - Add multiple button support
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
@@ -11,11 +9,12 @@ To Do:
     - Add sms support num: +353 861 800 845
 
 In Progress:
-
+    - Add alarm history
 
 Bugs:
 
 Completed:
+    - Add loading screens
     - handle logout when no internet
     - Check network status
     - update settings

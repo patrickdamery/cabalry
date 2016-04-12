@@ -9,7 +9,7 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_recordings">Recordings</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_history">Alarm History</string>
+    <string name="title_activity_history">History</string>
     <string name="title_activity_billing">Billing</string>
     <string name="title_activity_userinfo">User Info</string>
     <string name="title_activity_register">Register</string>
@@ -77,7 +77,7 @@
     <string name="action_scan">Scan for devices</string>
 
     <!--  For web views -->
-    <string name="msg_webview_loading">Loading...</string>
+    <string name="msg_loading">Loading...</string>
 
     <string name="error_no_network">Please re-connect to the internet.</string>
     <string name="prompt_no_gps">This app cannot function properly without GPS, do you want to enable it?</string>
