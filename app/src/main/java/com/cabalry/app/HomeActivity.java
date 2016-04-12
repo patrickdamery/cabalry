@@ -360,23 +360,26 @@ public class HomeActivity extends CabalryActivity.Compat {
                 intent = new Intent(getApplicationContext(), DeviceControlActivity.class);
                 break;
             case 3:
-                intent = new Intent(getApplicationContext(), RecordingsActivity.class);
+                intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 break;
             case 4:
-                intent = new Intent(getApplicationContext(), BillingActivity.class);
+                intent = new Intent(getApplicationContext(), RecordingsActivity.class);
                 break;
             case 5:
-                intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                intent = new Intent(getApplicationContext(), AlarmHistoryActivity.class);
+                break;
+            case 6:
+                intent = new Intent(getApplicationContext(), BillingActivity.class);
                 break;
 
             // Redirect to help url
-            case 6:
+            case 7:
                 intent = new Intent("android.intent.action.VIEW", Uri.parse(CabalryServer.HELP_URL));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
 
             // Logout and redirect to login activity.
-            case 7:
+            case 8:
                 if (GetAlarmUserID(this) == GetUserID(this)) {
                     promptPassword();
                 } else {
@@ -471,7 +474,7 @@ public class HomeActivity extends CabalryActivity.Compat {
         @Override
         public void onItemClick(AdapterView parent, View view, final int position, long id) {
 
-            if(position == 7) { // logout is the exception
+            if(position == 8) { // logout is the exception
                 onSelectItem(position);
 
             } else {

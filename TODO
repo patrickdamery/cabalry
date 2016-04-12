@@ -18,7 +18,6 @@ Bugs:
 Completed:
     - handle logout when no internet
     - Check network status
-
     - update settings
     - Add timer feature
     - Add silent feature

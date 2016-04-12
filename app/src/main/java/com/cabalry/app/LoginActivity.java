@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.cabalry.R;
 import com.cabalry.base.CabalryActivity;
+import com.cabalry.util.TasksUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
 
     enum StartupActivity {
         LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
-        SETTINGS, USER_INFO, DEVICE_CONTROL
+        SETTINGS, USER_INFO, DEVICE_CONTROL, ALARM_MAP, ALARM_HISTORY
     }
 
     StartupActivity mStartupActivity = StartupActivity.HOME;
@@ -202,6 +203,12 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
             case DEVICE_CONTROL:
                 intent = new Intent(context, DeviceControlActivity.class);
                 break;
+            case ALARM_MAP:
+                intent = new Intent(context, AlarmMapActivity.class);
+                break;
+            case ALARM_HISTORY:
+                intent = new Intent(context, AlarmHistoryActivity.class);
+                break;
 
             default:
                 intent = new Intent(context, LoginActivity.class);
@@ -213,13 +220,37 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
     }
 
     private void launchRegister() {
-        Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
-        startActivity(register);
+        new TasksUtil.CheckNetworkTask(getApplicationContext()) {
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result) {
+                    Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
+                    startActivity(register);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 
     private void launchForgot() {
-        Intent forgot = new Intent(getApplicationContext(), ForgotActivity.class);
-        startActivity(forgot);
+        new TasksUtil.CheckNetworkTask(getApplicationContext()) {
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result) {
+                    Intent forgot = new Intent(getApplicationContext(), ForgotActivity.class);
+                    startActivity(forgot);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 
     private void populateAutoComplete() {

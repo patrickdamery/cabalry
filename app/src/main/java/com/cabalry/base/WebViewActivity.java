@@ -34,7 +34,6 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
     // Web view components.
     private WebView mWebView;
     private WebSettings mSettings;
-    private CheckNetworkTask mCheckNetworkTask;
 
     /**
      * Initializes activity components.
@@ -44,8 +43,6 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-
-        // TODO Check if user still has connection
 
         // Setup web view.
         mWebView = (WebView) findViewById(R.id.web_cabalry);
