@@ -19,11 +19,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cabalry.R;
+import com.cabalry.base.CabalryActivity;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class DeviceListActivity extends Activity {
+public class DeviceListActivity extends CabalryActivity {
     private static final String TAG = "DeviceListActivity";
 
     public static final String EXTRA_DEVICE_ADDRESS = "device_address";

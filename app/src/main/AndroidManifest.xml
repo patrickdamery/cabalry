@@ -38,6 +38,7 @@
     <uses-permission android:name="com.cabalry.gcm.permission.C2D_MESSAGE" />
 
     <application
+        android:name="com.cabalry.app.CabalryApp"
         tools:ignore="AllowBackup"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

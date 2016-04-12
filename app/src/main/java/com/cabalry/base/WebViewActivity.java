@@ -29,7 +29,7 @@ import com.cabalry.util.TasksUtil.*;
 /**
  * WebViewActivity
  */
-public abstract class WebViewActivity extends AppCompatActivity {
+public abstract class WebViewActivity extends CabalryActivity.Compat {
 
     // Web view components.
     private WebView mWebView;
@@ -119,7 +119,16 @@ public abstract class WebViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // TODO Check if user still has connection
+        new CheckNetworkTask(getApplicationContext()) {
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+
+                if(!result) { // no internet return to home
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                }
+            }
+        }.execute();
     }
 
     @Override
@@ -132,7 +141,7 @@ public abstract class WebViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                onBackPressed();
                 break;
         }
         return true;

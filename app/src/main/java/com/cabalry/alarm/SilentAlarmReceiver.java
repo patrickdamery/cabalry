@@ -1,9 +1,14 @@
 package com.cabalry.alarm;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
+import com.cabalry.app.CabalryApp;
+
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 

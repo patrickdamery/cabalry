@@ -114,7 +114,7 @@ public class AlarmMapActivity extends MapActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         initialize();
     }

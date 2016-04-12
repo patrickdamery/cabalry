@@ -11,6 +11,7 @@ import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.app.UserInfoActivity;
 import com.cabalry.location.LocationUpdateService;
+import com.cabalry.util.TasksUtil;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -87,6 +88,20 @@ public abstract class MapActivity extends BindableActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        new TasksUtil.CheckNetworkTask(getApplicationContext()) {
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(!result) {
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                }
+            }
+        }.execute();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         bindToService(LocationUpdateService.class, new MessengerHandler(),
@@ -109,6 +124,19 @@ public abstract class MapActivity extends BindableActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            unbindFromService();
+        } catch (Throwable t) {
+            Log.e(TAG, "Failed to unbind from the service", t);
+        }
+
+        SaveMapState(this, mMap.getCameraPosition());
+        isRunning = false;
     }
 
     @Override

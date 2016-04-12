@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.cabalry.alarm.AlarmTimerService;
 import com.cabalry.alarm.StartAlarmService;
+import com.cabalry.base.CabalryActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,7 +16,7 @@ import java.util.TimerTask;
 /**
  * Created by conor on 18/02/15.
  */
-public class TimerCheckActivity extends Activity {
+public class TimerCheckActivity extends CabalryActivity {
     private static final String TAG = "TimerCheckActivity";
 
     private static final int TIME = 30000;

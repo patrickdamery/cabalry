@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,8 +25,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cabalry.R;
+import com.cabalry.base.CabalryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +42,10 @@ import static com.cabalry.util.TasksUtil.*;
  * <p/>
  * Login screen for Cabalry app.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cursor> {
+    private static final String TAG = "LoginActivity";
+
+    public static boolean active = false;
 
     enum StartupActivity {
         LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
@@ -66,6 +72,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             @Override
             protected void onPostExecute(final Boolean success) {
                 showProgress(false);
+                Log.i(TAG, "Success: "+success);
 
                 if (success) {
                     LoginUser(LoginActivity.this, getID(), getKey());
@@ -137,6 +144,18 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 
     @Override
@@ -222,8 +241,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt
-        String user = mUserView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String user = mUserView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -258,12 +277,23 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // There was an error. Focus on source
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and perform the user login attempt
-            showProgress(true);
+            new CheckNetworkTask(getApplicationContext()) {
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if(result) {
+                        // Show a progress spinner, and perform the user login attempt
+                        showProgress(true);
 
-            loginTask = getLoginTask();
-            loginTask.setLoginInfo(user, password);
-            loginTask.execute();
+                        loginTask = getLoginTask();
+                        loginTask.setLoginInfo(user, password);
+                        loginTask.execute();
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_no_network),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            }.execute();
         }
     }
 

@@ -17,7 +17,7 @@ import android.util.Log;
 /**
  * BindableActivity
  */
-public abstract class BindableActivity extends AppCompatActivity {
+public abstract class BindableActivity extends CabalryActivity.Compat {
     private static final String TAG = "BindableActivity";
 
     private Messenger mService = null;

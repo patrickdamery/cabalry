@@ -1,6 +1,7 @@
 package com.cabalry.app;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,8 +39,10 @@ import android.widget.ToggleButton;
 import com.cabalry.R;
 import com.cabalry.alarm.AlarmTimerService;
 import com.cabalry.alarm.SilentAlarmService;
+import com.cabalry.alarm.StartAlarmService;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
+import com.cabalry.base.CabalryActivity;
 import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.net.CabalryServer;
 import com.cabalry.location.LocationUpdateService;
@@ -53,6 +56,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
@@ -62,8 +66,10 @@ import static com.cabalry.net.CabalryServer.*;
 /**
  * HomeActivity
  */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends CabalryActivity.Compat {
     private static final String TAG = "HomeActivity";
+
+    public static boolean active = false;
 
     // GCM required components.
     private GoogleCloudMessaging gcm;
@@ -205,6 +211,23 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
+
     private void alertNoGpsEnabled() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getResources().getString(R.string.prompt_no_gps))
@@ -228,11 +251,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void launchAlarm() {
-        new StartAlarmTask(getApplicationContext()) {
+        new CheckBillingTask(getApplicationContext()) {
             @Override
-            protected void onResult(Boolean result) {
-                if (result) {
-                    startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+            protected void onPostExecute(Boolean result) {
+                if(!result) {
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_billing),
+                            Toast.LENGTH_LONG).show();
+
+                } else {
+                    new StartAlarmTask(getApplicationContext()) {
+                        @Override
+                        protected void onResult(Boolean result) {
+                            if (result) {
+                                startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+                            }
+                        }
+                    }.execute();
                 }
             }
         }.execute();
@@ -359,37 +393,42 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void logout() {
+        final Context context = getApplicationContext();
+
         if (GetAlarmUserID(this) == GetUserID(this)) {
-            new StopAlarmTask(getApplicationContext()).execute();
+            new StopAlarmTask(context).execute();
         }
 
-        new UserLogoutTask(getApplicationContext()) {
+        new CheckNetworkTask(getApplicationContext()) {
+
             @Override
-            protected void onResult(final Boolean success) {
-                if (success) {
-                    Context context = getApplicationContext();
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    new UserLogoutTask(getApplicationContext()) {
+                        @Override
+                        protected void onResult(final Boolean success) {
+                            if (success) {
+                                stopServices(context);
 
-                    if (!BluetoothService.isRunning())
-                        stopService(new Intent(context, BluetoothService.class));
+                                SetAlarmID(context, 0);
+                                SetAlarmUserID(context, 0);
+                                SetGPSChecked(context, false);
+                                SetDrawerLearned(context, false);
+                                SetRegistrationID(context, "");
+                                LogoutUser(context);
 
-                    if (!LocationUpdateService.isRunning())
-                        stopService(new Intent(context, LocationUpdateService.class));
+                                startActivity(new Intent(context, LoginActivity.class));
 
-                    //if (!AlarmTimerService.isRunning())
-                    stopService(new Intent(context, AlarmTimerService.class));
+                            } else {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_logout),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }.execute();
 
-                    //if (!SilentAlarmService.isRunning())
-                    stopService(new Intent(context, SilentAlarmService.class));
+                } else {
 
-                    if (AudioPlaybackService.isRunning()) {
-                        AudioPlaybackService.stopAudioPlayback();
-                        stopService(new Intent(context, AudioPlaybackService.class));
-                    }
-
-                    if (AudioStreamService.isRunning()) {
-                        AudioStreamService.stopAudioStream();
-                        stopService(new Intent(context, AudioStreamService.class));
-                    }
+                    stopServices(context);
 
                     SetAlarmID(context, 0);
                     SetAlarmUserID(context, 0);
@@ -399,35 +438,58 @@ public class HomeActivity extends AppCompatActivity {
                     LogoutUser(context);
 
                     startActivity(new Intent(context, LoginActivity.class));
-
-                } else {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_logout),
-                            Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();
     }
 
+    private void stopServices(Context context) {
+        if (!BluetoothService.isRunning())
+            stopService(new Intent(context, BluetoothService.class));
+
+        if (!LocationUpdateService.isRunning())
+            stopService(new Intent(context, LocationUpdateService.class));
+
+        //if (!AlarmTimerService.isRunning())
+        stopService(new Intent(context, AlarmTimerService.class));
+
+        //if (!SilentAlarmService.isRunning())
+        stopService(new Intent(context, SilentAlarmService.class));
+
+        if (AudioPlaybackService.isRunning()) {
+            AudioPlaybackService.stopAudioPlayback();
+            stopService(new Intent(context, AudioPlaybackService.class));
+        }
+
+        if (AudioStreamService.isRunning()) {
+            AudioStreamService.stopAudioStream();
+            stopService(new Intent(context, AudioStreamService.class));
+        }
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, final int position, long id) {
-            new CheckNetworkTask(getApplicationContext()) {
 
-                @Override
-                protected void onPostExecute(Boolean result) {
-                    if (result) {
-                        onSelectItem(position);
+            if(position == 7) { // logout is the exception
+                onSelectItem(position);
 
-                    } else if(position == 7) { // logout is the exception
-                        onSelectItem(position);
+            } else {
+                new CheckNetworkTask(getApplicationContext()) {
 
-                    } else {
-                        // handle no network
-                        Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
-                                Toast.LENGTH_LONG).show();
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            onSelectItem(position);
+
+                        } else {
+                            // handle no network
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-            }.execute();
+                }.execute();
+            }
         }
     }
 

@@ -226,6 +226,7 @@ public class TasksUtil {
                 result = RequestLogin(mUser, mPassword);
                 try {
                     success = result.getBoolean(REQ_SUCCESS);
+                    Log.i(TAG, "Success: "+success);
 
                     if (success) {
 
@@ -565,14 +566,7 @@ public class TasksUtil {
         }
 
         @Override
-        protected abstract void onPostExecute(Boolean result);/* {
-            if(!result) {
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.error_billing),
-                        Toast.LENGTH_LONG).show();
-            } else {
-                mContext.startService(new Intent(mContext, StartAlarmService.class));
-            }
-        }*/
+        protected abstract void onPostExecute(Boolean result);
     }
 
     /**

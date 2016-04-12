@@ -1,5 +1,6 @@
 package com.cabalry.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,9 +30,17 @@ public class SettingsActivity extends WebViewActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        // save settings
+        new TasksUtil.SaveSettingsTask(getApplicationContext()).execute();
+
+        // Return to home
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("SettingsActivity", "HERE");
         new TasksUtil.SaveSettingsTask(getApplicationContext()).execute();
     }
 }

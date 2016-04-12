@@ -24,7 +24,7 @@ public class AlarmTimerService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        int timerTime = GetTimerTime(getApplicationContext()) * 1000 * 60;
+        int timerTime = GetTimerTime(getApplicationContext()) * 1000;
 
         timerTask = new TimerTask() {
             @Override

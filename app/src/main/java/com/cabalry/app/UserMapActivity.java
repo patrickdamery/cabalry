@@ -79,7 +79,7 @@ public class UserMapActivity extends MapActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         initialize();
     }
@@ -131,18 +131,40 @@ public class UserMapActivity extends MapActivity {
     private void collectNearbyUsers() {
         if (mCollectUsersTask == null) {
 
-            mCollectUsersTask = getCollectUsersTask();
-            mCollectUsersTask.execute();
+            new CheckNetworkTask(getApplicationContext()) {
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if(result) {
+                        mCollectUsersTask = getCollectUsersTask();
+                        mCollectUsersTask.execute();
+
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                }
+            }.execute();
         }
     }
 
     private void collectUserInfo() {
         if (mCollectUserInfoTask == null) {
-            mCollectUserInfoTask = getCollectUserInfoTask();
+            new CheckNetworkTask(getApplicationContext()) {
 
-            int id = GetUserID(this);
-            mCollectUserInfoTask.set(id, id, GetUserKey(this));
-            mCollectUserInfoTask.execute();
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if(result) {
+                        mCollectUserInfoTask = getCollectUserInfoTask();
+
+                        int id = GetUserID(getApplicationContext());
+                        mCollectUserInfoTask.set(id, id, GetUserKey(getApplicationContext()));
+                        mCollectUserInfoTask.execute();
+
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                }
+            }.execute();
         }
     }
 
