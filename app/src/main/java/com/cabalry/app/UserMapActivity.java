@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.cabalry.R;
@@ -71,11 +72,27 @@ public class UserMapActivity extends MapActivity {
     }
 
     private void launchAlarm() {
-        new StartAlarmTask(getApplicationContext()) {
+        progressBar.show();
+
+        new CheckBillingTask(getApplicationContext()) {
             @Override
-            protected void onResult(Boolean result) {
-                if (result) {
-                    startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+            protected void onPostExecute(Boolean result) {
+                if (!result) {
+                    progressBar.dismiss();
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_billing),
+                            Toast.LENGTH_LONG).show();
+
+                } else {
+                    new StartAlarmTask(getApplicationContext()) {
+                        @Override
+                        protected void onResult(Boolean result) {
+                            if (result) {
+                                startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+                            }
+
+                            progressBar.dismiss();
+                        }
+                    }.execute();
                 }
             }
         }.execute();

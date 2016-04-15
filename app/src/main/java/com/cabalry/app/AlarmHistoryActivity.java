@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,31 +39,62 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_history);
 
+        final TextView noHistoryText = (TextView) findViewById(R.id.noHistoryText);
+        final Button clearAll = (Button) findViewById(R.id.clearAll);
+        final ListView listview = (ListView) findViewById(R.id.listview);
+
         if (historySet == null)
             historySet = GetHistory(getApplicationContext());
 
-        updateListView();
+        if (historySet != null) {
+            Log.i(TAG, "historySet size: " + AlarmHistoryActivity.historySet.size());
 
-        /*
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            String[] values = historySet.toArray(new String[historySet.size()]);
+            final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
+            listview.setAdapter(adapter);
+            listview.setDivider(null);
+            listview.setDividerHeight(0);
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
-            }
+            clearAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // TODO add clear all feature
+                    //historySet.clear();
+                    //adapter.clear();
+                    //adapter.notifyDataSetChanged();
+                    //SaveHistory(getApplicationContext(), historySet);
+                }
+            });
 
-        });
-        */
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view,
+                                        int position, long id) {
+                    Log.i(TAG, "onItemClick pos: " + position);
+
+                    final String item = (String) parent.getItemAtPosition(position);
+                    view.animate().setDuration(2000).alpha(0)
+                            .withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // TODO fix listener
+                                    historySet.remove(item);
+                                    adapter.remove(item);
+                                    adapter.notifyDataSetChanged();
+                                    view.setAlpha(1);
+                                    SaveHistory(getApplicationContext(), historySet);
+                                }
+                            });
+                }
+
+            });
+
+        } else {
+            listview.setVisibility(View.GONE);
+            clearAll.setVisibility(View.GONE);
+            noHistoryText.setVisibility(View.VISIBLE);
+        }
     }
 
     public static void addHistoryEntry(final Context context, final int userID, final int alarmID) {
@@ -75,30 +109,13 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
                 if (result != null) {
                     String str = result.getString(REQ_USER_NAME) + "~" + alarmID + "~" + f.format(new Date());
                     historySet.add(str);
+                    SaveHistory(context, historySet);
 
                 } else {
 
                 }
             }
         }.execute();
-
-        SaveHistory(context, historySet);
-    }
-
-    private void updateListView() {
-
-        if (historySet != null) {
-            Log.i(TAG, "historySet size: " + AlarmHistoryActivity.historySet.size());
-
-            String[] values = historySet.toArray(new String[historySet.size()]);
-            final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
-
-            final ListView listview = (ListView) findViewById(R.id.listview);
-            listview.setAdapter(adapter);
-
-        } else {
-            // TODO Handle when history set is empty
-        }
     }
 
     @Override
@@ -128,13 +145,14 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.history_list_item, parent, false);
             TextView label = (TextView) rowView.findViewById(R.id.label);
             TextView description = (TextView) rowView.findViewById(R.id.description);
             ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
+            //ImageButton remove = (ImageButton) rowView.findViewById(R.id.remove);
 
             String[] result = values[position].split("~");
 
@@ -146,7 +164,7 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
                 label.setText(values[position]);
             }
 
-            icon.setImageResource(R.drawable.ic_launcher);
+            icon.setImageResource(R.drawable.ic_alarm_inactive);
 
             return rowView;
         }

@@ -1,4 +1,32 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listview"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="There are no alarm records"
+        android:textColor="#AAAAAA"
+        android:id="@+id/noHistoryText"
+        android:visibility="gone"
+        android:layout_margin="10dp" />
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Clear All"
+        android:id="@+id/clearAll"
+        android:textStyle="bold"
+        android:background="@drawable/cabalry_button"
+        android:textColor="#FFFFFF"
+        android:layout_margin="15dp" />
+
+</LinearLayout>

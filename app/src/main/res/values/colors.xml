@@ -2,7 +2,7 @@
 <resources>
 
     <item name="cab_red" type="color">#FF6A1010</item>
-    <item name="cab_bg" type="color">#FFF8F8F8</item>
+    <item name="cab_bg" type="color">#F5F5F5</item>
 
     <item name="cab_ab_title" type="color">#FFFFFFFF</item>
     <item name="cab_ab_subtitle" type="color">#FFA8A8A8</item>

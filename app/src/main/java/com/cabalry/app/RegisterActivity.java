@@ -17,6 +17,8 @@ import static com.cabalry.util.PreferencesUtil.GetUserKey;
  */
 public class RegisterActivity extends WebViewActivity {
 
+    public static boolean active = false;
+
     /**
      * Initializes activity components.
      */
@@ -26,6 +28,18 @@ public class RegisterActivity extends WebViewActivity {
 
         // Load Url.
         getWebView().loadUrl(REGISTER_URL + "?id=" + GetUserID(this) + "&auth_key=" + GetUserKey(this));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 
     @Override
