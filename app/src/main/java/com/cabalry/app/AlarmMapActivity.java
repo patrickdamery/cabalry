@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cabalry.R;
+import com.cabalry.alarm.AlarmService;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.MapActivity;
@@ -224,19 +225,8 @@ public class AlarmMapActivity extends MapActivity {
     }
 
     private void stopAlarm() {
-        new StopAlarmTask(getApplicationContext()).execute();
-
-        if (AudioPlaybackService.isRunning())
-            AudioPlaybackService.stopAudioPlayback();
-
-        if (AudioStreamService.isRunning())
-            AudioStreamService.stopAudioStream();
-
-        stopService(new Intent(this, AudioStreamService.class));
-        stopService(new Intent(this, AudioPlaybackService.class));
-
-        SetAlarmID(this, 0);
-        SetAlarmUserID(this, 0);
+        AlarmService.stopAlarm(getApplicationContext());
+        stopService(new Intent(this, AlarmService.class));
 
         // return to home.
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -288,6 +278,7 @@ public class AlarmMapActivity extends MapActivity {
                 if (users != null) {
                     Vector<LatLng> targets = new Vector<>();
                     targets.add(mUser.getPosition());
+                    users.add(mUser);
 
                     for (MapUser user : users)
                         targets.add(user.getPosition());

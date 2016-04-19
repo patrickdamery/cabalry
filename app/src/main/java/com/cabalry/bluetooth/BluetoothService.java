@@ -13,7 +13,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.cabalry.R;
-import com.cabalry.alarm.StartAlarmService;
+import com.cabalry.alarm.AlarmService;
 import com.cabalry.app.DeviceControlActivity;
 import com.cabalry.base.BindableService;
 import com.cabalry.util.MovingAverage;
@@ -42,7 +42,7 @@ public class BluetoothService extends BindableService {
         @Override
         public void onDeviceButtonPressed(Context context) {
             // Start alarm.
-            startService(new Intent(getApplicationContext(), StartAlarmService.class));
+            startService(new Intent(getApplicationContext(), AlarmService.class));
 
             /*
             Intent intent = new Intent(context, DeviceControlActivity.class);

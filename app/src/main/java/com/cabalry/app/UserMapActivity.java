@@ -1,5 +1,6 @@
 package com.cabalry.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +10,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.cabalry.R;
+import com.cabalry.audio.AudioPlaybackService;
+import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.MapActivity;
 import com.cabalry.base.MapUser;
 import com.cabalry.location.LocationUpdateService;
+import com.cabalry.util.TasksUtil;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -66,28 +70,53 @@ public class UserMapActivity extends MapActivity {
         bAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchAlarm();
+                startAlarm(getApplicationContext());
             }
         });
     }
 
-    private void launchAlarm() {
+    private void startAlarm(final Context context) {
         progressBar.show();
 
-        new CheckBillingTask(getApplicationContext()) {
+        new CheckBillingTask(context) {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (!result) {
                     progressBar.dismiss();
-                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_billing),
+                    Toast.makeText(context, context.getResources().getString(R.string.error_billing),
                             Toast.LENGTH_LONG).show();
 
                 } else {
-                    new StartAlarmTask(getApplicationContext()) {
+                    new StartAlarmTask(context) {
                         @Override
                         protected void onResult(Boolean result) {
                             if (result) {
-                                startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+
+                                final boolean selfActivated = GetAlarmUserID(context) == GetUserID(context);
+
+                                new TasksUtil.GetAlarmInfoTask(context) {
+                                    @Override
+                                    protected void onPostExecute(Boolean result) {
+
+                                        if (result) {
+                                            SetAlarmIP(context, getIP());
+
+                                            if (selfActivated) {
+                                                // Start audio stream service
+                                                context.startService(new Intent(context, AudioStreamService.class));
+
+                                            } else {
+                                                // Start audio playback service
+                                                context.startService(new Intent(context, AudioPlaybackService.class));
+                                            }
+
+                                        } else {
+                                            Log.e(TAG, "ERROR no alarm info!");
+                                        }
+                                    }
+                                }.execute();
+
+                                startActivity(new Intent(context, AlarmMapActivity.class));
                             }
 
                             progressBar.dismiss();
@@ -145,7 +174,8 @@ public class UserMapActivity extends MapActivity {
             collectUserInfo();
         }
 
-        Log.i(TAG, "onUpdateLocation location: " + location.toString());
+        Log.d(TAG, "users in map: " + getMapUsersCount());
+        Log.d(TAG, "onUpdateLocation location: " + location.toString());
     }
 
     private void collectNearbyUsers() {
@@ -199,6 +229,7 @@ public class UserMapActivity extends MapActivity {
 
                     Vector<LatLng> targets = new Vector<>();
                     targets.add(mUser.getPosition());
+                    users.add(mUser);
 
                     for (MapUser user : users)
                         targets.add(user.getPosition());
@@ -208,7 +239,7 @@ public class UserMapActivity extends MapActivity {
                     updateUsers(users);
                     Log.i(TAG, "CollectUsersTask - updated");
                 } else {
-                    Log.i(TAG, "CollectUsersTask - users is null! fail state: " + getFailState());
+                    Log.e(TAG, "CollectUsersTask - users is null! fail state: " + getFailState());
                     setCameraFocus(mUser.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
                 }
 

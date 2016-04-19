@@ -1,7 +1,9 @@
 To Do:
+    - handle case when gcm stop alarm
+    - add listening alarms to history
+    - Fix alarm services not stopping correctly
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
-    - Handle case when alarm is active and app is closed
 
     - Add multiple button support
     - Take photos and upload
@@ -11,9 +13,11 @@ To Do:
     - Improve alarm check activity, don't ask with words
 
 In Progress:
-    - Fix reverse order of alarm history
+    - Handle case when alarm is active and app is closed
 
 Bugs:
+    - Fix reverse order of alarm history
+    - Fix double user marker on map
 
 Completed:
     - Improve graphics

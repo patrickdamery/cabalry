@@ -30,7 +30,7 @@ public class SilentAlarmService extends IntentService {
         v.vibrate(pattern, -1);
 
         // Start alarm.
-        startService(new Intent(getApplicationContext(), StartAlarmService.class));
+        startService(new Intent(getApplicationContext(), AlarmService.class));
 
         // Release the wake lock provided by the WakefulBroadcastReceiver.
         SilentAlarmReceiver.completeWakefulIntent(intent);

@@ -1,13 +1,12 @@
 package com.cabalry.app;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.cabalry.alarm.AlarmService;
 import com.cabalry.alarm.AlarmTimerService;
-import com.cabalry.alarm.StartAlarmService;
 import com.cabalry.base.CabalryActivity;
 
 import java.util.Timer;
@@ -32,7 +31,7 @@ public class TimerCheckActivity extends CabalryActivity {
             public void run() {
                 alert.cancel();
                 // Start alarm.
-                startService(new Intent(getApplicationContext(), StartAlarmService.class));
+                startService(new Intent(getApplicationContext(), AlarmService.class));
             }
         };
 
@@ -63,7 +62,7 @@ public class TimerCheckActivity extends CabalryActivity {
                 //SetTimerEnabled(getApplicationContext(), false);
                 timerTask.cancel();
                 //launchAlarm();
-                //startService(new Intent(getApplicationContext(), StartAlarmService.class));
+                //startService(new Intent(getApplicationContext(), AlarmService.class));
             }
         });
 

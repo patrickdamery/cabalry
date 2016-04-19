@@ -1,7 +1,6 @@
 package com.cabalry.app;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,7 +15,6 @@ import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
@@ -40,7 +38,6 @@ import android.widget.ToggleButton;
 import com.cabalry.R;
 import com.cabalry.alarm.AlarmTimerService;
 import com.cabalry.alarm.SilentAlarmService;
-import com.cabalry.alarm.StartAlarmService;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.CabalryActivity;
@@ -57,12 +54,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
@@ -204,7 +195,7 @@ public class HomeActivity extends CabalryActivity.Compat {
         bAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchAlarm();
+                startAlarm(getApplicationContext());
             }
         });
 
@@ -278,23 +269,48 @@ public class HomeActivity extends CabalryActivity.Compat {
         alert.show();
     }
 
-    private void launchAlarm() {
+    private void startAlarm(final Context context) {
         progressBar.show();
 
-        new CheckBillingTask(getApplicationContext()) {
+        new CheckBillingTask(context) {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (!result) {
                     progressBar.dismiss();
-                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_billing),
+                    Toast.makeText(context, context.getResources().getString(R.string.error_billing),
                             Toast.LENGTH_LONG).show();
 
                 } else {
-                    new StartAlarmTask(getApplicationContext()) {
+                    new StartAlarmTask(context) {
                         @Override
                         protected void onResult(Boolean result) {
                             if (result) {
-                                startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+
+                                final boolean selfActivated = GetAlarmUserID(context) == GetUserID(context);
+
+                                new TasksUtil.GetAlarmInfoTask(context) {
+                                    @Override
+                                    protected void onPostExecute(Boolean result) {
+
+                                        if (result) {
+                                            SetAlarmIP(context, getIP());
+
+                                            if (selfActivated) {
+                                                // Start audio stream service
+                                                context.startService(new Intent(context, AudioStreamService.class));
+
+                                            } else {
+                                                // Start audio playback service
+                                                context.startService(new Intent(context, AudioPlaybackService.class));
+                                            }
+
+                                        } else {
+                                            Log.e(TAG, "ERROR no alarm info!");
+                                        }
+                                    }
+                                }.execute();
+
+                                startActivity(new Intent(context, AlarmMapActivity.class));
                             }
 
                             progressBar.dismiss();

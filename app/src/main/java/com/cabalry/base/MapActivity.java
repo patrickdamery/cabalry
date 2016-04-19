@@ -30,6 +30,8 @@ public abstract class MapActivity extends BindableActivity
     public static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
+    static final boolean SETTINGS_ENABLED = true; // change to true only for debugging
+
     private boolean isRunning = false;
     private boolean isUpdating = false;
 
@@ -59,7 +61,12 @@ public abstract class MapActivity extends BindableActivity
     }
 
     public void onCameraFinish() {
-        progressBar.dismiss();
+        // throws an illegal argument exception apparently
+        try {
+            progressBar.dismiss();
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 
     public void onCameraCancel() {
@@ -192,14 +199,14 @@ public abstract class MapActivity extends BindableActivity
     public void loadGoogleMapSettings() {
         UiSettings settings = mMap.getUiSettings();
 
-        settings.setZoomControlsEnabled(false);
-        settings.setZoomGesturesEnabled(false);
-        settings.setScrollGesturesEnabled(false);
-        settings.setTiltGesturesEnabled(false);
-        settings.setRotateGesturesEnabled(false);
-        settings.setMapToolbarEnabled(false);
-        settings.setIndoorLevelPickerEnabled(false);
-        settings.setCompassEnabled(false);
+        settings.setZoomControlsEnabled(SETTINGS_ENABLED);
+        settings.setZoomGesturesEnabled(SETTINGS_ENABLED);
+        settings.setScrollGesturesEnabled(SETTINGS_ENABLED);
+        settings.setTiltGesturesEnabled(SETTINGS_ENABLED);
+        settings.setRotateGesturesEnabled(SETTINGS_ENABLED);
+        settings.setMapToolbarEnabled(SETTINGS_ENABLED);
+        settings.setIndoorLevelPickerEnabled(SETTINGS_ENABLED);
+        settings.setCompassEnabled(SETTINGS_ENABLED);
     }
 
     public Marker createMarker(final MapUser user) {
@@ -349,6 +356,10 @@ public abstract class MapActivity extends BindableActivity
 
         Vector<MapUser> removeList = new Vector<>();
 
+        for (MapUser u : newList) {
+            Log.i(TAG, "user: " + u.getName());
+        }
+
         /**
          * First pass compare and update
          */
@@ -410,6 +421,10 @@ public abstract class MapActivity extends BindableActivity
         add(user);
 
         isUpdating = false;
+    }
+
+    public int getMapUsersCount() {
+        return mMarkerMap.size();
     }
 
     /**

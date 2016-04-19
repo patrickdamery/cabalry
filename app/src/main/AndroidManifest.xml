@@ -157,7 +157,7 @@
             android:name=".audio.AudioPlaybackService"
             android:exported="false" />
         <service
-            android:name=".alarm.StartAlarmService"
+            android:name=".alarm.AlarmService"
             android:exported="false" />
 
         <receiver
@@ -205,7 +205,7 @@
             android:name=".alarm.AlarmTimerService"
             android:exported="false" />
         <service
-            android:name=".alarm.StartAlarmService"
+            android:name=".alarm.AlarmService"
             android:exported="false" />
         <service
             android:name=".alarm.SilentAlarmService"
