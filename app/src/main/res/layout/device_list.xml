@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title_paired_devices"
         android:visibility="gone"
-        android:background="#666"
+        android:background="@drawable/cabalry_button"
         android:textColor="#fff"
         android:paddingLeft="5dp" />
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title_other_devices"
         android:visibility="gone"
-        android:background="#666"
+        android:background="@drawable/cabalry_button"
         android:textColor="#fff"
         android:paddingLeft="5dp" />
 
@@ -42,5 +42,9 @@
         android:id="@+id/button_scan"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_message" />
+        android:text="@string/search_message"
+        android:textStyle="bold"
+        android:background="@drawable/cabalry_button"
+        android:textColor="#FFFFFF"
+        android:layout_margin="15dp" />
 </LinearLayout>
