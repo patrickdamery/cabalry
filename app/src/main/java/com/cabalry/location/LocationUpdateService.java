@@ -27,7 +27,7 @@ public class LocationUpdateService extends BindableService implements LocationUp
     private static final int WAIT_TIME = 600000;
     private long startTime = System.currentTimeMillis();
 
-    private LocationUpdateManager mLocationUpdateManager;
+    private static LocationUpdateManager mLocationUpdateManager;
     private LatLng currentLocation, lastLocation;
 
     @Override
@@ -38,7 +38,15 @@ public class LocationUpdateService extends BindableService implements LocationUp
         mLocationUpdateManager.setUpdateListener(this);
 
         currentLocation = GetLocation(this);
-        updateLocation();
+
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mLocationUpdateManager.resetProvider(manager);
+    }
+
+    public static void updateListenerProvider(LocationUpdateManager.UpdateProvider provider) {
+        mLocationUpdateManager.stopLocationUpdates();
+        mLocationUpdateManager.setUpdateProvider(provider);
+        mLocationUpdateManager.startLocationUpdates();
     }
 
     @Override

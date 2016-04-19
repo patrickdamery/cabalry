@@ -2,6 +2,7 @@ package com.cabalry.app;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -89,10 +90,28 @@ public class HomeActivity extends CabalryActivity.Compat {
     private String[] mActivityTitles;
     private TypedArray mActivityIcons;
 
+    ProgressDialog progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if (GetUserID(this) == 0 || GetUserKey(this).isEmpty()) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
+        // prepare for a progress bar dialog
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(false);
+        progressBar.setMessage(getResources().getString(R.string.msg_loading));
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        // Get the Drawable custom_progressbar
+        //Drawable customDrawable = getResources().getDrawable(R.drawable.cabalry_progressbar);
+
+        // set the drawable as progress drawable
+        //progressBar.setProgressDrawable(customDrawable);
 
         new TasksUtil.CheckNetworkTask(getApplicationContext()) {
 
@@ -260,10 +279,13 @@ public class HomeActivity extends CabalryActivity.Compat {
     }
 
     private void launchAlarm() {
+        progressBar.show();
+
         new CheckBillingTask(getApplicationContext()) {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (!result) {
+                    progressBar.dismiss();
                     Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_billing),
                             Toast.LENGTH_LONG).show();
 
@@ -274,6 +296,8 @@ public class HomeActivity extends CabalryActivity.Compat {
                             if (result) {
                                 startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
                             }
+
+                            progressBar.dismiss();
                         }
                     }.execute();
                 }

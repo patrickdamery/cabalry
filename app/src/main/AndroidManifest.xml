@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cabalry">
 
+    <action android:name="android.location.PROVIDERS_CHANGED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -63,10 +64,10 @@
         </activity>
         <activity
             android:name=".app.HomeActivity"
-            android:label="@string/title_activity_home"></activity>
+            android:label="@string/title_activity_home" />
         <activity
             android:name=".app.UserMapActivity"
-            android:label="@string/title_activity_usermap"></activity>
+            android:label="@string/title_activity_usermap" />
         <activity
             android:name=".app.AlarmMapActivity"
             android:label="@string/title_activity_alarm" />
@@ -169,11 +170,20 @@
                 <category android:name="com.cabalry" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".location.GPSLocationReceiver">
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".alarm.SilentAlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.VOLUME_CHANGED_ACTION" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".net.NetworkStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

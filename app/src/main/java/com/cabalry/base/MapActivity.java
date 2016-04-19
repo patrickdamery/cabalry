@@ -82,7 +82,13 @@ public abstract class MapActivity extends BindableActivity
         super.onCreate(savedInstanceState);
 
         // prepare for a progress bar dialog
-        progressBar = new ProgressDialog(this);
+        progressBar = new ProgressDialog(this) {
+            @Override
+            public void onBackPressed() {
+                super.onBackPressed();
+                MapActivity.this.onBackPressed();
+            }
+        };
         progressBar.setCancelable(false);
         progressBar.setMessage(getResources().getString(R.string.msg_loading));
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -127,6 +133,7 @@ public abstract class MapActivity extends BindableActivity
 
     @Override
     public void onBackPressed() {
+        progressBar.dismiss();
         // Return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
     }

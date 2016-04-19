@@ -33,10 +33,10 @@
     <string-array name="nav_drawer_ic_array">
         <item>@drawable/ic_profile</item>
         <item>@drawable/ic_map</item>
-        <item>@drawable/ic_drawer</item>
+        <item>@drawable/ic_devices</item>
         <item>@drawable/ic_settings</item>
         <item>@drawable/ic_recordings</item>
-        <item>@drawable/ic_drawer</item>
+        <item>@drawable/ic_history</item>
         <item>@drawable/ic_billing</item>
         <item>@drawable/ic_help</item>
         <item>@drawable/ic_logout</item>

@@ -54,51 +54,51 @@ public class PreferencesUtil {
     public static final String PREF_ALARM_RANGE = "ALERT_RANGE";
 
     public static synchronized int GetDeviceCharge(Context context) {
-        return GetSharedPrefs(context).getInt(PREF_DEVICE_CHARGE, 0);
+        return GetSharedPrefs(context).getInt(GetUserID(context) + PREF_DEVICE_CHARGE, 0);
     }
 
     public static synchronized void SetDeviceCharge(Context context, int charge) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putInt(PREF_DEVICE_CHARGE, charge);
+        editor.putInt(GetUserID(context) + PREF_DEVICE_CHARGE, charge);
         editor.commit();
     }
 
     public static synchronized int GetTimerTime(Context context) {
-        return GetSharedPrefs(context).getInt(PREF_TIMER, 0);
+        return GetSharedPrefs(context).getInt(GetUserID(context) + PREF_TIMER, 0);
     }
 
     public static synchronized boolean GetTimerEnabled(Context context) {
-        return GetSharedPrefs(context).getBoolean(PREF_TIMER_ENABLED, false);
+        return GetSharedPrefs(context).getBoolean(GetUserID(context) + PREF_TIMER_ENABLED, false);
     }
 
     public static synchronized void SetTimerEnabled(Context context, boolean enabled) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putBoolean(PREF_TIMER_ENABLED, enabled);
+        editor.putBoolean(GetUserID(context) + PREF_TIMER_ENABLED, enabled);
         editor.commit();
     }
 
     public static synchronized String GetCachedAddress(Context context) {
-        return GetSharedPrefs(context).getString(PREF_CACHED_ADDRESS, null);
+        return GetSharedPrefs(context).getString(GetUserID(context) + PREF_CACHED_ADDRESS, null);
     }
 
     public static synchronized void SetCachedAddress(Context context, String address) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putString(PREF_CACHED_ADDRESS, address);
+        editor.putString(GetUserID(context) + PREF_CACHED_ADDRESS, address);
         editor.commit();
     }
 
     public static synchronized String GetRegistrationID(Context context) {
-        return GetSharedPrefs(context).getString(PREF_REG_ID, "");
+        return GetSharedPrefs(context).getString(GetUserID(context) + PREF_REG_ID, "");
     }
 
     public static synchronized void SetRegistrationID(Context context, String regid) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putString(PREF_REG_ID, regid);
+        editor.putString(GetUserID(context) + PREF_REG_ID, regid);
         editor.commit();
     }
 
     public static synchronized String GetFakePassword(Context context) {
-        return GetSharedPrefs(context).getString(PREF_FAKE_PASS, "");
+        return GetSharedPrefs(context).getString(GetUserID(context) + PREF_FAKE_PASS, "");
     }
 
     public static synchronized int GetAppVersion(Context context) {
@@ -113,17 +113,17 @@ public class PreferencesUtil {
 
     public static synchronized void SetDrawerLearned(Context context, boolean learned) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putBoolean(PREF_DRAWER_LEARNED, learned);
+        editor.putBoolean(GetUserID(context) + PREF_DRAWER_LEARNED, learned);
         editor.commit();
     }
 
     public static synchronized boolean GetGPSChecked(Context context) {
-        return GetSharedPrefs(context).getBoolean(PREF_GPS_CHECK, false);
+        return GetSharedPrefs(context).getBoolean(GetUserID(context) + PREF_GPS_CHECK, false);
     }
 
     public static synchronized void SetGPSChecked(Context context, boolean checked) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putBoolean(PREF_GPS_CHECK, checked);
+        editor.putBoolean(GetUserID(context) + PREF_GPS_CHECK, checked);
         editor.commit();
     }
 
@@ -136,32 +136,32 @@ public class PreferencesUtil {
     }
 
     public static synchronized int GetAlarmID(Context context) {
-        return GetSharedPrefs(context).getInt(PREF_ALARM_ID, 0);
+        return GetSharedPrefs(context).getInt(GetUserID(context) + PREF_ALARM_ID, 0);
     }
 
     public static synchronized void SetAlarmID(Context context, int alarmid) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putInt(PREF_ALARM_ID, alarmid);
+        editor.putInt(GetUserID(context) + PREF_ALARM_ID, alarmid);
         editor.commit();
     }
 
     public static synchronized int GetAlarmUserID(Context context) {
-        return GetSharedPrefs(context).getInt(PREF_ALARM_USERID, 0);
+        return GetSharedPrefs(context).getInt(GetUserID(context) + PREF_ALARM_USERID, 0);
     }
 
     public static synchronized void SetAlarmUserID(Context context, int userid) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putInt(PREF_ALARM_USERID, userid);
+        editor.putInt(GetUserID(context) + PREF_ALARM_USERID, userid);
         editor.commit();
     }
 
     public static synchronized String GetAlarmIP(Context context) {
-        return GetSharedPrefs(context).getString(PREF_ALARM_IP, "");
+        return GetSharedPrefs(context).getString(GetUserID(context) + PREF_ALARM_IP, "");
     }
 
     public static synchronized void SetAlarmIP(Context context, String ip) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putString(PREF_ALARM_IP, ip);
+        editor.putString(GetUserID(context) + PREF_ALARM_IP, ip);
         editor.commit();
     }
 
@@ -174,26 +174,26 @@ public class PreferencesUtil {
     }
 
     public static synchronized boolean IsSilent(Context context) {
-        return GetSharedPrefs(context).getBoolean(PREF_SILENT, false);
+        return GetSharedPrefs(context).getBoolean(GetUserID(context) + PREF_SILENT, false);
     }
 
     public static synchronized void SaveSettings(Context context, Bundle settings) {
         Log.i(TAG, "Saving settings");
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putString(PREF_FAKE_PASS, settings.getString(PREF_FAKE_PASS));
-        editor.putInt(PREF_TIMER, settings.getInt(PREF_TIMER));
-        editor.putInt(PREF_ALERT_COUNT, settings.getInt(PREF_ALERT_COUNT));
-        editor.putInt(PREF_ALARM_RANGE, settings.getInt(PREF_ALARM_RANGE));
-        editor.putBoolean(PREF_SILENT, settings.getBoolean(PREF_SILENT));
+        editor.putString(GetUserID(context) + PREF_FAKE_PASS, settings.getString(PREF_FAKE_PASS));
+        editor.putInt(GetUserID(context) + PREF_TIMER, settings.getInt(PREF_TIMER));
+        editor.putInt(GetUserID(context) + PREF_ALERT_COUNT, settings.getInt(PREF_ALERT_COUNT));
+        editor.putInt(GetUserID(context) + PREF_ALARM_RANGE, settings.getInt(PREF_ALARM_RANGE));
+        editor.putBoolean(GetUserID(context) + PREF_SILENT, settings.getBoolean(PREF_SILENT));
         editor.commit();
     }
 
     public static synchronized void SaveMapState(Context context, CameraPosition cameraPosition) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putFloat(PREF_MAP_LATITUDE, (float) cameraPosition.target.latitude);
-        editor.putFloat(PREF_MAP_LONGITUDE, (float) cameraPosition.target.longitude);
-        editor.putFloat(PREF_MAP_ZOOM, cameraPosition.zoom);
-        editor.putFloat(PREF_MAP_ZOOM, cameraPosition.bearing);
+        editor.putFloat(GetUserID(context) + PREF_MAP_LATITUDE, (float) cameraPosition.target.latitude);
+        editor.putFloat(GetUserID(context) + PREF_MAP_LONGITUDE, (float) cameraPosition.target.longitude);
+        editor.putFloat(GetUserID(context) + PREF_MAP_ZOOM, cameraPosition.zoom);
+        editor.putFloat(GetUserID(context) + PREF_MAP_ZOOM, cameraPosition.bearing);
 
         editor.commit();
     }
@@ -221,10 +221,10 @@ public class PreferencesUtil {
         SharedPreferences preferences = GetSharedPrefs(context);
 
         LatLng target = new LatLng(
-                preferences.getFloat(PREF_MAP_LATITUDE, preferences.getFloat(PREF_LATITUDE, 0)),
-                preferences.getFloat(PREF_MAP_LONGITUDE, preferences.getFloat(PREF_LONGITUDE, 0)));
-        float zoom = preferences.getFloat(PREF_MAP_ZOOM, 17);
-        float bearing = preferences.getFloat(PREF_MAP_BEARING, 0);
+                preferences.getFloat(GetUserID(context) + PREF_MAP_LATITUDE, preferences.getFloat(PREF_LATITUDE, 0)),
+                preferences.getFloat(GetUserID(context) + PREF_MAP_LONGITUDE, preferences.getFloat(PREF_LONGITUDE, 0)));
+        float zoom = preferences.getFloat(GetUserID(context) + PREF_MAP_ZOOM, 17);
+        float bearing = preferences.getFloat(GetUserID(context) + PREF_MAP_BEARING, 0);
 
         return CameraPosition.builder()
                 .target(target)
@@ -251,14 +251,15 @@ public class PreferencesUtil {
 
     public static synchronized void StoreLocation(Context context, LatLng location) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putFloat(PREF_LATITUDE, (float) location.latitude);
-        editor.putFloat(PREF_LONGITUDE, (float) location.longitude);
+        editor.putFloat(GetUserID(context) + PREF_LATITUDE, (float) location.latitude);
+        editor.putFloat(GetUserID(context) + PREF_LONGITUDE, (float) location.longitude);
         editor.commit();
     }
 
     public static synchronized LatLng GetLocation(Context context) {
         SharedPreferences prefs = GetSharedPrefs(context);
-        return new LatLng(prefs.getFloat(PREF_LATITUDE, 0), prefs.getFloat(PREF_LONGITUDE, 0));
+        return new LatLng(prefs.getFloat(GetUserID(context) + PREF_LATITUDE, 0),
+                prefs.getFloat(GetUserID(context) + PREF_LONGITUDE, 0));
     }
 
     public static synchronized SharedPreferences GetSharedPrefs(Context context) {

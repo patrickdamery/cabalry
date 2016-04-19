@@ -2,7 +2,7 @@ To Do:
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
     - Handle case when alarm is active and app is closed
-    - Improve graphics
+
     - Add multiple button support
     - Take photos and upload
     - handle alarm case when in sms mode
@@ -16,6 +16,9 @@ In Progress:
 Bugs:
 
 Completed:
+    - Improve graphics
+    - update gps when changed
+    - loading screen on home and map when alarm is activated
     - Add alarm history
     - Handle when history set is empty
     - Add loading screens
