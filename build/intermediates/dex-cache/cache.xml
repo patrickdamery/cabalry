@@ -89,7 +89,7 @@
         jar="/home/conor/Documents/Git/cabalry/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="21.1.2"
-        sha1="aea78043097dc50523ceadc256c91717ff808acf">
+        sha1="3b652789ae3d7c239e9775f245e2291fffaaf460">
         <dex dex="/home/conor/Documents/Git/cabalry/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_4ac5412732913d9ec730cbd5fa3ec1c26e5e9b49.jar" />
     </item>
     <item
@@ -166,7 +166,7 @@
         jar="/home/conor/Documents/Git/cabalry/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="21.1.2"
-        sha1="de625f38c446cb3fc24601006db197ac8a8c6b4e">
+        sha1="b72ab01fe0f9f7110dfccc3b4dcf16507dd4767a">
         <dex dex="/home/conor/Documents/Git/cabalry/app/build/intermediates/pre-dexed/debug/instant-run_6524529b9b62cb5e2a064428bdbb3b58ef0395b3.jar" />
     </item>
     <item

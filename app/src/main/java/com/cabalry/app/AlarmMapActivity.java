@@ -3,6 +3,8 @@ package com.cabalry.app;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
@@ -26,6 +28,9 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.Vector;
 
+import static com.cabalry.util.MessageUtil.MSG_ALARM_STOP;
+import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
+import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
 import static com.cabalry.util.PreferencesUtil.*;
 import static com.cabalry.util.TasksUtil.*;
 
@@ -49,6 +54,10 @@ public class AlarmMapActivity extends MapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_map);
+
+        if (GetAlarmID(this) == 0 || GetAlarmUserID(this) == 0) {
+            stopAlarm();
+        }
 
         if (!LocationUpdateService.isRunning()) {
             startService(new Intent(this, LocationUpdateService.class));
@@ -112,6 +121,48 @@ public class AlarmMapActivity extends MapActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindToService(LocationUpdateService.class, new MessengerHandler(),
+                MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
+    }
+
+    /**
+     * MessengerHandler
+     */
+    private class MessengerHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data == null)
+                throw new NullPointerException("data is null");
+
+            switch (msg.what) {
+                case MSG_ALARM_STOP:
+                    if (isRunning) {
+                        // return to home.
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            unbindFromService();
+        } catch (Throwable t) {
+            Log.e(TAG, "Failed to unbind from the service", t);
+        }
     }
 
     @Override

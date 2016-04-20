@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.cabalry.R;
+import com.cabalry.alarm.AlarmService;
 import com.cabalry.app.AlarmHistoryActivity;
 import com.cabalry.app.AlarmMapActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -67,10 +68,10 @@ public class GCMIntentService extends IntentService {
                         extras.toString());
 
                 // If it's a regular GCM message, do some work.
-            } else if (GoogleCloudMessaging.
-                    MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-
+            } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 String action = extras.getString(ALARM_GCM_ACTION);
+
+                Log.d(TAG, "HERE");
 
                 if (action != null && !action.isEmpty()) {
                     if (action.equals(ALARM_ACTION_START)) {
@@ -94,7 +95,9 @@ public class GCMIntentService extends IntentService {
                         sendNotification(alarmID);
 
                     } else if (action.equals(ALARM_ACTION_STOP)) {
-
+                        if (AlarmService.isRunning()) {
+                            AlarmService.stopAlarm(getApplicationContext());
+                        }
                     }
 
                 }

@@ -129,7 +129,13 @@ public class AudioPlayer {
                         // Get data from input stream.
                         byte[] receiveData = new byte[2048];
                         Log.i(TAG, "Getting Data");
-                        dis.readFully(receiveData);
+
+                        try {
+                            dis.readFully(receiveData);
+                        } catch (SocketTimeoutException e) {
+                            // TODO handle case when playback was not started
+                            Log.e(TAG, "Error playback was not started!");
+                        }
 
                         // Write audio to speakers.
                         audioPlayer.write(receiveData, 0, receiveData.length);

@@ -17,4 +17,7 @@ public class MessageUtil {
     // Location update service
     public static final int MSG_LOCATION_UPDATE = 6;
 
+    // Alarm service
+    public static final int MSG_ALARM_STOP = 7;
+
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.cabalry.R;
+import com.cabalry.alarm.AlarmService;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.app.UserInfoActivity;
 import com.cabalry.location.LocationUpdateService;
@@ -30,9 +31,9 @@ public abstract class MapActivity extends BindableActivity
     public static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
-    static final boolean SETTINGS_ENABLED = true; // change to true only for debugging
+    static final boolean SETTINGS_ENABLED = false; // change to true only for debugging
 
-    private boolean isRunning = false;
+    protected boolean isRunning = false;
     private boolean isUpdating = false;
 
     protected ProgressDialog progressBar;
@@ -166,7 +167,12 @@ public abstract class MapActivity extends BindableActivity
             Log.e(TAG, "Failed to unbind from the service", t);
         }
 
-        SaveMapState(this, mMap.getCameraPosition());
+        try {
+            SaveMapState(this, mMap.getCameraPosition());
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Error saving map!");
+        }
+
         isRunning = false;
     }
 

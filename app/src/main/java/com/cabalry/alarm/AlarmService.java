@@ -1,8 +1,8 @@
 package com.cabalry.alarm;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -12,6 +12,8 @@ import com.cabalry.R;
 import com.cabalry.app.AlarmMapActivity;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
+import com.cabalry.base.BindableService;
+import com.cabalry.util.MessageUtil;
 import com.cabalry.util.TasksUtil;
 
 import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
@@ -23,7 +25,7 @@ import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 /**
  * AlarmService
  */
-public class AlarmService extends Service {
+public class AlarmService extends BindableService {
     private static final String TAG = "AlarmService";
 
     @Override
@@ -36,7 +38,7 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        // If we get killed, after returning from here, stop
+        // TODO set correct flag to stay alive when app closes
         return START_STICKY;
     }
 
@@ -111,6 +113,9 @@ public class AlarmService extends Service {
 
         SetAlarmID(context, 0);
         SetAlarmUserID(context, 0);
+
+        Bundle data = new Bundle();
+        sendMessageToActivity(MessageUtil.MSG_ALARM_STOP, data);
 
         new TasksUtil.StopAlarmTask(context).execute();
     }
