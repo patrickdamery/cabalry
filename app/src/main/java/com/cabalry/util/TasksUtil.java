@@ -20,13 +20,60 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
-import static com.cabalry.net.CabalryServer.*;
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.net.CabalryServer.CheckBilling;
+import static com.cabalry.net.CabalryServer.CheckPassword;
+import static com.cabalry.net.CabalryServer.GetAlarmInfo;
+import static com.cabalry.net.CabalryServer.GetAlarmNearby;
+import static com.cabalry.net.CabalryServer.GetNearby;
+import static com.cabalry.net.CabalryServer.GetUserInfo;
+import static com.cabalry.net.CabalryServer.GetUserSettings;
+import static com.cabalry.net.CabalryServer.IgnoreAlarm;
+import static com.cabalry.net.CabalryServer.REQ_ALARM_ID;
+import static com.cabalry.net.CabalryServer.REQ_ALARM_IP;
+import static com.cabalry.net.CabalryServer.REQ_ALARM_LOCATION;
+import static com.cabalry.net.CabalryServer.REQ_ALARM_START;
+import static com.cabalry.net.CabalryServer.REQ_ALERT_COUNT;
+import static com.cabalry.net.CabalryServer.REQ_FAIL_STATE;
+import static com.cabalry.net.CabalryServer.REQ_FAKE_PASS;
+import static com.cabalry.net.CabalryServer.REQ_ID;
+import static com.cabalry.net.CabalryServer.REQ_LATITUDE;
+import static com.cabalry.net.CabalryServer.REQ_LOCATION;
+import static com.cabalry.net.CabalryServer.REQ_LONGITUDE;
+import static com.cabalry.net.CabalryServer.REQ_RANGE;
+import static com.cabalry.net.CabalryServer.REQ_SILENT;
+import static com.cabalry.net.CabalryServer.REQ_SUCCESS;
+import static com.cabalry.net.CabalryServer.REQ_TIMER;
+import static com.cabalry.net.CabalryServer.REQ_USER_CAR;
+import static com.cabalry.net.CabalryServer.REQ_USER_COLOR;
+import static com.cabalry.net.CabalryServer.REQ_USER_ID;
+import static com.cabalry.net.CabalryServer.REQ_USER_KEY;
+import static com.cabalry.net.CabalryServer.REQ_USER_NAME;
+import static com.cabalry.net.CabalryServer.RequestLogin;
+import static com.cabalry.net.CabalryServer.RequestLogout;
+import static com.cabalry.net.CabalryServer.StartAlarm;
+import static com.cabalry.net.CabalryServer.StopAlarm;
+import static com.cabalry.net.CabalryServer.UpdateListenerInfo;
+import static com.cabalry.net.CabalryServer.UpdateUserLocation;
+import static com.cabalry.net.CabalryServer.UserRequestType;
+import static com.cabalry.util.PreferencesUtil.GetAlarmID;
+import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
+import static com.cabalry.util.PreferencesUtil.PREF_ALARM_RANGE;
+import static com.cabalry.util.PreferencesUtil.PREF_ALERT_COUNT;
+import static com.cabalry.util.PreferencesUtil.PREF_FAKE_PASS;
+import static com.cabalry.util.PreferencesUtil.PREF_SILENT;
+import static com.cabalry.util.PreferencesUtil.PREF_TIMER;
+import static com.cabalry.util.PreferencesUtil.SaveSettings;
+import static com.cabalry.util.PreferencesUtil.SetAlarmID;
+import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 
 /**
  * TasksUtil
  */
 public class TasksUtil {
+
+    private static boolean startAlarmRequested = false;
 
     /**
      * Represents an asynchronous task that collects locations
@@ -315,8 +362,6 @@ public class TasksUtil {
         protected abstract void onResult(Boolean result);
     }
 
-    private static boolean startAlarmRequested = false;
-
     /**
      * Represents an asynchronous task that starts an alarm.
      */
@@ -504,6 +549,13 @@ public class TasksUtil {
         private String mState;
         private String mStart;
 
+        public GetAlarmInfoTask(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
         public int getID() {
             return mID;
         }
@@ -518,13 +570,6 @@ public class TasksUtil {
 
         public String getStart() {
             return mStart;
-        }
-
-        public GetAlarmInfoTask(Context context) {
-            if (context == null)
-                throw new NullPointerException("context can't be null!");
-
-            mContext = context;
         }
 
         @Override

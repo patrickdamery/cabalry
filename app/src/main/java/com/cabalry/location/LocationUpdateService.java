@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.*;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,23 +12,31 @@ import com.cabalry.R;
 import com.cabalry.base.BindableService;
 import com.google.android.gms.maps.model.LatLng;
 
-import static com.cabalry.util.PreferencesUtil.*;
-import static com.cabalry.util.MathUtil.*;
-import static com.cabalry.util.MessageUtil.*;
-import static com.cabalry.util.TasksUtil.*;
+import static com.cabalry.util.MathUtil.GetDistance;
+import static com.cabalry.util.MessageUtil.MSG_LOCATION_UPDATE;
+import static com.cabalry.util.PreferencesUtil.GetLocation;
+import static com.cabalry.util.PreferencesUtil.StoreLocation;
+import static com.cabalry.util.TasksUtil.CheckNetworkTask;
+import static com.cabalry.util.TasksUtil.UpdateLocationTask;
 
 /**
  * LocationUpdateService
  */
 public class LocationUpdateService extends BindableService implements LocationUpdateListener {
-    private static final String TAG = "LocationUpdateService";
-
     public static final double LOCATION_THRESHOLD = 10;
+    private static final String TAG = "LocationUpdateService";
     private static final int WAIT_TIME = 600000;
-    private long startTime = System.currentTimeMillis();
-
     private static LocationUpdateManager mLocationUpdateManager;
+    private long startTime = System.currentTimeMillis();
     private LatLng currentLocation, lastLocation;
+
+    private Intent selfIntent;
+
+    public static void updateListenerProvider(LocationUpdateManager.UpdateProvider provider) {
+        mLocationUpdateManager.stopLocationUpdates();
+        mLocationUpdateManager.setUpdateProvider(provider);
+        mLocationUpdateManager.startLocationUpdates();
+    }
 
     @Override
     public void onCreate() {
@@ -41,12 +49,6 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mLocationUpdateManager.resetProvider(manager);
-    }
-
-    public static void updateListenerProvider(LocationUpdateManager.UpdateProvider provider) {
-        mLocationUpdateManager.stopLocationUpdates();
-        mLocationUpdateManager.setUpdateProvider(provider);
-        mLocationUpdateManager.startLocationUpdates();
     }
 
     @Override
@@ -80,17 +82,20 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        selfIntent = intent;
+
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mLocationUpdateManager.resetProvider(manager);
 
         // If we get killed, after returning from here, stop
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mLocationUpdateManager.dispose();
+        stopService(selfIntent);
     }
 
     private void updateLocation() {

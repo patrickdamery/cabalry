@@ -1,8 +1,4 @@
 To Do:
-    - stop location service on lgout
-    - Services not stopping on ignore
-    - If app is closed if alarm was active and not fake deactivad
-
     - Fix alarm services not stopping correctly
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
@@ -16,15 +12,18 @@ To Do:
     - Improve alarm check activity, don't ask with words
 
 In Progress:
-    - Handle case when alarm is active and app is closed
     - handle case when gcm stop alarm
     - add listening alarms to history
 
 Bugs:
+    - If app is closed if alarm was active and not fake deactivad
+    - Services not stopping on ignore
     - Fix reverse order of alarm history
     - Fix double user marker on map
 
 Completed:
+    - Handle case when alarm is active and app is closed
+    - stop location service on lgout
     - Improve graphics
     - update gps when changed
     - loading screen on home and map when alarm is activated

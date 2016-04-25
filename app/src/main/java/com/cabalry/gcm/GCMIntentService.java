@@ -16,20 +16,23 @@ import com.cabalry.app.AlarmHistoryActivity;
 import com.cabalry.app.AlarmMapActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import static com.cabalry.util.PreferencesUtil.*;
-import static com.cabalry.net.CabalryServer.*;
+import static com.cabalry.net.CabalryServer.ALARM_ACTION_START;
+import static com.cabalry.net.CabalryServer.ALARM_ACTION_STOP;
+import static com.cabalry.net.CabalryServer.ALARM_GCM_ACTION;
+import static com.cabalry.net.CabalryServer.ALARM_ID;
+import static com.cabalry.net.CabalryServer.ALARM_USERID;
+import static com.cabalry.util.PreferencesUtil.SetAlarmID;
+import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 
 /**
  * GCMIntentService
  */
 public class GCMIntentService extends IntentService {
-    private static final String TAG = "GCMIntentService";
-
     public static final int NOTIFICATION_ID = 1;
+    private static final String TAG = "GCMIntentService";
+    private static MediaPlayer mMediaPlayer;
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder builder;
-
-    private static MediaPlayer mMediaPlayer;
 
     public GCMIntentService() {
         super("GcmIntentService");

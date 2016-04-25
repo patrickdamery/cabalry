@@ -19,5 +19,6 @@ public class MessageUtil {
 
     // Alarm service
     public static final int MSG_ALARM_STOP = 7;
+    public static final int MSG_ALARM_IGNORE = 8;
 
 }

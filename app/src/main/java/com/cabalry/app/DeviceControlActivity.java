@@ -14,28 +14,30 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cabalry.R;
+import com.cabalry.base.BindableActivity;
 import com.cabalry.bluetooth.BluetoothListener;
 import com.cabalry.bluetooth.BluetoothService;
-import com.cabalry.base.BindableActivity;
 import com.cabalry.bluetooth.DeviceConnector;
 
-import static com.cabalry.util.MessageUtil.*;
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.util.MessageUtil.MSG_BLUETOOTH_CONNECT;
+import static com.cabalry.util.MessageUtil.MSG_DEVICE_STATE;
+import static com.cabalry.util.MessageUtil.MSG_DEVICE_STATUS;
+import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
+import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
+import static com.cabalry.util.PreferencesUtil.GetDeviceCharge;
+import static com.cabalry.util.PreferencesUtil.SetCachedAddress;
 
 /**
  * DeviceControlActivity
  */
 public final class DeviceControlActivity extends BindableActivity
         implements BluetoothListener {
-    private static final String TAG = "DeviceControlActivity";
-
     // Intent request codes
     static final int REQUEST_CONNECT_DEVICE = 1;
     static final int REQUEST_ENABLE_BT = 2;
-
-    private BluetoothAdapter mBTAdapter;
-
+    private static final String TAG = "DeviceControlActivity";
     private static final String SAVED_PENDING_REQUEST_ENABLE_BT = "PENDING_REQUEST_ENABLE_BT";
+    private BluetoothAdapter mBTAdapter;
     // Do not resend request to enable Bluetooth
     // if there is a request already in progress
     // See: https://code.google.com/p/android/issues/detail?id=24931#c1

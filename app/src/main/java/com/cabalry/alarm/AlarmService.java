@@ -3,8 +3,6 @@ package com.cabalry.alarm;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,25 +26,7 @@ import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 public class AlarmService extends BindableService {
     private static final String TAG = "AlarmService";
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        startAlarm(getApplicationContext());
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        // TODO set correct flag to stay alive when app closes
-        return START_STICKY;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+    private Intent selfIntent;
 
     public static void startAlarm(final Context context) {
         new TasksUtil.CheckBillingTask(context) {
@@ -118,5 +98,43 @@ public class AlarmService extends BindableService {
         sendMessageToActivity(MessageUtil.MSG_ALARM_STOP, data);
 
         new TasksUtil.StopAlarmTask(context).execute();
+    }
+
+    public static void ignoreAlarm(final Context context) {
+        if (AudioPlaybackService.isRunning())
+            AudioPlaybackService.stopAudioPlayback();
+
+        if (AudioStreamService.isRunning())
+            AudioStreamService.stopAudioStream();
+
+        context.stopService(new Intent(context, AudioStreamService.class));
+        context.stopService(new Intent(context, AudioPlaybackService.class));
+
+        SetAlarmID(context, 0);
+        SetAlarmUserID(context, 0);
+
+        Bundle data = new Bundle();
+        sendMessageToActivity(MessageUtil.MSG_ALARM_IGNORE, data);
+
+        new TasksUtil.IgnoreAlarmTask(context).execute();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        startAlarm(getApplicationContext());
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        selfIntent = intent;
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopService(selfIntent);
     }
 }

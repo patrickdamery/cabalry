@@ -10,6 +10,18 @@ import com.cabalry.app.CabalryApp;
  */
 public abstract class CabalryActivity extends Activity {
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CabalryApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CabalryApp.activityPaused();
+    }
+
     public abstract static class Compat extends AppCompatActivity {
 
         @Override
@@ -23,17 +35,5 @@ public abstract class CabalryActivity extends Activity {
             super.onPause();
             CabalryApp.activityPaused();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        CabalryApp.activityResumed();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        CabalryApp.activityPaused();
     }
 }

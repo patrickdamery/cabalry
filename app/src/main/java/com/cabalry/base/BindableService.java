@@ -11,7 +11,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import static com.cabalry.util.MessageUtil.*;
+import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
+import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
 
 /**
  * BindableService
@@ -25,19 +26,16 @@ public abstract class BindableService extends RunnableService {
     // Target we publish for clients to send messages to IncomingHandler.
     private Messenger mMessenger;
 
-    public static class BaseMessengerHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_REGISTER_CLIENT:
-                    mClients.add(msg.replyTo);
-                    break;
-                case MSG_UNREGISTER_CLIENT:
-                    mClients.remove(msg.replyTo);
-                    break;
+    protected static void sendMessageToActivity(int msgIndex, Bundle data) {
+        for (int i = mClients.size() - 1; i >= 0; i--) {
+            try {
+                Message msg = Message.obtain(null, msgIndex);
+                msg.setData(data);
+                mClients.get(i).send(msg);
 
-                default:
-                    super.handleMessage(msg);
+            } catch (RemoteException e) {
+                // The client is dead. Remove it from the list; we are going through the list from back to front so this is safe to do inside the loop.
+                mClients.remove(i);
             }
         }
     }
@@ -59,16 +57,19 @@ public abstract class BindableService extends RunnableService {
         return new BaseMessengerHandler();
     }
 
-    protected static void sendMessageToActivity(int msgIndex, Bundle data) {
-        for (int i = mClients.size() - 1; i >= 0; i--) {
-            try {
-                Message msg = Message.obtain(null, msgIndex);
-                msg.setData(data);
-                mClients.get(i).send(msg);
+    public static class BaseMessengerHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_REGISTER_CLIENT:
+                    mClients.add(msg.replyTo);
+                    break;
+                case MSG_UNREGISTER_CLIENT:
+                    mClients.remove(msg.replyTo);
+                    break;
 
-            } catch (RemoteException e) {
-                // The client is dead. Remove it from the list; we are going through the list from back to front so this is safe to do inside the loop.
-                mClients.remove(i);
+                default:
+                    super.handleMessage(msg);
             }
         }
     }

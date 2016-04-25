@@ -22,18 +22,23 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.Vector;
 
-import static com.cabalry.util.PreferencesUtil.*;
-import static com.cabalry.util.TasksUtil.*;
+import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
+import static com.cabalry.util.PreferencesUtil.SetAlarmIP;
+import static com.cabalry.util.TasksUtil.CheckBillingTask;
+import static com.cabalry.util.TasksUtil.CheckNetworkTask;
+import static com.cabalry.util.TasksUtil.CollectUserInfoTask;
+import static com.cabalry.util.TasksUtil.CollectUsersTask;
+import static com.cabalry.util.TasksUtil.StartAlarmTask;
 
 /**
  * UserMapActivity
  */
 public class UserMapActivity extends MapActivity {
-    private static final String TAG = "UserMapActivity";
-
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;
-
+    private static final String TAG = "UserMapActivity";
     private MapFragment mMapFragment;
 
     private CollectUsersTask mCollectUsersTask;

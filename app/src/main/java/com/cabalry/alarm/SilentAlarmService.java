@@ -10,9 +10,8 @@ import android.os.Vibrator;
  * SilentAlarmService
  */
 public class SilentAlarmService extends IntentService {
-    private static final String TAG = "SilentAlarmService";
-
     public static final int NOTIFICATION_ID = 1;
+    private static final String TAG = "SilentAlarmService";
     private NotificationManager mNotificationManager;
 
     public SilentAlarmService() {

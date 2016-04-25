@@ -12,23 +12,20 @@ import android.content.res.TypedArray;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v4.widget.DrawerLayout;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,8 +39,8 @@ import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.CabalryActivity;
 import com.cabalry.bluetooth.BluetoothService;
-import com.cabalry.net.CabalryServer;
 import com.cabalry.location.LocationUpdateService;
+import com.cabalry.net.CabalryServer;
 import com.cabalry.util.PreferencesUtil;
 import com.cabalry.util.TasksUtil;
 import com.google.android.gms.common.ConnectionResult;
@@ -55,10 +52,32 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.net.CabalryServer.PLAY_SERVICES_RESOLUTION_REQUEST;
+import static com.cabalry.net.CabalryServer.REQ_SUCCESS;
+import static com.cabalry.net.CabalryServer.SENDER_ID;
+import static com.cabalry.net.CabalryServer.UpdateGCM;
+import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
+import static com.cabalry.util.PreferencesUtil.GetAppVersion;
+import static com.cabalry.util.PreferencesUtil.GetGPSChecked;
+import static com.cabalry.util.PreferencesUtil.GetHistory;
+import static com.cabalry.util.PreferencesUtil.GetRegistrationID;
+import static com.cabalry.util.PreferencesUtil.GetTimerEnabled;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
+import static com.cabalry.util.PreferencesUtil.IsFakeActive;
+import static com.cabalry.util.PreferencesUtil.LogoutUser;
+import static com.cabalry.util.PreferencesUtil.SetAlarmID;
+import static com.cabalry.util.PreferencesUtil.SetAlarmIP;
+import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
+import static com.cabalry.util.PreferencesUtil.SetAppVersion;
+import static com.cabalry.util.PreferencesUtil.SetDrawerLearned;
+import static com.cabalry.util.PreferencesUtil.SetGPSChecked;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
-import static com.cabalry.util.TasksUtil.*;
-import static com.cabalry.net.CabalryServer.*;
+import static com.cabalry.util.TasksUtil.CheckBillingTask;
+import static com.cabalry.util.TasksUtil.CheckNetworkTask;
+import static com.cabalry.util.TasksUtil.StartAlarmTask;
+import static com.cabalry.util.TasksUtil.StopAlarmTask;
+import static com.cabalry.util.TasksUtil.UserLogoutTask;
 
 /**
  * HomeActivity
@@ -67,21 +86,31 @@ public class HomeActivity extends CabalryActivity.Compat {
     private static final String TAG = "HomeActivity";
 
     public static boolean active = false;
-
+    ProgressDialog progressBar;
     // GCM required components.
     private GoogleCloudMessaging gcm;
     private String regid;
-
     private DrawerLayout mDrawerLayout;
     @SuppressWarnings("deprecation")
     private ActionBarDrawerToggle mDrawerToggle;
-
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mActivityTitles;
     private TypedArray mActivityIcons;
 
-    ProgressDialog progressBar;
+    /**
+     * @return Application's version code from the PackageManager.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Should never happen.
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -321,47 +350,6 @@ public class HomeActivity extends CabalryActivity.Compat {
         }.execute();
     }
 
-    private void promptPassword() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setMessage(getResources().getString(R.string.prompt_password));
-
-        // Set an EditText view to get user input
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        input.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-        alert.setView(input);
-
-        alert.setPositiveButton(getResources().getString(R.string.prompt_ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        final String value = input.getText().toString();
-
-                        new CheckPasswordTask(getApplicationContext(), value) {
-                            @Override
-                            protected void onPostExecute(Boolean result) {
-                                if (result) {
-                                    logout();
-                                } else {
-                                    promptPassword();
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_password),
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }.execute();
-                    }
-                });
-
-        alert.setNegativeButton(getResources().getString(R.string.prompt_cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
-
-        alert.show();
-    }
-
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
@@ -429,12 +417,7 @@ public class HomeActivity extends CabalryActivity.Compat {
 
             // Logout and redirect to login activity.
             case 8:
-                if (GetAlarmUserID(this) == GetUserID(this)) {
-                    promptPassword();
-                } else {
-                    logout();
-                    intent = new Intent(getApplicationContext(), LoginActivity.class);
-                }
+                logout();
                 break;
         }
 
@@ -447,69 +430,74 @@ public class HomeActivity extends CabalryActivity.Compat {
     private void logout() {
         final Context context = getApplicationContext();
 
-        if (GetAlarmUserID(this) == GetUserID(this)) {
-            new StopAlarmTask(context).execute();
-        }
+        if (IsFakeActive(context)) {
+            startActivity(new Intent(context, LoginActivity.class));
 
-        new CheckNetworkTask(getApplicationContext()) {
+        } else {
 
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (result) {
-                    new UserLogoutTask(getApplicationContext()) {
-                        @Override
-                        protected void onResult(final Boolean success) {
-                            if (success) {
-                                stopServices(context);
-
-                                SetAlarmID(context, 0);
-                                SetAlarmUserID(context, 0);
-                                SetGPSChecked(context, false);
-                                SetDrawerLearned(context, false);
-                                SetRegistrationID(context, "");
-                                LogoutUser(context);
-
-                                AlarmHistoryActivity.historySet = null;
-
-                                startActivity(new Intent(context, LoginActivity.class));
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_logout),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }.execute();
-
-                } else {
-
-                    stopServices(context);
-
-                    SetAlarmID(context, 0);
-                    SetAlarmUserID(context, 0);
-                    SetGPSChecked(context, false);
-                    SetDrawerLearned(context, false);
-                    SetRegistrationID(context, "");
-                    LogoutUser(context);
-
-                    AlarmHistoryActivity.historySet = null;
-
-                    startActivity(new Intent(context, LoginActivity.class));
-                }
+            if (GetAlarmUserID(this) == GetUserID(this)) {
+                new StopAlarmTask(context).execute();
             }
-        }.execute();
+
+            new CheckNetworkTask(context) {
+
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    if (result) {
+                        new UserLogoutTask(context) {
+                            @Override
+                            protected void onResult(final Boolean success) {
+                                if (success) {
+                                    stopServices(context);
+
+                                    SetAlarmID(context, 0);
+                                    SetAlarmUserID(context, 0);
+                                    SetGPSChecked(context, false);
+                                    SetDrawerLearned(context, false);
+                                    SetRegistrationID(context, "");
+                                    LogoutUser(context);
+
+                                    AlarmHistoryActivity.historySet = null;
+
+                                    startActivity(new Intent(context, LoginActivity.class));
+
+                                } else {
+                                    Toast.makeText(context, getResources().getString(R.string.error_logout),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }.execute();
+
+                    } else {
+                        stopServices(context);
+
+                        SetAlarmID(context, 0);
+                        SetAlarmUserID(context, 0);
+                        SetGPSChecked(context, false);
+                        SetDrawerLearned(context, false);
+                        SetRegistrationID(context, "");
+                        LogoutUser(context);
+
+                        AlarmHistoryActivity.historySet = null;
+
+                        startActivity(new Intent(context, LoginActivity.class));
+                    }
+                }
+            }.execute();
+        }
     }
 
     private void stopServices(Context context) {
-        if (!BluetoothService.isRunning())
+        if (BluetoothService.isRunning())
             stopService(new Intent(context, BluetoothService.class));
 
-        if (!LocationUpdateService.isRunning())
+        if (LocationUpdateService.isRunning())
             stopService(new Intent(context, LocationUpdateService.class));
 
-        //if (!AlarmTimerService.isRunning())
+        //if (AlarmTimerService.isRunning())
         stopService(new Intent(context, AlarmTimerService.class));
 
-        //if (!SilentAlarmService.isRunning())
+        //if (SilentAlarmService.isRunning())
         stopService(new Intent(context, SilentAlarmService.class));
 
         if (AudioPlaybackService.isRunning()) {
@@ -520,32 +508,6 @@ public class HomeActivity extends CabalryActivity.Compat {
         if (AudioStreamService.isRunning()) {
             AudioStreamService.stopAudioStream();
             stopService(new Intent(context, AudioStreamService.class));
-        }
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, final int position, long id) {
-
-            if (position == 8) { // logout is the exception
-                onSelectItem(position);
-
-            } else {
-                new CheckNetworkTask(getApplicationContext()) {
-
-                    @Override
-                    protected void onPostExecute(Boolean result) {
-                        if (result) {
-                            onSelectItem(position);
-
-                        } else {
-                            // handle no network
-                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }.execute();
-            }
         }
     }
 
@@ -653,20 +615,6 @@ public class HomeActivity extends CabalryActivity.Compat {
     }
 
     /**
-     * @return Application's version code from the PackageManager.
-     */
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Should never happen.
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
-    /**
      * Registers the application with GCM servers asynchronously.
      * Stores the registration ID and app versionCode in the application's
      * shared preferences.
@@ -740,6 +688,32 @@ public class HomeActivity extends CabalryActivity.Compat {
 
         SetRegistrationID(getApplicationContext(), regId);
         SetAppVersion(getApplicationContext(), appVersion);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, final int position, long id) {
+
+            if (position == 8) { // logout is the exception
+                onSelectItem(position);
+
+            } else {
+                new CheckNetworkTask(getApplicationContext()) {
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            onSelectItem(position);
+
+                        } else {
+                            // handle no network
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }.execute();
+            }
+        }
     }
 
 }

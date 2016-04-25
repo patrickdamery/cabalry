@@ -5,14 +5,23 @@ import android.os.IBinder;
 
 import com.cabalry.base.RunnableService;
 
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.util.PreferencesUtil.GetAlarmIP;
 
 /**
- * Created by conor on 01/02/15.
+ * AudioStreamService
  */
 public class AudioStreamService extends RunnableService {
 
     private static AudioStreamer mAudioStreamer;
+
+    private Intent selfIntent;
+
+    public static void stopAudioStream() {
+        if (mAudioStreamer != null) {
+            mAudioStreamer.stopStream();
+            mAudioStreamer = null;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -30,6 +39,7 @@ public class AudioStreamService extends RunnableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        selfIntent = intent;
         return START_STICKY;
     }
 
@@ -41,13 +51,8 @@ public class AudioStreamService extends RunnableService {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         stopAudioStream();
-    }
-
-    public static void stopAudioStream() {
-        if (mAudioStreamer != null) {
-            mAudioStreamer.stopStream();
-            mAudioStreamer = null;
-        }
+        stopService(selfIntent);
     }
 }

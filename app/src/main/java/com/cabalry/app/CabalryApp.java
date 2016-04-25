@@ -15,11 +15,6 @@ public class CabalryApp extends Application {
     private static int started;
     private static int stopped;
 
-    @Override
-    public void onCreate() {
-        registerActivityLifecycleCallbacks(new LifecycleHandler());
-    }
-
     public static void activityResumed() {
         activityVisible = true;
     }
@@ -38,6 +33,12 @@ public class CabalryApp extends Application {
 
     public static boolean isApplicationInForeground() {
         return resumed > paused;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        registerActivityLifecycleCallbacks(new LifecycleHandler());
     }
 
     public class LifecycleHandler implements ActivityLifecycleCallbacks {

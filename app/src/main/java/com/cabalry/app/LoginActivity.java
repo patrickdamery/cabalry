@@ -3,7 +3,6 @@ package com.cabalry.app;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -11,7 +10,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -35,8 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.cabalry.util.PreferencesUtil.*;
-import static com.cabalry.util.TasksUtil.*;
+import static com.cabalry.util.PreferencesUtil.IsUserLogin;
+import static com.cabalry.util.PreferencesUtil.LoginUser;
+import static com.cabalry.util.PreferencesUtil.LogoutUser;
+import static com.cabalry.util.TasksUtil.CheckNetworkTask;
+import static com.cabalry.util.TasksUtil.UserLoginTask;
 
 /**
  * LoginActivity
@@ -44,27 +45,17 @@ import static com.cabalry.util.TasksUtil.*;
  * Login screen for Cabalry app.
  */
 public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cursor> {
-    private static final String TAG = "LoginActivity";
-
-    public static boolean active = false;
-
-    enum StartupActivity {
-        LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
-        SETTINGS, USER_INFO, DEVICE_CONTROL, ALARM_MAP, ALARM_HISTORY
-    }
-
-    StartupActivity mStartupActivity = StartupActivity.HOME;
-
     // Regex for email validation
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
+    private static final String TAG = "LoginActivity";
+    public static boolean active = false;
+    StartupActivity mStartupActivity = StartupActivity.HOME;
     // UI references.
     private AutoCompleteTextView mUserView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
     // Keep track of the login task to ensure we can cancel it if requested.
     private UserLoginTask loginTask;
 
@@ -409,16 +400,6 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
     }
 
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY
-        };
-
-        int ADDRESS = 0;
-    }
-
-
     private void addUsersToAutoComplete(List<String> userAddressCollection) {
         // Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -426,5 +407,20 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
                         android.R.layout.simple_dropdown_item_1line, userAddressCollection);
 
         mUserView.setAdapter(adapter);
+    }
+
+    enum StartupActivity {
+        LOGIN, HOME, USER_MAP, BILLING, FORGOT, PROFILE, RECORDINGS, REGISTER,
+        SETTINGS, USER_INFO, DEVICE_CONTROL, ALARM_MAP, ALARM_HISTORY
+    }
+
+
+    private interface ProfileQuery {
+        String[] PROJECTION = {
+                ContactsContract.CommonDataKinds.Email.ADDRESS,
+                ContactsContract.CommonDataKinds.Email.IS_PRIMARY
+        };
+
+        int ADDRESS = 0;
     }
 }

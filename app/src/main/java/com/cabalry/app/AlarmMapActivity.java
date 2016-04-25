@@ -19,8 +19,8 @@ import com.cabalry.alarm.AlarmService;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.MapActivity;
-import com.cabalry.location.LocationUpdateService;
 import com.cabalry.base.MapUser;
+import com.cabalry.location.LocationUpdateService;
 import com.cabalry.net.CabalryServer;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -31,8 +31,17 @@ import java.util.Vector;
 import static com.cabalry.util.MessageUtil.MSG_ALARM_STOP;
 import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
 import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
-import static com.cabalry.util.PreferencesUtil.*;
-import static com.cabalry.util.TasksUtil.*;
+import static com.cabalry.util.PreferencesUtil.GetAlarmID;
+import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
+import static com.cabalry.util.PreferencesUtil.GetFakePassword;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
+import static com.cabalry.util.PreferencesUtil.SetAlarmIP;
+import static com.cabalry.util.PreferencesUtil.SetFakeActive;
+import static com.cabalry.util.TasksUtil.CheckPasswordTask;
+import static com.cabalry.util.TasksUtil.CollectUserInfoTask;
+import static com.cabalry.util.TasksUtil.CollectUsersTask;
+import static com.cabalry.util.TasksUtil.GetAlarmInfoTask;
 
 /**
  * AlarmMapActivity
@@ -130,31 +139,6 @@ public class AlarmMapActivity extends MapActivity {
                 MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
     }
 
-    /**
-     * MessengerHandler
-     */
-    private class MessengerHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle data = msg.getData();
-            if (data == null)
-                throw new NullPointerException("data is null");
-
-            switch (msg.what) {
-                case MSG_ALARM_STOP:
-                    if (isRunning) {
-                        // return to home.
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                    }
-                    break;
-
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-    }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -227,6 +211,7 @@ public class AlarmMapActivity extends MapActivity {
                             if (mPassFailedCount > 3) {
                                 // Fake stop alarm.
                                 Log.i(TAG, "Alarm fake stopped");
+                                SetFakeActive(getApplicationContext(), true);
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                             } else {
                                 promptPassword();
@@ -237,6 +222,7 @@ public class AlarmMapActivity extends MapActivity {
                         } else if (value.equals(GetFakePassword(getApplicationContext()))) {
                             // Fake stop alarm.
                             Log.i(TAG, "Alarm fake stopped");
+                            SetFakeActive(getApplicationContext(), true);
                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
                         } else {
@@ -246,6 +232,7 @@ public class AlarmMapActivity extends MapActivity {
                                 protected void onPostExecute(Boolean result) {
                                     if (result) {
                                         Log.i(TAG, "Alarm stopped");
+                                        SetFakeActive(getApplicationContext(), false);
                                         stopAlarm();
 
                                     } else {
@@ -253,6 +240,7 @@ public class AlarmMapActivity extends MapActivity {
                                         if (mPassFailedCount > 3) {
                                             // Fake stop alarm.
                                             Log.i(TAG, "Alarm fake stopped");
+                                            SetFakeActive(getApplicationContext(), true);
                                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                         } else {
                                             promptPassword();
@@ -284,20 +272,8 @@ public class AlarmMapActivity extends MapActivity {
     }
 
     private void ignoreAlarm() {
-        new IgnoreAlarmTask(getApplicationContext()).execute();
-
-        if (AudioPlaybackService.isRunning()) {
-            AudioPlaybackService.stopAudioPlayback();
-            stopService(new Intent(this, AudioPlaybackService.class));
-        }
-
-        if (AudioStreamService.isRunning()) {
-            AudioStreamService.stopAudioStream();
-            stopService(new Intent(this, AudioStreamService.class));
-        }
-
-        SetAlarmID(this, 0);
-        SetAlarmUserID(this, 0);
+        AlarmService.ignoreAlarm(getApplicationContext());
+        stopService(new Intent(this, AlarmService.class));
 
         // return to home
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -357,5 +333,31 @@ public class AlarmMapActivity extends MapActivity {
                 }
             }
         };
+    }
+
+    /**
+     * MessengerHandler
+     */
+    private class MessengerHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data == null)
+                throw new NullPointerException("data is null");
+
+            switch (msg.what) {
+                case MSG_ALARM_STOP:
+                    Log.i(TAG, "MSG_ALARM_STOP");
+                    if (isRunning) {
+                        // return to home.
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 }

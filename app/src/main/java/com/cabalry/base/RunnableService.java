@@ -11,6 +11,11 @@ public abstract class RunnableService extends Service {
 
     private static boolean isRunning = false;
 
+    public static boolean isRunning() {
+        Log.d(TAG, "Running: " + isRunning);
+        return isRunning;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -21,10 +26,5 @@ public abstract class RunnableService extends Service {
     public void onDestroy() {
         super.onDestroy();
         isRunning = false;
-    }
-
-    public static boolean isRunning() {
-        Log.d(TAG, "Running: " + isRunning);
-        return isRunning;
     }
 }

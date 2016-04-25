@@ -9,19 +9,30 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmService;
 import com.cabalry.app.HomeActivity;
 import com.cabalry.app.UserInfoActivity;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.util.TasksUtil;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
 import java.util.Vector;
 
-import static com.cabalry.util.MessageUtil.*;
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.util.MessageUtil.MSG_LOCATION_UPDATE;
+import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
+import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
+import static com.cabalry.util.PreferencesUtil.SaveMapState;
 
 /**
  * MapActivity
@@ -32,21 +43,15 @@ public abstract class MapActivity extends BindableActivity
 
     public static final int MAP_PADDING = 128;
     static final boolean SETTINGS_ENABLED = false; // change to true only for debugging
-
-    protected boolean isRunning = false;
-    private boolean isUpdating = false;
-
-    protected ProgressDialog progressBar;
-
-    private MapFragment mMapFragment;
-
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-
-    private HashMap<Integer, Marker> mMarkerMap = new HashMap<>();
-    private Vector<MapUser> mUsers = new Vector<>();
-
     private final MarkerListener mMarkerListener = new MarkerListener();
     private final CameraListener mCameraListener = new CameraListener();
+    protected boolean isRunning = false;
+    protected ProgressDialog progressBar;
+    private boolean isUpdating = false;
+    private MapFragment mMapFragment;
+    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private HashMap<Integer, Marker> mMarkerMap = new HashMap<>();
+    private Vector<MapUser> mUsers = new Vector<>();
 
     public abstract void onUpdateLocation(LatLng location);
 
@@ -324,32 +329,6 @@ public abstract class MapActivity extends BindableActivity
     }
 
     /**
-     * MessengerHandler
-     */
-    private class MessengerHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle data = msg.getData();
-            if (data == null)
-                throw new NullPointerException("data is null");
-
-            switch (msg.what) {
-                case MSG_LOCATION_UPDATE:
-                    if (isRunning) {
-                        double lat = data.getDouble("lat");
-                        double lng = data.getDouble("lng");
-                        onUpdateLocation(new LatLng(lat, lng));
-                    }
-                    break;
-
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-    }
-
-    /**
      * Algorithm that safely removes, inserts and updates
      * new users with the current list users and map markers.
      */
@@ -431,6 +410,32 @@ public abstract class MapActivity extends BindableActivity
 
     public int getMapUsersCount() {
         return mMarkerMap.size();
+    }
+
+    /**
+     * MessengerHandler
+     */
+    private class MessengerHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data == null)
+                throw new NullPointerException("data is null");
+
+            switch (msg.what) {
+                case MSG_LOCATION_UPDATE:
+                    if (isRunning) {
+                        double lat = data.getDouble("lat");
+                        double lng = data.getDouble("lng");
+                        onUpdateLocation(new LatLng(lat, lng));
+                    }
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 
     /**

@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
@@ -18,22 +17,22 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
-import static android.content.DialogInterface.*;
-
 import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
-import com.cabalry.util.TasksUtil.*;
+import com.cabalry.util.TasksUtil.CheckNetworkTask;
+
+import static android.content.DialogInterface.OnCancelListener;
+import static android.content.DialogInterface.OnClickListener;
 
 /**
  * WebViewActivity
  */
 public abstract class WebViewActivity extends CabalryActivity.Compat {
 
+    ProgressDialog progressBar;
     // Web view components.
     private WebView mWebView;
     private WebSettings mSettings;
-
-    ProgressDialog progressBar;
 
     /**
      * Initializes activity components.

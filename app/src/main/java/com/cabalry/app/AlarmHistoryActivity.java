@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +32,27 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
     private static final String TAG = "AlarmHistoryActivity";
 
     public static Set<String> historySet;
+
+    public static void addHistoryEntry(final Context context, final int userID, final int alarmID) {
+        final SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        if (historySet == null) {
+            historySet = new HashSet<>();
+        }
+
+        new TasksUtil.GetUserInfoTask(context, userID) {
+            @Override
+            protected void onPostExecute(Bundle result) {
+                if (result != null) {
+                    String str = result.getString(REQ_USER_NAME) + "~" + alarmID + "~" + f.format(new Date());
+                    historySet.add(str);
+                    SaveHistory(context, historySet);
+
+                } else {
+
+                }
+            }
+        }.execute();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,27 +102,6 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
             clearAll.setVisibility(View.GONE);
             noHistoryText.setVisibility(View.VISIBLE);
         }
-    }
-
-    public static void addHistoryEntry(final Context context, final int userID, final int alarmID) {
-        final SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        if (historySet == null) {
-            historySet = new HashSet<>();
-        }
-
-        new TasksUtil.GetUserInfoTask(context, userID) {
-            @Override
-            protected void onPostExecute(Bundle result) {
-                if (result != null) {
-                    String str = result.getString(REQ_USER_NAME) + "~" + alarmID + "~" + f.format(new Date());
-                    historySet.add(str);
-                    SaveHistory(context, historySet);
-
-                } else {
-
-                }
-            }
-        }.execute();
     }
 
     @Override

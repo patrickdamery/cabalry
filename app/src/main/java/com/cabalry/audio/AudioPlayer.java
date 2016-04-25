@@ -6,18 +6,21 @@ import android.media.AudioTrack;
 import android.util.Log;
 
 import java.io.DataInputStream;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /**
  * AudioPlayer
  */
 public class AudioPlayer {
     public static final String TAG = "AudioPlayer";
-
-    private boolean isPlaying = false;
     private final int SAMPLE_RATE = 16000;
     private final int serverPort = 50010;
     private final int tcpServerPort = 50000;
+    private boolean isPlaying = false;
     private InetAddress ip;
     private DatagramSocket audioSocket;
     private DatagramPacket audioPacket;

@@ -25,17 +25,63 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DeviceListActivity extends CabalryActivity {
-    private static final String TAG = "DeviceListActivity";
-
     public static final String EXTRA_DEVICE_ADDRESS = "device_address";
-
-    private BluetoothAdapter mBtAdapter;
-    private ArrayAdapter<String> mNewDevicesArrayAdapter;
+    private static final String TAG = "DeviceListActivity";
     private final Set<String> mNewDevicesSet = new HashSet<>();
     private final Set<String> mPairedDevicesSet = new HashSet<>();
+    private BluetoothAdapter mBtAdapter;
+    private final OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
+        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+            // Cancel discovery because it's costly and we're about to connect
+            mBtAdapter.cancelDiscovery();
 
+            // Get the device MAC address, which is the last 17 chars in the View
+            CharSequence info = ((TextView) v).getText();
+            if (info != null) {
+                // TODO this is not so cool...
+                CharSequence address = info.toString().substring(info.length() - 17);
+                Intent intent = new Intent();
+                intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
+
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        }
+    };
+    private ArrayAdapter<String> mNewDevicesArrayAdapter;
     private ListView newDevicesListView;
     private Button scanButton;
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (device != null) {
+                    String address = device.getAddress();
+                    if ((!mNewDevicesSet.contains(address)) && (!mPairedDevicesSet.contains(address))) {
+                        newDevicesListView.setEnabled(true);
+                        mNewDevicesSet.add(address);
+                        String name = device.getName();
+                        if ((name == null) || name.isEmpty())
+                            name = getString(R.string.no_device_name);
+                        mNewDevicesArrayAdapter.add(name + '\n' + device.getAddress());
+                    }
+                } else {
+                    Log.e(TAG, "Could not get parcelable extra from device: " + BluetoothDevice.EXTRA_DEVICE);
+                }
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                setTitle(R.string.select_device);
+                if (mNewDevicesSet.isEmpty()) {
+                    String noDevices = getResources().getText(R.string.none_found).toString();
+                    mNewDevicesArrayAdapter.add(noDevices);
+                    newDevicesListView.setEnabled(false);
+                }
+                scanButton.setEnabled(true);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,55 +160,4 @@ public class DeviceListActivity extends CabalryActivity {
         if (mBtAdapter.isDiscovering()) mBtAdapter.cancelDiscovery();
         mBtAdapter.startDiscovery();
     }
-
-    private final OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-            // Cancel discovery because it's costly and we're about to connect
-            mBtAdapter.cancelDiscovery();
-
-            // Get the device MAC address, which is the last 17 chars in the View
-            CharSequence info = ((TextView) v).getText();
-            if (info != null) {
-                // TODO this is not so cool...
-                CharSequence address = info.toString().substring(info.length() - 17);
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
-
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
-        }
-    };
-
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device != null) {
-                    String address = device.getAddress();
-                    if ((!mNewDevicesSet.contains(address)) && (!mPairedDevicesSet.contains(address))) {
-                        newDevicesListView.setEnabled(true);
-                        mNewDevicesSet.add(address);
-                        String name = device.getName();
-                        if ((name == null) || name.isEmpty())
-                            name = getString(R.string.no_device_name);
-                        mNewDevicesArrayAdapter.add(name + '\n' + device.getAddress());
-                    }
-                } else {
-                    Log.e(TAG, "Could not get parcelable extra from device: " + BluetoothDevice.EXTRA_DEVICE);
-                }
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                setTitle(R.string.select_device);
-                if (mNewDevicesSet.isEmpty()) {
-                    String noDevices = getResources().getText(R.string.none_found).toString();
-                    mNewDevicesArrayAdapter.add(noDevices);
-                    newDevicesListView.setEnabled(false);
-                }
-                scanButton.setEnabled(true);
-            }
-        }
-    };
 }

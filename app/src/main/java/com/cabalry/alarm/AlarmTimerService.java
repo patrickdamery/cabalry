@@ -8,7 +8,8 @@ import com.cabalry.app.TimerCheckActivity;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.util.PreferencesUtil.GetTimerTime;
+import static com.cabalry.util.PreferencesUtil.SetTimerEnabled;
 
 /**
  * AlarmTimerService
@@ -20,6 +21,12 @@ public class AlarmTimerService extends IntentService {
 
     public AlarmTimerService() {
         super(TAG);
+    }
+
+    public static void stopTimer() {
+        if (timerTask != null) {
+            timerTask.cancel();
+        }
     }
 
     @Override
@@ -48,11 +55,5 @@ public class AlarmTimerService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         stopTimer();
-    }
-
-    public static void stopTimer() {
-        if (timerTask != null) {
-            timerTask.cancel();
-        }
     }
 }

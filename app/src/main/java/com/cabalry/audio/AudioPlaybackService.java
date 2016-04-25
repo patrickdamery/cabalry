@@ -5,8 +5,11 @@ import android.os.IBinder;
 
 import com.cabalry.base.RunnableService;
 
-import static com.cabalry.util.PreferencesUtil.*;
-import static com.cabalry.util.TasksUtil.*;
+import static com.cabalry.util.PreferencesUtil.GetAlarmID;
+import static com.cabalry.util.PreferencesUtil.GetAlarmIP;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
+import static com.cabalry.util.TasksUtil.UpdateListenerInfoTask;
 
 /**
  * AudioPlaybackService
@@ -16,9 +19,22 @@ public class AudioPlaybackService extends RunnableService {
     private static AudioPlayer audioPlayer;
     private static Thread playbackThread;
 
+    private Intent selfIntent;
+
+    public static void stopAudioPlayback() {
+        if (isRunning()) {
+            if (audioPlayer != null)
+                audioPlayer.stopPlayback();
+
+            if (playbackThread != null)
+                playbackThread.interrupt();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
         audioPlayer = new AudioPlayer();
 
         playbackThread = new Thread(new Runnable() {
@@ -37,6 +53,7 @@ public class AudioPlaybackService extends RunnableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        selfIntent = intent;
         return START_STICKY;
     }
 
@@ -50,15 +67,6 @@ public class AudioPlaybackService extends RunnableService {
     public void onDestroy() {
         super.onDestroy();
         stopAudioPlayback();
-    }
-
-    public static void stopAudioPlayback() {
-        if (isRunning()) {
-            if (audioPlayer != null)
-                audioPlayer.stopPlayback();
-
-            if (playbackThread != null)
-                playbackThread.interrupt();
-        }
+        stopService(selfIntent);
     }
 }

@@ -2,13 +2,13 @@ package com.cabalry.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.cabalry.base.WebViewActivity;
 
-import static com.cabalry.net.CabalryServer.*;
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.net.CabalryServer.VIEWUSER_URL;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
+import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
  * UserInfoActivity

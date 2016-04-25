@@ -12,8 +12,6 @@ import java.util.List;
  */
 public class CabalryServer {
 
-    public enum UserRequestType {NEARBY, ALARM}
-
     /**
      * Request response string keys
      */
@@ -28,7 +26,6 @@ public class CabalryServer {
     public static final String REQ_ALARM_ID = "alarmId";
     public static final String REQ_LOCATION = "location";
     public static final String REQ_ALARM_LOCATION = "sent";
-
     public static final String REQ_ALARM_IP = "ip";
     public static final String REQ_ALARM_START = "start";
     public static final String REQ_ID = "id";
@@ -37,30 +34,25 @@ public class CabalryServer {
     public static final String ALARM_GCM_ACTION = "action";
     public static final String ALARM_ACTION_START = "start";
     public static final String ALARM_ACTION_STOP = "stop";
-
     public static final String REQ_FAKE_PASS = "fake";
     public static final String REQ_TIMER = "timer";
     public static final String REQ_SILENT = "silent";
     public static final String REQ_ALERT_COUNT = "quantity";
     public static final String REQ_RANGE = "range";
-
     public static final String REQ_FAIL_STATE = "failstate";
     public static final String KEY_FAIL = "keyfail";
     public static final String NEAR_FAIL = "nearfail";
     public static final String CARD_FAIL = "cardfail";
     public static final String PAY_FAIL = "payfail";
     public static final String UNKNOWN_FAIL = "unknownfail";
-
     public static final String REQ_ALARM_STATE = "state";
     public static final String ACTIVE_ALARM = "active";
     public static final String INACTIVE_ALARM = "inactive";
     public static final String FINISHED_ALARM = "finished";
     public static final String LOST_ALARM = "lost";
-
     // GCM stuff
     public static final String SENDER_ID = "200578369108";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
     /**
      * Cabalry url's
      */
@@ -83,7 +75,6 @@ public class CabalryServer {
     public static final String NEARBY_URL = "https://" + CABALRY_URL + "/cabalry/nearby.php";
     public static final String USERINFO_URL = "https://" + CABALRY_URL + "/cabalry/userInfo.php";
     public static final String LOGOUT_URL = "https://" + CABALRY_URL + "/cabalry/logout.php";
-
     public static final String REGISTER_URL = "https://" + CABALRY_URL + "/register.php";
     public static final String FORGOT_URL = "https://" + CABALRY_URL + "/forgot.php";
     public static final String BILLING_URL = "https://" + CABALRY_URL + "/billing.php";
@@ -471,6 +462,8 @@ public class CabalryServer {
         // return JSON object
         return new JsonParser().makeHttpRequest(request.url, request.method, request.params);
     }
+
+    public enum UserRequestType {NEARBY, ALARM}
 
     /**
      * Helper class for handling requests

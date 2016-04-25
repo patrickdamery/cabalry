@@ -11,7 +11,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,10 +18,7 @@ import java.util.Set;
  * PreferencesUtil
  */
 public class PreferencesUtil {
-    private static final String TAG = "PreferencesUtil";
-
     public static final int TWO_MINUTES = 12000;
-
     public static final String PACKAGE_NAME = "CABALRY";
     public static final String PREF_USER_ID = "ID";
     public static final String PREF_USER_KEY = "KEY";
@@ -37,21 +33,20 @@ public class PreferencesUtil {
     public static final String PREF_DRAWER_LEARNED = "NAVDR_LEARNED";
     public static final String PREF_GPS_CHECK = "GPS_CHECK";
     public static final String PREF_HISTORY = "HISTORY";
-
+    public static final String PREF_FAKE_ACTIVE = "FAKEACT";
     public static final String PREF_REG_ID = "REGID";
     public static final String PREF_APP_VERSION = "APPV";
-
     public static final String PREF_MAP_LATITUDE = "MLAT";
     public static final String PREF_MAP_LONGITUDE = "MLNG";
     public static final String PREF_MAP_ZOOM = "MZOOM";
     public static final String PREF_MAP_BEARING = "MBEARING";
-
     public static final String PREF_FAKE_PASS = "FAKE";
     public static final String PREF_TIMER = "TIMER";
     public static final String PREF_TIMER_ENABLED = "TIMER_ENABLED";
     public static final String PREF_SILENT = "SILENT";
     public static final String PREF_ALERT_COUNT = "ALERT_COUNT";
     public static final String PREF_ALARM_RANGE = "ALERT_RANGE";
+    private static final String TAG = "PreferencesUtil";
 
     public static synchronized int GetDeviceCharge(Context context) {
         return GetSharedPrefs(context).getInt(GetUserID(context) + PREF_DEVICE_CHARGE, 0);
@@ -60,6 +55,16 @@ public class PreferencesUtil {
     public static synchronized void SetDeviceCharge(Context context, int charge) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
         editor.putInt(GetUserID(context) + PREF_DEVICE_CHARGE, charge);
+        editor.commit();
+    }
+
+    public static synchronized boolean IsFakeActive(Context context) {
+        return GetSharedPrefs(context).getBoolean(GetUserID(context) + PREF_FAKE_ACTIVE, false);
+    }
+
+    public static synchronized void SetFakeActive(Context context, boolean active) {
+        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+        editor.putBoolean(GetUserID(context) + PREF_FAKE_ACTIVE, active);
         editor.commit();
     }
 

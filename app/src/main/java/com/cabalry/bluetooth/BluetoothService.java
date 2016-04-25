@@ -18,8 +18,12 @@ import com.cabalry.app.DeviceControlActivity;
 import com.cabalry.base.BindableService;
 import com.cabalry.util.MovingAverage;
 
-import static com.cabalry.util.MessageUtil.*;
-import static com.cabalry.util.PreferencesUtil.*;
+import static com.cabalry.util.MessageUtil.MSG_BLUETOOTH_CONNECT;
+import static com.cabalry.util.MessageUtil.MSG_DEVICE_STATE;
+import static com.cabalry.util.MessageUtil.MSG_DEVICE_STATUS;
+import static com.cabalry.util.PreferencesUtil.GetCachedAddress;
+import static com.cabalry.util.PreferencesUtil.GetDeviceCharge;
+import static com.cabalry.util.PreferencesUtil.SetDeviceCharge;
 
 /**
  * BluetoothService
@@ -93,6 +97,78 @@ public class BluetoothService extends BindableService {
             mNotificationManager.notify(0, n);
         }
     };
+
+    private static void attemptReconnect(String address) {
+        mReconnectCount++;
+        if (address != null) {
+            BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
+            setupConnector(device);
+        }
+    }
+
+    public static void clearCachedAddress() {
+        mCachedDeviceAddress = null;
+    }
+
+    public synchronized static boolean isConnected() {
+        return (mConnector != null) && (mConnector.getState() == DeviceConnector.STATE_CONNECTED);
+    }
+
+    public synchronized static int getState() {
+        return mConnector == null ? DeviceConnector.STATE_NOT_CONNECTED : mConnector.getState();
+    }
+
+    public synchronized static void stopConnection() {
+        mReconnectCount = 0;
+
+        if (mConnector != null) {
+            mConnector.stop();
+            mConnector = null;
+        }
+    }
+
+    public synchronized static void setupConnector(BluetoothDevice connectedDevice) {
+        Log.i(TAG, "Setting up connector");
+        if (!isConnected() || !mCachedDeviceAddress.equals(connectedDevice.getAddress())) {
+            if (isConnected())
+                stopConnection();
+            try {
+                mConnector = new DeviceConnector(connectedDevice, mBTListener);
+                mConnector.connect();
+
+                mCachedDeviceAddress = connectedDevice.getAddress();
+
+            } catch (IllegalArgumentException e) {
+                Log.i(TAG, "setupConnector failed: " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mBTListener = new ServiceBluetoothListener(getApplicationContext());
+
+        String cachedAddress = GetCachedAddress(getApplicationContext());
+        if (cachedAddress != null) {
+            mDeviceDisconnected = true;
+            attemptReconnect(cachedAddress);
+        }
+
+        // If we get killed, after returning from here, stop
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    protected Handler getMessengerHandler() {
+        return new MessengerHandler();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopConnection();
+    }
 
     private class ServiceBluetoothListener implements BluetoothListener {
 
@@ -190,78 +266,6 @@ public class BluetoothService extends BindableService {
 
                 default:
                     super.handleMessage(msg);
-            }
-        }
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mBTListener = new ServiceBluetoothListener(getApplicationContext());
-
-        String cachedAddress = GetCachedAddress(getApplicationContext());
-        if (cachedAddress != null) {
-            mDeviceDisconnected = true;
-            attemptReconnect(cachedAddress);
-        }
-
-        // If we get killed, after returning from here, stop
-        return START_NOT_STICKY;
-    }
-
-    @Override
-    protected Handler getMessengerHandler() {
-        return new MessengerHandler();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopConnection();
-    }
-
-    private static void attemptReconnect(String address) {
-        mReconnectCount++;
-        if (address != null) {
-            BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
-            setupConnector(device);
-        }
-    }
-
-    public static void clearCachedAddress() {
-        mCachedDeviceAddress = null;
-    }
-
-    public synchronized static boolean isConnected() {
-        return (mConnector != null) && (mConnector.getState() == DeviceConnector.STATE_CONNECTED);
-    }
-
-    public synchronized static int getState() {
-        return mConnector == null ? DeviceConnector.STATE_NOT_CONNECTED : mConnector.getState();
-    }
-
-    public synchronized static void stopConnection() {
-        mReconnectCount = 0;
-
-        if (mConnector != null) {
-            mConnector.stop();
-            mConnector = null;
-        }
-    }
-
-    public synchronized static void setupConnector(BluetoothDevice connectedDevice) {
-        Log.i(TAG, "Setting up connector");
-        if (!isConnected() || !mCachedDeviceAddress.equals(connectedDevice.getAddress())) {
-            if (isConnected())
-                stopConnection();
-            try {
-                mConnector = new DeviceConnector(connectedDevice, mBTListener);
-                mConnector.connect();
-
-                mCachedDeviceAddress = connectedDevice.getAddress();
-
-            } catch (IllegalArgumentException e) {
-                Log.i(TAG, "setupConnector failed: " + e.getMessage());
             }
         }
     }

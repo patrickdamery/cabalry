@@ -14,20 +14,16 @@ import java.lang.reflect.Method;
  * DeviceConnector
  */
 public class DeviceConnector {
-    private static final String TAG = "DeviceConnector";
-
     public static final int STATE_NOT_CONNECTED = 1;
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;
     public static final int STATE_DISCONNECTED = 4;
     public static final int STATE_CONNECTION_FAILED = 5;
-
-    private int mState;
-
+    private static final String TAG = "DeviceConnector";
     private final BluetoothAdapter mBTAdapter;
     private final BluetoothListener mBTListener;
     private final BluetoothDevice mDevice;
-
+    private int mState;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
 
@@ -38,6 +34,26 @@ public class DeviceConnector {
         mDevice = device;
 
         mState = STATE_NOT_CONNECTED;
+    }
+
+    public static BluetoothSocket CreateRfcommSocket(BluetoothDevice device) {
+        BluetoothSocket tmp = null;
+
+        try {
+            Method createRfcommSocket = device.getClass().getMethod("createRfcommSocket", int.class);
+            tmp = (BluetoothSocket) createRfcommSocket.invoke(device, 1);
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            Log.e(TAG, "CreateRfcommSocket() failed", e);
+        }
+        return tmp;
     }
 
     public synchronized void connect() {
@@ -81,13 +97,13 @@ public class DeviceConnector {
         setState(STATE_NOT_CONNECTED);
     }
 
+    public synchronized int getState() {
+        return mState;
+    }
+
     private synchronized void setState(int state) {
         mState = state;
         mBTListener.onStateChange(state);
-    }
-
-    public synchronized int getState() {
-        return mState;
     }
 
     public synchronized void connected(BluetoothSocket socket) {
@@ -129,6 +145,20 @@ public class DeviceConnector {
         // Send a failure message back to the Activity
         mBTListener.onMessageToast("Connection Lost");
         setState(STATE_DISCONNECTED);
+    }
+
+    private void updateDeviceStatus(String msg) {
+        String[] msgs = msg.split("\\s+");
+
+        for (String m : msgs) {
+            if (m.length() > 4) {
+                String sig = m.substring(0, 3);
+                String state = m.substring(3, 4);
+                String charge = m.substring(4);
+
+                mBTListener.onStatusUpdate(sig, state, charge);
+            }
+        }
     }
 
     private class ConnectThread extends Thread {
@@ -190,40 +220,6 @@ public class DeviceConnector {
                 Log.e(TAG, "close() of connect socket failed", e);
             }
         }
-    }
-
-    private void updateDeviceStatus(String msg) {
-        String[] msgs = msg.split("\\s+");
-
-        for (String m : msgs) {
-            if (m.length() > 4) {
-                String sig = m.substring(0, 3);
-                String state = m.substring(3, 4);
-                String charge = m.substring(4);
-
-                mBTListener.onStatusUpdate(sig, state, charge);
-            }
-        }
-    }
-
-    public static BluetoothSocket CreateRfcommSocket(BluetoothDevice device) {
-        BluetoothSocket tmp = null;
-
-        try {
-            Method createRfcommSocket = device.getClass().getMethod("createRfcommSocket", int.class);
-            tmp = (BluetoothSocket) createRfcommSocket.invoke(device, 1);
-
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            Log.e(TAG, "CreateRfcommSocket() failed", e);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            Log.e(TAG, "CreateRfcommSocket() failed", e);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            Log.e(TAG, "CreateRfcommSocket() failed", e);
-        }
-        return tmp;
     }
 
     private class ConnectedThread extends Thread {
