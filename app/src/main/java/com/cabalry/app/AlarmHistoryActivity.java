@@ -17,12 +17,12 @@ import android.widget.TextView;
 
 import com.cabalry.R;
 import com.cabalry.base.CabalryActivity;
+import com.cabalry.util.HistoryItem;
 import com.cabalry.util.TasksUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.cabalry.net.CabalryServer.REQ_USER_NAME;
 import static com.cabalry.util.PreferencesUtil.GetHistory;
@@ -31,24 +31,28 @@ import static com.cabalry.util.PreferencesUtil.SaveHistory;
 public class AlarmHistoryActivity extends CabalryActivity.Compat {
     private static final String TAG = "AlarmHistoryActivity";
 
-    public static Set<String> historySet;
+    public static ArrayList<HistoryItem> historyItems;
 
     public static void addHistoryEntry(final Context context, final int userID, final int alarmID) {
         final SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        if (historySet == null) {
-            historySet = new HashSet<>();
+
+        if (historyItems == null) {
+            historyItems = GetHistory(context);
+
+            if (historyItems == null) {
+                historyItems = new ArrayList<>();
+            }
         }
 
         new TasksUtil.GetUserInfoTask(context, userID) {
             @Override
             protected void onPostExecute(Bundle result) {
                 if (result != null) {
-                    String str = result.getString(REQ_USER_NAME) + "~" + alarmID + "~" + f.format(new Date());
-                    historySet.add(str);
-                    SaveHistory(context, historySet);
+                    historyItems.add(0, new HistoryItem(result.getString(REQ_USER_NAME), userID, alarmID, f.format(new Date())));
+                    SaveHistory(context, historyItems);
 
                 } else {
-
+                    Log.e(TAG, "Error no user info found!");
                 }
             }
         }.execute();
@@ -63,31 +67,33 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
         final Button clearAll = (Button) findViewById(R.id.clearAll);
         final ListView listview = (ListView) findViewById(R.id.listview);
 
-        if (historySet == null)
-            historySet = GetHistory(getApplicationContext());
+        if (historyItems == null)
+            historyItems = GetHistory(getApplicationContext());
 
-        if (historySet != null) {
-            Log.i(TAG, "historySet size: " + AlarmHistoryActivity.historySet.size());
+        if (historyItems != null && !historyItems.isEmpty()) {
 
-            String[] values = historySet.toArray(new String[historySet.size()]);
+            final HistoryItem[] values = historyItems.toArray(new HistoryItem[historyItems.size()]);
             final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
+
             listview.setAdapter(adapter);
+
+            // don't show divider
             listview.setDivider(null);
             listview.setDividerHeight(0);
 
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
-                    Log.i(TAG, "onItemClick pos: " + position);
+                public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-                    final String item = (String) parent.getItemAtPosition(position);
+                    Log.i(TAG, "onItemClick pos: " + position);
+                    final HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
+
                     view.animate().setDuration(2000).alpha(0)
                             .withEndAction(new Runnable() {
                                 @Override
                                 public void run() {
-                                    historySet.remove(item);
+                                    historyItems.remove(item);
                                     adapter.remove(item);
                                     adapter.notifyDataSetChanged();
                                     view.setAlpha(1);
@@ -120,11 +126,11 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
         return true;
     }
 
-    public class HistoryArrayAdapter extends ArrayAdapter<String> {
+    public class HistoryArrayAdapter extends ArrayAdapter<HistoryItem> {
         private final Context context;
-        private final String[] values;
+        private final HistoryItem[] values;
 
-        public HistoryArrayAdapter(Context context, String[] values) {
+        public HistoryArrayAdapter(Context context, HistoryItem[] values) {
             super(context, -1, values);
             this.context = context;
             this.values = values;
@@ -140,15 +146,10 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
             ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
             //ImageButton remove = (ImageButton) rowView.findViewById(R.id.remove);
 
-            String[] result = values[position].split("~");
+            HistoryItem item = values[position];
 
-            if (result.length == 3) {
-                label.setText(result[0] + " - Alarm ID: " + result[1]);
-                description.setText(result[2]);
-
-            } else {
-                label.setText(values[position]);
-            }
+            label.setText(item.getUsername() + " - Alarm ID: " + item.getAlarmId());
+            description.setText(item.getTimestamp());
 
             icon.setImageResource(R.drawable.ic_alarm_inactive);
 

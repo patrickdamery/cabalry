@@ -51,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.cabalry.net.CabalryServer.PLAY_SERVICES_RESOLUTION_REQUEST;
 import static com.cabalry.net.CabalryServer.REQ_SUCCESS;
@@ -66,6 +67,7 @@ import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 import static com.cabalry.util.PreferencesUtil.IsFakeActive;
 import static com.cabalry.util.PreferencesUtil.LogoutUser;
+import static com.cabalry.util.PreferencesUtil.SaveHistory;
 import static com.cabalry.util.PreferencesUtil.SetAlarmID;
 import static com.cabalry.util.PreferencesUtil.SetAlarmIP;
 import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
@@ -86,31 +88,21 @@ public class HomeActivity extends CabalryActivity.Compat {
     private static final String TAG = "HomeActivity";
 
     public static boolean active = false;
-    ProgressDialog progressBar;
-    // GCM required components.
-    private GoogleCloudMessaging gcm;
-    private String regid;
-    private DrawerLayout mDrawerLayout;
-    @SuppressWarnings("deprecation")
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private String[] mActivityTitles;
-    private TypedArray mActivityIcons;
 
-    /**
-     * @return Application's version code from the PackageManager.
-     */
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Should never happen.
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
+    // GCM required components.
+    GoogleCloudMessaging gcm;
+    String regid;
+
+    // Nav drawer stuff
+    @SuppressWarnings("deprecation")
+    ActionBarDrawerToggle mDrawerToggle;
+    DrawerLayout mDrawerLayout;
+    CharSequence mDrawerTitle;
+    CharSequence mTitle;
+    String[] mActivityTitles;
+    TypedArray mActivityIcons;
+
+    ProgressDialog progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,8 +144,12 @@ public class HomeActivity extends CabalryActivity.Compat {
             startService(new Intent(this, LocationUpdateService.class));
         }
 
-        if (AlarmHistoryActivity.historySet == null) {
-            AlarmHistoryActivity.historySet = GetHistory(getApplicationContext());
+        if (AlarmHistoryActivity.historyItems == null) {
+            // use the following to reset (for debugging!)
+            //AlarmHistoryActivity.historyItems = new ArrayList<>();
+            //SaveHistory(getApplicationContext(), AlarmHistoryActivity.historyItems);
+
+            AlarmHistoryActivity.historyItems = GetHistory(getApplicationContext());
         }
 
         mTitle = mDrawerTitle = getTitle();
@@ -457,7 +453,7 @@ public class HomeActivity extends CabalryActivity.Compat {
                                     SetRegistrationID(context, "");
                                     LogoutUser(context);
 
-                                    AlarmHistoryActivity.historySet = null;
+                                    AlarmHistoryActivity.historyItems = null;
 
                                     startActivity(new Intent(context, LoginActivity.class));
 
@@ -478,7 +474,7 @@ public class HomeActivity extends CabalryActivity.Compat {
                         SetRegistrationID(context, "");
                         LogoutUser(context);
 
-                        AlarmHistoryActivity.historySet = null;
+                        AlarmHistoryActivity.historyItems = null;
 
                         startActivity(new Intent(context, LoginActivity.class));
                     }
@@ -561,6 +557,20 @@ public class HomeActivity extends CabalryActivity.Compat {
         }
 
         return false;
+    }
+
+    /**
+     * @return Application's version code from the PackageManager.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Should never happen.
+            throw new RuntimeException("Could not get package name: " + e);
+        }
     }
 
     /**

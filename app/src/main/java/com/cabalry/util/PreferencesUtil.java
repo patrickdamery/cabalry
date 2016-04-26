@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cabalry.app.AlarmHistoryActivity;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -203,23 +204,35 @@ public class PreferencesUtil {
         editor.commit();
     }
 
-    public static synchronized void SaveHistory(Context context, Set<String> historySet) {
+    public static synchronized void SaveHistory(Context context, ArrayList<HistoryItem> historyItems) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
+
+        Set<String> historySet = new HashSet<>();
+
+        for (HistoryItem item : historyItems) {
+            historySet.add(item.toString());
+            Log.i(TAG, "SaveHistory, item: " + item.toString());
+        }
+
         editor.putStringSet(GetUserID(context) + PREF_HISTORY, historySet);
         editor.commit();
     }
 
-    public static synchronized Set<String> GetHistory(Context context) {
+    public static synchronized ArrayList<HistoryItem> GetHistory(Context context) {
         SharedPreferences preferences = GetSharedPrefs(context);
-        Set<String> set = preferences.getStringSet(GetUserID(context) + PREF_HISTORY, null);
-        if (set == null) return null;
+        Set<String> historySet = preferences.getStringSet(GetUserID(context) + PREF_HISTORY, null);
+        if (historySet == null) return null;
 
-        List list = new ArrayList(set);
-        Collections.sort(list, Collections.reverseOrder());
+        ArrayList<HistoryItem> historyItems = new ArrayList<>();
 
-        //Log.i(TAG, list.get(0).toString());
+        for (String item : historySet) {
+            historyItems.add(HistoryItem.fromString(item));
+            Log.i(TAG, "GetHistory, item: " + item);
+        }
 
-        return new HashSet(list);
+        //Collections.sort(historyItems, Collections.reverseOrder());
+
+        return historyItems;
     }
 
     public static synchronized CameraPosition GetMapState(Context context) {

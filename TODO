@@ -1,9 +1,4 @@
 To Do:
-    - Fix alarm services not stopping correctly
-    - handle case when user accepts alarm while listening to one
-    - handle case when user accepts alarm while his is activated
-    - handle case when playback was not started
-
     - Add multiple button support
     - Take photos and upload
     - handle alarm case when in sms mode
@@ -12,16 +7,21 @@ To Do:
     - Improve alarm check activity, don't ask with words
 
 In Progress:
+    - handle case when playback was not started
     - handle case when gcm stop alarm
     - add listening alarms to history
+    - Fix alarm services not stopping correctly
+    - handle case when user accepts alarm while listening to one
+    - handle case when user accepts alarm while his is activated
 
 Bugs:
     - If app is closed if alarm was active and not fake deactivad
-    - Services not stopping on ignore
-    - Fix reverse order of alarm history
+    - Services not stopping on ignore ?
+    - Adding history item from gcm not working
     - Fix double user marker on map
 
 Completed:
+    - Fix order of alarm history
     - Handle case when alarm is active and app is closed
     - stop location service on lgout
     - Improve graphics

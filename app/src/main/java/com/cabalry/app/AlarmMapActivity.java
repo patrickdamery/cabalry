@@ -97,7 +97,7 @@ public class AlarmMapActivity extends MapActivity {
                     }
 
                 } else {
-                    Log.i(TAG, "ERROR is here");
+                    Log.e(TAG, "Error no alarm info!");
                 }
             }
         }.execute();

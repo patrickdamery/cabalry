@@ -74,8 +74,6 @@ public class GCMIntentService extends IntentService {
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 String action = extras.getString(ALARM_GCM_ACTION);
 
-                Log.d(TAG, "HERE");
-
                 if (action != null && !action.isEmpty()) {
                     if (action.equals(ALARM_ACTION_START)) {
 
@@ -83,6 +81,9 @@ public class GCMIntentService extends IntentService {
                         int userID = Integer.parseInt(extras.getString(ALARM_USERID));
 
                         AlarmHistoryActivity.addHistoryEntry(getApplicationContext(), userID, alarmID);
+
+                        // TODO handle case when user accepts alarm while listening to one
+                        // TODO handle case when user accepts alarm while his is activated
 
                         SetAlarmID(getApplicationContext(), alarmID);
                         SetAlarmUserID(getApplicationContext(), userID);
