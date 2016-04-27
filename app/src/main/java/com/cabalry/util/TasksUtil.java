@@ -471,6 +471,11 @@ public class TasksUtil {
 
             try {
                 if (result.getBoolean(REQ_SUCCESS)) {
+                    Log.i(TAG, "Alarm ignored successfully");
+
+                    SetAlarmID(mContext, 0);
+                    SetAlarmUserID(mContext, 0);
+
                     return true;
                 }
             } catch (JSONException e) {
@@ -516,7 +521,11 @@ public class TasksUtil {
 
             try {
                 if (result.getBoolean(REQ_SUCCESS)) {
-                    Log.i(TAG, "ALL GOOD IN THE HOOD");
+                    Log.i(TAG, "Alarm stopped successfully");
+
+                    SetAlarmID(mContext, 0);
+                    SetAlarmUserID(mContext, 0);
+
                     return true;
                 }
             } catch (JSONException e) {

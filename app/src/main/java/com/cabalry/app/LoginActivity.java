@@ -41,7 +41,7 @@ import static com.cabalry.util.TasksUtil.UserLoginTask;
 
 /**
  * LoginActivity
- * <p>
+ * <p/>
  * Login screen for Cabalry app.
  */
 public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cursor> {

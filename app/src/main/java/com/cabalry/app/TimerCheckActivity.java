@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cabalry.alarm.AlarmService;
 import com.cabalry.alarm.AlarmTimerService;
 import com.cabalry.base.CabalryActivity;
 
@@ -30,8 +29,11 @@ public class TimerCheckActivity extends CabalryActivity {
             @Override
             public void run() {
                 alert.cancel();
+
                 // Start alarm.
-                startService(new Intent(getApplicationContext(), AlarmService.class));
+                Intent alarmIntent = new Intent();
+                alarmIntent.setAction("com.cabalry.action.ALARM_START");
+                sendBroadcast(alarmIntent);
             }
         };
 
@@ -61,8 +63,11 @@ public class TimerCheckActivity extends CabalryActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //SetTimerEnabled(getApplicationContext(), false);
                 timerTask.cancel();
-                //launchAlarm();
-                //startService(new Intent(getApplicationContext(), AlarmService.class));
+
+                // Start alarm.
+                Intent alarmIntent = new Intent();
+                alarmIntent.setAction("com.cabalry.action.ALARM_START");
+                sendBroadcast(alarmIntent);
             }
         });
 

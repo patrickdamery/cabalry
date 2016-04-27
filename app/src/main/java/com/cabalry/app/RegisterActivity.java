@@ -12,7 +12,7 @@ import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
  * RegisterActivity
- * <p>
+ * <p/>
  * Activity which displays the user's profile info and also modify it.
  */
 public class RegisterActivity extends WebViewActivity {

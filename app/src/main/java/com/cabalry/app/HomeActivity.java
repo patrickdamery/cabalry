@@ -13,6 +13,8 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,11 +35,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.cabalry.R;
+import com.cabalry.alarm.AlarmService;
 import com.cabalry.alarm.AlarmTimerService;
 import com.cabalry.alarm.SilentAlarmService;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
-import com.cabalry.base.CabalryActivity;
+import com.cabalry.base.BindableActivity;
 import com.cabalry.bluetooth.BluetoothService;
 import com.cabalry.location.LocationUpdateService;
 import com.cabalry.net.CabalryServer;
@@ -51,12 +54,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static com.cabalry.net.CabalryServer.PLAY_SERVICES_RESOLUTION_REQUEST;
 import static com.cabalry.net.CabalryServer.REQ_SUCCESS;
 import static com.cabalry.net.CabalryServer.SENDER_ID;
 import static com.cabalry.net.CabalryServer.UpdateGCM;
+import static com.cabalry.util.MessageUtil.MSG_ALARM_START;
+import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
+import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
 import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.GetAppVersion;
 import static com.cabalry.util.PreferencesUtil.GetGPSChecked;
@@ -67,24 +72,20 @@ import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
 import static com.cabalry.util.PreferencesUtil.IsFakeActive;
 import static com.cabalry.util.PreferencesUtil.LogoutUser;
-import static com.cabalry.util.PreferencesUtil.SaveHistory;
 import static com.cabalry.util.PreferencesUtil.SetAlarmID;
-import static com.cabalry.util.PreferencesUtil.SetAlarmIP;
 import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.SetAppVersion;
 import static com.cabalry.util.PreferencesUtil.SetDrawerLearned;
 import static com.cabalry.util.PreferencesUtil.SetGPSChecked;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
-import static com.cabalry.util.TasksUtil.CheckBillingTask;
 import static com.cabalry.util.TasksUtil.CheckNetworkTask;
-import static com.cabalry.util.TasksUtil.StartAlarmTask;
 import static com.cabalry.util.TasksUtil.StopAlarmTask;
 import static com.cabalry.util.TasksUtil.UserLogoutTask;
 
 /**
  * HomeActivity
  */
-public class HomeActivity extends CabalryActivity.Compat {
+public class HomeActivity extends BindableActivity {
     private static final String TAG = "HomeActivity";
 
     public static boolean active = false;
@@ -103,6 +104,20 @@ public class HomeActivity extends CabalryActivity.Compat {
     TypedArray mActivityIcons;
 
     ProgressDialog progressBar;
+
+    /**
+     * @return Application's version code from the PackageManager.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Should never happen.
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +235,7 @@ public class HomeActivity extends CabalryActivity.Compat {
         bAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startAlarm(getApplicationContext());
+                startAlarm();
             }
         });
 
@@ -272,6 +287,14 @@ public class HomeActivity extends CabalryActivity.Compat {
         active = false;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        active = false;
+
+        unbindFromService();
+    }
+
     private void alertNoGpsEnabled() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getResources().getString(R.string.prompt_no_gps))
@@ -294,56 +317,17 @@ public class HomeActivity extends CabalryActivity.Compat {
         alert.show();
     }
 
-    private void startAlarm(final Context context) {
+    private void startAlarm() {
+        Log.i(TAG, "startAlarm");
+
+        bindToService(AlarmService.class, new MessengerHandler(),
+                MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
+
         progressBar.show();
 
-        new CheckBillingTask(context) {
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (!result) {
-                    progressBar.dismiss();
-                    Toast.makeText(context, context.getResources().getString(R.string.error_billing),
-                            Toast.LENGTH_LONG).show();
-
-                } else {
-                    new StartAlarmTask(context) {
-                        @Override
-                        protected void onResult(Boolean result) {
-                            if (result) {
-
-                                final boolean selfActivated = GetAlarmUserID(context) == GetUserID(context);
-
-                                new TasksUtil.GetAlarmInfoTask(context) {
-                                    @Override
-                                    protected void onPostExecute(Boolean result) {
-
-                                        if (result) {
-                                            SetAlarmIP(context, getIP());
-
-                                            if (selfActivated) {
-                                                // Start audio stream service
-                                                context.startService(new Intent(context, AudioStreamService.class));
-
-                                            } else {
-                                                // Start audio playback service
-                                                context.startService(new Intent(context, AudioPlaybackService.class));
-                                            }
-
-                                        } else {
-                                            Log.e(TAG, "ERROR no alarm info!");
-                                        }
-                                    }
-                                }.execute();
-
-                                startActivity(new Intent(context, AlarmMapActivity.class));
-                            }
-
-                            progressBar.dismiss();
-                        }
-                    }.execute();
-                }
-            }
-        }.execute();
+        Intent intent = new Intent();
+        intent.setAction("com.cabalry.action.ALARM_START");
+        sendBroadcast(intent);
     }
 
     @Override
@@ -560,20 +544,6 @@ public class HomeActivity extends CabalryActivity.Compat {
     }
 
     /**
-     * @return Application's version code from the PackageManager.
-     */
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Should never happen.
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
-    /**
      * Check the device to make sure it has the Google Play Services APK. If
      * it doesn't, display a dialog that allows users to download the APK from
      * the Google Play Store or enable it in the device's system settings.
@@ -698,6 +668,31 @@ public class HomeActivity extends CabalryActivity.Compat {
 
         SetRegistrationID(getApplicationContext(), regId);
         SetAppVersion(getApplicationContext(), appVersion);
+    }
+
+    /**
+     * MessengerHandler
+     */
+    private class MessengerHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data == null)
+                throw new NullPointerException("data is null");
+
+            switch (msg.what) {
+                case MSG_ALARM_START:
+                    Log.i(TAG, "MSG_ALARM_START");
+                    if (active) {
+                        progressBar.dismiss();
+                    }
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

@@ -1,5 +1,6 @@
 package com.cabalry.alarm;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +17,7 @@ import com.cabalry.util.TasksUtil;
 
 import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
-import static com.cabalry.util.PreferencesUtil.SetAlarmID;
 import static com.cabalry.util.PreferencesUtil.SetAlarmIP;
-import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 
 /**
  * AlarmService
@@ -26,9 +25,18 @@ import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 public class AlarmService extends BindableService {
     private static final String TAG = "AlarmService";
 
-    static Intent selfIntent;
+    static boolean active = false;
 
-    public static void startAlarm(final Context context) {
+    static Intent mAlarmIntent;
+    static Intent mAudioStreamIntent;
+    static Intent mAudioPlaybackIntent;
+
+    static boolean alarmStarted = false;
+
+    private static void startAlarm(final Context context) {
+        if (alarmStarted) return;
+        alarmStarted = true;
+
         new TasksUtil.CheckBillingTask(context) {
             @Override
             protected void onPostExecute(Boolean result) {
@@ -51,17 +59,23 @@ public class AlarmService extends BindableService {
                                         if (result) {
                                             SetAlarmIP(context, getIP());
 
+                                            Bundle data = new Bundle();
+                                            sendMessageToActivity(MessageUtil.MSG_ALARM_START, data);
+
                                             if (selfActivated) {
                                                 // Start audio stream service
-                                                context.startService(new Intent(context, AudioStreamService.class));
+                                                mAudioStreamIntent = new Intent(context, AudioStreamService.class);
+                                                context.startService(mAudioStreamIntent);
 
                                             } else {
                                                 // Start audio playback service
-                                                context.startService(new Intent(context, AudioPlaybackService.class));
+                                                mAudioPlaybackIntent = new Intent(context, AudioPlaybackService.class);
+                                                context.startService(mAudioPlaybackIntent);
                                             }
 
                                         } else {
-                                            Log.e(TAG, "ERROR no alarm info!");
+                                            Log.e(TAG, "Error no alarm info!");
+                                            alarmStarted = false;
                                         }
                                     }
                                 }.execute();
@@ -71,8 +85,8 @@ public class AlarmService extends BindableService {
                                 context.startActivity(alarm);
 
                             } else {
-                                // handle case were alarm couldn't start
-                                Log.e(TAG, "ERROR couldn't start alarm!");
+                                // TODO handle case were alarm couldn't start, start sms mode
+                                Log.e(TAG, "Error couldn't start alarm!");
                             }
                         }
                     }.execute();
@@ -81,93 +95,117 @@ public class AlarmService extends BindableService {
         }.execute();
     }
 
-    public static Intent getServiceIntent() {
-        return selfIntent;
-    }
-
-    public static void stopAlarm(final Context context) {
-        Log.i(TAG, "STOP ALARM");
-
-        if (AudioPlaybackService.isRunning()) {
-            AudioPlaybackService.stopAudioPlayback();
-
-            try {
-                context.stopService(AudioPlaybackService.getServiceIntent());
-            } catch (NullPointerException e) {
-                Log.e(TAG, "getServiceIntent is null!");
-            }
-        }
-
-        if (AudioStreamService.isRunning()) {
-            AudioStreamService.stopAudioStream();
-
-            try {
-                context.stopService(AudioStreamService.getServiceIntent());
-            } catch (NullPointerException e) {
-                Log.e(TAG, "Error getServiceIntent is null!");
-            }
-        }
-
-        SetAlarmID(context, 0);
-        SetAlarmUserID(context, 0);
+    private static void stopAlarm(final Context context) {
+        new TasksUtil.StopAlarmTask(context).execute();
+        alarmStarted = false;
 
         Bundle data = new Bundle();
         sendMessageToActivity(MessageUtil.MSG_ALARM_STOP, data);
 
-        new TasksUtil.StopAlarmTask(context).execute();
+        stopServices(context);
     }
 
-    public static void ignoreAlarm(final Context context) {
-        Log.i(TAG, "IGNORE ALARM");
-
-        if (AudioPlaybackService.isRunning()) {
-            AudioPlaybackService.stopAudioPlayback();
-
-            try {
-                context.stopService(AudioPlaybackService.getServiceIntent());
-            } catch (NullPointerException e) {
-                Log.e(TAG, "getServiceIntent is null!");
-            }
-        }
-
-        if (AudioStreamService.isRunning()) {
-            AudioStreamService.stopAudioStream();
-
-            try {
-                context.stopService(AudioStreamService.getServiceIntent());
-            } catch (NullPointerException e) {
-                Log.e(TAG, "Error getServiceIntent is null!");
-            }
-        }
-
-        SetAlarmID(context, 0);
-        SetAlarmUserID(context, 0);
+    private static void ignoreAlarm(final Context context) {
+        new TasksUtil.IgnoreAlarmTask(context).execute();
+        alarmStarted = false;
 
         Bundle data = new Bundle();
         sendMessageToActivity(MessageUtil.MSG_ALARM_IGNORE, data);
 
-        new TasksUtil.IgnoreAlarmTask(context).execute();
+        stopServices(context);
+    }
+
+    private static void stopServices(final Context context) {
+        if (AudioPlaybackService.isRunning() || mAudioPlaybackIntent != null) {
+            AudioPlaybackService.stopAudioPlayback();
+
+            try {
+                context.stopService(mAudioPlaybackIntent);
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Error service not stopped, mAudioPlaybackIntent is null!");
+            }
+        }
+
+        if (AudioStreamService.isRunning() || mAudioStreamIntent != null) {
+            AudioStreamService.stopAudioStream();
+
+            try {
+                context.stopService(mAudioStreamIntent);
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Error service not stopped, mAudioStreamIntent is null!");
+            }
+        }
+
+        if (active || mAlarmIntent != null) {
+
+            try {
+                context.stopService(mAlarmIntent);
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Error service not stopped, mAlarmIntent is null!");
+            }
+        }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        startAlarm(getApplicationContext());
+        active = true;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null) {
-            selfIntent = intent;
-            Log.i(TAG, "selfIntent set");
-        }
+        active = true;
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopService(selfIntent);
+        active = false;
+    }
+
+    public static class StartAlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "StartAlarmReceiver onReceive");
+
+            if (!active || mAlarmIntent == null) {
+                mAlarmIntent = new Intent(context, AlarmService.class);
+                context.startService(mAlarmIntent);
+            }
+
+            startAlarm(context);
+        }
+    }
+
+    public static class StopAlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "StopAlarmReceiver onReceive");
+
+            if (!active || mAlarmIntent == null) {
+                mAlarmIntent = new Intent(context, AlarmService.class);
+                context.startService(mAlarmIntent);
+            }
+
+            stopAlarm(context);
+        }
+    }
+
+    public static class IgnoreAlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "IgnoreAlarmReceiver onReceive");
+
+            if (!active || mAlarmIntent == null) {
+                mAlarmIntent = new Intent(context, AlarmService.class);
+                context.startService(mAlarmIntent);
+            }
+
+            ignoreAlarm(context);
+        }
     }
 }

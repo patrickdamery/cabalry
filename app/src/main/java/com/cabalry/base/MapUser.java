@@ -14,6 +14,7 @@ public class MapUser {
     private UserType mType;
     private double mLat;
     private double mLng;
+
     public MapUser(final int id, String name, String car, String color,
                    double lat, double lng, UserType type) {
         mID = id;

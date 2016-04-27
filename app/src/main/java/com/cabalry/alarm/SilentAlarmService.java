@@ -29,7 +29,9 @@ public class SilentAlarmService extends IntentService {
         v.vibrate(pattern, -1);
 
         // Start alarm.
-        startService(new Intent(getApplicationContext(), AlarmService.class));
+        Intent alarmIntent = new Intent();
+        alarmIntent.setAction("com.cabalry.action.ALARM_START");
+        sendBroadcast(alarmIntent);
 
         // Release the wake lock provided by the WakefulBroadcastReceiver.
         SilentAlarmReceiver.completeWakefulIntent(intent);

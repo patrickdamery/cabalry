@@ -1,28 +1,25 @@
 To Do:
     - Add multiple button support
     - Take photos and upload
+    - handle case were alarm couldn't start, start sms mode
     - handle alarm case when in sms mode
     - Add sms support num: +353 861 800 845
     - give option to stop timer
     - Improve alarm check activity, don't ask with words
+    - handle case when playback was not started
 
 In Progress:
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
-    - handle case when playback was not started
-    - handle case when gcm stop alarm
     - Handle behavior when alarm has been fake deactivated
 
 Bugs:
     - Adding history item from gcm not working
     - Fix double user marker on map
 
-    - Fix alarm services not stopping correctly ( fixed? )
-
-Notes:
-    - To stop sticky services I could use a message to notify the service and call stopSelf()
-
 Completed:
+    - handle case when gcm stop alarm
+    - Fix alarm services not stopping correctly
     - Fix order of alarm history
     - Handle case when alarm is active and app is closed
     - stop location service on lgout

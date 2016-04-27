@@ -135,7 +135,7 @@ public class AlarmMapActivity extends MapActivity {
     @Override
     public void onStart() {
         super.onStart();
-        bindToService(LocationUpdateService.class, new MessengerHandler(),
+        bindToService(AlarmService.class, new MessengerHandler(),
                 MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
     }
 
@@ -264,25 +264,15 @@ public class AlarmMapActivity extends MapActivity {
     }
 
     private void stopAlarm() {
-        AlarmService.stopAlarm(getApplicationContext());
-
-        try {
-            stopService(AlarmService.getServiceIntent());
-        } catch (NullPointerException e) {
-            Log.e(TAG, "getServiceIntent is null!");
-        }
-
-
-        // return to home.
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        Intent intent = new Intent();
+        intent.setAction("com.cabalry.action.ALARM_STOP");
+        sendBroadcast(intent);
     }
 
     private void ignoreAlarm() {
-        AlarmService.ignoreAlarm(getApplicationContext());
-        stopService(new Intent(this, AlarmService.class));
-
-        // return to home
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        Intent intent = new Intent();
+        intent.setAction("com.cabalry.action.ALARM_IGNORE");
+        sendBroadcast(intent);
     }
 
     private void collectNearbyUsers() {

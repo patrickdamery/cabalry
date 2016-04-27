@@ -1,4 +1,4 @@
-package com.cabalry.util;
+package com.cabalry.base;
 
 /**
  * HistoryItem
@@ -15,6 +15,11 @@ public class HistoryItem {
         mUserId = userId;
         mAlarmId = alarmId;
         mTimestamp = timestamp;
+    }
+
+    public static HistoryItem fromString(String str) {
+        String[] result = str.split("~");
+        return new HistoryItem(result[0], Integer.parseInt(result[1]), Integer.parseInt(result[2]), result[3]);
     }
 
     public String getUsername() {
@@ -36,10 +41,5 @@ public class HistoryItem {
     @Override
     public String toString() {
         return mUsername + "~" + mUserId + "~" + mAlarmId + "~" + mTimestamp;
-    }
-
-    public static HistoryItem fromString(String str) {
-        String[] result = str.split("~");
-        return new HistoryItem(result[0], Integer.parseInt(result[1]), Integer.parseInt(result[2]), result[3]);
     }
 }

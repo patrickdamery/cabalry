@@ -25,6 +25,10 @@ public class AudioStreamService extends RunnableService {
         }
     }
 
+    public static Intent getServiceIntent() {
+        return selfIntent;
+    }
+
     @Override
     public void onCreate() {
         mAudioStreamer = new AudioStreamer();
@@ -59,9 +63,5 @@ public class AudioStreamService extends RunnableService {
         super.onDestroy();
         stopAudioStream();
         stopService(selfIntent);
-    }
-
-    public static Intent getServiceIntent() {
-        return selfIntent;
     }
 }

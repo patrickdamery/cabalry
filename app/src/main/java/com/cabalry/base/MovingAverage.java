@@ -1,4 +1,4 @@
-package com.cabalry.util;
+package com.cabalry.base;
 
 /**
  * MovingAverage

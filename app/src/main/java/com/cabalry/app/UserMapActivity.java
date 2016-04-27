@@ -1,36 +1,33 @@
 package com.cabalry.app;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.cabalry.R;
-import com.cabalry.audio.AudioPlaybackService;
-import com.cabalry.audio.AudioStreamService;
+import com.cabalry.alarm.AlarmService;
 import com.cabalry.base.MapActivity;
 import com.cabalry.base.MapUser;
 import com.cabalry.location.LocationUpdateService;
-import com.cabalry.util.TasksUtil;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.Vector;
 
-import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
+import static com.cabalry.util.MessageUtil.MSG_ALARM_START;
+import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
+import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
-import static com.cabalry.util.PreferencesUtil.SetAlarmIP;
-import static com.cabalry.util.TasksUtil.CheckBillingTask;
 import static com.cabalry.util.TasksUtil.CheckNetworkTask;
 import static com.cabalry.util.TasksUtil.CollectUserInfoTask;
 import static com.cabalry.util.TasksUtil.CollectUsersTask;
-import static com.cabalry.util.TasksUtil.StartAlarmTask;
 
 /**
  * UserMapActivity
@@ -75,61 +72,28 @@ public class UserMapActivity extends MapActivity {
         bAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startAlarm(getApplicationContext());
+                startAlarm();
             }
         });
     }
 
-    private void startAlarm(final Context context) {
+    private void startAlarm() {
+        Log.i(TAG, "startAlarm");
+
+        bindToService(AlarmService.class, new MessengerHandler(),
+                MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
+
         progressBar.show();
 
-        new CheckBillingTask(context) {
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (!result) {
-                    progressBar.dismiss();
-                    Toast.makeText(context, context.getResources().getString(R.string.error_billing),
-                            Toast.LENGTH_LONG).show();
+        Intent intent = new Intent();
+        intent.setAction("com.cabalry.action.ALARM_START");
+        sendBroadcast(intent);
+    }
 
-                } else {
-                    new StartAlarmTask(context) {
-                        @Override
-                        protected void onResult(Boolean result) {
-                            if (result) {
-
-                                final boolean selfActivated = GetAlarmUserID(context) == GetUserID(context);
-
-                                new TasksUtil.GetAlarmInfoTask(context) {
-                                    @Override
-                                    protected void onPostExecute(Boolean result) {
-
-                                        if (result) {
-                                            SetAlarmIP(context, getIP());
-
-                                            if (selfActivated) {
-                                                // Start audio stream service
-                                                context.startService(new Intent(context, AudioStreamService.class));
-
-                                            } else {
-                                                // Start audio playback service
-                                                context.startService(new Intent(context, AudioPlaybackService.class));
-                                            }
-
-                                        } else {
-                                            Log.e(TAG, "ERROR no alarm info!");
-                                        }
-                                    }
-                                }.execute();
-
-                                startActivity(new Intent(context, AlarmMapActivity.class));
-                            }
-
-                            progressBar.dismiss();
-                        }
-                    }.execute();
-                }
-            }
-        }.execute();
+    @Override
+    public void onStart() {
+        super.onStart();
+        isRunning = true;
     }
 
     @Override
@@ -269,5 +233,30 @@ public class UserMapActivity extends MapActivity {
                 mCollectUserInfoTask = null;
             }
         };
+    }
+
+    /**
+     * MessengerHandler
+     */
+    private class MessengerHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data == null)
+                throw new NullPointerException("data is null");
+
+            switch (msg.what) {
+                case MSG_ALARM_START:
+                    Log.i(TAG, "MSG_ALARM_START");
+                    if (isRunning) {
+                        progressBar.dismiss();
+                    }
+                    break;
+
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.cabalry.R;
 import com.cabalry.base.CabalryActivity;
-import com.cabalry.util.HistoryItem;
+import com.cabalry.base.HistoryItem;
 import com.cabalry.util.TasksUtil;
 
 import java.text.SimpleDateFormat;

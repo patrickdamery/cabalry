@@ -13,10 +13,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmService;
 import com.cabalry.app.DeviceControlActivity;
 import com.cabalry.base.BindableService;
-import com.cabalry.util.MovingAverage;
+import com.cabalry.base.MovingAverage;
 
 import static com.cabalry.util.MessageUtil.MSG_BLUETOOTH_CONNECT;
 import static com.cabalry.util.MessageUtil.MSG_DEVICE_STATE;
@@ -46,21 +45,9 @@ public class BluetoothService extends BindableService {
         @Override
         public void onDeviceButtonPressed(Context context) {
             // Start alarm.
-            startService(new Intent(getApplicationContext(), AlarmService.class));
-
-            /*
-            Intent intent = new Intent(context, DeviceControlActivity.class);
-            PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent, 0);
-
-            Notification n = new Notification.Builder(context)
-                    .setContentTitle("Alarm activated!")
-                    .setContentText("Button pressed")
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentIntent(pIntent)
-                    .setAutoCancel(true).build();
-
-            mNotificationManager.notify(0, n);
-            */
+            Intent alarmIntent = new Intent();
+            alarmIntent.setAction("com.cabalry.action.ALARM_START");
+            sendBroadcast(alarmIntent);
         }
 
         @Override

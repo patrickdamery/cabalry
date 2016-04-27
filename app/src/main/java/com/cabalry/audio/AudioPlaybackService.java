@@ -33,6 +33,10 @@ public class AudioPlaybackService extends RunnableService {
         }
     }
 
+    public static Intent getServiceIntent() {
+        return selfIntent;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -74,9 +78,5 @@ public class AudioPlaybackService extends RunnableService {
         stopAudioPlayback();
 
         stopSelf();
-    }
-
-    public static Intent getServiceIntent() {
-        return selfIntent;
     }
 }

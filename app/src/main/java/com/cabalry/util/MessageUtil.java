@@ -18,7 +18,8 @@ public class MessageUtil {
     public static final int MSG_LOCATION_UPDATE = 6;
 
     // Alarm service
-    public static final int MSG_ALARM_STOP = 7;
-    public static final int MSG_ALARM_IGNORE = 8;
+    public static final int MSG_ALARM_START = 7;
+    public static final int MSG_ALARM_STOP = 8;
+    public static final int MSG_ALARM_IGNORE = 9;
 
 }

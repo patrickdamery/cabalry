@@ -190,6 +190,24 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".alarm.AlarmService$StartAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.ALARM_START" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".alarm.AlarmService$StopAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.ALARM_STOP" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".alarm.AlarmService$IgnoreAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.ALARM_IGNORE" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".gcm.GCMIntentService"
             android:exported="false" />

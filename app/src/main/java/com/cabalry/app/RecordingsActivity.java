@@ -10,7 +10,7 @@ import static com.cabalry.util.PreferencesUtil.GetUserKey;
 
 /**
  * RecordingsActivity
- * <p>
+ * <p/>
  * Activity which displays a list of user's alarm recordings.
  */
 public class RecordingsActivity extends WebViewActivity {

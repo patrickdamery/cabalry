@@ -11,10 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmService;
 import com.cabalry.app.AlarmHistoryActivity;
-import com.cabalry.app.AlarmMapActivity;
-import com.cabalry.util.PreferencesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import static com.cabalry.net.CabalryServer.ALARM_ACTION_START;
@@ -22,9 +19,6 @@ import static com.cabalry.net.CabalryServer.ALARM_ACTION_STOP;
 import static com.cabalry.net.CabalryServer.ALARM_GCM_ACTION;
 import static com.cabalry.net.CabalryServer.ALARM_ID;
 import static com.cabalry.net.CabalryServer.ALARM_USERID;
-import static com.cabalry.util.PreferencesUtil.GetAlarmID;
-import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
-import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.SetAlarmID;
 import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 
@@ -86,16 +80,6 @@ public class GCMIntentService extends IntentService {
 
                         AlarmHistoryActivity.addHistoryEntry(getApplicationContext(), userID, alarmID);
 
-                        if (GetAlarmID(getApplicationContext()) != 0) {
-
-                            if (GetAlarmUserID(getApplicationContext()) == GetUserID(getApplicationContext())) {
-                                // TODO handle case when user accepts alarm while his is activated
-
-                            } else {
-                                // TODO handle case when user accepts alarm while listening to one
-                            }
-                        }
-
                         SetAlarmID(getApplicationContext(), alarmID);
                         SetAlarmUserID(getApplicationContext(), userID);
 
@@ -110,11 +94,10 @@ public class GCMIntentService extends IntentService {
                         sendNotification(alarmID);
 
                     } else if (action.equals(ALARM_ACTION_STOP)) {
-                        // TODO handle case when gcm stop alarm
 
-                        if (AlarmService.isRunning()) {
-                            AlarmService.stopAlarm(getApplicationContext());
-                        }
+                        Intent stopIntent = new Intent();
+                        stopIntent.setAction("com.cabalry.action.ALARM_STOP");
+                        sendBroadcast(stopIntent);
                     }
 
                 }
@@ -133,7 +116,7 @@ public class GCMIntentService extends IntentService {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AlarmMapActivity.class), 0);
+                new Intent(this, AlarmHistoryActivity.class), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

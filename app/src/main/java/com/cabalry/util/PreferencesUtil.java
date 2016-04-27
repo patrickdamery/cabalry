@@ -5,14 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.cabalry.app.AlarmHistoryActivity;
+import com.cabalry.base.HistoryItem;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -230,7 +230,12 @@ public class PreferencesUtil {
             Log.i(TAG, "GetHistory, item: " + item);
         }
 
-        //Collections.sort(historyItems, Collections.reverseOrder());
+        Collections.sort(historyItems, new Comparator<HistoryItem>() {
+            @Override
+            public int compare(HistoryItem o1, HistoryItem o2) {
+                return o2.getAlarmId() - o1.getAlarmId();
+            }
+        });
 
         return historyItems;
     }
