@@ -120,4 +120,8 @@
     <string name="none_paired">No paired devices</string>
     <string name="none_found">Not found</string>
 
+    <!--  For history -->
+    <string name="no_history">There is no alarm history</string>
+    <string name="action_clear_history">Clear History</string>
+
 </resources>

@@ -26,7 +26,7 @@ import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 public class AlarmService extends BindableService {
     private static final String TAG = "AlarmService";
 
-    private Intent selfIntent;
+    static Intent selfIntent;
 
     public static void startAlarm(final Context context) {
         new TasksUtil.CheckBillingTask(context) {
@@ -81,15 +81,32 @@ public class AlarmService extends BindableService {
         }.execute();
     }
 
+    public static Intent getServiceIntent() {
+        return selfIntent;
+    }
+
     public static void stopAlarm(final Context context) {
-        if (AudioPlaybackService.isRunning())
+        Log.i(TAG, "STOP ALARM");
+
+        if (AudioPlaybackService.isRunning()) {
             AudioPlaybackService.stopAudioPlayback();
 
-        if (AudioStreamService.isRunning())
+            try {
+                context.stopService(AudioPlaybackService.getServiceIntent());
+            } catch (NullPointerException e) {
+                Log.e(TAG, "getServiceIntent is null!");
+            }
+        }
+
+        if (AudioStreamService.isRunning()) {
             AudioStreamService.stopAudioStream();
 
-        context.stopService(new Intent(context, AudioStreamService.class));
-        context.stopService(new Intent(context, AudioPlaybackService.class));
+            try {
+                context.stopService(AudioStreamService.getServiceIntent());
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Error getServiceIntent is null!");
+            }
+        }
 
         SetAlarmID(context, 0);
         SetAlarmUserID(context, 0);
@@ -101,14 +118,27 @@ public class AlarmService extends BindableService {
     }
 
     public static void ignoreAlarm(final Context context) {
-        if (AudioPlaybackService.isRunning())
+        Log.i(TAG, "IGNORE ALARM");
+
+        if (AudioPlaybackService.isRunning()) {
             AudioPlaybackService.stopAudioPlayback();
 
-        if (AudioStreamService.isRunning())
+            try {
+                context.stopService(AudioPlaybackService.getServiceIntent());
+            } catch (NullPointerException e) {
+                Log.e(TAG, "getServiceIntent is null!");
+            }
+        }
+
+        if (AudioStreamService.isRunning()) {
             AudioStreamService.stopAudioStream();
 
-        context.stopService(new Intent(context, AudioStreamService.class));
-        context.stopService(new Intent(context, AudioPlaybackService.class));
+            try {
+                context.stopService(AudioStreamService.getServiceIntent());
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Error getServiceIntent is null!");
+            }
+        }
 
         SetAlarmID(context, 0);
         SetAlarmUserID(context, 0);
@@ -128,7 +158,10 @@ public class AlarmService extends BindableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        selfIntent = intent;
+        if (intent != null) {
+            selfIntent = intent;
+            Log.i(TAG, "selfIntent set");
+        }
         return START_STICKY;
     }
 

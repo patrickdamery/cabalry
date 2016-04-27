@@ -2,6 +2,7 @@ package com.cabalry.audio;
 
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.cabalry.base.RunnableService;
 
@@ -15,11 +16,12 @@ import static com.cabalry.util.TasksUtil.UpdateListenerInfoTask;
  * AudioPlaybackService
  */
 public class AudioPlaybackService extends RunnableService {
+    private static final String TAG = "AudioPlaybackService";
 
     private static AudioPlayer audioPlayer;
     private static Thread playbackThread;
 
-    private Intent selfIntent;
+    private static Intent selfIntent;
 
     public static void stopAudioPlayback() {
         if (isRunning()) {
@@ -53,7 +55,10 @@ public class AudioPlaybackService extends RunnableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        selfIntent = intent;
+        if (intent != null) {
+            selfIntent = intent;
+            Log.i(TAG, "selfIntent set");
+        }
         return START_STICKY;
     }
 
@@ -67,6 +72,11 @@ public class AudioPlaybackService extends RunnableService {
     public void onDestroy() {
         super.onDestroy();
         stopAudioPlayback();
-        stopService(selfIntent);
+
+        stopSelf();
+    }
+
+    public static Intent getServiceIntent() {
+        return selfIntent;
     }
 }

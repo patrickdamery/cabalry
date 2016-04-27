@@ -265,7 +265,13 @@ public class AlarmMapActivity extends MapActivity {
 
     private void stopAlarm() {
         AlarmService.stopAlarm(getApplicationContext());
-        stopService(new Intent(this, AlarmService.class));
+
+        try {
+            stopService(AlarmService.getServiceIntent());
+        } catch (NullPointerException e) {
+            Log.e(TAG, "getServiceIntent is null!");
+        }
+
 
         // return to home.
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));

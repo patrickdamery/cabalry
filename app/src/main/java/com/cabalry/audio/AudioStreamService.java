@@ -2,6 +2,7 @@ package com.cabalry.audio;
 
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.cabalry.base.RunnableService;
 
@@ -11,10 +12,11 @@ import static com.cabalry.util.PreferencesUtil.GetAlarmIP;
  * AudioStreamService
  */
 public class AudioStreamService extends RunnableService {
+    private static final String TAG = "AudioStreamService";
 
     private static AudioStreamer mAudioStreamer;
 
-    private Intent selfIntent;
+    private static Intent selfIntent;
 
     public static void stopAudioStream() {
         if (mAudioStreamer != null) {
@@ -39,7 +41,10 @@ public class AudioStreamService extends RunnableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        selfIntent = intent;
+        if (intent != null) {
+            selfIntent = intent;
+            Log.i(TAG, "selfIntent set");
+        }
         return START_STICKY;
     }
 
@@ -54,5 +59,9 @@ public class AudioStreamService extends RunnableService {
         super.onDestroy();
         stopAudioStream();
         stopService(selfIntent);
+    }
+
+    public static Intent getServiceIntent() {
+        return selfIntent;
     }
 }

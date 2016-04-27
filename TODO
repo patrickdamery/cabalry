@@ -7,18 +7,20 @@ To Do:
     - Improve alarm check activity, don't ask with words
 
 In Progress:
-    - handle case when playback was not started
-    - handle case when gcm stop alarm
-    - add listening alarms to history
-    - Fix alarm services not stopping correctly
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
+    - handle case when playback was not started
+    - handle case when gcm stop alarm
+    - Handle behavior when alarm has been fake deactivated
 
 Bugs:
-    - If app is closed if alarm was active and not fake deactivad
-    - Services not stopping on ignore ?
     - Adding history item from gcm not working
     - Fix double user marker on map
+
+    - Fix alarm services not stopping correctly ( fixed? )
+
+Notes:
+    - To stop sticky services I could use a message to notify the service and call stopSelf()
 
 Completed:
     - Fix order of alarm history
@@ -36,8 +38,8 @@ Completed:
     - Add timer feature
     - Add silent feature
     - fix help activity back action
-    - camera focus not working when nearby enabled ?
-    - NullPointerException on locations in CollectUsersTask ?
+    - camera focus not working when nearby enabled
+    - NullPointerException on locations in CollectUsersTask
     - Handle case of no available servers for alarm, keep trying
     - try again for tasks
     - Add audio stream

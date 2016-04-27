@@ -40,9 +40,9 @@
 
     <Button
         android:id="@+id/button_scan"
+        android:text="@string/search_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_message"
         android:textStyle="bold"
         android:background="@drawable/cabalry_button"
         android:textColor="#FFFFFF"

@@ -516,6 +516,7 @@ public class TasksUtil {
 
             try {
                 if (result.getBoolean(REQ_SUCCESS)) {
+                    Log.i(TAG, "ALL GOOD IN THE HOOD");
                     return true;
                 }
             } catch (JSONException e) {
