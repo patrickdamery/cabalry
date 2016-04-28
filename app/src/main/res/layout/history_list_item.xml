@@ -3,7 +3,8 @@
     android:layout_height="100dp"
     android:focusable="false"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:descendantFocusability="blocksDescendants">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -22,7 +23,9 @@
             android:textColor="#333333"
             android:layout_alignBottom="@+id/icon"
             android:layout_alignLeft="@+id/label"
-            android:layout_alignStart="@+id/label" />
+            android:layout_alignStart="@+id/label"
+            android:layout_toStartOf="@+id/linearLayout"
+            android:layout_marginRight="12dp" />
 
         <TextView
             android:id="@+id/label"
@@ -35,10 +38,11 @@
             android:textColor="#111111"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/icon"
-            android:layout_toEndOf="@+id/icon"
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
-            android:layout_above="@+id/description" />
+            android:layout_above="@+id/description"
+            android:layout_toStartOf="@+id/linearLayout"
+            android:layout_marginRight="12dp" />
 
         <ImageView
             android:id="@+id/icon"
@@ -49,19 +53,26 @@
             android:contentDescription="TODO"
             android:src="@drawable/ic_alarm_inactive" />
 
-        <ImageButton
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:id="@+id/remove"
-            android:background="@drawable/ic_close"
-            android:layout_marginRight="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginTop="15dp"
-            android:focusable="false"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/label"
-            android:layout_alignEnd="@+id/label" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/linearLayout">
+
+            <ImageButton
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:id="@+id/remove"
+                android:background="@drawable/ic_close"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/label"
+                android:layout_alignEnd="@+id/label" />
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -2,18 +2,24 @@ package com.cabalry.app;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * CabalryApp
  */
 public class CabalryApp extends Application {
+    private static final String TAG = "CabalryApp";
 
     private static boolean activityVisible;
     private static int resumed;
     private static int paused;
     private static int started;
     private static int stopped;
+
+    private static int created;
+    private static int destroyed;
 
     public static void activityResumed() {
         activityVisible = true;
@@ -35,6 +41,10 @@ public class CabalryApp extends Application {
         return resumed > paused;
     }
 
+    public static boolean isApplicationRunning() {
+        return created > destroyed;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -45,10 +55,20 @@ public class CabalryApp extends Application {
 
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            ++created;
         }
 
         @Override
         public void onActivityDestroyed(Activity activity) {
+            ++destroyed;
+
+            if (!isApplicationRunning()) {
+                Log.i(TAG, "SENT: com.cabalry.action.APP_CLOSED");
+
+                Intent intent = new Intent();
+                intent.setAction("com.cabalry.action.APP_CLOSED");
+                sendBroadcast(intent);
+            }
         }
 
         @Override

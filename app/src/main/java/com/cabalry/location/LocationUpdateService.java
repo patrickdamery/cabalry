@@ -30,9 +30,7 @@ public class LocationUpdateService extends BindableService implements LocationUp
     private long startTime = System.currentTimeMillis();
     private LatLng currentLocation, lastLocation;
 
-    private Intent selfIntent;
-
-    public static void updateListenerProvider(LocationUpdateManager.UpdateProvider provider) {
+    public static void resetProvider(LocationUpdateManager.UpdateProvider provider) {
         mLocationUpdateManager.stopLocationUpdates();
         mLocationUpdateManager.setUpdateProvider(provider);
         mLocationUpdateManager.startLocationUpdates();
@@ -82,12 +80,9 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        selfIntent = intent;
-
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mLocationUpdateManager.resetProvider(manager);
 
-        // If we get killed, after returning from here, stop
         return START_STICKY;
     }
 
@@ -95,7 +90,6 @@ public class LocationUpdateService extends BindableService implements LocationUp
     public void onDestroy() {
         super.onDestroy();
         mLocationUpdateManager.dispose();
-        stopService(selfIntent);
     }
 
     private void updateLocation() {

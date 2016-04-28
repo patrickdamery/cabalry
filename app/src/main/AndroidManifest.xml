@@ -4,6 +4,7 @@
     package="com.cabalry">
 
     <action android:name="android.location.PROVIDERS_CHANGED" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -144,6 +145,10 @@
             android:name=".app.TimerCheckActivity"
             android:label="@string/title_activity_timer" />
 
+        <activity
+            android:name=".app.StartAlarmActivity"
+            android:label="@string/title_activity_start_alarm" />
+
         <service
             android:name=".bluetooth.BluetoothService"
             android:exported="false" />
@@ -157,7 +162,7 @@
             android:name=".audio.AudioPlaybackService"
             android:exported="false" />
         <service
-            android:name=".alarm.AlarmService"
+            android:name=".app.CabalryAppService"
             android:exported="false" />
 
         <receiver
@@ -170,41 +175,56 @@
                 <category android:name="com.cabalry" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".location.GPSLocationReceiver">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".alarm.SilentAlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.VOLUME_CHANGED_ACTION" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".net.NetworkStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".alarm.AlarmService$StartAlarmReceiver">
+        <receiver android:name=".app.CabalryAppService$StartAlarmReceiver">
             <intent-filter>
                 <action android:name="com.cabalry.action.ALARM_START" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".alarm.AlarmService$StopAlarmReceiver">
+        <receiver android:name=".app.CabalryAppService$StopAlarmReceiver">
             <intent-filter>
                 <action android:name="com.cabalry.action.ALARM_STOP" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".alarm.AlarmService$IgnoreAlarmReceiver">
+        <receiver android:name=".app.CabalryAppService$IgnoreAlarmReceiver">
             <intent-filter>
                 <action android:name="com.cabalry.action.ALARM_IGNORE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".app.CabalryAppService$LoginReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.LOGIN" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".app.CabalryAppService$LogoutReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.LOGOUT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".app.CabalryAppService$AppClosedReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.APP_CLOSED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".app.CabalryAppService$JoinAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.ALARM_JOIN" />
             </intent-filter>
         </receiver>
 
@@ -223,7 +243,7 @@
             android:name=".alarm.AlarmTimerService"
             android:exported="false" />
         <service
-            android:name=".alarm.AlarmService"
+            android:name=".app.CabalryAppService"
             android:exported="false" />
         <service
             android:name=".alarm.SilentAlarmService"

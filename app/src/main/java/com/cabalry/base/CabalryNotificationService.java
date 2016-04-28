@@ -11,27 +11,27 @@ import android.util.Log;
 public class CabalryNotificationService extends NotificationListenerService {
 
     private String TAG = this.getClass().getSimpleName();
-    private CabalryNotificationReceiver nlservicereciver;
+    private CabalryNotificationReceiver notificationReceiver;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        nlservicereciver = new CabalryNotificationReceiver();
+        notificationReceiver = new CabalryNotificationReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.kpbird.nlsexample.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
-        registerReceiver(nlservicereciver, filter);
+        registerReceiver(notificationReceiver, filter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(nlservicereciver);
+        unregisterReceiver(notificationReceiver);
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
 
-        Log.i(TAG, "**********  onNotificationPosted");
+        Log.i(TAG, "onNotificationPosted");
         Log.i(TAG, "ID :" + sbn.getId() + "t" + sbn.getNotification().tickerText + "t" + sbn.getPackageName());
         Intent i = new Intent("com.kpbird.nlsexample.NOTIFICATION_LISTENER_EXAMPLE");
         i.putExtra("notification_event", "onNotificationPosted :" + sbn.getPackageName() + "n");

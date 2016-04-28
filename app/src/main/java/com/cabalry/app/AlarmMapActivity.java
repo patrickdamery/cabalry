@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmService;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.MapActivity;
@@ -28,6 +27,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.Vector;
 
+import static com.cabalry.util.MessageUtil.MSG_ALARM_IGNORE;
 import static com.cabalry.util.MessageUtil.MSG_ALARM_STOP;
 import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
 import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
@@ -80,27 +80,11 @@ public class AlarmMapActivity extends MapActivity {
 
         final boolean selfActivated = GetAlarmUserID(this) == GetUserID(this);
 
-        new GetAlarmInfoTask(getApplicationContext()) {
-            @Override
-            protected void onPostExecute(Boolean result) {
-
-                if (result) {
-                    SetAlarmIP(getApplicationContext(), getIP());
-
-                    if (selfActivated) {
-                        // Start audio stream service
-                        startService(new Intent(getApplicationContext(), AudioStreamService.class));
-
-                    } else {
-                        // Start audio playback service
-                        startService(new Intent(getApplicationContext(), AudioPlaybackService.class));
-                    }
-
-                } else {
-                    Log.e(TAG, "Error no alarm info!");
-                }
-            }
-        }.execute();
+        if (!selfActivated) {
+            Intent stopIntent = new Intent();
+            stopIntent.setAction("com.cabalry.action.ALARM_JOIN");
+            sendBroadcast(stopIntent);
+        }
 
         Button bCancel = (Button) findViewById(R.id.bCancel);
         bCancel.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +119,7 @@ public class AlarmMapActivity extends MapActivity {
     @Override
     public void onStart() {
         super.onStart();
-        bindToService(AlarmService.class, new MessengerHandler(),
+        bindToService(CabalryAppService.class, new MessengerHandler(),
                 MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
     }
 
@@ -345,6 +329,14 @@ public class AlarmMapActivity extends MapActivity {
             switch (msg.what) {
                 case MSG_ALARM_STOP:
                     Log.i(TAG, "MSG_ALARM_STOP");
+                    if (isRunning) {
+                        // return to home.
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                    break;
+
+                case MSG_ALARM_IGNORE:
+                    Log.i(TAG, "MSG_ALARM_IGNORE");
                     if (isRunning) {
                         // return to home.
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));

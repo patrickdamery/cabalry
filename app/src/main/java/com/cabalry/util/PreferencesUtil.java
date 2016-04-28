@@ -119,7 +119,7 @@ public class PreferencesUtil {
 
     public static synchronized void SetDrawerLearned(Context context, boolean learned) {
         SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-        editor.putBoolean(GetUserID(context) + PREF_DRAWER_LEARNED, learned);
+        editor.putBoolean(PREF_DRAWER_LEARNED, learned);
         editor.commit();
     }
 

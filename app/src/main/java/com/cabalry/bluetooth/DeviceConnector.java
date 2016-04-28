@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
  * DeviceConnector
  */
 public class DeviceConnector {
+
     public static final int STATE_NOT_CONNECTED = 1;
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;

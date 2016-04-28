@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ToggleButton;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmService;
 import com.cabalry.base.MapActivity;
 import com.cabalry.base.MapUser;
 import com.cabalry.location.LocationUpdateService;
@@ -80,7 +79,7 @@ public class UserMapActivity extends MapActivity {
     private void startAlarm() {
         Log.i(TAG, "startAlarm");
 
-        bindToService(AlarmService.class, new MessengerHandler(),
+        bindToService(CabalryAppService.class, new MessengerHandler(),
                 MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
 
         progressBar.show();

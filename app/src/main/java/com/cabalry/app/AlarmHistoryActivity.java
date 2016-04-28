@@ -2,6 +2,7 @@ package com.cabalry.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.cabalry.util.TasksUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import static com.cabalry.net.CabalryServer.REQ_USER_NAME;
 import static com.cabalry.util.PreferencesUtil.GetHistory;
@@ -44,18 +46,22 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
             }
         }
 
-        new TasksUtil.GetUserInfoTask(context, userID) {
-            @Override
-            protected void onPostExecute(Bundle result) {
-                if (result != null) {
-                    historyItems.add(0, new HistoryItem(result.getString(REQ_USER_NAME), userID, alarmID, f.format(new Date())));
-                    SaveHistory(context, historyItems);
+        try {
+            new TasksUtil.GetUserInfoTask(context, userID) {
+                @Override
+                protected void onPostExecute(Bundle result) {
+                    if (result != null) {
+                        historyItems.add(0, new HistoryItem(result.getString(REQ_USER_NAME), userID, alarmID, f.format(new Date())));
+                        SaveHistory(context, historyItems);
 
-                } else {
-                    Log.e(TAG, "Error no user info found!");
+                    } else {
+                        Log.e(TAG, "Error no user info found!");
+                    }
                 }
-            }
-        }.execute();
+            }.execute().get(); // get used to make thread wait for completion
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -94,7 +100,10 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
                                 @Override
                                 public void run() {
                                     historyItems.remove(item);
-                                    adapter.remove(item);
+
+                                    // TODO Fix throws UnsupportedOperationException
+                                    //adapter.remove(item);
+
                                     adapter.notifyDataSetChanged();
                                     view.setAlpha(1);
                                 }

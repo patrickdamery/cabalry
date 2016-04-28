@@ -35,14 +35,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmService;
 import com.cabalry.alarm.AlarmTimerService;
-import com.cabalry.alarm.SilentAlarmService;
-import com.cabalry.audio.AudioPlaybackService;
-import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.BindableActivity;
-import com.cabalry.bluetooth.BluetoothService;
-import com.cabalry.location.LocationUpdateService;
 import com.cabalry.net.CabalryServer;
 import com.cabalry.util.PreferencesUtil;
 import com.cabalry.util.TasksUtil;
@@ -60,27 +54,19 @@ import static com.cabalry.net.CabalryServer.REQ_SUCCESS;
 import static com.cabalry.net.CabalryServer.SENDER_ID;
 import static com.cabalry.net.CabalryServer.UpdateGCM;
 import static com.cabalry.util.MessageUtil.MSG_ALARM_START;
+import static com.cabalry.util.MessageUtil.MSG_LOGOUT;
 import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
 import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
-import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.GetAppVersion;
 import static com.cabalry.util.PreferencesUtil.GetGPSChecked;
-import static com.cabalry.util.PreferencesUtil.GetHistory;
 import static com.cabalry.util.PreferencesUtil.GetRegistrationID;
 import static com.cabalry.util.PreferencesUtil.GetTimerEnabled;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
-import static com.cabalry.util.PreferencesUtil.IsFakeActive;
-import static com.cabalry.util.PreferencesUtil.LogoutUser;
-import static com.cabalry.util.PreferencesUtil.SetAlarmID;
-import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.SetAppVersion;
-import static com.cabalry.util.PreferencesUtil.SetDrawerLearned;
 import static com.cabalry.util.PreferencesUtil.SetGPSChecked;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
 import static com.cabalry.util.TasksUtil.CheckNetworkTask;
-import static com.cabalry.util.TasksUtil.StopAlarmTask;
-import static com.cabalry.util.TasksUtil.UserLogoutTask;
 
 /**
  * HomeActivity
@@ -105,20 +91,6 @@ public class HomeActivity extends BindableActivity {
 
     ProgressDialog progressBar;
 
-    /**
-     * @return Application's version code from the PackageManager.
-     */
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Should never happen.
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +99,10 @@ public class HomeActivity extends BindableActivity {
         if (GetUserID(this) == 0 || GetUserKey(this).isEmpty()) {
             startActivity(new Intent(this, LoginActivity.class));
         }
+
+        // Bind to CabalryAppService
+        bindToService(CabalryAppService.class, new MessengerHandler(),
+                MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
 
         // prepare for a progress bar dialog
         progressBar = new ProgressDialog(this);
@@ -150,22 +126,6 @@ public class HomeActivity extends BindableActivity {
                 }
             }
         }.execute();
-
-        if (!BluetoothService.isRunning()) {
-            startService(new Intent(this, BluetoothService.class));
-        }
-
-        if (!LocationUpdateService.isRunning()) {
-            startService(new Intent(this, LocationUpdateService.class));
-        }
-
-        if (AlarmHistoryActivity.historyItems == null) {
-            // use the following to reset (for debugging!)
-            //AlarmHistoryActivity.historyItems = new ArrayList<>();
-            //SaveHistory(getApplicationContext(), AlarmHistoryActivity.historyItems);
-
-            AlarmHistoryActivity.historyItems = GetHistory(getApplicationContext());
-        }
 
         mTitle = mDrawerTitle = getTitle();
         mActivityTitles = getResources().getStringArray(R.array.nav_drawer_array);
@@ -320,9 +280,6 @@ public class HomeActivity extends BindableActivity {
     private void startAlarm() {
         Log.i(TAG, "startAlarm");
 
-        bindToService(AlarmService.class, new MessengerHandler(),
-                MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
-
         progressBar.show();
 
         Intent intent = new Intent();
@@ -408,87 +365,13 @@ public class HomeActivity extends BindableActivity {
     }
 
     private void logout() {
-        final Context context = getApplicationContext();
+        Log.i(TAG, "SENT: com.cabalry.action.LOGOUT");
 
-        if (IsFakeActive(context)) {
-            startActivity(new Intent(context, LoginActivity.class));
+        progressBar.show();
 
-        } else {
-
-            if (GetAlarmUserID(this) == GetUserID(this)) {
-                new StopAlarmTask(context).execute();
-            }
-
-            new CheckNetworkTask(context) {
-
-                @Override
-                protected void onPostExecute(Boolean result) {
-                    if (result) {
-                        new UserLogoutTask(context) {
-                            @Override
-                            protected void onResult(final Boolean success) {
-                                if (success) {
-                                    stopServices(context);
-
-                                    SetAlarmID(context, 0);
-                                    SetAlarmUserID(context, 0);
-                                    SetGPSChecked(context, false);
-                                    SetDrawerLearned(context, false);
-                                    SetRegistrationID(context, "");
-                                    LogoutUser(context);
-
-                                    AlarmHistoryActivity.historyItems = null;
-
-                                    startActivity(new Intent(context, LoginActivity.class));
-
-                                } else {
-                                    Toast.makeText(context, getResources().getString(R.string.error_logout),
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }.execute();
-
-                    } else {
-                        stopServices(context);
-
-                        SetAlarmID(context, 0);
-                        SetAlarmUserID(context, 0);
-                        SetGPSChecked(context, false);
-                        SetDrawerLearned(context, false);
-                        SetRegistrationID(context, "");
-                        LogoutUser(context);
-
-                        AlarmHistoryActivity.historyItems = null;
-
-                        startActivity(new Intent(context, LoginActivity.class));
-                    }
-                }
-            }.execute();
-        }
-    }
-
-    private void stopServices(Context context) {
-        if (BluetoothService.isRunning())
-            stopService(new Intent(context, BluetoothService.class));
-
-        if (LocationUpdateService.isRunning())
-            stopService(new Intent(context, LocationUpdateService.class));
-
-        //if (AlarmTimerService.isRunning())
-        stopService(new Intent(context, AlarmTimerService.class));
-
-        //if (SilentAlarmService.isRunning())
-        stopService(new Intent(context, SilentAlarmService.class));
-
-        if (AudioPlaybackService.isRunning()) {
-            AudioPlaybackService.stopAudioPlayback();
-            stopService(new Intent(context, AudioPlaybackService.class));
-        }
-
-        if (AudioStreamService.isRunning()) {
-            AudioStreamService.stopAudioStream();
-            stopService(new Intent(context, AudioStreamService.class));
-        }
+        Intent intent = new Intent();
+        intent.setAction("com.cabalry.action.LOGOUT");
+        sendBroadcast(intent);
     }
 
     @Override
@@ -515,6 +398,20 @@ public class HomeActivity extends BindableActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /**
+     * @return Application's version code from the PackageManager.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Should never happen.
+            throw new RuntimeException("Could not get package name: " + e);
+        }
     }
 
     /**
@@ -686,6 +583,14 @@ public class HomeActivity extends BindableActivity {
                     Log.i(TAG, "MSG_ALARM_START");
                     if (active) {
                         progressBar.dismiss();
+                    }
+                    break;
+
+                case MSG_LOGOUT:
+                    Log.i(TAG, "MSG_LOGOUT");
+                    if (active) {
+                        progressBar.dismiss();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     }
                     break;
 

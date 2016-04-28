@@ -16,10 +16,10 @@ public class GPSLocationReceiver extends BroadcastReceiver {
                 final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
                 if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    LocationUpdateService.updateListenerProvider(LocationUpdateManager.UpdateProvider.GPS);
+                    LocationUpdateService.resetProvider(LocationUpdateManager.UpdateProvider.GPS);
 
                 } else {
-                    LocationUpdateService.updateListenerProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
+                    LocationUpdateService.resetProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
                 }
             }
         }

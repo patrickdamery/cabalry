@@ -22,4 +22,6 @@ public class MessageUtil {
     public static final int MSG_ALARM_STOP = 8;
     public static final int MSG_ALARM_IGNORE = 9;
 
+    public static final int MSG_LOGOUT = 10;
+
 }

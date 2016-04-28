@@ -69,8 +69,12 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
                 if (success) {
                     LoginUser(LoginActivity.this, getID(), getKey());
 
-                    Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(home);
+                    Intent intent = new Intent();
+                    intent.setAction("com.cabalry.action.LOGIN");
+                    sendBroadcast(intent);
+
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
                 } else {
                     LogoutUser(LoginActivity.this);
 
@@ -147,6 +151,12 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
     @Override
     public void onStop() {
         super.onStop();
+        active = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         active = false;
     }
 

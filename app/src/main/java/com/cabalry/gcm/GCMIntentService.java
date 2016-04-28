@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.cabalry.R;
 import com.cabalry.app.AlarmHistoryActivity;
+import com.cabalry.app.AlarmMapActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import static com.cabalry.net.CabalryServer.ALARM_ACTION_START;
@@ -116,7 +117,7 @@ public class GCMIntentService extends IntentService {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AlarmHistoryActivity.class), 0);
+                new Intent(this, AlarmMapActivity.class), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

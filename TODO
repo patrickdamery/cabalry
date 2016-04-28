@@ -9,13 +9,16 @@ To Do:
     - handle case when playback was not started
 
 In Progress:
+    - finish history activity
+    - Stop location service
+    - Adding history item from gcm not working
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
     - Handle behavior when alarm has been fake deactivated
 
 Bugs:
-    - Adding history item from gcm not working
     - Fix double user marker on map
+    - App name shown as 'Alarm' on home activity ( fixed? )
 
 Completed:
     - handle case when gcm stop alarm
