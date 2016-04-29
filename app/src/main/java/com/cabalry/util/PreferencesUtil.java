@@ -33,14 +33,12 @@ public class PreferencesUtil {
     public static final String PREF_CACHED_ADDRESS = "CACHED_ADDRESS";
     public static final String PREF_DRAWER_LEARNED = "NAVDR_LEARNED";
     public static final String PREF_GPS_CHECK = "GPS_CHECK";
-    public static final String PREF_HISTORY = "HISTORY";
     public static final String PREF_FAKE_ACTIVE = "FAKEACT";
     public static final String PREF_REG_ID = "REGID";
     public static final String PREF_APP_VERSION = "APPV";
     public static final String PREF_MAP_LATITUDE = "MLAT";
     public static final String PREF_MAP_LONGITUDE = "MLNG";
     public static final String PREF_MAP_ZOOM = "MZOOM";
-    public static final String PREF_MAP_BEARING = "MBEARING";
     public static final String PREF_FAKE_PASS = "FAKE";
     public static final String PREF_TIMER = "TIMER";
     public static final String PREF_TIMER_ENABLED = "TIMER_ENABLED";
@@ -202,58 +200,6 @@ public class PreferencesUtil {
         editor.putFloat(GetUserID(context) + PREF_MAP_ZOOM, cameraPosition.bearing);
 
         editor.commit();
-    }
-
-    public static synchronized void SaveHistory(Context context, ArrayList<HistoryItem> historyItems) {
-        SharedPreferences.Editor editor = GetSharedPrefs(context).edit();
-
-        Set<String> historySet = new HashSet<>();
-
-        for (HistoryItem item : historyItems) {
-            historySet.add(item.toString());
-            Log.i(TAG, "SaveHistory, item: " + item.toString());
-        }
-
-        editor.putStringSet(GetUserID(context) + PREF_HISTORY, historySet);
-        editor.commit();
-    }
-
-    public static synchronized ArrayList<HistoryItem> GetHistory(Context context) {
-        SharedPreferences preferences = GetSharedPrefs(context);
-        Set<String> historySet = preferences.getStringSet(GetUserID(context) + PREF_HISTORY, null);
-        if (historySet == null) return null;
-
-        ArrayList<HistoryItem> historyItems = new ArrayList<>();
-
-        for (String item : historySet) {
-            historyItems.add(HistoryItem.fromString(item));
-            Log.i(TAG, "GetHistory, item: " + item);
-        }
-
-        Collections.sort(historyItems, new Comparator<HistoryItem>() {
-            @Override
-            public int compare(HistoryItem o1, HistoryItem o2) {
-                return o2.getAlarmId() - o1.getAlarmId();
-            }
-        });
-
-        return historyItems;
-    }
-
-    public static synchronized CameraPosition GetMapState(Context context) {
-        SharedPreferences preferences = GetSharedPrefs(context);
-
-        LatLng target = new LatLng(
-                preferences.getFloat(GetUserID(context) + PREF_MAP_LATITUDE, preferences.getFloat(PREF_LATITUDE, 0)),
-                preferences.getFloat(GetUserID(context) + PREF_MAP_LONGITUDE, preferences.getFloat(PREF_LONGITUDE, 0)));
-        float zoom = preferences.getFloat(GetUserID(context) + PREF_MAP_ZOOM, 17);
-        float bearing = preferences.getFloat(GetUserID(context) + PREF_MAP_BEARING, 0);
-
-        return CameraPosition.builder()
-                .target(target)
-                .zoom(zoom)
-                .bearing(bearing)
-                .build();
     }
 
     public static synchronized void LoginUser(Context context, int id, String key) {

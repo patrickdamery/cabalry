@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -132,6 +133,12 @@ public class BluetoothService extends BindableService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.i(TAG, "onCreate");
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mBTListener = new ServiceBluetoothListener(getApplicationContext());
@@ -142,8 +149,7 @@ public class BluetoothService extends BindableService {
             attemptReconnect(cachedAddress);
         }
 
-        // If we get killed, after returning from here, stop
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
@@ -154,6 +160,8 @@ public class BluetoothService extends BindableService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy");
+
         stopConnection();
     }
 

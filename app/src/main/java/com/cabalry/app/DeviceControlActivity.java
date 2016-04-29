@@ -49,8 +49,6 @@ public final class DeviceControlActivity extends BindableActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startService(new Intent(this, BluetoothService.class));
-
         if (savedInstanceState != null) {
             pendingRequestEnableBt = savedInstanceState.getBoolean(SAVED_PENDING_REQUEST_ENABLE_BT);
         }

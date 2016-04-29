@@ -10,17 +10,15 @@ To Do:
 
 In Progress:
     - finish history activity
-    - Stop location service
-    - Adding history item from gcm not working
-    - handle case when user accepts alarm while listening to one
-    - handle case when user accepts alarm while his is activated
-    - Handle behavior when alarm has been fake deactivated
 
 Bugs:
     - Fix double user marker on map
-    - App name shown as 'Alarm' on home activity ( fixed? )
 
 Completed:
+    - handle case when user accepts alarm while listening to one
+    - handle case when user accepts alarm while his is activated
+    - Handle behavior when alarm has been fake deactivated
+    - Stop location service
     - handle case when gcm stop alarm
     - Fix alarm services not stopping correctly
     - Fix order of alarm history

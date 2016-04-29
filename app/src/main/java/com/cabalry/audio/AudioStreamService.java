@@ -16,8 +16,6 @@ public class AudioStreamService extends RunnableService {
 
     private static AudioStreamer mAudioStreamer;
 
-    private static Intent selfIntent;
-
     public static void stopAudioStream() {
         if (mAudioStreamer != null) {
             mAudioStreamer.stopStream();
@@ -25,12 +23,11 @@ public class AudioStreamService extends RunnableService {
         }
     }
 
-    public static Intent getServiceIntent() {
-        return selfIntent;
-    }
-
     @Override
     public void onCreate() {
+        super.onCreate();
+        Log.i(TAG, "onCreate");
+
         mAudioStreamer = new AudioStreamer();
 
         Thread streamThread = new Thread(new Runnable() {
@@ -45,10 +42,6 @@ public class AudioStreamService extends RunnableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null) {
-            selfIntent = intent;
-            Log.i(TAG, "selfIntent set");
-        }
         return START_STICKY;
     }
 
@@ -61,7 +54,8 @@ public class AudioStreamService extends RunnableService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy");
+
         stopAudioStream();
-        stopService(selfIntent);
     }
 }

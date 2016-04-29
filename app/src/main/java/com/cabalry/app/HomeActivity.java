@@ -19,6 +19,8 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,13 +60,17 @@ import static com.cabalry.util.MessageUtil.MSG_ALARM_START;
 import static com.cabalry.util.MessageUtil.MSG_LOGOUT;
 import static com.cabalry.util.MessageUtil.MSG_REGISTER_CLIENT;
 import static com.cabalry.util.MessageUtil.MSG_UNREGISTER_CLIENT;
+import static com.cabalry.util.PreferencesUtil.GetAlarmID;
 import static com.cabalry.util.PreferencesUtil.GetAppVersion;
+import static com.cabalry.util.PreferencesUtil.GetFakePassword;
 import static com.cabalry.util.PreferencesUtil.GetGPSChecked;
 import static com.cabalry.util.PreferencesUtil.GetRegistrationID;
 import static com.cabalry.util.PreferencesUtil.GetTimerEnabled;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserKey;
+import static com.cabalry.util.PreferencesUtil.IsFakeActive;
 import static com.cabalry.util.PreferencesUtil.SetAppVersion;
+import static com.cabalry.util.PreferencesUtil.SetFakeActive;
 import static com.cabalry.util.PreferencesUtil.SetGPSChecked;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
 import static com.cabalry.util.TasksUtil.CheckNetworkTask;
@@ -365,13 +372,64 @@ public class HomeActivity extends BindableActivity {
     }
 
     private void logout() {
-        Log.i(TAG, "SENT: com.cabalry.action.LOGOUT");
-
         progressBar.show();
 
-        Intent intent = new Intent();
-        intent.setAction("com.cabalry.action.LOGOUT");
-        sendBroadcast(intent);
+        if (GetAlarmID(this) != 0) {
+            if (IsFakeActive(this)) {
+                startActivity(new Intent(this, LoginActivity.class));
+
+            } else {
+                promptPassword();
+            }
+        }
+    }
+
+    private void promptPassword() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setMessage(getResources().getString(R.string.prompt_password));
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+        alert.setView(input);
+
+        alert.setPositiveButton(getResources().getString(R.string.prompt_ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        final String value = input.getText().toString();
+
+                        if (!value.isEmpty()) {
+
+                            new TasksUtil.CheckPasswordTask(getApplicationContext(), value) {
+                                @Override
+                                protected void onPostExecute(Boolean result) {
+                                    if (result) {
+                                        Log.i(TAG, "SENT: com.cabalry.action.LOGOUT");
+                                        Intent intent = new Intent();
+                                        intent.setAction("com.cabalry.action.LOGOUT");
+                                        sendBroadcast(intent);
+
+                                    } else {
+                                        promptPassword();
+                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_password),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            }.execute();
+                        }
+                    }
+                });
+
+        alert.setNegativeButton(getResources().getString(R.string.prompt_cancel),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+        alert.show();
     }
 
     @Override

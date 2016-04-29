@@ -147,7 +147,8 @@ public class LocationUpdateManager implements LocationListener {
             mCurrentBestLocation = location;
         }
 
-        mUpdateListener.onUpdateLocation(mCurrentBestLocation);
+        if (mUpdateListener != null)
+            mUpdateListener.onUpdateLocation(mCurrentBestLocation);
     }
 
     @Override

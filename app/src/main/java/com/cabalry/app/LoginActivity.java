@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
+import static com.cabalry.util.PreferencesUtil.IsFakeActive;
 import static com.cabalry.util.PreferencesUtil.IsUserLogin;
 import static com.cabalry.util.PreferencesUtil.LoginUser;
 import static com.cabalry.util.PreferencesUtil.LogoutUser;
@@ -99,7 +101,17 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
         setContentView(R.layout.activity_login);
 
         if (IsUserLogin(this)) {
-            gotoStartup(); // Redirects to mStartupActivity
+
+            Intent intent = new Intent();
+            intent.setAction("com.cabalry.action.APP_STARTED");
+            sendBroadcast(intent);
+
+            if (GetAlarmUserID(getApplicationContext()) != 0 && !IsFakeActive(getApplicationContext())) {
+                startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+
+            } else {
+                gotoStartup(); // Redirects to mStartupActivity
+            }
         }
 
         TextView register = (TextView) findViewById(R.id.register);

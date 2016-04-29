@@ -1,5 +1,6 @@
 package com.cabalry.location;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -9,11 +10,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cabalry.R;
+import com.cabalry.app.CabalryApp;
 import com.cabalry.base.BindableService;
 import com.google.android.gms.maps.model.LatLng;
 
 import static com.cabalry.util.MathUtil.GetDistance;
 import static com.cabalry.util.MessageUtil.MSG_LOCATION_UPDATE;
+import static com.cabalry.util.PreferencesUtil.GetAlarmID;
+import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.GetLocation;
 import static com.cabalry.util.PreferencesUtil.StoreLocation;
 import static com.cabalry.util.TasksUtil.CheckNetworkTask;
@@ -39,6 +43,7 @@ public class LocationUpdateService extends BindableService implements LocationUp
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i(TAG, "onCreate");
 
         mLocationUpdateManager = new LocationUpdateManager(this);
         mLocationUpdateManager.setUpdateListener(this);
@@ -80,8 +85,9 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mLocationUpdateManager.resetProvider(manager);
+        if (!CabalryApp.isApplicationRunning() && GetAlarmID(getApplicationContext()) == 0) {
+            stopSelf();
+        }
 
         return START_STICKY;
     }
@@ -89,6 +95,8 @@ public class LocationUpdateService extends BindableService implements LocationUp
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy");
+
         mLocationUpdateManager.dispose();
     }
 
@@ -107,5 +115,23 @@ public class LocationUpdateService extends BindableService implements LocationUp
                 }
             }
         }.execute();
+    }
+
+    public static class GPSLocationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
+                if (isRunning()) {
+                    final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        resetProvider(LocationUpdateManager.UpdateProvider.GPS);
+
+                    } else {
+                        resetProvider(LocationUpdateManager.UpdateProvider.GPS_NETWORK);
+                    }
+                }
+            }
+        }
     }
 }

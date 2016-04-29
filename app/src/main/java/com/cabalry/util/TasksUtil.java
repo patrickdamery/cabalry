@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.cabalry.app.AlarmHistoryActivity;
+import com.cabalry.app.CabalryAppService;
 import com.cabalry.base.MapUser;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -393,18 +394,16 @@ public class TasksUtil {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
+            Log.i(TAG, "doInBackground");
 
             JSONObject result = StartAlarm(GetUserID(mContext), GetUserKey(mContext));
 
             try {
                 if (result.getBoolean(REQ_SUCCESS)) {
-
                     int alarmID = result.getInt(REQ_ALARM_ID);
 
                     SetAlarmID(mContext, alarmID);
                     SetAlarmUserID(mContext, GetUserID(mContext));
-
-                    AlarmHistoryActivity.addHistoryEntry(mContext, GetUserID(mContext), alarmID);
 
                     return true;
                 }
@@ -420,6 +419,8 @@ public class TasksUtil {
 
         @Override
         protected void onPostExecute(Boolean result) {
+            Log.i(TAG, "onPostExecute result: " + result);
+
             if (!result) {
                 count++;
                 if (count >= 3) {
@@ -429,7 +430,8 @@ public class TasksUtil {
                     count = 0;
                     onResult(result);
 
-                } else {
+                } else { // try again
+                    Log.i(TAG, "onPostExecute could not start alarm, trying again ..");
                     new StartAlarmTask(mContext) {
                         @Override
                         protected void onResult(Boolean result) {
@@ -440,6 +442,8 @@ public class TasksUtil {
 
             } else {
                 startAlarmRequested = false;
+
+                Log.i(TAG, "Alarm started");
                 onResult(result);
             }
         }

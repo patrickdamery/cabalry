@@ -21,8 +21,6 @@ public class AudioPlaybackService extends RunnableService {
     private static AudioPlayer audioPlayer;
     private static Thread playbackThread;
 
-    private static Intent selfIntent;
-
     public static void stopAudioPlayback() {
         if (isRunning()) {
             if (audioPlayer != null)
@@ -33,13 +31,10 @@ public class AudioPlaybackService extends RunnableService {
         }
     }
 
-    public static Intent getServiceIntent() {
-        return selfIntent;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i(TAG, "onCreate");
 
         audioPlayer = new AudioPlayer();
 
@@ -59,24 +54,19 @@ public class AudioPlaybackService extends RunnableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null) {
-            selfIntent = intent;
-            Log.i(TAG, "selfIntent set");
-        }
         return START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // We don't provide binding, so return null
         return null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopAudioPlayback();
+        Log.i(TAG, "onDestroy");
 
-        stopSelf();
+        stopAudioPlayback();
     }
 }

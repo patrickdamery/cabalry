@@ -12,7 +12,6 @@ import android.widget.ToggleButton;
 import com.cabalry.R;
 import com.cabalry.base.MapActivity;
 import com.cabalry.base.MapUser;
-import com.cabalry.location.LocationUpdateService;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -48,10 +47,6 @@ public class UserMapActivity extends MapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_map);
-
-        if (!LocationUpdateService.isRunning()) {
-            startService(new Intent(this, LocationUpdateService.class));
-        }
 
         initialize();
 

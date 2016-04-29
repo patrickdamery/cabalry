@@ -175,7 +175,7 @@
                 <category android:name="com.cabalry" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".location.GPSLocationReceiver">
+        <receiver android:name=".location.LocationUpdateService$GPSLocationReceiver">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
 
@@ -215,6 +215,11 @@
         <receiver android:name=".app.CabalryAppService$LogoutReceiver">
             <intent-filter>
                 <action android:name="com.cabalry.action.LOGOUT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".app.CabalryAppService$AppStartedReceiver">
+            <intent-filter>
+                <action android:name="com.cabalry.action.APP_STARTED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".app.CabalryAppService$AppClosedReceiver">

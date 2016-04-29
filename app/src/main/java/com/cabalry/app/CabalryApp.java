@@ -2,6 +2,8 @@ package com.cabalry.app;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,7 @@ public class CabalryApp extends Application {
     private static final String TAG = "CabalryApp";
 
     private static boolean activityVisible;
+
     private static int resumed;
     private static int paused;
     private static int started;
@@ -52,7 +55,6 @@ public class CabalryApp extends Application {
     }
 
     public class LifecycleHandler implements ActivityLifecycleCallbacks {
-
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             ++created;
@@ -61,14 +63,6 @@ public class CabalryApp extends Application {
         @Override
         public void onActivityDestroyed(Activity activity) {
             ++destroyed;
-
-            if (!isApplicationRunning()) {
-                Log.i(TAG, "SENT: com.cabalry.action.APP_CLOSED");
-
-                Intent intent = new Intent();
-                intent.setAction("com.cabalry.action.APP_CLOSED");
-                sendBroadcast(intent);
-            }
         }
 
         @Override

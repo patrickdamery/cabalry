@@ -13,6 +13,7 @@ import android.util.Log;
 import com.cabalry.R;
 import com.cabalry.app.AlarmHistoryActivity;
 import com.cabalry.app.AlarmMapActivity;
+import com.cabalry.app.CabalryAppService;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import static com.cabalry.net.CabalryServer.ALARM_ACTION_START;
@@ -78,8 +79,6 @@ public class GCMIntentService extends IntentService {
 
                         int alarmID = Integer.parseInt(extras.getString(ALARM_ID));
                         int userID = Integer.parseInt(extras.getString(ALARM_USERID));
-
-                        AlarmHistoryActivity.addHistoryEntry(getApplicationContext(), userID, alarmID);
 
                         SetAlarmID(getApplicationContext(), alarmID);
                         SetAlarmUserID(getApplicationContext(), userID);

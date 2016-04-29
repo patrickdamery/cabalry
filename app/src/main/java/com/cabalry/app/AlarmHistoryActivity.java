@@ -2,7 +2,6 @@ package com.cabalry.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,52 +16,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cabalry.R;
+import com.cabalry.base.BindableActivity;
 import com.cabalry.base.CabalryActivity;
 import com.cabalry.base.HistoryItem;
-import com.cabalry.util.TasksUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import static com.cabalry.util.PreferencesUtil.SetAlarmID;
+import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 
-import static com.cabalry.net.CabalryServer.REQ_USER_NAME;
-import static com.cabalry.util.PreferencesUtil.GetHistory;
-import static com.cabalry.util.PreferencesUtil.SaveHistory;
-
-public class AlarmHistoryActivity extends CabalryActivity.Compat {
+public class AlarmHistoryActivity extends BindableActivity {
     private static final String TAG = "AlarmHistoryActivity";
-
-    public static ArrayList<HistoryItem> historyItems;
-
-    public static void addHistoryEntry(final Context context, final int userID, final int alarmID) {
-        final SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-
-        if (historyItems == null) {
-            historyItems = GetHistory(context);
-
-            if (historyItems == null) {
-                historyItems = new ArrayList<>();
-            }
-        }
-
-        try {
-            new TasksUtil.GetUserInfoTask(context, userID) {
-                @Override
-                protected void onPostExecute(Bundle result) {
-                    if (result != null) {
-                        historyItems.add(0, new HistoryItem(result.getString(REQ_USER_NAME), userID, alarmID, f.format(new Date())));
-                        SaveHistory(context, historyItems);
-
-                    } else {
-                        Log.e(TAG, "Error no user info found!");
-                    }
-                }
-            }.execute().get(); // get used to make thread wait for completion
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +32,12 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
         setContentView(R.layout.activity_alarm_history);
 
         final TextView noHistoryText = (TextView) findViewById(R.id.noHistoryText);
-        final Button clearAll = (Button) findViewById(R.id.clearAll);
         final ListView listview = (ListView) findViewById(R.id.listview);
 
-        if (historyItems == null)
-            historyItems = GetHistory(getApplicationContext());
+        // TODO get history from server
+        final HistoryItem[] values = new HistoryItem[0];//CabalryAppService.getHistoryValues(getApplicationContext());
 
-        if (historyItems != null && !historyItems.isEmpty()) {
-
-            final HistoryItem[] values = historyItems.toArray(new HistoryItem[historyItems.size()]);
+        if (values.length != 0) {
             final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
 
             listview.setAdapter(adapter);
@@ -99,13 +58,12 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
                             .withEndAction(new Runnable() {
                                 @Override
                                 public void run() {
-                                    historyItems.remove(item);
-
-                                    // TODO Fix throws UnsupportedOperationException
-                                    //adapter.remove(item);
-
-                                    adapter.notifyDataSetChanged();
-                                    view.setAlpha(1);
+                                    // Join alarm
+                                    Intent intent = new Intent();
+                                    intent.putExtra("alarmId", item.getAlarmId());
+                                    intent.putExtra("userId", item.getUserId());
+                                    intent.setAction("com.cabalry.action.ALARM_JOIN");
+                                    sendBroadcast(intent);
                                 }
                             });
                 }
@@ -114,7 +72,6 @@ public class AlarmHistoryActivity extends CabalryActivity.Compat {
 
         } else {
             listview.setVisibility(View.GONE);
-            clearAll.setVisibility(View.GONE);
             noHistoryText.setVisibility(View.VISIBLE);
         }
     }

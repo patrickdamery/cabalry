@@ -20,7 +20,6 @@ import com.cabalry.util.TasksUtil;
 
 import static com.cabalry.util.PreferencesUtil.GetAlarmID;
 import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
-import static com.cabalry.util.PreferencesUtil.GetHistory;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.LogoutUser;
 import static com.cabalry.util.PreferencesUtil.SetAlarmID;
@@ -36,32 +35,28 @@ import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
 public class CabalryAppService extends BindableService {
     private static final String TAG = "CabalryAppService";
 
-    static boolean active = false;
+    private static boolean active = false;
+    private static boolean started = false;
 
-    static Intent mCabalryAppIntent;
-    static Intent mAudioStreamIntent;
-    static Intent mAudioPlaybackIntent;
-    static Intent mLocationUpdateIntent;
-    static Intent mBluetoothIntent;
+    private static Intent mCabalryAppIntent;
+    private static Intent mAudioStreamIntent;
+    private static Intent mAudioPlaybackIntent;
+    private static Intent mLocationUpdateIntent;
+    private static Intent mBluetoothIntent;
 
-    static boolean alarmStarted = false;
+    private static boolean alarmStarted = false;
 
     private static void startAppServices(final Context context) {
+        if (started) return;
         Log.i(TAG, "startAppServices");
-
-        if (AlarmHistoryActivity.historyItems == null) {
-            // use the following to reset (for debugging!)
-            //AlarmHistoryActivity.historyItems = new ArrayList<>();
-            //SaveHistory(getApplicationContext(), AlarmHistoryActivity.historyItems);
-
-            AlarmHistoryActivity.historyItems = GetHistory(context);
-        }
 
         mLocationUpdateIntent = new Intent(context, LocationUpdateService.class);
         context.startService(mLocationUpdateIntent);
 
         mBluetoothIntent = new Intent(context, BluetoothService.class);
         context.startService(mBluetoothIntent);
+
+        started = true;
     }
 
     private static void stopAppServices(final Context context) {
@@ -100,6 +95,8 @@ public class CabalryAppService extends BindableService {
                 }
             }
         }
+
+        started = false;
     }
 
     private static void performLogout(final Context context) {
@@ -123,8 +120,6 @@ public class CabalryAppService extends BindableService {
                                 SetRegistrationID(context, "");
                                 LogoutUser(context);
 
-                                AlarmHistoryActivity.historyItems = null;
-
                                 Bundle data = new Bundle();
                                 sendMessageToActivity(MessageUtil.MSG_LOGOUT, data);
 
@@ -145,8 +140,6 @@ public class CabalryAppService extends BindableService {
                     SetRegistrationID(context, "");
                     LogoutUser(context);
 
-                    AlarmHistoryActivity.historyItems = null;
-
                     Bundle data = new Bundle();
                     sendMessageToActivity(MessageUtil.MSG_LOGOUT, data);
                 }
@@ -155,58 +148,89 @@ public class CabalryAppService extends BindableService {
     }
 
     private static void startAlarm(final Context context) {
-        if (alarmStarted) return;
-        Log.i(TAG, "startAlarm");
+        if (alarmStarted && GetAlarmID(context) != 0) {
+            Intent alarm = new Intent(context, AlarmMapActivity.class);
+            alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(alarm);
 
-        alarmStarted = true;
+        } else {
+            Log.i(TAG, "startAlarm");
 
-        new TasksUtil.CheckBillingTask(context) {
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (!result) {
-                    Toast.makeText(context, context.getResources().getString(R.string.error_billing),
-                            Toast.LENGTH_LONG).show();
+            alarmStarted = true;
 
-                } else {
-                    new TasksUtil.StartAlarmTask(context) {
-                        @Override
-                        protected void onResult(Boolean result) {
-                            if (result) {
-                                new TasksUtil.GetAlarmInfoTask(context) {
-                                    @Override
-                                    protected void onPostExecute(Boolean result) {
+            new TasksUtil.CheckBillingTask(context) {
+                @Override
+                protected void onPostExecute(Boolean result) {
+                    Log.i(TAG, "CheckBillingTask result: " + result);
 
-                                        if (result) {
-                                            SetAlarmIP(context, getIP());
+                    if (!result) {
+                        Toast.makeText(context, context.getResources().getString(R.string.error_billing),
+                                Toast.LENGTH_LONG).show();
 
-                                            Bundle data = new Bundle();
-                                            sendMessageToActivity(MessageUtil.MSG_ALARM_START, data);
+                        Log.i(TAG, "CheckBillingTask no billing!");
 
-                                            startAlarmServices(context);
+                    } else {
+                        new TasksUtil.StartAlarmTask(context) {
+                            @Override
+                            protected void onResult(Boolean result) {
+                                Log.i(TAG, "StartAlarmTask");
 
-                                        } else {
-                                            Log.e(TAG, "Error no alarm info!");
-                                            alarmStarted = false;
+                                if (result) {
+                                    new TasksUtil.GetAlarmInfoTask(context) {
+                                        @Override
+                                        protected void onPostExecute(Boolean result) {
+                                            Log.i(TAG, "GetAlarmInfoTask");
+
+                                            if (result) {
+                                                Log.i(TAG, "Alarm started");
+
+                                                SetAlarmIP(context, getIP());
+
+                                                Bundle data = new Bundle();
+                                                sendMessageToActivity(MessageUtil.MSG_ALARM_START, data);
+
+                                                startAlarmServices(context);
+
+                                                Intent alarm = new Intent(context, AlarmMapActivity.class);
+                                                alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                context.startActivity(alarm);
+
+                                            } else {
+                                                Log.e(TAG, "Error couldn't start alarm, no alarm info!");
+                                                alarmStarted = false;
+                                            }
                                         }
-                                    }
-                                }.execute();
+                                    }.execute();
 
-                                Intent alarm = new Intent(context, AlarmMapActivity.class);
-                                alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(alarm);
-
-                            } else {
-                                // TODO handle case were alarm couldn't start, start sms mode
-                                Log.e(TAG, "Error couldn't start alarm!");
+                                } else {
+                                    // TODO handle case were alarm couldn't start, start sms mode
+                                    Log.e(TAG, "Error couldn't start alarm!");
+                                }
                             }
-                        }
-                    }.execute();
+                        }.execute();
+                    }
                 }
-            }
-        }.execute();
+            }.execute();
+        }
     }
 
-    private static void joinAlarm(final Context context) {
+    private static void joinAlarm(final Context context, int alarmId, int userId) {
+        if (alarmId == 0 || userId == 0) {
+            Log.e(TAG, "Error could not join alarm, alarmId: " + alarmId + ", userId: " + userId);
+            return;
+        }
+
+        if (GetAlarmID(context) != 0) {
+            if (GetAlarmUserID(context) == GetUserID(context)) {
+                return;
+            } else {
+                stopAlarmServices(context);
+            }
+        }
+
+        SetAlarmID(context, alarmId);
+        SetAlarmUserID(context, userId);
+
         new TasksUtil.GetAlarmInfoTask(context) {
             @Override
             protected void onPostExecute(Boolean result) {
@@ -216,7 +240,7 @@ public class CabalryAppService extends BindableService {
                     startAlarmServices(context);
 
                 } else {
-                    Log.e(TAG, "Error no alarm info!");
+                    Log.e(TAG, "Error joinAlarm failed, no alarm info!");
                 }
             }
         }.execute();
@@ -286,18 +310,21 @@ public class CabalryAppService extends BindableService {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i(TAG, "onCreate");
+
         active = true;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        active = true;
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy");
+
         active = false;
     }
 
@@ -329,6 +356,21 @@ public class CabalryAppService extends BindableService {
 
             stopAppServices(context);
             performLogout(context);
+        }
+    }
+
+    public static class AppStartedReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "AppStartedReceiver onReceive");
+
+            if (!active || mCabalryAppIntent == null) {
+                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
+                context.startService(mCabalryAppIntent);
+            }
+
+            startAppServices(context);
         }
     }
 
@@ -373,7 +415,8 @@ public class CabalryAppService extends BindableService {
                 context.startService(mCabalryAppIntent);
             }
 
-            joinAlarm(context);
+            Bundle extras = intent.getExtras();
+            joinAlarm(context, extras.getInt("alarmId", 0), extras.getInt("userId", 0));
         }
     }
 

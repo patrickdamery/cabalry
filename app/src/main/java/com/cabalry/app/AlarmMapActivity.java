@@ -68,10 +68,6 @@ public class AlarmMapActivity extends MapActivity {
             stopAlarm();
         }
 
-        if (!LocationUpdateService.isRunning()) {
-            startService(new Intent(this, LocationUpdateService.class));
-        }
-
         initialize();
 
         // noinspection ConstantConditions
@@ -81,9 +77,11 @@ public class AlarmMapActivity extends MapActivity {
         final boolean selfActivated = GetAlarmUserID(this) == GetUserID(this);
 
         if (!selfActivated) {
-            Intent stopIntent = new Intent();
-            stopIntent.setAction("com.cabalry.action.ALARM_JOIN");
-            sendBroadcast(stopIntent);
+            Intent intent = new Intent();
+            intent.putExtra("alarmId", GetAlarmID(this));
+            intent.putExtra("userId", GetAlarmUserID(this));
+            intent.setAction("com.cabalry.action.ALARM_JOIN");
+            sendBroadcast(intent);
         }
 
         Button bCancel = (Button) findViewById(R.id.bCancel);
