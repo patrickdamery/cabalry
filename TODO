@@ -12,7 +12,16 @@ In Progress:
     - finish history activity
 
 Bugs:
-    - Fix double user marker on map
+    - Webviews crashing app on onPageFinished progressBar.dismiss throws IllegalArgumentException
+    - Don't change alarm info if user activated or is listening
+    - Timer icon not descriptive enough
+    - Don't combine car and name for markers
+    - help on back opens login
+    - Double user marker on map
+    - Logging out not working
+    - Map nearby state not saved on orientation change
+    - Playback not working if app is closed, it also stopped when app streaming was closed
+    - Devices reopens, and loops user into activating bt
 
 Completed:
     - handle case when user accepts alarm while listening to one
