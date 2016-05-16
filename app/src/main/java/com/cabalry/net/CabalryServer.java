@@ -75,6 +75,7 @@ public class CabalryServer {
     public static final String NEARBY_URL = "https://" + CABALRY_URL + "/cabalry/nearby.php";
     public static final String USERINFO_URL = "https://" + CABALRY_URL + "/cabalry/userInfo.php";
     public static final String LOGOUT_URL = "https://" + CABALRY_URL + "/cabalry/logout.php";
+    public static final String GET_HISTORY_URL = "https://" + CABALRY_URL + "/cabalry/getHistory.php";
     public static final String REGISTER_URL = "https://" + CABALRY_URL + "/register.php";
     public static final String FORGOT_URL = "https://" + CABALRY_URL + "/forgot.php";
     public static final String BILLING_URL = "https://" + CABALRY_URL + "/billing.php";
@@ -413,6 +414,25 @@ public class CabalryServer {
         params.add(new BasicNameValuePair("key", key));
 
         return sendRequest(new RequestObject(params, ALARM_INFO_URL));
+    }
+
+    /***
+     * Function that returns user's alarm history
+     *
+     * @param id  of user
+     * @param key of user
+     * @return JSON object that contains:
+     * success : returns true if is found
+     * history : json array that has: alarmId, alarmUserId, userName, state, timestamp.
+     */
+    public static JSONObject GetUserHistory(final int id, final String key) {
+
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("id", Integer.toString(id)));
+        params.add(new BasicNameValuePair("key", key));
+
+        return sendRequest(new RequestObject(params, GET_HISTORY_URL));
     }
 
     /***

@@ -124,5 +124,6 @@
     <!--  For history -->
     <string name="no_history">There is no alarm history</string>
     <string name="action_clear_history">Clear History</string>
+    <string name="error_alarm_inactive">Can\'t open alarm. The alarm is inactive</string>
 
 </resources>

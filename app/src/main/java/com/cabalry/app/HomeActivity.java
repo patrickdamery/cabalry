@@ -196,6 +196,9 @@ public class HomeActivity extends BindableActivity {
         if (!PreferencesUtil.IsDrawerLearned(this)) {
             mDrawerLayout.openDrawer(GravityCompat.START);
             PreferencesUtil.SetDrawerLearned(this, true);
+
+            // Also load settings
+            new TasksUtil.SaveSettingsTask(getApplicationContext()).execute();
         }
 
         Button bAlarm = (Button) findViewById(R.id.bAlarm);

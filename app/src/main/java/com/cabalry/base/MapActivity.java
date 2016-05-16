@@ -42,7 +42,7 @@ public abstract class MapActivity extends BindableActivity
     public static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
-    static final boolean SETTINGS_ENABLED = false; // change to true only for debugging
+    static final boolean SETTINGS_ENABLED = true; // change to true only for debugging
     private final MarkerListener mMarkerListener = new MarkerListener();
     private final CameraListener mCameraListener = new CameraListener();
     protected boolean isRunning = false;
@@ -218,7 +218,7 @@ public abstract class MapActivity extends BindableActivity
 
     public Marker createMarker(final MapUser user) {
         LatLng position = user.getPosition();
-        String title = user.getName() + " " + user.getColor() + " " + user.getCar();
+        String title = user.getName();
 
         return mMap.addMarker(new MarkerOptions()
                 .position(position)
@@ -254,23 +254,20 @@ public abstract class MapActivity extends BindableActivity
         return null;
     }
 
-    public void add(final MapUser user) {
+    private void add(final MapUser user) {
+        mUsers.add(user);
         mMarkerMap.put(user.getID(), createMarker(user));
     }
 
-    public void update(final MapUser oldUsr, final MapUser newUsr) {
+    private void update(final MapUser oldUsr, final MapUser newUsr) {
         oldUsr.updatePosition(newUsr.getPosition());
         Marker marker = mMarkerMap.get(oldUsr.getID());
         marker.setPosition(newUsr.getPosition());
         marker.setIcon(BitmapDescriptorFactory.fromResource(getMarkerIcon(newUsr.getType())));
     }
 
-    public void update(final MapUser oldUsr, final LatLng position) {
-        oldUsr.updatePosition(position);
-        mMarkerMap.get(oldUsr.getID()).setPosition(position);
-    }
-
-    public void remove(final MapUser user) {
+    private void remove(final MapUser user) {
+        mUsers.remove(user);
         mMarkerMap.remove(user.getID()).remove();
     }
 
@@ -324,6 +321,11 @@ public abstract class MapActivity extends BindableActivity
         mMap.animateCamera(cameraUpdate, transTime, mCameraListener);
     }
 
+    public void resetMap() {
+        mMap.clear();
+        mUsers.clear();
+    }
+
     /**
      * Algorithm that safely removes, inserts and updates
      * new users with the current list users and map markers.
@@ -373,7 +375,6 @@ public abstract class MapActivity extends BindableActivity
          */
         for (int i = 0; i < removeList.size(); i++) {
             MapUser remove = removeList.get(i);
-            mUsers.remove(remove);
             remove(remove);
         }
 
@@ -382,24 +383,51 @@ public abstract class MapActivity extends BindableActivity
          */
         for (int i = 0; i < newList.size(); i++) {
             MapUser add = newList.get(i);
-            mUsers.add(add);
             add(add);
         }
 
         isUpdating = false;
     }
 
-    public void updateUser(final MapUser user) {
+    public void updateUser(MapUser user) {
         if (isUpdating) return;
         if (user == null)
             throw new NullPointerException("user can't be null!");
 
         isUpdating = true;
 
-        mMap.clear();
-        mUsers.clear();
+        Vector<MapUser> removeList = new Vector<>();
+        boolean add = true;
 
-        add(user);
+        /**
+         * First pass compare and update
+         */
+        for (int i = 0; i < mUsers.size(); i++) {
+            MapUser oldUsr = mUsers.get(i);
+
+            // Compare id's
+            if (oldUsr.getID() == user.getID()) {
+                update(oldUsr, user); // ID already exists, update
+                add = false;
+            } else {
+                removeList.add(oldUsr);
+            }
+        }
+
+        /**
+         * Second pass remove
+         */
+        for (int i = 0; i < removeList.size(); i++) {
+            MapUser remove = removeList.get(i);
+            remove(remove);
+        }
+
+        /**
+         * Third pass add
+         */
+        if (add) {
+            add(user);
+        }
 
         isUpdating = false;
     }

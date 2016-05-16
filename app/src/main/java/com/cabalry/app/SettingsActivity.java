@@ -38,7 +38,7 @@ public class SettingsActivity extends WebViewActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         new TasksUtil.SaveSettingsTask(getApplicationContext()).execute();
     }

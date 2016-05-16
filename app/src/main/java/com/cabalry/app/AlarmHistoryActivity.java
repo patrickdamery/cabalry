@@ -14,11 +14,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cabalry.R;
 import com.cabalry.base.BindableActivity;
 import com.cabalry.base.CabalryActivity;
 import com.cabalry.base.HistoryItem;
+import com.cabalry.util.TasksUtil;
+
+import java.util.ArrayList;
 
 import static com.cabalry.util.PreferencesUtil.SetAlarmID;
 import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
@@ -34,46 +38,50 @@ public class AlarmHistoryActivity extends BindableActivity {
         final TextView noHistoryText = (TextView) findViewById(R.id.noHistoryText);
         final ListView listview = (ListView) findViewById(R.id.listview);
 
-        // TODO get history from server
-        final HistoryItem[] values = new HistoryItem[0];//CabalryAppService.getHistoryValues(getApplicationContext());
+        // Get history
+        new TasksUtil.GetAlarmHistory(getApplicationContext()) {
+            @Override
+            protected void onPostExecute(ArrayList<HistoryItem> result) {
+                if (!result.isEmpty()) {
+                    final HistoryItem values[] = result.toArray(new HistoryItem[result.size()]);
+                    final HistoryArrayAdapter adapter = new HistoryArrayAdapter(getApplicationContext(), values);
 
-        if (values.length != 0) {
-            final HistoryArrayAdapter adapter = new HistoryArrayAdapter(this, values);
+                    listview.setAdapter(adapter);
 
-            listview.setAdapter(adapter);
+                    // don't show divider
+                    listview.setDivider(null);
+                    listview.setDividerHeight(0);
 
-            // don't show divider
-            listview.setDivider(null);
-            listview.setDividerHeight(0);
+                    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                            final HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            if (item.getState().equals("active")) {
+                                Log.i(TAG, "Joining alarm id: " + item.getAlarmId());
 
-                @Override
-                public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                                Intent intent = new Intent();
+                                intent.putExtra("alarmId", item.getAlarmId());
+                                intent.putExtra("userId", item.getUserId());
+                                intent.setAction("com.cabalry.action.ALARM_JOIN");
+                                sendBroadcast(intent);
 
-                    Log.i(TAG, "onItemClick pos: " + position);
-                    final HistoryItem item = (HistoryItem) parent.getItemAtPosition(position);
+                            } else {
+                                // Notify alarm is inactive
+                                Log.i(TAG, "Can't join, alarm is inactive");
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_alarm_inactive),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
 
-                    view.animate().setDuration(2000).alpha(0)
-                            .withEndAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Join alarm
-                                    Intent intent = new Intent();
-                                    intent.putExtra("alarmId", item.getAlarmId());
-                                    intent.putExtra("userId", item.getUserId());
-                                    intent.setAction("com.cabalry.action.ALARM_JOIN");
-                                    sendBroadcast(intent);
-                                }
-                            });
+                    });
+
+                } else {
+                    listview.setVisibility(View.GONE);
+                    noHistoryText.setVisibility(View.VISIBLE);
                 }
-
-            });
-
-        } else {
-            listview.setVisibility(View.GONE);
-            noHistoryText.setVisibility(View.VISIBLE);
-        }
+            }
+        }.execute();
     }
 
     @Override
@@ -110,14 +118,17 @@ public class AlarmHistoryActivity extends BindableActivity {
             TextView label = (TextView) rowView.findViewById(R.id.label);
             TextView description = (TextView) rowView.findViewById(R.id.description);
             ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
-            //ImageButton remove = (ImageButton) rowView.findViewById(R.id.remove);
 
             HistoryItem item = values[position];
 
             label.setText(item.getUsername() + " - Alarm ID: " + item.getAlarmId());
             description.setText(item.getTimestamp());
 
-            icon.setImageResource(R.drawable.ic_alarm_inactive);
+            if (item.getState().equals("active")) {
+                icon.setImageResource(R.drawable.ic_alarm_active);
+            } else {
+                icon.setImageResource(R.drawable.ic_alarm_inactive);
+            }
 
             return rowView;
         }

@@ -31,15 +31,19 @@ import static com.cabalry.util.TasksUtil.CollectUsersTask;
  * UserMapActivity
  */
 public class UserMapActivity extends MapActivity {
+    private static final String TAG = "UserMapActivity";
+    private static final String NEARBY_TOGGLE = "nearby";
+
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;
-    private static final String TAG = "UserMapActivity";
     private MapFragment mMapFragment;
 
     private CollectUsersTask mCollectUsersTask;
     private CollectUserInfoTask mCollectUserInfoTask;
 
     private boolean mNearbyToggle = false;
+    private boolean mCollectingUser = false;
+    private boolean mCollectingNearby = false;
 
     private MapUser mUser;
 
@@ -47,6 +51,12 @@ public class UserMapActivity extends MapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_map);
+
+        if (savedInstanceState != null) {
+            mNearbyToggle = savedInstanceState.getBoolean(NEARBY_TOGGLE);
+        } else {
+            mNearbyToggle = false;
+        }
 
         initialize();
 
@@ -97,6 +107,12 @@ public class UserMapActivity extends MapActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean(NEARBY_TOGGLE, mNearbyToggle);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
     public void onInfoWindowClick(Marker marker) {
         Intent userInfo = new Intent(getApplicationContext(), UserInfoActivity.class);
         userInfo.putExtra("id", getUserID(marker));
@@ -121,7 +137,6 @@ public class UserMapActivity extends MapActivity {
     @Override
     public void onUpdateLocation(LatLng location) {
         if (mUser != null) {
-            update(mUser, location);
             mUser.updatePosition(location);
 
             if (mNearbyToggle)
@@ -142,12 +157,13 @@ public class UserMapActivity extends MapActivity {
     }
 
     private void collectNearbyUsers() {
-        if (mCollectUsersTask == null) {
-
+        if (!mCollectingNearby) {
+            mCollectingNearby = true;
             new CheckNetworkTask(getApplicationContext()) {
 
                 @Override
                 protected void onPostExecute(Boolean result) {
+                    mCollectingNearby = false;
                     if (result) {
                         mCollectUsersTask = getCollectUsersTask();
                         mCollectUsersTask.execute();
@@ -161,11 +177,13 @@ public class UserMapActivity extends MapActivity {
     }
 
     private void collectUserInfo() {
-        if (mCollectUserInfoTask == null) {
+        if (!mCollectingUser) {
+            mCollectingUser = true;
             new CheckNetworkTask(getApplicationContext()) {
 
                 @Override
                 protected void onPostExecute(Boolean result) {
+                    mCollectingUser = false;
                     if (result) {
                         mCollectUserInfoTask = getCollectUserInfoTask();
 
@@ -220,7 +238,7 @@ public class UserMapActivity extends MapActivity {
 
                 else {
                     mUser = user;
-                    add(user);
+                    updateUser(user);
                     setCameraFocus(user.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
                 }
 

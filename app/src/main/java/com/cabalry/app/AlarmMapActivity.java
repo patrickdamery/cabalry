@@ -166,7 +166,7 @@ public class AlarmMapActivity extends MapActivity {
     @Override
     public void onUpdateLocation(LatLng location) {
         if (mUser != null) {
-            update(mUser, location);
+            mUser.updatePosition(location);
             collectNearbyUsers();
         }
     }
@@ -306,7 +306,7 @@ public class AlarmMapActivity extends MapActivity {
                     throw new NullPointerException("CABARLY - user is null, STATE: " + getFailState());
                 else {
                     mUser = user;
-                    add(mUser);
+                    updateUser(mUser);
                     setCameraFocus(mUser.getPosition(), CAMERA_ZOOM, 0, TRANS_TIME);
                 }
             }

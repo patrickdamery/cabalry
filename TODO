@@ -9,21 +9,24 @@ To Do:
     - handle case when playback was not started
 
 In Progress:
-    - finish history activity
 
 Bugs:
-    - Webviews crashing app on onPageFinished progressBar.dismiss throws IllegalArgumentException
-    - Don't change alarm info if user activated or is listening
-    - Timer icon not descriptive enough
-    - Don't combine car and name for markers
-    - help on back opens login
-    - Double user marker on map
+    - Exit alarm if no response for stop alarm, also show progress
+    - Join Alarm not working
     - Logging out not working
-    - Map nearby state not saved on orientation change
-    - Playback not working if app is closed, it also stopped when app streaming was closed
+    - Don't change alarm info if user activated or is listening
+    - help on back opens login
+
+    - Webviews crashing app on onPageFinished progressBar.dismiss throws IllegalArgumentException
     - Devices reopens, and loops user into activating bt
+    - Playback not working if app is closed, it also stopped when app streaming was closed
+    - Timer icon not descriptive enough
 
 Completed:
+    - Don't combine car and name for markers
+    - Double user marker on map
+    - Map nearby state not saved on orientation change
+    - finish history activity
     - handle case when user accepts alarm while listening to one
     - handle case when user accepts alarm while his is activated
     - Handle behavior when alarm has been fake deactivated

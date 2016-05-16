@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.cabalry.app.AlarmHistoryActivity;
 import com.cabalry.app.CabalryAppService;
+import com.cabalry.base.HistoryItem;
 import com.cabalry.base.MapUser;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import static com.cabalry.net.CabalryServer.CheckBilling;
@@ -26,6 +28,7 @@ import static com.cabalry.net.CabalryServer.CheckPassword;
 import static com.cabalry.net.CabalryServer.GetAlarmInfo;
 import static com.cabalry.net.CabalryServer.GetAlarmNearby;
 import static com.cabalry.net.CabalryServer.GetNearby;
+import static com.cabalry.net.CabalryServer.GetUserHistory;
 import static com.cabalry.net.CabalryServer.GetUserInfo;
 import static com.cabalry.net.CabalryServer.GetUserSettings;
 import static com.cabalry.net.CabalryServer.IgnoreAlarm;
@@ -549,6 +552,59 @@ public class TasksUtil {
                     new StopAlarmTask(mContext).execute();
             }
         }
+    }
+
+    public static abstract class GetAlarmHistory extends AsyncTask<Void, Void, ArrayList<HistoryItem>> {
+        private static final String TAG = "GetAlarmHistory";
+
+        private Context mContext;
+
+        public GetAlarmHistory(Context context) {
+            if (context == null)
+                throw new NullPointerException("context can't be null!");
+
+            mContext = context;
+        }
+
+        @Override
+        protected ArrayList<HistoryItem> doInBackground(Void... voids) {
+            ArrayList<HistoryItem> historyItems = new ArrayList<>();
+            JSONObject result = GetUserHistory(GetUserID(mContext), GetUserKey(mContext));
+
+            try {
+                if (result.getBoolean(REQ_SUCCESS)) {
+                    Log.i(TAG, "success");
+
+                    JSONArray items = result.getJSONArray("history");
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject obj = (JSONObject) items.get(i);
+
+                        int alarmId = obj.getInt("alarmId");
+                        int alarmUserId = obj.getInt("alarmUserId");
+                        String userName = obj.getString("userName");
+                        String timestamp = obj.getString("timestamp");
+                        String state = obj.getString("state");
+
+                        Log.i(TAG, "alarmId: " + alarmId);
+                        Log.i(TAG, "alarmUserId: " + alarmUserId);
+                        Log.i(TAG, "userName: " + userName);
+                        Log.i(TAG, "timestamp: " + timestamp);
+                        Log.i(TAG, "state: " + state);
+
+                        historyItems.add(new HistoryItem(userName, alarmUserId, alarmId, timestamp, state));
+                    }
+                } else {
+                    Log.i(TAG, "unsuccess");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return historyItems;
+        }
+
+        @Override
+        protected abstract void onPostExecute(ArrayList<HistoryItem> result);
     }
 
     /**

@@ -18,6 +18,8 @@ import com.cabalry.location.LocationUpdateService;
 import com.cabalry.util.MessageUtil;
 import com.cabalry.util.TasksUtil;
 
+import java.util.concurrent.ExecutionException;
+
 import static com.cabalry.util.PreferencesUtil.GetAlarmID;
 import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.GetUserID;
@@ -222,9 +224,30 @@ public class CabalryAppService extends BindableService {
 
         if (GetAlarmID(context) != 0) {
             if (GetAlarmUserID(context) == GetUserID(context)) {
+                // User has an alarm active
+                // Go to alarm activity
+                Intent alarm = new Intent(context, AlarmMapActivity.class);
+                alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(alarm);
                 return;
+
+            } else if (GetUserID(context) == userId) {
+                // Go to alarm activity
+                Intent alarm = new Intent(context, AlarmMapActivity.class);
+                alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(alarm);
+                return;
+
             } else {
-                stopAlarmServices(context);
+                // User was listening to an alarm, so it'll be ignored
+                try {
+                    new TasksUtil.IgnoreAlarmTask(context).execute().get();
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -234,10 +257,14 @@ public class CabalryAppService extends BindableService {
         new TasksUtil.GetAlarmInfoTask(context) {
             @Override
             protected void onPostExecute(Boolean result) {
-
                 if (result) {
                     SetAlarmIP(context, getIP());
                     startAlarmServices(context);
+
+                    // Go to alarm activity
+                    Intent alarm = new Intent(context, AlarmMapActivity.class);
+                    alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(alarm);
 
                 } else {
                     Log.e(TAG, "Error joinAlarm failed, no alarm info!");
@@ -265,24 +292,24 @@ public class CabalryAppService extends BindableService {
         Log.i(TAG, "stopAlarm");
 
         new TasksUtil.StopAlarmTask(context).execute();
-        alarmStarted = false;
 
         Bundle data = new Bundle();
         sendMessageToActivity(MessageUtil.MSG_ALARM_STOP, data);
 
         stopAlarmServices(context);
+        alarmStarted = false;
     }
 
     private static void ignoreAlarm(final Context context) {
         Log.i(TAG, "ignoreAlarm");
 
         new TasksUtil.IgnoreAlarmTask(context).execute();
-        alarmStarted = false;
 
         Bundle data = new Bundle();
         sendMessageToActivity(MessageUtil.MSG_ALARM_IGNORE, data);
 
         stopAlarmServices(context);
+        alarmStarted = false;
     }
 
     private static void stopAlarmServices(final Context context) {
