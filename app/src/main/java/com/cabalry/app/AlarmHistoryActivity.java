@@ -1,5 +1,6 @@
 package com.cabalry.app;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 public class AlarmHistoryActivity extends BindableActivity {
     private static final String TAG = "AlarmHistoryActivity";
 
+    ProgressDialog progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +41,23 @@ public class AlarmHistoryActivity extends BindableActivity {
         final TextView noHistoryText = (TextView) findViewById(R.id.noHistoryText);
         final ListView listview = (ListView) findViewById(R.id.listview);
 
+        progressBar = new ProgressDialog(this) {
+            @Override
+            public void onBackPressed() {
+                super.onBackPressed();
+                AlarmHistoryActivity.this.onBackPressed();
+            }
+        };
+        progressBar.setCancelable(false);
+        progressBar.setMessage(getResources().getString(R.string.msg_loading));
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.show();
+
         // Get history
         new TasksUtil.GetAlarmHistory(getApplicationContext()) {
             @Override
             protected void onPostExecute(ArrayList<HistoryItem> result) {
+                progressBar.dismiss();
                 if (!result.isEmpty()) {
                     final HistoryItem values[] = result.toArray(new HistoryItem[result.size()]);
                     final HistoryArrayAdapter adapter = new HistoryArrayAdapter(getApplicationContext(), values);

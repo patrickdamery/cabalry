@@ -150,14 +150,8 @@ public class CabalryAppService extends BindableService {
     }
 
     private static void startAlarm(final Context context) {
-        if (alarmStarted && GetAlarmID(context) != 0) {
-            Intent alarm = new Intent(context, AlarmMapActivity.class);
-            alarm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(alarm);
-
-        } else {
+        if (!alarmStarted && GetAlarmID(context) == 0) {
             Log.i(TAG, "startAlarm");
-
             alarmStarted = true;
 
             new TasksUtil.CheckBillingTask(context) {

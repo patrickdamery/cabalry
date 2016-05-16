@@ -19,6 +19,7 @@ import static com.cabalry.util.MessageUtil.MSG_LOCATION_UPDATE;
 import static com.cabalry.util.PreferencesUtil.GetAlarmID;
 import static com.cabalry.util.PreferencesUtil.GetAlarmUserID;
 import static com.cabalry.util.PreferencesUtil.GetLocation;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.StoreLocation;
 import static com.cabalry.util.TasksUtil.CheckNetworkTask;
 import static com.cabalry.util.TasksUtil.UpdateLocationTask;
@@ -86,6 +87,8 @@ public class LocationUpdateService extends BindableService implements LocationUp
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (!CabalryApp.isApplicationRunning() && GetAlarmID(getApplicationContext()) == 0) {
+            stopSelf();
+        } else if (GetUserID(getApplicationContext()) == 0) {
             stopSelf();
         }
 

@@ -158,6 +158,20 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
     public void onStart() {
         super.onStart();
         active = true;
+
+        if (IsUserLogin(this)) {
+
+            Intent intent = new Intent();
+            intent.setAction("com.cabalry.action.APP_STARTED");
+            sendBroadcast(intent);
+
+            if (GetAlarmUserID(getApplicationContext()) != 0 && !IsFakeActive(getApplicationContext())) {
+                startActivity(new Intent(getApplicationContext(), AlarmMapActivity.class));
+
+            } else {
+                gotoStartup(); // Redirects to mStartupActivity
+            }
+        }
     }
 
     @Override

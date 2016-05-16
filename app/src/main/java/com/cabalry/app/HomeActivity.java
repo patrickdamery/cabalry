@@ -112,7 +112,13 @@ public class HomeActivity extends BindableActivity {
                 MSG_REGISTER_CLIENT, MSG_UNREGISTER_CLIENT);
 
         // prepare for a progress bar dialog
-        progressBar = new ProgressDialog(this);
+        progressBar = new ProgressDialog(this) {
+            @Override
+            public void onBackPressed() {
+                super.onBackPressed();
+                HomeActivity.this.onBackPressed();
+            }
+        };
         progressBar.setCancelable(false);
         progressBar.setMessage(getResources().getString(R.string.msg_loading));
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -129,7 +135,7 @@ public class HomeActivity extends BindableActivity {
             protected void onPostExecute(Boolean result) {
                 if (!result) {
                     Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -375,8 +381,6 @@ public class HomeActivity extends BindableActivity {
     }
 
     private void logout() {
-        progressBar.show();
-
         if (GetAlarmID(this) != 0) {
             if (IsFakeActive(this)) {
                 startActivity(new Intent(this, LoginActivity.class));
@@ -384,6 +388,14 @@ public class HomeActivity extends BindableActivity {
             } else {
                 promptPassword();
             }
+        } else {
+            // Normal logout
+            progressBar.show();
+
+            Log.i(TAG, "SENT: com.cabalry.action.LOGOUT");
+            Intent intent = new Intent();
+            intent.setAction("com.cabalry.action.LOGOUT");
+            sendBroadcast(intent);
         }
     }
 
@@ -405,10 +417,13 @@ public class HomeActivity extends BindableActivity {
                         final String value = input.getText().toString();
 
                         if (!value.isEmpty()) {
+                            progressBar.show();
 
                             new TasksUtil.CheckPasswordTask(getApplicationContext(), value) {
                                 @Override
                                 protected void onPostExecute(Boolean result) {
+                                    progressBar.dismiss();
+
                                     if (result) {
                                         Log.i(TAG, "SENT: com.cabalry.action.LOGOUT");
                                         Intent intent = new Intent();
@@ -418,10 +433,14 @@ public class HomeActivity extends BindableActivity {
                                     } else {
                                         promptPassword();
                                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_password),
-                                                Toast.LENGTH_LONG).show();
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }.execute();
+                        } else {
+                            promptPassword();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_password),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -679,7 +698,7 @@ public class HomeActivity extends BindableActivity {
                         } else {
                             // handle no network
                             Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_no_network),
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 }.execute();

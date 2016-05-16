@@ -187,8 +187,13 @@ public class AlarmMapActivity extends MapActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         final String value = input.getText().toString();
+                        //progressBar.setCancelable(true);
+                        progressBar.show();
 
                         if (value.isEmpty()) {
+                            progressBar.dismiss();
+                            //progressBar.setCancelable(false);
+
                             mPassFailedCount++;
                             if (mPassFailedCount > 3) {
                                 // Fake stop alarm.
@@ -202,6 +207,9 @@ public class AlarmMapActivity extends MapActivity {
                             }
 
                         } else if (value.equals(GetFakePassword(getApplicationContext()))) {
+                            progressBar.dismiss();
+                            //progressBar.setCancelable(false);
+
                             // Fake stop alarm.
                             Log.i(TAG, "Alarm fake stopped");
                             SetFakeActive(getApplicationContext(), true);
@@ -212,6 +220,9 @@ public class AlarmMapActivity extends MapActivity {
                             new CheckPasswordTask(getApplicationContext(), value) {
                                 @Override
                                 protected void onPostExecute(Boolean result) {
+                                    progressBar.dismiss();
+                                    //progressBar.setCancelable(false);
+
                                     if (result) {
                                         Log.i(TAG, "Alarm stopped");
                                         SetFakeActive(getApplicationContext(), false);

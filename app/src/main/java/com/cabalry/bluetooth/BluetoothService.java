@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.Log;
 
 import com.cabalry.R;
+import com.cabalry.app.CabalryApp;
 import com.cabalry.app.DeviceControlActivity;
 import com.cabalry.base.BindableService;
 import com.cabalry.base.MovingAverage;
@@ -21,8 +23,10 @@ import com.cabalry.base.MovingAverage;
 import static com.cabalry.util.MessageUtil.MSG_BLUETOOTH_CONNECT;
 import static com.cabalry.util.MessageUtil.MSG_DEVICE_STATE;
 import static com.cabalry.util.MessageUtil.MSG_DEVICE_STATUS;
+import static com.cabalry.util.PreferencesUtil.GetAlarmID;
 import static com.cabalry.util.PreferencesUtil.GetCachedAddress;
 import static com.cabalry.util.PreferencesUtil.GetDeviceCharge;
+import static com.cabalry.util.PreferencesUtil.GetUserID;
 import static com.cabalry.util.PreferencesUtil.SetDeviceCharge;
 
 /**
@@ -45,10 +49,20 @@ public class BluetoothService extends BindableService {
     private final DeviceListener mDeviceListener = new DeviceListener() {
         @Override
         public void onDeviceButtonPressed(Context context) {
-            // Start alarm.
-            Intent alarmIntent = new Intent();
-            alarmIntent.setAction("com.cabalry.action.ALARM_START");
-            sendBroadcast(alarmIntent);
+
+            if (GetUserID(getApplicationContext()) != 0 && GetAlarmID(getApplicationContext()) == 0) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                // Vibrate two rounds of 600 millis and sleep 1000 in between.
+                long[] pattern = {0, 100, 50, 100};
+
+                // The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
+                v.vibrate(pattern, -1);
+
+                // Start alarm.
+                Intent alarmIntent = new Intent();
+                alarmIntent.setAction("com.cabalry.action.ALARM_START");
+                sendBroadcast(alarmIntent);
+            }
         }
 
         @Override
@@ -140,6 +154,12 @@ public class BluetoothService extends BindableService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (!CabalryApp.isApplicationRunning() && GetAlarmID(getApplicationContext()) == 0) {
+            stopSelf();
+        } else if (GetUserID(getApplicationContext()) == 0) {
+            stopSelf();
+        }
+
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mBTListener = new ServiceBluetoothListener(getApplicationContext());
 
@@ -223,7 +243,7 @@ public class BluetoothService extends BindableService {
             Bundle data = new Bundle();
             data.putString("sig", sig);
             data.putString("status", status);
-            data.putString("charge", mPrevChargeSample + "");
+            data.putString("charge", (int) (mPrevChargeSample) + "");
 
             SetDeviceCharge(mContext, (int) mPrevChargeSample);
             sendMessageToActivity(MSG_DEVICE_STATUS, data);

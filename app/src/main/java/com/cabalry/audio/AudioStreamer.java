@@ -78,6 +78,9 @@ public class AudioStreamer {
 
     public void stopStream() {
         mStatus = false;
-        mRecorder.release();
+
+        if (mRecorder != null) {
+            mRecorder.release();
+        }
     }
 }
