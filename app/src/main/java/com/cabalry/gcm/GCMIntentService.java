@@ -28,14 +28,16 @@ import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
  * GCMIntentService
  */
 public class GCMIntentService extends IntentService {
-    public static final int NOTIFICATION_ID = 1;
     private static final String TAG = "GCMIntentService";
+
+    public static final int ALARM_NOTIFICATION_ID = 1;
+
     private static MediaPlayer mMediaPlayer;
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder builder;
 
     public GCMIntentService() {
-        super("GcmIntentService");
+        super(TAG);
     }
 
     @Override
@@ -80,9 +82,6 @@ public class GCMIntentService extends IntentService {
                         int alarmID = Integer.parseInt(extras.getString(ALARM_ID));
                         int userID = Integer.parseInt(extras.getString(ALARM_USERID));
 
-                        SetAlarmID(getApplicationContext(), alarmID);
-                        SetAlarmUserID(getApplicationContext(), userID);
-
                         if (mMediaPlayer == null)
                             mMediaPlayer = MediaPlayer.create(this, R.raw.fx_alarm);
 
@@ -91,7 +90,7 @@ public class GCMIntentService extends IntentService {
                         mMediaPlayer.start();
 
                         // Post notification of received message.
-                        sendNotification(alarmID);
+                        sendNotification(alarmID, userID);
 
                     } else if (action.equals(ALARM_ACTION_STOP)) {
 
@@ -111,12 +110,9 @@ public class GCMIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(int alarmID) {
+    private void sendNotification(int alarmID, int userID) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AlarmMapActivity.class), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -127,8 +123,14 @@ public class GCMIntentService extends IntentService {
                                 .bigText(getResources().getString(R.string.prompt_alarm) + alarmID))
                         .setContentText(getResources().getString(R.string.prompt_alarm) + alarmID);
 
-        mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        Intent intent = new Intent();
+        intent.putExtra("alarmId", alarmID);
+        intent.putExtra("userId", userID);
+        intent.setAction("com.cabalry.action.ALARM_JOIN");
+
+        mBuilder.setContentIntent(PendingIntent.getBroadcast(this, 0, intent, 0));
+
+        mNotificationManager.notify(ALARM_NOTIFICATION_ID, mBuilder.build());
     }
 
     @Override

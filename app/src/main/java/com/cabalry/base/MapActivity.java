@@ -186,7 +186,6 @@ public abstract class MapActivity extends BindableActivity
             Log.e(TAG, "Failed to unbind from the service", t);
         }
 
-        SaveMapState(this, mMap.getCameraPosition());
         isRunning = false;
     }
 

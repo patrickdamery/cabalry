@@ -42,6 +42,13 @@ public class AudioPlayer {
             // Define ip address to connect to.
             ip = InetAddress.getByName(userip);
 
+            /* TODO fix this
+            java.net.UnknownHostException: Unable to resolve host "null": No address associated with hostname
+            at java.net.InetAddress.lookupHostByName(InetAddress.java:424)
+            at java.net.InetAddress.getAllByNameImpl(InetAddress.java:236)
+            at java.net.InetAddress.getByName(InetAddress.java:289)
+            at com.cabalry.audio.AudioPlayer.startPlayback(AudioPlayer.java:43) */
+
             // Define UDP try counter.
             int udpCount = 3;
             do {

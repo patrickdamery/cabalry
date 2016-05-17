@@ -335,18 +335,19 @@ public class LoginActivity extends CabalryActivity implements LoaderCallbacks<Cu
             // There was an error. Focus on source
             focusView.requestFocus();
         } else {
+
+            // Show a progress spinner, and perform the user login attempt
+            showProgress(true);
             new CheckNetworkTask(getApplicationContext()) {
                 @Override
                 protected void onPostExecute(Boolean result) {
                     if (result) {
-                        // Show a progress spinner, and perform the user login attempt
-                        showProgress(true);
-
                         loginTask = getLoginTask();
                         loginTask.setLoginInfo(user, password);
                         loginTask.execute();
 
                     } else {
+                        showProgress(false);
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_no_network),
                                 Toast.LENGTH_LONG).show();
                     }

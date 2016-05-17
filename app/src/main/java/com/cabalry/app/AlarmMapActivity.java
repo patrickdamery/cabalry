@@ -76,14 +76,6 @@ public class AlarmMapActivity extends MapActivity {
 
         final boolean selfActivated = GetAlarmUserID(this) == GetUserID(this);
 
-        if (!selfActivated) {
-            Intent intent = new Intent();
-            intent.putExtra("alarmId", GetAlarmID(this));
-            intent.putExtra("userId", GetAlarmUserID(this));
-            intent.setAction("com.cabalry.action.ALARM_JOIN");
-            sendBroadcast(intent);
-        }
-
         Button bCancel = (Button) findViewById(R.id.bCancel);
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override

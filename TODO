@@ -9,8 +9,6 @@ To Do:
     - handle case when playback was not started
 
 In Progress:
-    - Join Alarm not working
-    - Don't change alarm info if user activated or is listening
     - Fix annoying device not connected notifications
 
 Bugs:
@@ -20,6 +18,8 @@ Bugs:
     - Timer icon not descriptive enough
 
 Completed:
+    - Join Alarm not working
+    - Don't change alarm info if user activated or is listening
     - Exit alarm if no response for stop alarm, also show progress
     - Logging out not working
     - help on back opens login
