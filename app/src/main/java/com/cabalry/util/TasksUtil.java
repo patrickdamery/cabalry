@@ -215,18 +215,20 @@ public class TasksUtil {
 
                 try {
                     // Check if request was successful
-                    success = result.getBoolean(REQ_SUCCESS);
-                    if (success) {
-                        String name = result.getString(REQ_USER_NAME);
-                        String car = result.getString(REQ_USER_CAR);
-                        String color = result.getString(REQ_USER_COLOR);
-                        double lat = result.getDouble(REQ_LATITUDE);
-                        double lng = result.getDouble(REQ_LONGITUDE);
+                    if (result != null) {
+                        success = result.getBoolean(REQ_SUCCESS);
+                        if (success) {
+                            String name = result.getString(REQ_USER_NAME);
+                            String car = result.getString(REQ_USER_CAR);
+                            String color = result.getString(REQ_USER_COLOR);
+                            double lat = result.getDouble(REQ_LATITUDE);
+                            double lng = result.getDouble(REQ_LONGITUDE);
 
-                        user = new MapUser(mID, name, car, color, lat, lng, MapUser.UserType.USER);
+                            user = new MapUser(mID, name, car, color, lat, lng, MapUser.UserType.USER);
 
-                    } else {
-                        failState = result.getString(REQ_FAIL_STATE);
+                        } else {
+                            failState = result.getString(REQ_FAIL_STATE);
+                        }
                     }
 
                 } catch (JSONException e) {

@@ -12,6 +12,9 @@ In Progress:
     - Fix annoying device not connected notifications
 
 Bugs:
+    - Playback not stopping on ignore
+    - add success null check in every task
+
     - Webviews crashing app on onPageFinished progressBar.dismiss throws IllegalArgumentException
     - Devices reopens, and loops user into activating bt
     - Playback not working if app is closed, it also stopped when app streaming was closed
