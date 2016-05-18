@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,14 +18,10 @@ import android.widget.Toast;
 
 import com.cabalry.R;
 import com.cabalry.base.BindableActivity;
-import com.cabalry.base.CabalryActivity;
 import com.cabalry.base.HistoryItem;
 import com.cabalry.util.TasksUtil;
 
 import java.util.ArrayList;
-
-import static com.cabalry.util.PreferencesUtil.SetAlarmID;
-import static com.cabalry.util.PreferencesUtil.SetAlarmUserID;
 
 public class AlarmHistoryActivity extends BindableActivity {
     private static final String TAG = "AlarmHistoryActivity";

@@ -1,5 +1,7 @@
 package com.cabalry.audio;
 
+import android.content.Context;
+import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -26,7 +28,7 @@ public class AudioPlayer {
     private DatagramPacket audioPacket;
     private byte[] data = new byte[1024];
 
-    public void startPlayback(String userip) {
+    public void startPlayback(Context context, String userip) {
 
         isPlaying = true;
 
@@ -160,7 +162,6 @@ public class AudioPlayer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void stopPlayback() {

@@ -42,7 +42,7 @@ public abstract class MapActivity extends BindableActivity
     public static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
-    static final boolean SETTINGS_ENABLED = true; // change to true only for debugging
+    static final boolean SETTINGS_ENABLED = false; // change to true only for debugging
     private final MarkerListener mMarkerListener = new MarkerListener();
     private final CameraListener mCameraListener = new CameraListener();
     protected boolean isRunning = false;

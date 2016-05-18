@@ -75,6 +75,7 @@ public class GCMIntentService extends IntentService {
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 String action = extras.getString(ALARM_GCM_ACTION);
+                Log.i(TAG, "GCM receive action: " + extras.getString(ALARM_GCM_ACTION));
 
                 if (action != null && !action.isEmpty()) {
                     if (action.equals(ALARM_ACTION_START)) {
@@ -95,7 +96,7 @@ public class GCMIntentService extends IntentService {
                     } else if (action.equals(ALARM_ACTION_STOP)) {
 
                         Intent stopIntent = new Intent();
-                        stopIntent.setAction("com.cabalry.action.ALARM_STOP");
+                        stopIntent.setAction("com.cabalry.action.ALARM_IGNORE");
                         sendBroadcast(stopIntent);
                     }
 

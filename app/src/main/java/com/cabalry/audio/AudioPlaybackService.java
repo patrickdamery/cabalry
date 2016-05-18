@@ -41,7 +41,7 @@ public class AudioPlaybackService extends RunnableService {
         playbackThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                audioPlayer.startPlayback(GetAlarmIP(AudioPlaybackService.this));
+                audioPlayer.startPlayback(getApplicationContext(), GetAlarmIP(AudioPlaybackService.this));
             }
         });
 

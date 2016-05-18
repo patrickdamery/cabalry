@@ -611,7 +611,10 @@ public class TasksUtil {
      * Represents an asynchronous task that returns alarm info
      */
     public static abstract class GetAlarmInfoTask extends AsyncTask<Void, Void, Boolean> {
-        private static final String TAG = "StopAlarmTask";
+        private static final String TAG = "GetAlarmInfoTask";
+
+        private static int count = 0;
+        private GetAlarmInfoTask instance;
 
         private Context mContext;
         private int mID;
@@ -648,14 +651,24 @@ public class TasksUtil {
             JSONObject result = GetAlarmInfo(GetAlarmID(mContext), GetUserID(mContext), GetUserKey(mContext));
 
             try {
-                if (result.getBoolean(REQ_SUCCESS)) {
+                Log.i(TAG, "REQ_SUCCESS: " + result.getBoolean(REQ_SUCCESS));
 
+                if (result.getBoolean(REQ_SUCCESS)) {
                     mStart = result.getString(REQ_ALARM_START);
                     mIP = result.getString(REQ_ALARM_IP);
                     mState = result.getString(REQ_ALARM_IP);
                     mID = result.getInt(REQ_ID);
 
-                    return true;
+                    Log.i(TAG, "start: " + mStart);
+                    Log.i(TAG, "ip: " + mIP);
+                    Log.i(TAG, "state: " + mState);
+                    Log.i(TAG, "id: " + mID);
+
+                    if (mIP == null) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -665,7 +678,32 @@ public class TasksUtil {
         }
 
         @Override
-        protected abstract void onPostExecute(Boolean result);
+        protected void onPostExecute(Boolean result) {
+            Log.i(TAG, "onPostExecute result: " + result);
+
+            if (!result) {
+                count++;
+                if (count >= 3) {
+                    Log.e(TAG, "Unable to get alarm info!");
+                    count = 0;
+                    onResult(result);
+
+                } else { // try again
+                    Log.i(TAG, "onPostExecute could not start alarm, trying again ..");
+                    new StartAlarmTask(mContext) {
+                        @Override
+                        protected void onResult(Boolean result) {
+                            instance.onResult(result);
+                        }
+                    }.execute();
+                }
+
+            } else {
+                onResult(result);
+            }
+        }
+
+        protected abstract void onResult(Boolean result);
     }
 
     /**
@@ -724,6 +762,8 @@ public class TasksUtil {
             if (mLocation != null) {
                 JSONObject result = UpdateUserLocation(mLocation.latitude, mLocation.longitude,
                         GetUserID(mContext), GetUserKey(mContext));
+
+                Log.i(TAG, "doInBackground");
 
                 try {
                     if (result != null) {

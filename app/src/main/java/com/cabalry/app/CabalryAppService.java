@@ -174,7 +174,7 @@ public class CabalryAppService extends BindableService {
                                 if (result) {
                                     new TasksUtil.GetAlarmInfoTask(context) {
                                         @Override
-                                        protected void onPostExecute(Boolean result) {
+                                        protected void onResult(Boolean result) {
                                             Log.i(TAG, "GetAlarmInfoTask");
 
                                             if (result) {
@@ -250,7 +250,7 @@ public class CabalryAppService extends BindableService {
 
         new TasksUtil.GetAlarmInfoTask(context) {
             @Override
-            protected void onPostExecute(Boolean result) {
+            protected void onResult(Boolean result) {
                 if (result) {
                     SetAlarmIP(context, getIP());
                     startAlarmServices(context);

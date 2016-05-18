@@ -57,6 +57,8 @@ public class LocationUpdateService extends BindableService implements LocationUp
 
     @Override
     public void onUpdateLocation(Location location) {
+        Log.i(TAG, "onUpdateLocation");
+
         lastLocation = currentLocation;
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
@@ -79,7 +81,9 @@ public class LocationUpdateService extends BindableService implements LocationUp
                 updateLocation();
             }
 
-        } else updateLocation();
+        } else {
+            updateLocation();
+        }
 
         Log.d(TAG, "onUpdateLocation(): " + location.toString());
     }
@@ -104,6 +108,8 @@ public class LocationUpdateService extends BindableService implements LocationUp
     }
 
     private void updateLocation() {
+        Log.i(TAG, "updateLocation");
+
         new CheckNetworkTask(getApplicationContext()) {
 
             @Override

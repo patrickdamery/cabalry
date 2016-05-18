@@ -467,6 +467,11 @@ public class CabalryServer {
      * success : returns true if alarm was succesfully stopped
      */
     public static JSONObject StopAlarm(final int alarmId, final int id, final String key) {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
