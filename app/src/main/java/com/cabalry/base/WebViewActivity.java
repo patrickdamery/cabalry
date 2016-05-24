@@ -5,18 +5,22 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cabalry.R;
 import com.cabalry.app.HomeActivity;
@@ -30,7 +34,7 @@ import static android.content.DialogInterface.OnClickListener;
  */
 public abstract class WebViewActivity extends CabalryActivity.Compat {
 
-    ProgressDialog progressBar;
+    protected ProgressDialog progressBar;
     // Web view components.
     private WebView mWebView;
     private WebSettings mSettings;
@@ -43,6 +47,9 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         // prepare for a progress bar dialog
         progressBar = new ProgressDialog(this) {
@@ -65,11 +72,19 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
 
         // Setup web view.
         mWebView = (WebView) findViewById(R.id.web_cabalry);
+        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
         mSettings = mWebView.getSettings();
+        mSettings.setSupportMultipleWindows(true);
         mSettings.setJavaScriptEnabled(true);
+        mSettings.setLoadsImagesAutomatically(true);
+        mSettings.setUseWideViewPort(true);
+        mSettings.setLoadWithOverviewMode(true);
+
 
         // Set up client to get input from web view.
-        mWebView.setWebViewClient(new WebViewClient() {
+        setWebViewClient(new WebViewClient() {
+            @Override
             public void onPageFinished(WebView view, String url) {
                 // Once the page has finished loading dismiss progress dialog.
                 progressBar.dismiss();
@@ -84,15 +99,39 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
                 // If a link is clicked load it inside mWebView.
                 // This is so that the resend email link works correctly.
                 mWebView.loadUrl(url);
+
                 return true;
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                Toast.makeText(WebViewActivity.this, "Oh no! " + description, Toast.LENGTH_SHORT).show();
             }
         });
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         // Set up chrome client to enable prompt
-        mWebView.setWebChromeClient(new WebChromeClient() {
+        setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+                WebView newWebView = new WebView(getApplicationContext());
+                newWebView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                        if (url != null) {
+                            Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(url));
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                        //super.onPageStarted(view, url, favicon);
+                    }
+                });
+                //addView(newWebView);
+                WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+                transport.setWebView(newWebView);
+                resultMsg.sendToTarget();
+                return true;
+            }
+
             @Override
             public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
 
@@ -130,6 +169,14 @@ public abstract class WebViewActivity extends CabalryActivity.Compat {
                 return true;
             }
         });
+    }
+
+    protected void setWebViewClient(WebViewClient webViewClient) {
+        mWebView.setWebViewClient(webViewClient);
+    }
+
+    protected void setWebChromeClient(WebChromeClient webChromeClient) {
+        mWebView.setWebChromeClient(webChromeClient);
     }
 
     @Override

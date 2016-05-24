@@ -1,8 +1,22 @@
 package com.cabalry.app;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.cabalry.base.WebViewActivity;
+import com.cabalry.net.CabalryServer;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import static com.cabalry.net.CabalryServer.RECORDINGS_URL;
 import static com.cabalry.util.PreferencesUtil.GetUserID;

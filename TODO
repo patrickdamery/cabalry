@@ -1,4 +1,6 @@
 To Do:
+    (v2.0)
+    - add success null check in every task
     - Add multiple button support
     - Take photos and upload
     - handle case were alarm couldn't start, start sms mode
@@ -9,18 +11,17 @@ To Do:
     - handle case when playback was not started
 
 In Progress:
-    - Fix annoying device not connected notifications
 
 Bugs:
-    - Playback not stopping on ignore
-    - add success null check in every task
-
+    - Fix annoying device not connected notifications
     - Webviews crashing app on onPageFinished progressBar.dismiss throws IllegalArgumentException
     - Devices reopens, and loops user into activating bt
     - Playback not working if app is closed, it also stopped when app streaming was closed
     - Timer icon not descriptive enough
 
 Completed:
+    (v1.5)
+    - Recordings activity not opening links
     - Join Alarm not working
     - Don't change alarm info if user activated or is listening
     - Exit alarm if no response for stop alarm, also show progress
