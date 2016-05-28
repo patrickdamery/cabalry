@@ -38,7 +38,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmTimerService;
+import com.cabalry.alarm.TimerAlarmService;
 import com.cabalry.base.BindableActivity;
 import com.cabalry.net.CabalryServer;
 import com.cabalry.util.PreferencesUtil;
@@ -73,6 +73,7 @@ import static com.cabalry.util.PreferencesUtil.SetAppVersion;
 import static com.cabalry.util.PreferencesUtil.SetFakeActive;
 import static com.cabalry.util.PreferencesUtil.SetGPSChecked;
 import static com.cabalry.util.PreferencesUtil.SetRegistrationID;
+import static com.cabalry.util.PreferencesUtil.SetTimerEnabled;
 import static com.cabalry.util.TasksUtil.CheckNetworkTask;
 
 /**
@@ -218,17 +219,20 @@ public class HomeActivity extends BindableActivity {
         final ToggleButton bTimer = (ToggleButton) findViewById(R.id.toggleTimer);
         if (GetTimerEnabled(getApplicationContext())) {
             bTimer.setChecked(true);
-        }
+        } else bTimer.setChecked(false);
 
         bTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (bTimer.isChecked()) {
-                    startService(new Intent(getApplicationContext(), AlarmTimerService.class));
-
+                    bTimer.setChecked(true);
+                    startService(new Intent(getApplicationContext(), TimerAlarmService.class));
                 } else {
-                    stopService(new Intent(getApplicationContext(), AlarmTimerService.class));
+                    bTimer.setChecked(false);
+                    stopService(new Intent(getApplicationContext(), TimerAlarmService.class));
                 }
+
+                SetTimerEnabled(getApplicationContext(), bTimer.isChecked());
             }
         });
 

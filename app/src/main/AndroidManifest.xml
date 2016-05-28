@@ -245,13 +245,10 @@
             android:name=".location.LocationUpdateService"
             android:exported="false" />
         <service
-            android:name=".alarm.AlarmTimerService"
+            android:name=".alarm.TimerAlarmService"
             android:exported="false" />
         <service
             android:name=".app.CabalryAppService"
-            android:exported="false" />
-        <service
-            android:name=".alarm.SilentAlarmService"
             android:exported="false" />
     </application>
 

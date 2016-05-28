@@ -8,8 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cabalry.R;
-import com.cabalry.alarm.AlarmTimerService;
-import com.cabalry.alarm.SilentAlarmService;
+import com.cabalry.alarm.TimerAlarmService;
 import com.cabalry.audio.AudioPlaybackService;
 import com.cabalry.audio.AudioStreamService;
 import com.cabalry.base.BindableService;
@@ -63,10 +62,6 @@ public class CabalryAppService extends BindableService {
 
     private static void stopAppServices(final Context context) {
         Log.i(TAG, "stopAppServices");
-
-        context.stopService(new Intent(context, AlarmTimerService.class));
-        context.stopService(new Intent(context, SilentAlarmService.class));
-
         if (BluetoothService.isRunning() || mBluetoothIntent != null) {
 
             try {
@@ -332,7 +327,6 @@ public class CabalryAppService extends BindableService {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate");
-
         active = true;
     }
 
@@ -349,17 +343,19 @@ public class CabalryAppService extends BindableService {
         active = false;
     }
 
+    private static void checkCabalryIntent(Context context) {
+        if (!active) {// || mCabalryAppIntent == null) {
+            mCabalryAppIntent = new Intent(context, CabalryAppService.class);
+            context.startService(mCabalryAppIntent);
+        }
+    }
+
     public static class LoginReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "LoginReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             startAppServices(context);
         }
     }
@@ -369,12 +365,7 @@ public class CabalryAppService extends BindableService {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "LogoutReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             stopAppServices(context);
             performLogout(context);
         }
@@ -385,12 +376,7 @@ public class CabalryAppService extends BindableService {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "AppStartedReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             startAppServices(context);
         }
     }
@@ -400,12 +386,7 @@ public class CabalryAppService extends BindableService {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "AppClosedReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             stopAppServices(context);
         }
     }
@@ -415,12 +396,7 @@ public class CabalryAppService extends BindableService {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "StartAlarmReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             startAlarm(context);
         }
     }
@@ -430,12 +406,7 @@ public class CabalryAppService extends BindableService {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "JoinAlarmReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             Bundle extras = intent.getExtras();
             joinAlarm(context, extras.getInt("alarmId", 0), extras.getInt("userId", 0));
         }
@@ -446,12 +417,7 @@ public class CabalryAppService extends BindableService {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "StopAlarmReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             stopAlarm(context);
         }
     }
@@ -461,12 +427,7 @@ public class CabalryAppService extends BindableService {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "IgnoreAlarmReceiver onReceive");
-
-            if (!active || mCabalryAppIntent == null) {
-                mCabalryAppIntent = new Intent(context, CabalryAppService.class);
-                context.startService(mCabalryAppIntent);
-            }
-
+            checkCabalryIntent(context);
             ignoreAlarm(context);
         }
     }

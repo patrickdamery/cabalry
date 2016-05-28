@@ -19,8 +19,8 @@ public class LocationUpdateManager implements LocationListener {
     private LocationManager mLocationManager;
     private Location mCurrentBestLocation;
 
-    private long mMinTime = 5000;
-    private float mMinDistance = 5;
+    private long mMinTime = 20000;
+    private float mMinDistance = 10;
 
     private LocationUpdateListener mUpdateListener;
 

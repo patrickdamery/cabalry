@@ -5,20 +5,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cabalry.alarm.AlarmTimerService;
+import com.cabalry.alarm.TimerAlarmService;
 import com.cabalry.base.CabalryActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.cabalry.util.PreferencesUtil.SetTimerEnabled;
+
 /**
- * Created by conor on 18/02/15.
+ * TimerCheckActivity
  */
 public class TimerCheckActivity extends CabalryActivity {
     private static final String TAG = "TimerCheckActivity";
 
     private static final int TIME = 30000;
-    private AlertDialog alert;
+    private AlertDialog alertDialog;
     private TimerTask timerTask;
 
     @Override
@@ -28,8 +30,10 @@ public class TimerCheckActivity extends CabalryActivity {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                alert.cancel();
+                alertDialog.cancel();
 
+                SetTimerEnabled(getApplicationContext(), false);
+                stopService(new Intent(getApplicationContext(), TimerAlarmService.class));
                 // Start alarm.
                 Intent alarmIntent = new Intent();
                 alarmIntent.setAction("com.cabalry.action.ALARM_START");
@@ -44,25 +48,14 @@ public class TimerCheckActivity extends CabalryActivity {
     }
 
     private void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("Time is up! Are you ok?");
-
-        builder.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                startService(new Intent(getApplicationContext(), AlarmTimerService.class));
-                //SetTimerEnabled(getApplicationContext(), true);
-                timerTask.cancel();
-                onBackPressed();
-            }
-
-        });
-
-        builder.setNegativeButton("Alarm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //SetTimerEnabled(getApplicationContext(), false);
-                timerTask.cancel();
+        alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setCancelable(false);
+        alertDialog.setTitle("Timer Check");
+        //alertDialog.setMessage("");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Alert", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                SetTimerEnabled(getApplicationContext(), false);
+                stopService(new Intent(getApplicationContext(), TimerAlarmService.class));
 
                 // Start alarm.
                 Intent alarmIntent = new Intent();
@@ -71,8 +64,22 @@ public class TimerCheckActivity extends CabalryActivity {
             }
         });
 
-        alert = builder.create();
-        alert.setCanceledOnTouchOutside(false);
-        alert.show();
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Reset", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                SetTimerEnabled(getApplicationContext(), true);
+                startService(new Intent(getApplicationContext(), TimerAlarmService.class));
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Stop", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                SetTimerEnabled(getApplicationContext(), false);
+                stopService(new Intent(getApplicationContext(), TimerAlarmService.class));
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+
+        alertDialog.show();
     }
 }
