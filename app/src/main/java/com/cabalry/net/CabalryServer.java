@@ -82,7 +82,7 @@ public class CabalryServer {
     public static final String PROFILE_URL = "https://" + CABALRY_URL + "/profile.php";
     public static final String RECORDINGS_URL = "https://" + CABALRY_URL + "/recordings.php";
     public static final String SETTINGS_URL = "https://" + CABALRY_URL + "/settings.php";
-    public static final String HELP_URL = "https://" + CABALRY_URL + "#support";
+    public static final String HELP_URL = "https://" + CABALRY_URL + "#faq";
     public static final String VIEWUSER_URL = "https://" + CABALRY_URL + "/viewUser.php";
 
     /**
@@ -467,12 +467,6 @@ public class CabalryServer {
      * success : returns true if alarm was succesfully stopped
      */
     public static JSONObject StopAlarm(final int alarmId, final int id, final String key) {
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("alarmId", Integer.toString(alarmId)));

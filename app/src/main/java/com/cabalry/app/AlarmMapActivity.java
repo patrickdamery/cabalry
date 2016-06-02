@@ -47,6 +47,7 @@ import static com.cabalry.util.TasksUtil.GetAlarmInfoTask;
  * AlarmMapActivity
  */
 public class AlarmMapActivity extends MapActivity {
+    public static final String TAG = "AlarmMapActivity";
 
     public static final int CAMERA_ZOOM = 15;
     public static final int TRANS_TIME = 1000;

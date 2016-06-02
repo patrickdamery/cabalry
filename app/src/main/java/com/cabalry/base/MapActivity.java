@@ -39,7 +39,7 @@ import static com.cabalry.util.PreferencesUtil.SaveMapState;
  */
 public abstract class MapActivity extends BindableActivity
         implements OnMapReadyCallback {
-    public static final String TAG = "MapActivity";
+    private static final String TAG = "MapActivity";
 
     public static final int MAP_PADDING = 128;
     static final boolean SETTINGS_ENABLED = false; // change to true only for debugging

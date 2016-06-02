@@ -1,9 +1,11 @@
 package com.cabalry.app;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 
 import com.cabalry.alarm.TimerAlarmService;
 import com.cabalry.base.CabalryActivity;
@@ -34,6 +36,14 @@ public class TimerCheckActivity extends CabalryActivity {
 
                 SetTimerEnabled(getApplicationContext(), false);
                 stopService(new Intent(getApplicationContext(), TimerAlarmService.class));
+
+                Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                // Vibrate two rounds of 600 millis and sleep 1000 in between.
+                long[] pattern = {0, 100, 50, 100};
+
+                // The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
+                v.vibrate(pattern, -1);
+
                 // Start alarm.
                 Intent alarmIntent = new Intent();
                 alarmIntent.setAction("com.cabalry.action.ALARM_START");

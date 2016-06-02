@@ -9,6 +9,8 @@ import com.cabalry.base.BindableService;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.cabalry.util.PreferencesUtil.GetTimerTime;
+
 /**
  * TimerAlarmService
  */
@@ -36,7 +38,7 @@ public class TimerAlarmService extends BindableService {
         };
 
         Timer timerCheck = new Timer();
-        timerCheck.schedule(taskCheck, 5000);
+        timerCheck.schedule(taskCheck, GetTimerTime(getApplicationContext()) * 1000); // convert to millis
     }
 
     @Override
